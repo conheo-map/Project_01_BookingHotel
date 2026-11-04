@@ -152,23 +152,7 @@ def api_get_comprehensive_inventory():
         'dates': date_strs
     })
 
-@manager_bp.route('/api/dimensions/room-types', methods=['GET'])
-def api_get_room_types():
-    hotel_id = request.args.get('hotel_id', type=int)
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    query = "SELECT * FROM Dim_RoomType WHERE is_active = 1"
-    params = []
-    if hotel_id:
-        query += " AND hotel_id = ?"
-        params.append(hotel_id)
-    cursor.execute(query, params)
-    room_types = [dict(r) for r in cursor.fetchall()]
-    conn.close()
-    return jsonify({'success': True, 'room_types': room_types})
-
-
-
+# [ARCHITECTURAL REFACTOR] Route consolidated into system_routes.py
 @manager_bp.route('/api/physical-rooms/bulk-delete', methods=['POST'])
 def api_bulk_delete_rooms():
     auth_err = require_token()
@@ -676,8 +660,7 @@ def api_apply_flexible_pricing():
         curr = start_dt
         while curr <= end_dt:
             d_str = curr.strftime('%Y-%m-%d')
-            # Calculate base_price_cents for consistency
-            base_price_cents = int(float(base_price) * 100)
+            base_price_int = int(round(float(base_price)))
             
             # Use DELETE then INSERT to avoid NULL conflict issues with UPSERT
             if t['room_id'] is None:
@@ -686,9 +669,9 @@ def api_apply_flexible_pricing():
                 cursor.execute("DELETE FROM Room_Rates WHERE room_type_code = ? AND valid_date = ? AND physical_room_id = ?", (t['type_code'], d_str, t['room_id']))
                 
             cursor.execute("""
-                INSERT INTO Room_Rates (room_type_code, physical_room_id, valid_date, base_price, base_price_cents, is_holiday)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (t['type_code'], t['room_id'], d_str, base_price, base_price_cents, is_holiday))
+                INSERT INTO Room_Rates (room_type_code, physical_room_id, valid_date, base_price, is_holiday)
+                VALUES (?, ?, ?, ?, ?)
+            """, (t['type_code'], t['room_id'], d_str, base_price_int, is_holiday))
             curr += timedelta(days=1)
             
     conn.commit()

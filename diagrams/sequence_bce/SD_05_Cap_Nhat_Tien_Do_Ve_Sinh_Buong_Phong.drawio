@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-10-31T18:00:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device">
+  <diagram id="saigon_condao_sequence" name="SD-05 Quy Trinh Don Buong Phong">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1650" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cell_2" value="SD-05: BIỂU ĐỒ TRÌNH TỰ VẬN HÀNH DỌN DẸP BUỒNG PHÒNG (HOUSEKEEPING WORKFLOW)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="40" y="24" width="1200" height="30" as="geometry" />
+</mxCell>
+        <mxCell id="cell_3" value="Ca sử dụng: Buồng phòng nhận phòng DIRTY, Cập nhật CLEANING, Kiểm tra hoàn tất chuyển sang CLEAN &amp; Đồng bộ Lễ tân" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="40" y="52" width="1200" height="20" as="geometry" />
+</mxCell>
+        <mxCell id="cell_4" value="Nhân viên Buồng phòng
+(Housekeeper)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="58" y="90" width="45" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="cell_5" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="80" y="185" as="sourcePoint" />
+    <mxPoint x="80" y="880" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_6" value=":HousekeepingMobileUI" style="shape=umlBoundary;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="288" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_7" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="310" y="160" as="sourcePoint" />
+    <mxPoint x="310" y="880" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_8" value=":RoomCleaningService" style="shape=umlControl;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="568" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_9" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="590" y="160" as="sourcePoint" />
+    <mxPoint x="590" y="880" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_10" value=":Physical_Rooms" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="848" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_11" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="870" y="160" as="sourcePoint" />
+    <mxPoint x="870" y="880" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_12" value=":Cleaning_Logs" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="1118" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_13" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1140" y="160" as="sourcePoint" />
+    <mxPoint x="1140" y="880" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_14" value=":FrontDeskGanttUI" style="shape=umlBoundary;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="1398" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_15" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1420" y="160" as="sourcePoint" />
+    <mxPoint x="1420" y="880" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_16" value="Nhân viên Lễ tân
+(Observer)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="1558" y="90" width="45" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="cell_17" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1580" y="185" as="sourcePoint" />
+    <mxPoint x="1580" y="880" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_18" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="74" y="180" width="12" height="670" as="geometry" />
+</mxCell>
+        <mxCell id="cell_19" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="304" y="180" width="12" height="660" as="geometry" />
+</mxCell>
+        <mxCell id="cell_20" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="584" y="210" width="12" height="600" as="geometry" />
+</mxCell>
+        <mxCell id="cell_21" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="864" y="240" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_22" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="864" y="390" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_23" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="1134" y="450" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_24" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="864" y="650" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_25" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="1134" y="710" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_26" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="1414" y="770" width="12" height="60" as="geometry" />
+</mxCell>
+        <mxCell id="cell_27" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="1574" y="800" width="12" height="30" as="geometry" />
+</mxCell>
+        <mxCell id="cell_28" value="1: Mở app di động, bấm 'Lấy danh sách phòng bẩn cần dọn'" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="86" y="180" as="sourcePoint" />
+    <mxPoint x="304" y="180" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_29" value="2: getDirtyRoomsList(floorId)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="316" y="210" as="sourcePoint" />
+    <mxPoint x="584" y="210" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_30" value="3: queryRooms(status='DIRTY')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="596" y="240" as="sourcePoint" />
+    <mxPoint x="864" y="240" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_31" value="3.1: return dirtyRoomsList" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="864" y="270" as="sourcePoint" />
+    <mxPoint x="596" y="270" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_32" value="3.2: return roomCards (Phòng 302, 305)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="584" y="300" as="sourcePoint" />
+    <mxPoint x="316" y="300" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_33" value="4: Đến phòng 302, bấm 'Bắt đầu dọn phòng'" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="86" y="340" as="sourcePoint" />
+    <mxPoint x="304" y="340" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_34" value="5: startCleaning(roomNumber='302', staffId)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="316" y="370" as="sourcePoint" />
+    <mxPoint x="584" y="370" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_35" value="6: updateStatus(roomNumber='302', status='CLEANING')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="596" y="390" as="sourcePoint" />
+    <mxPoint x="864" y="390" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_36" value="6.1: return statusUpdated" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="864" y="420" as="sourcePoint" />
+    <mxPoint x="596" y="420" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_37" value="7: createCleaningLog(roomNumber='302', staffId, startTime=now)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="596" y="450" as="sourcePoint" />
+    <mxPoint x="1134" y="450" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_38" value="7.1: return logId" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1134" y="480" as="sourcePoint" />
+    <mxPoint x="596" y="480" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_39" value="8: return cleaningStarted(logId)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="584" y="510" as="sourcePoint" />
+    <mxPoint x="316" y="510" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_40" value="9: Hoàn tất lau dọn &amp; Thay ga nệm, bấm 'Báo cáo hoàn thành'" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="86" y="550" as="sourcePoint" />
+    <mxPoint x="304" y="550" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_41" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1.5;width=45;height=22;fontStyle=1;fontSize=11;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="220" y="580" width="1400" height="250" as="geometry" />
+</mxCell>
+        <mxCell id="cell_42" value="[Phòng đạt chuẩn vệ sinh &amp; Đầy đủ tiện nghi]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=3;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="228" y="604" width="1380" height="20" as="geometry" />
+</mxCell>
+        <mxCell id="cell_43" style="line;strokeWidth=1.2;dashed=1;labelBackgroundColor=none;strokeColor=#000000;html=1;" vertex="1" parent="1">
+  <mxGeometry x="220" y="630" width="1400" height="10" as="geometry" />
+</mxCell>
+        <mxCell id="cell_44" value="[Phát hiện hư hỏng vật tư - Chuyển sang Bảo trì]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=3;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="228" y="640" width="1380" height="20" as="geometry" />
+</mxCell>
+        <mxCell id="cell_45" value="Ghi nhận hỏng hóc, chuyển phòng sang 'MAINTENANCE' &amp; Gọi kỹ thuật" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="304" y="610" as="sourcePoint" />
+    <mxPoint x="86" y="610" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_46" value="10: markRoomAsClean(roomNumber='302', logId, quality='PASSED')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="316" y="630" as="sourcePoint" />
+    <mxPoint x="584" y="630" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_47" value="11: updateStatus(roomNumber='302', status='AVAILABLE', is_clean=1)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="596" y="650" as="sourcePoint" />
+    <mxPoint x="864" y="650" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_48" value="11.1: return statusClean" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="864" y="680" as="sourcePoint" />
+    <mxPoint x="596" y="680" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_49" value="12: closeCleaningLog(logId, endTime=now, result='CLEAN')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="596" y="710" as="sourcePoint" />
+    <mxPoint x="1134" y="710" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_50" value="12.1: return logClosed" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1134" y="740" as="sourcePoint" />
+    <mxPoint x="596" y="740" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_51" value="13: notifyRoomStatusChanged(roomNumber='302', status='CLEAN')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="596" y="770" as="sourcePoint" />
+    <mxPoint x="1414" y="770" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_52" value="Đổi màu phòng 302 sang Xanh lục (Clean) - Sẵn sàng đón khách Check-in!" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1426" y="800" as="sourcePoint" />
+    <mxPoint x="1574" y="800" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_53" value="14: return roomCleanSuccess()" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="584" y="820" as="sourcePoint" />
+    <mxPoint x="316" y="820" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_54" value="Thông báo: Đã hoàn tất vệ sinh phòng 302!" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="304" y="840" as="sourcePoint" />
+    <mxPoint x="86" y="840" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

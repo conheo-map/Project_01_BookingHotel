@@ -1,5 +1,5 @@
 from datetime import datetime, date, timedelta
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify
 from services.api import api_get, api_post, api_put, api_delete, api_upload
 
 management_bp = Blueprint('management', __name__)

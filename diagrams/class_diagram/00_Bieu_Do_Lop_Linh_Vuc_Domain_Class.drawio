@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-04T22:30:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device">
+  <diagram id="domain_class_diagram_master" name="Domain Class Diagram (UML 2.x Standard) - Saigon Condao Resort">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1350" pageHeight="1280" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ================= DIAGRAM TITLE ================= -->
+        <mxCell id="title_main" value="HỆ THỐNG QUẢN LÝ VÀ ĐẶT PHÒNG KHÁCH SẠN SÀI GÒN - CÔN ĐẢO&#xa;BIỂU ĐỒ LỚP LĨNH VỰC (DOMAIN CLASS DIAGRAM - UML 2.X STANDARD)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Segoe UI,Arial,sans-serif;fontSize=15;fontStyle=1;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="75" y="25" width="1150" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="title_sub" value="Mô hình Lớp Lĩnh vực Hướng đối tượng | 15 Lớp Thực thể (Entity) | Cấu trúc 1 Cột 3 Ngăn UML 2.x Chuẩn mực (Snug Fit) | Phân tích Nghiệp vụ Khách sạn Chuẩn NEU" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Segoe UI,Arial,sans-serif;fontSize=10;fontColor=#555555;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="75" y="57" width="1150" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Role" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;Role&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- roleId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- roleName: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- description: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- createdAt: DateTime&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ phanQuyen(acc: Account): void&lt;/div&gt;&lt;div&gt;+ kiemTraQuyen(act: String): bool&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="120" width="210" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_StaffProfile" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;StaffProfile&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- staffCode: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- fullName: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- phone: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- department: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ tiepNhanCaTruc(): void&lt;/div&gt;&lt;div&gt;+ traCuuLichSuCaTruc(): List&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="310" width="210" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Account" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity / Supertype»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;Account&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- accountId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- email: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- passwordHash: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- accountType: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- isActive: bool&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- createdAt: DateTime&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ xacThucDangNhap(pwd): bool&lt;/div&gt;&lt;div&gt;+ doiMatKhau(oldP, newP): bool&lt;/div&gt;&lt;div&gt;+ capNhatTrangThai(act): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="500" width="210" height="164" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_CustomerProfile" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;CustomerProfile&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- fullName: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- phone: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- idCardNumber: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- loyaltyPoints: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- membershipTier: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ tichLuyDiem(amount): void&lt;/div&gt;&lt;div&gt;+ nangHangThanhVien(): void&lt;/div&gt;&lt;div&gt;+ capNhatThongTin(info): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="730" width="210" height="151" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_RoomHoldLock" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;RoomHoldLock&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- holdId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- sessionId: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- quantity: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- lockedAt: DateTime&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- expiresAt: DateTime (15m)&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- status: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ taoKhoaGiuCho(mins: int): void&lt;/div&gt;&lt;div&gt;+ kiemTraHetHan(): bool&lt;/div&gt;&lt;div&gt;+ chuyenSangDaBan(): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="365" y="120" width="220" height="164" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_RoomType" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;RoomType&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- roomTypeId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- typeCode: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- typeName: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- basePrice: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- maxAdults: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- totalInventory: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- isActive: bool&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ kiemTraPhongTrong(d1, d2): int&lt;/div&gt;&lt;div&gt;+ tinhGiaPhong(nights, adu): decimal&lt;/div&gt;&lt;div&gt;+ capNhatTonKho(delta): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="365" y="352" width="220" height="178" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_PhysicalRoom" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;PhysicalRoom&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- physicalRoomId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- roomNumber: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- floorNumber: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- housekeepingStatus: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- occupancyStatus: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- isActive: bool&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ kiemTraSanSangCheckIn(): bool&lt;/div&gt;&lt;div&gt;+ chuyenSangDirty(): void&lt;/div&gt;&lt;div&gt;+ chuyenSangClean(): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="365" y="598" width="220" height="164" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_HousekeepingLog" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;HousekeepingLog&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- logId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- taskType: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- startTime: DateTime&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- inspectionResult: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ tiepNhanCaDon(staff: StaffProfile): void&lt;/div&gt;&lt;div&gt;+ hoanTatCaDon(result): void&lt;/div&gt;&lt;div&gt;+ ghiNhanSuCo(note): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="365" y="830" width="220" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_MaintenanceTicket" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;MaintenanceTicket&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- ticketId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- issueDescription: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- priority: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- status: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ lapPhieuBaoTri(desc, prio): void&lt;/div&gt;&lt;div&gt;+ phanCongKyThuat(staff: StaffProfile): void&lt;/div&gt;&lt;div&gt;+ hoanTatBaoTri(report): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="365" y="1035" width="220" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_Booking" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;Booking&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- bookingId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- pnrCode: String [Unique]&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- guestName: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- guestPhone: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- arrivalDate: Date&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- departureDate: Date&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- totalNights: int&lt;/div&gt;&lt;div style=&quot;font-style:italic;&quot;&gt;/- totalRoomAmount: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- depositAmount: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- bookingStatus: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ taoDonDatPhong(pnr): void&lt;/div&gt;&lt;div&gt;+ tinhTongTienPhong(): decimal&lt;/div&gt;&lt;div&gt;+ xacNhanCheckIn(): void&lt;/div&gt;&lt;div&gt;+ hoanTatCheckOut(): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="140" width="240" height="232" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_BookingNight" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;BookingNight&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- nightId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- stayDate: Date&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- nightPrice: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- status: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ ganPhong(room: PhysicalRoom): void&lt;/div&gt;&lt;div&gt;+ capNhatGiaDem(price): void&lt;/div&gt;&lt;div&gt;+ capNhatTrangThai(st): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="452" width="240" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_ServiceItem" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;ServiceItem&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- itemId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- itemCode: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- itemName: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- category: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- unitPrice: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- vatRate: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- isActive: bool&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ kiemTraKhaDung(): bool&lt;/div&gt;&lt;div&gt;+ layGiaBanKemThue(): decimal&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="120" width="230" height="164" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_ServiceConsumption" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;ServiceConsumption&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- consumptionId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- quantity: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- unitPrice: decimal&lt;/div&gt;&lt;div style=&quot;font-style:italic;&quot;&gt;/- totalAmount: decimal&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ tinhThanhTien(): decimal&lt;/div&gt;&lt;div&gt;+ ghiNhanTieuDung(staff: StaffProfile): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="352" width="230" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_FolioInvoice" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;FolioInvoice&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- invoiceId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- invoiceNumber: String&lt;/div&gt;&lt;div style=&quot;font-style:italic;&quot;&gt;/- roomSubtotal: decimal&lt;/div&gt;&lt;div style=&quot;font-style:italic;&quot;&gt;/- serviceSubtotal: decimal&lt;/div&gt;&lt;div style=&quot;font-style:italic;&quot;&gt;/- taxVatAmount: decimal&lt;/div&gt;&lt;div style=&quot;font-style:italic;&quot;&gt;/- depositDeducted: decimal&lt;/div&gt;&lt;div style=&quot;font-style:italic;&quot;&gt;/- finalAmount: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- status: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ tongHopChiPhi(bk: Booking): void&lt;/div&gt;&lt;div&gt;+ tinhTienConLai(): decimal&lt;/div&gt;&lt;div&gt;+ chotQuyetToan(staff: StaffProfile): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="544" width="230" height="191" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_PaymentTransaction" value="&lt;table style=&quot;width:100%; border-collapse:collapse; font-family:Segoe UI,Arial,sans-serif; color:#000000; font-size:9.5px; line-height:13.5px;&quot;&gt;&lt;tr style=&quot;background-color:#E0E0E0; border-bottom:1.2px solid #707070; height:24px;&quot;&gt;&lt;td style=&quot;padding:2px 4px; text-align:center; vertical-align:middle;&quot;&gt;&lt;div style=&quot;font-size:8.5px; font-style:italic; color:#444444; line-height:11px;&quot;&gt;«Entity»&lt;/div&gt;&lt;b style=&quot;font-size:10.5px; color:#000000; line-height:13px;&quot;&gt;PaymentTransaction&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF; border-bottom:1.2px solid #707070;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div style=&quot;&quot;&gt;- paymentId: int&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- paymentType: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- paymentMethod: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- amount: decimal&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- transactionCode: String&lt;/div&gt;&lt;div style=&quot;&quot;&gt;- paymentStatus: String&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background-color:#FFFFFF;&quot;&gt;&lt;td style=&quot;padding:3px 6px; text-align:left; vertical-align:top; line-height:13.5px;&quot;&gt;&lt;div&gt;+ ghiNhanGiaoDich(code, amt): void&lt;/div&gt;&lt;div&gt;+ xacNhanThanhCong(): void&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="803" width="230" height="151" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_role_staff" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="cls_Role" target="cls_StaffProfile">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_role_staff_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="252" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_role_staff_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="290" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_staff_acc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=block;endFill=0;endSize=8;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="cls_StaffProfile" target="cls_Account">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_cust_acc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=block;endFill=0;endSize=8;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="cls_CustomerProfile" target="cls_Account">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel_cust_booking" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=1;exitY=0.20;entryX=0.25;entryY=0;" edge="1" parent="1" source="cls_CustomerProfile" target="cls_Booking">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="760" />
+              <mxPoint x="320" y="95" />
+              <mxPoint x="740" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_cust_bk_src" value="0..1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="742" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_cust_bk_role" value="+customer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#333333;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="290" y="765" width="70" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_cust_bk_tgt" value="0..*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="746" y="120" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_type_lock" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=diamond;startFill=0;startSize=14;fillColor=#FFFFFF;strokeColor=#000000;endArrow=none;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="cls_RoomType" target="cls_RoomHoldLock">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_type_lock_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="495" y="328" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_type_lock_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="495" y="292" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_type_room" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=diamond;startFill=0;startSize=14;fillColor=#FFFFFF;strokeColor=#000000;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="cls_RoomType" target="cls_PhysicalRoom">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_type_room_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="495" y="538" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_type_room_tgt" value="1..*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="495" y="576" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_type_booking" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=0.84;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.43;entryDx=0;entryDy=0;" edge="1" parent="1" source="cls_RoomType" target="cls_Booking">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="318" />
+              <mxPoint x="635" y="318" />
+              <mxPoint x="635" y="240" />
+              <mxPoint x="680" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_type_bk_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="326" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_type_bk_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="655" y="222" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_bk_night" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=diamond;startFill=1;startSize=12;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="cls_Booking" target="cls_BookingNight">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_bk_night_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="812" y="380" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_bk_night_tgt" value="1..*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="812" y="432" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_room_night" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=open;endSize=9;exitX=0;exitY=0.50;entryX=1;entryY=0.12;" edge="1" parent="1" source="cls_BookingNight" target="cls_PhysicalRoom">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="660" y="520" />
+              <mxPoint x="660" y="618" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_room_night_src" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="655" y="502" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_room_night_tgt" value="0..1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="600" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_room_night_role" value="+assignedRoom" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#333333;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="590" y="622" width="70" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_room_hk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="cls_PhysicalRoom" target="cls_HousekeepingLog">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_room_hk_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="487" y="770" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_room_hk_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="487" y="810" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_staff_hk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=0;exitY=0.40;entryX=0;entryY=0.48;" edge="1" parent="1" source="cls_StaffProfile" target="cls_HousekeepingLog">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="25" y="360" />
+              <mxPoint x="25" y="896" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_staff_hk_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="35" y="342" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_staff_hk_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="878" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_staff_hk_role" value="+assignedStaff" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#333333;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="275" y="900" width="70" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_staff_maint" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=0;exitY=0.75;entryX=0;entryY=0.43;" edge="1" parent="1" source="cls_StaffProfile" target="cls_MaintenanceTicket">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="25" y="403" />
+              <mxPoint x="25" y="1094" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_staff_maint_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="35" y="385" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_staff_maint_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="1076" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_staff_maint_role" value="+technician" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#333333;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="285" y="1098" width="70" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_room_maint" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=1;exitY=0.74;entryX=1;entryY=0.55;" edge="1" parent="1" source="cls_PhysicalRoom" target="cls_MaintenanceTicket">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="720" />
+              <mxPoint x="600" y="1110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_room_maint_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="702" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_room_maint_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="1092" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_item_consump" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="cls_ServiceItem" target="cls_ServiceConsumption">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_item_consump_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1127" y="292" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_item_consump_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1127" y="332" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_bk_consump" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=1;exitY=0.26;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" edge="1" parent="1" source="cls_Booking" target="cls_ServiceConsumption">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="960" y="200" />
+              <mxPoint x="960" y="408" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_bk_consump_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="926" y="182" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_bk_consump_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="390" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_bk_invoice" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=1;exitY=0.58;exitDx=0;exitDy=0;entryX=0;entryY=0.32;entryDx=0;entryDy=0;" edge="1" parent="1" source="cls_Booking" target="cls_FolioInvoice">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="275" />
+              <mxPoint x="950" y="605" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_bk_invoice_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="926" y="257" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_bk_invoice_tgt" value="0..*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="587" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_bk_invoice_role" value="+invoices" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#333333;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="925" y="610" width="70" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_inv_pay" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="cls_FolioInvoice" target="cls_PaymentTransaction">
+          <mxGeometry relative="1" as="geometry">
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_inv_pay_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1127" y="743" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_inv_pay_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1127" y="783" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_bk_pay" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;strokeWidth=1.2;startArrow=none;endArrow=none;exitX=1;exitY=0.90;exitDx=0;exitDy=0;entryX=0;entryY=0.34;entryDx=0;entryDy=0;" edge="1" parent="1" source="cls_Booking" target="cls_PaymentTransaction">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="350" />
+              <mxPoint x="930" y="854" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lbl_bk_pay_src" value="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="926" y="332" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_bk_pay_tgt" value="*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#000000;fontFamily=Segoe UI,Arial,sans-serif;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="836" width="25" height="14" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_box" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif; font-size:9px; line-height:13.5px; color:#222222; padding:6px 8px;&quot;&gt;&lt;div style=&quot;font-weight:bold; font-size:10px; color:#000000; border-bottom:1px solid #999999; padding-bottom:3px; margin-bottom:4px; text-align:center;&quot;&gt;QUY ƯỚC QUAN HỆ UML 2.X:&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;#x2500;&amp;#x25B7; Generalization:&lt;/b&gt; Kế thừa (Staff, Cust &amp;#x2500;&amp;#x25B7; Account)&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;#x25C6;&amp;#x2500; Composition:&lt;/b&gt; Hợp thành sinh tử (Booking &amp;#x25C6;&amp;#x2500; Nights)&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;#x25C7;&amp;#x2500; Aggregation:&lt;/b&gt; Thu nạp độc lập (RoomType &amp;#x25C7;&amp;#x2500; Rooms, Locks)&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;#x2500;&amp;#x2500; Association:&lt;/b&gt; Hiệp tác (+role) kèm bản số (1, 0..1, 0..*, *)&lt;/div&gt;&lt;div&gt;&lt;b&gt;&amp;#x2500;&amp;#x25B6; Navigability:&lt;/b&gt; Điều hướng đơn chiều (Nights &amp;#x2500;&amp;#x25B6; Rooms)&lt;/div&gt;&lt;div style=&quot;margin-top:4px; font-size:8px; color:#555555; text-align:center; border-top:0.5px dashed #B0B0B0; padding-top:2px;&quot;&gt;Chuẩn UML 2.x (1 Cột, 3 Ngăn): Tên Lớp | Thuộc tính (-) | Phương thức (+)&lt;/div&gt;&lt;/div&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#707070;strokeWidth=1.2;strokeDasharray=3 3;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="995" y="994" width="240" height="145" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

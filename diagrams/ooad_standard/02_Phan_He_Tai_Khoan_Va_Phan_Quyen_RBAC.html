@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phan He 02 - Tai Khoan Va Phan Quyen RBAC - Saigon Condao Resort OOAD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+    <style>
+        body { background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif; }
+        .header-bar { background: #000000; color: #ffffff; padding: 20px 0; margin-bottom: 25px; }
+        .mxgraph { overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="header-bar text-center">
+        <h4 class="fw-bold mb-1">Phan He 02 - Tai Khoan Va Phan Quyen RBAC</h4>
+        <small class="text-white-50">Quy chuẩn OOAD Tiêu chuẩn Đồ án Điểm 10.0 • Primary Left / Secondary Right • No Bottom Actors</small>
+        <div class="mt-2">
+            <a href="viewer.html" class="btn btn-sm btn-outline-light me-2">&laquo; Quay lại Master Viewer</a>
+            <a href="02_Phan_He_Tai_Khoan_Va_Phan_Quyen_RBAC.drawio" download class="btn btn-sm btn-light">Tải tệp .drawio</a>
+        </div>
+    </div>
+    <div class="container-fluid px-4">
+        <div class="card shadow-sm border-dark">
+            <div class="card-body bg-white text-center p-3">
+                <div class="mxgraph" style="max-width:100%;border:1px solid #000;padding:15px;background:#ffffff;" 
+                     data-mxgraph="&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;mxfile host="app.diagrams.net" modified="2026-10-31T17:00:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device"&gt;
+  &lt;diagram id="saigon_condao_ooad" name="Phan He 02 - Tai Khoan Va Phan Quyen RBAC"&gt;
+    &lt;mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1650" pageHeight="820" math="0" shadow="0"&gt;
+      &lt;root&gt;
+        &lt;mxCell id="0" /&gt;
+        &lt;mxCell id="1" parent="0" /&gt;
+        &lt;mxCell id="cell_2" value="PHÂN HỆ 02: QUẢN LÝ TÀI KHOẢN &amp;amp; PHÂN QUYỀN (IAM &amp;amp; RBAC)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="40" y="24" width="950" height="30" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_3" value="Bóc tách quản trị danh tính người dùng và phân quyền vai trò nội bộ" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="40" y="52" width="950" height="20" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_4" value="RANH GIỚI PHÂN HỆ: QUẢN LÝ TÀI KHOẢN &amp;amp; PHÂN QUYỀN" style="shape=rect;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;rounded=0;verticalAlign=top;fontStyle=1;fontSize=13;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;spacingTop=12;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="240" y="90" width="1160" height="690" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_5" value="KHÁCH HÀNG / HỘI VIÊN
+(USER)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="70" y="280" width="50" height="90" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_6" value="QUẢN TRỊ VIÊN HỆ THỐNG
+(SYSTEM ADMIN)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="1440" y="390" width="50" height="90" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_7" value="ĐĂNG KÝ HỘI VIÊN MỚI" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="310" y="140" width="250" height="60" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_8" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.2;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_5" target="cell_7"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_9" value="XÁC THỰC EMAIL HOẶC SỐ ĐIỆN THOẠI" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="650" y="115" width="270" height="45" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_10" value="KHỞI TẠO HỒ SƠ CUSTOMER_PROFILES" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="650" y="175" width="270" height="45" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_11" value="&amp;amp;laquo;include&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_7" target="cell_9"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_12" value="&amp;amp;laquo;include&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_7" target="cell_10"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_13" value="ĐĂNG NHẬP &amp;amp; XÁC THỰC BẢO MẬT" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="310" y="280" width="250" height="60" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_14" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.2;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_5" target="cell_13"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_15" value="KIỂM TRA BĂM MẬT KHẨU (PASSWORD HASH)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="650" y="285" width="270" height="45" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_16" value="&amp;amp;laquo;include&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_13" target="cell_15"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_17" value="KHÓA TÀI KHOẢN KHI ĐĂNG NHẬP SAI 5 LẦN" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="310" y="390" width="250" height="55" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_18" value="&amp;amp;laquo;extend&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_17" target="cell_13"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_19" value="CẬP NHẬT HỒ SƠ &amp;amp; ĐỔI MẬT KHẨU" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="310" y="520" width="250" height="55" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_20" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.2;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_5" target="cell_19"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_21" value="QUẢN LÝ HỒ SƠ NHÂN SỰ (STAFF_PROFILES)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="1020" y="210" width="270" height="60" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_22" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.2;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_6" target="cell_21"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_23" value="LẬP HỒ SƠ VÀ CẤP TÀI KHOẢN NỘI BỘ" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="650" y="215" width="270" height="45" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_24" value="&amp;amp;laquo;include&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_21" target="cell_23"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_25" value="CẤU HÌNH PHÂN QUYỀN VAI TRÒ (RBAC)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="1020" y="390" width="270" height="60" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_26" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.2;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_6" target="cell_25"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_27" value="GÁN VAI TRÒ ROLE_ID CHO TÀI KHOẢN" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="650" y="370" width="270" height="45" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_28" value="THIẾT LẬP QUYỀN TRUY CẬP TỪNG PHÂN HỆ" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="650" y="430" width="270" height="45" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_29" value="&amp;amp;laquo;include&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=0;exitY=0.3;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_25" target="cell_27"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_30" value="&amp;amp;laquo;include&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_25" target="cell_28"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_31" value="GHI NHẬN &amp;amp; TRA CỨU AUDIT LOGS" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="1020" y="550" width="270" height="60" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_32" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.2;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_6" target="cell_31"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_33" value="CẢNH BÁO CAN THIỆP DỮ LIỆU BẤT THƯỜNG" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1"&gt;
+  &lt;mxGeometry x="1020" y="650" width="270" height="55" as="geometry" /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id="cell_34" value="&amp;amp;laquo;extend&amp;amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial,Helvetica,sans-serif;html=1;rounded=0;labelBackgroundColor=#FFFFFF;fontColor=#000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="cell_33" target="cell_31"&gt;
+  &lt;mxGeometry relative="1" as="geometry"&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+      &lt;/root&gt;
+    &lt;/mxGraphModel&gt;
+  &lt;/diagram&gt;
+&lt;/mxfile&gt;
+"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

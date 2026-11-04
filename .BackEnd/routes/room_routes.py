@@ -1,3 +1,11 @@
+from services.room_lock_service import (
+    lock_room_for_nights,
+    release_lock,
+    lock_physical_room,
+    release_expired_locks,
+    release_locks_by_session
+)
+from services.exceptions import RoomAlreadyLockedError, RoomNotAvailableError
 from flask import Blueprint, request, jsonify, g
 from datetime import datetime, timedelta, date
 from database import get_db_connection
@@ -11,6 +19,7 @@ import sqlite3
 
 room_bp = Blueprint('room_bp', __name__)
 
+@room_bp.route('/api/rooms', methods=['GET'])
 @room_bp.route('/api/rooms/search', methods=['GET'])
 def api_search_rooms():
     checkin_date_str = request.args.get('checkin_date', '')
@@ -364,70 +373,52 @@ def api_room_detail():
     })
 
 @room_bp.route('/api/rooms/lock', methods=['GET', 'POST'])
+@room_bp.route('/api/rooms/<int:physical_room_id>/lock', methods=['POST'])
 @room_bp.route('/booking/lock', methods=['GET', 'POST'])
-def api_lock_room():
+def api_lock_room(physical_room_id=None):
     if request.method == 'GET':
         data = request.args
         list_of_night_dates = request.args.getlist('nights')
     else:
         data = request.get_json() or {}
         list_of_night_dates = data.get('nights', [])
-    physical_room_id = data.get('physical_room_id')
-    session_id = data.get('session_id', '')
+    if physical_room_id is None:
+        physical_room_id = data.get('physical_room_id')
+    session_id = str(data.get('session_id', '')).strip()
 
     if not physical_room_id or not session_id or not list_of_night_dates:
-        return jsonify({'success': False, 'message': 'Thieu thong tin de giu phong'}), 400
+        return jsonify({'success': False, 'message': 'Thiếu thông tin bắt buộc để giữ phòng'}), 400
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cleanup_expired_locks(conn)
+    try:
+        pid = int(physical_room_id)
+    except (ValueError, TypeError):
+        return jsonify({'success': False, 'message': 'physical_room_id không hợp lệ'}), 400
 
-    locked_until_datetime = datetime.now() + timedelta(minutes=10)
-    locked_until_str = locked_until_datetime.strftime('%Y-%m-%d %H:%M:%S')
-    booking_temp_ref = f"TEMP_{session_id}_{physical_room_id}"
-
-    inserted_lock_ids = []
-    for night_date_str in list_of_night_dates:
-        if is_night_occupied(cursor, physical_room_id, night_date_str):
-            conn.close()
-            return jsonify({'success': False, 'message': f'Phong da bi dat vao ngay {night_date_str}'}), 409
-        cursor.execute("""
-            INSERT INTO Room_Lock (physical_room_id, session_id, lock_date, locked_until, booking_temp_ref)
-            VALUES (?, ?, ?, ?, ?)
-        """, (physical_room_id, session_id, night_date_str, locked_until_str, booking_temp_ref))
-        inserted_lock_ids.append(cursor.lastrowid)
-
-    conn.commit()
-    conn.close()
-    return jsonify({
-        'success': True,
-        'lock_ids': inserted_lock_ids,
-        'locked_until': locked_until_str,
-        'booking_temp_ref': booking_temp_ref
-    })
+    try:
+        res = lock_room_for_nights(pid, list_of_night_dates, session_id, ttl_minutes=10, raise_on_error=True)
+        return jsonify(res), 200
+    except RoomAlreadyLockedError as e:
+        return jsonify({'success': False, 'message': 'Phòng đang được người khác giữ chỗ trong 10 phút'}), 409
+    except RoomNotAvailableError as e:
+        return jsonify({'success': False, 'message': str(e)}), 400
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Lỗi hệ thống: {str(e)}'}), 500
 
 @room_bp.route('/api/rooms/lock/cleanup', methods=['POST'])
 def api_cleanup_locks():
-    conn = get_db_connection()
-    cleanup_expired_locks(conn)
-    conn.close()
-    return jsonify({'success': True, 'message': 'Da don dep cac giu phong het han'})
+    cnt = release_expired_locks()
+    return jsonify({'success': True, 'message': f'Đã dọn dẹp {cnt} giữ phòng hết hạn'})
 
 @room_bp.route('/api/rooms/lock/release', methods=['POST'])
 def api_release_locks():
-    data = request.get_json()
-    booking_temp_ref = data.get('booking_temp_ref', '')
+    data = request.get_json() or {}
     session_id = data.get('session_id', '')
-    if not booking_temp_ref and not session_id:
-        return jsonify({'success': False, 'message': 'Thieu thong tin'}), 400
-    conn = get_db_connection()
-    if booking_temp_ref:
-        conn.execute("DELETE FROM Room_Lock WHERE booking_temp_ref = ?", (booking_temp_ref,))
-    elif session_id:
-        conn.execute("DELETE FROM Room_Lock WHERE session_id = ?", (session_id,))
-    conn.commit()
-    conn.close()
-    return jsonify({'success': True, 'message': 'Da giai phong giu cho'})
+    physical_room_id = data.get('physical_room_id')
+    if not session_id:
+        return jsonify({'success': False, 'message': 'Thiếu session_id'}), 400
+    pid = int(physical_room_id) if physical_room_id else None
+    cnt = release_lock(session_id, pid)
+    return jsonify({'success': True, 'message': f'Đã giải phóng {cnt} giữ chỗ', 'released_count': cnt}), 200
 
 @room_bp.route('/api/physical-rooms', methods=['GET'])
 def api_get_physical_rooms():
@@ -460,7 +451,7 @@ def api_update_room_status(physical_room_id):
         return auth_err
     caller_role = get_user_role_from_db(g.api_user_id, g.api_account_type or 'staff')
     data = request.get_json() or {}
-    if caller_role not in ('Receptionist', 'Manager', 'Admin'):
+    if caller_role not in ('Receptionist', 'Manager', 'Admin', 'Housekeeper'):
         return jsonify({'success': False, 'message': 'Khong co quyen'}), 403
 
     new_housekeeping_status = data.get('housekeeping_status', '')

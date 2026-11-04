@@ -27,7 +27,6 @@ body {
     }
 }
 
-/* â”€â”€ Cards â”€â”€ */
 .the-chinh {
     background: #fff;
     border-radius: 12px;
@@ -49,7 +48,6 @@ body {
     border-bottom: 1px solid #e2e8f0;
 }
 
-/* â”€â”€ Auth â”€â”€ */
 .xacthuc-baoboc {
     display: flex;
     justify-content: center;
@@ -1446,3 +1444,8 @@ body {
         padding: 40px 20px;
     }
 }
+/* 480px ← Mobile nhỏ 
+576px ← Mobile       ≈ Bootstrap "sm"
+768px ← Tablet       ≈ Bootstrap "md"  ← DÙNG NHIỀU NHẤT
+900px ← Custom       (riêng trang Payment)
+991-992px ← Laptop   ≈ Bootstrap "lg" */

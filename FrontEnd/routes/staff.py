@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from services.api import api_get, api_post, api_put
+from services.api import api_get, api_post, api_put, get_checkout_statement, process_checkout, create_walkin_booking
 
 staff_bp = Blueprint('staff', __name__)
 
@@ -76,17 +76,19 @@ def do_checkout(booking_id):
     if err:
         return err
     if request.method == 'POST':
-        result = api_put(f'/api/bookings/{booking_id}/checkout', {
-            'staff_id': session.get('user_id'),
-        })
+        pm = request.form.get('payment_method', 'cash')
+        result = process_checkout(booking_id, payment_method=pm)
         flash('Check-out thành công!' if result.get('success') else result.get('message', 'Thất bại'),
               'success' if result.get('success') else 'error')
         return redirect(url_for('staff.receptionist'))
 
+    statement_res = get_checkout_statement(booking_id)
+    statement = statement_res.get('statement') or statement_res
     invoice_data = api_get(f'/api/bookings/invoice/{booking_id}')
     catalog = api_get('/api/service-catalog').get('catalog', [])
     return render_template('receptionist_checkout_detail.html',
                            booking=invoice_data.get('booking') or {},
+                           statement=statement,
                            extra_services=invoice_data.get('extra_services', []),
                            payments=invoice_data.get('payments', []),
                            extra_grand_total=invoice_data.get('extra_grand_total', 0),
@@ -188,6 +190,7 @@ def walkin():
         payload = {
             'customer_name': request.form.get('customer_name', '').strip(),
             'customer_phone': request.form.get('customer_phone', '').strip(),
+            'guest_email': request.form.get('guest_email', '').strip(),
             'hotel_id': request.form.get('hotel_id', type=int),
             'room_type_id': request.form.get('room_type_id', type=int),
             'physical_room_id': request.form.get('physical_room_id', type=int),
@@ -199,9 +202,7 @@ def walkin():
             'payment_method': request.form.get('payment_method', 'cash'),
             'special_requests': request.form.get('special_requests', '').strip(),
         }
-        print(f"[WALKIN] Payload: {payload}")
-        result = api_post('/api/bookings/walkin', payload)
-        print(f"[WALKIN] Result success={result.get('success')}, booking_id={result.get('booking_id')}")
+        result = create_walkin_booking(payload)
         if result.get('success'):
             flash(f"Walk-in #{result.get('booking_id')} tạo thành công!", 'success')
             return redirect(url_for('staff.receptionist'))

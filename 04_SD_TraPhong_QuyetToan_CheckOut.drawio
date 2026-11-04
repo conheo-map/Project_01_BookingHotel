@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-01T14:30:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device">
+  <diagram id="sd04_checkout_perfect_bce" name="SD-04 Quy Trinh Check-Out Va Quyet Toan">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1850" pageHeight="1250" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ================= HEADER CHUẨN ĐỒ ÁN ================= -->
+        <mxCell id="cell_title" value="&lt;b&gt;HỆ THỐNG QUẢN LÝ VÀ ĐẶT PHÒNG KHÁCH SẠN SÀI GÒN - CÔN ĐẢO&lt;/b&gt;&#xa;SD-04: BIỂU ĐỒ TRÌNH TỰ LÀM THỦ TỤC TRẢ PHÒNG &amp;amp; QUYẾT TOÁN (CHECK-OUT &amp;amp; INVOICING - BCE PATTERN)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+          <mxGeometry x="50" y="20" width="1200" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="cell_subtitle" value="Ca sử dụng: Lễ tân phối hợp Buồng phòng kiểm phòng, Điều phối viên Controller gọi Service tính công nợ, Thu tiền VAT &amp;amp; Cập nhật phòng DIRTY" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+          <mxGeometry x="50" y="75" width="1300" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ================= HÀNG LIFELINES (BCE PHÂN TẦNG CHUẨN) ================= -->
+        <!-- 1. Actor: Nhân viên Lễ tân (X=80) -->
+        <mxCell id="actor_rec" value="Nhân viên Lễ tân&#xa;(Receptionist)" style="shape=umlActor;verticalLabelPosition=top;verticalAlign=bottom;html=1;outlineConnect=0;fillColor=none;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="62" y="125" width="36" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="line_rec" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="195" as="sourcePoint" />
+            <mxPoint x="80" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 2. Actor: Nhân viên Buồng phòng (X=230) -->
+        <mxCell id="actor_hk" value="Nhân viên Buồng phòng&#xa;(Housekeeper)" style="shape=umlActor;verticalLabelPosition=top;verticalAlign=bottom;html=1;outlineConnect=0;fillColor=none;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="212" y="125" width="36" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="line_hk" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="230" y="195" as="sourcePoint" />
+            <mxPoint x="230" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 3. Boundary: CheckOutBillingUI (X=420) -->
+        <mxCell id="b_checkout_ui" value=":CheckOutBillingUI" style="shape=umlBoundary;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="398" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_b_checkout_ui" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420" y="175" as="sourcePoint" />
+            <mxPoint x="420" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 4. Control: CheckOutController (X=640) - BỘ ĐIỀU PHỐI TRUNG TÂM -->
+        <mxCell id="c_checkout_ctrl" value=":CheckOutController" style="shape=umlControl;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="618" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_c_checkout_ctrl" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="175" as="sourcePoint" />
+            <mxPoint x="640" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 5. Service / Control: InvoiceSettlementService (X=890) - CHUYÊN TÍNH TOÁN & THU TIỀN -->
+        <mxCell id="s_invoice_srv" value=":InvoiceSettlementService" style="shape=umlControl;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="868" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_s_invoice_srv" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="890" y="175" as="sourcePoint" />
+            <mxPoint x="890" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 6. Entity: Booking_Master (X=1140) -->
+        <mxCell id="e_booking_master" value=":Booking_Master" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1118" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_booking_master" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1140" y="175" as="sourcePoint" />
+            <mxPoint x="1140" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 7. Entity: Invoices (X=1350) -->
+        <mxCell id="e_invoices" value=":Invoices" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1328" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_invoices" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1350" y="175" as="sourcePoint" />
+            <mxPoint x="1350" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 8. Entity: Payments (X=1540) -->
+        <mxCell id="e_payments" value=":Payments" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1518" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_payments" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1540" y="175" as="sourcePoint" />
+            <mxPoint x="1540" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 9. Entity: Physical_Rooms (X=1720) -->
+        <mxCell id="e_rooms" value=":Physical_Rooms" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1698" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_rooms" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1720" y="175" as="sourcePoint" />
+            <mxPoint x="1720" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= ACTIVATION BARS ================= -->
+        <!-- Lễ tân Act -->
+        <mxCell id="act_rec" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="74" y="215" width="12" height="885" as="geometry" />
+        </mxCell>
+
+        <!-- Buồng phòng Act (Kiểm tra phòng) -->
+        <mxCell id="act_hk" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="224" y="215" width="12" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- UI Act 1: Tính toán -->
+        <mxCell id="act_ui_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="414" y="305" width="12" height="270" as="geometry" />
+        </mxCell>
+
+        <!-- Controller Act 1: Điều phối tính toán -->
+        <mxCell id="act_ctrl_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="634" y="335" width="12" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- Service Act 1: Xử lý tính toán công nợ -->
+        <mxCell id="act_srv_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="884" y="365" width="12" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Booking_Master Act 1 -->
+        <mxCell id="act_bm_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1134" y="390" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Invoices Act 1 (Truy vấn dịch vụ) -->
+        <mxCell id="act_inv_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1344" y="445" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- UI Act 2: Quyết toán -->
+        <mxCell id="act_ui_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="414" y="635" width="12" height="445" as="geometry" />
+        </mxCell>
+
+        <!-- Controller Act 2: Điều phối quyết toán hoàn tất -->
+        <mxCell id="act_ctrl_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="634" y="665" width="12" height="385" as="geometry" />
+        </mxCell>
+
+        <!-- Service Act 2: Thu tiền & Xuất VAT -->
+        <mxCell id="act_srv_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="884" y="695" width="12" height="135" as="geometry" />
+        </mxCell>
+
+        <!-- Payments Act -->
+        <mxCell id="act_pay" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1534" y="720" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Invoices Act 2 (Chốt VAT) -->
+        <mxCell id="act_inv_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1344" y="775" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Booking_Master Act 2 (Cập nhật ĐÃ TRẢ PHÒNG) -->
+        <mxCell id="act_bm_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1134" y="875" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Physical_Rooms Act (Cập nhật DIRTY) -->
+        <mxCell id="act_rooms" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1714" y="935" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- ================= GIAI ĐOẠN 1: PHỐI HỢP KIỂM PHÒNG THỰC TẾ ================= -->
+        <!-- Msg 1 -->
+        <mxCell id="msg_1" value="1: Khách báo trả phòng&#xa;Lễ tân gửi yêu cầu kiểm tra phòng 302" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="86" y="215" as="sourcePoint" />
+            <mxPoint x="224" y="215" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 2: Phản hồi kiểm phòng -->
+        <mxCell id="msg_2" value="2: - - - - ▶ Phản hồi kết quả: Minibar 1 bia, phòng nguyên vẹn" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="224" y="255" as="sourcePoint" />
+            <mxPoint x="86" y="255" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= GIAI ĐOẠN 2: TÍNH TOÁN CÔNG NỢ (BCE CHUẨN) ================= -->
+        <!-- Msg 3: Lễ tân bấm tính tiền -->
+        <mxCell id="msg_3" value="3: Bấm &quot;Tính tổng quyết toán công nợ phòng 302&quot;" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="86" y="305" as="sourcePoint" />
+            <mxPoint x="414" y="305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 4: UI gửi Controller (ĐÚNG KIẾN TRÚC BCE) -->
+        <mxCell id="msg_4" value="4: Yêu cầu tính toán quyết toán tổng chi phí trả phòng" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="426" y="335" as="sourcePoint" />
+            <mxPoint x="634" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 5: Controller gọi Service tính toán -->
+        <mxCell id="msg_5" value="5: Tính tổng chi phí quyết toán(Mã đặt phòng, Ngày thực tế)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="646" y="365" as="sourcePoint" />
+            <mxPoint x="884" y="365" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 6: Service truy vấn tiền phòng & cọc -->
+        <mxCell id="msg_6" value="6: Truy vấn tiền phòng thực tế &amp;amp; Số tiền cọc đã thu" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="896" y="390" as="sourcePoint" />
+            <mxPoint x="1134" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 6.1: Booking_Master trả lời -->
+        <mxCell id="msg_6_1" value="6.1: - - - - ▶ Trả về chi phí tiền phòng và tiền cọc đã thu" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1134" y="415" as="sourcePoint" />
+            <mxPoint x="896" y="415" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 7: Service truy vấn dịch vụ phát sinh -->
+        <mxCell id="msg_7" value="7: Tổng hợp toàn bộ chi phí dịch vụ phát sinh đã tiêu dùng" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="896" y="445" as="sourcePoint" />
+            <mxPoint x="1344" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 7.1: Invoices trả lời -->
+        <mxCell id="msg_7_1" value="7.1: - - - - ▶ Trả về tổng tiền dịch vụ phát sinh" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1344" y="470" as="sourcePoint" />
+            <mxPoint x="896" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 8: Service tự tính toán đối trừ cọc -->
+        <mxCell id="msg_8" value="8: Tính toán công nợ cuối = Tiền phòng + Dịch vụ - Tiền cọc" style="endArrow=classic;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=left;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="896" y="485" as="sourcePoint" />
+            <mxPoint x="896" y="505" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="930" y="485" />
+              <mxPoint x="930" y="505" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 8.1: Service trả kết quả về Controller (ĐÓNG VẠCH ACTIVATION SERVICE LẦN 1) -->
+        <mxCell id="msg_8_1" value="8.1: - - - - ▶ Trả về bảng kê chi tiết quyết toán công nợ" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="884" y="515" as="sourcePoint" />
+            <mxPoint x="646" y="515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 8.2: Controller trả về UI hiển thị cho Lễ tân -->
+        <mxCell id="msg_8_2" value="8.2: - - - - ▶ Hiển thị bảng kê quyết toán chi phí phòng" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="634" y="545" as="sourcePoint" />
+            <mxPoint x="426" y="545" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= GIAI ĐOẠN 3: THU TIỀN, XUẤT VAT & ĐỔI TRẠNG THÁI ================= -->
+        <!-- Msg 9: Lễ tân chọn thanh toán -->
+        <mxCell id="msg_9" value="9: Chọn phương thức (Tiền mặt / Thẻ POS)&#xa;&amp;amp; Bấm &quot;Xác nhận quyết toán&quot;" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="86" y="635" as="sourcePoint" />
+            <mxPoint x="414" y="635" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 10: UI gửi Controller (ĐÚNG KIẾN TRÚC BCE) -->
+        <mxCell id="msg_10" value="10: Gửi thông tin thanh toán quyết toán(Phương thức, Số tiền)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="426" y="665" as="sourcePoint" />
+            <mxPoint x="634" y="665" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 11: Controller gọi Service xử lý thu tiền (MỞ VẠCH ACTIVATION SERVICE LẦN 2) -->
+        <mxCell id="msg_11" value="11: Thực hiện thu tiền quyết toán(Phương thức, Số tiền thanh toán)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="646" y="695" as="sourcePoint" />
+            <mxPoint x="884" y="695" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 12: Service ghi nhận Payments -->
+        <mxCell id="msg_12" value="12: Ghi nhận phiếu thu tiền quyết toán(Mã đặt phòng, Số tiền, Hình thức)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="896" y="720" as="sourcePoint" />
+            <mxPoint x="1534" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 12.1: Payments trả lời -->
+        <mxCell id="msg_12_1" value="12.1: - - - - ▶ Xác nhận ghi nhận phiếu thu thành công" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1534" y="745" as="sourcePoint" />
+            <mxPoint x="896" y="745" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 13: Service xuất Hóa đơn Invoices -->
+        <mxCell id="msg_13" value="13: Xuất Hóa đơn tài chính VAT &amp;amp; Chốt trạng thái 'ĐÃ THANH TOÁN'" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="896" y="775" as="sourcePoint" />
+            <mxPoint x="1344" y="775" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 13.1: Invoices trả lời -->
+        <mxCell id="msg_13_1" value="13.1: - - - - ▶ Trả về Số hóa đơn VAT &amp;amp; File hóa đơn điện tử" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1344" y="800" as="sourcePoint" />
+            <mxPoint x="896" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 13.2: Service báo Controller thanh toán thành công (ĐÓNG VẠCH ACTIVATION SERVICE LẦN 2) -->
+        <mxCell id="msg_13_2" value="13.2: - - - - ▶ Xác nhận thu tiền &amp;amp; Quyết toán hóa đơn thành công" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="884" y="825" as="sourcePoint" />
+            <mxPoint x="646" y="825" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 14: CHÍNH CONTROLLER CẬP NHẬT TRẠNG THÁI BOOKING MASTER (ĐÚNG THẨM QUYỀN) -->
+        <mxCell id="msg_14" value="14: Cập nhật trạng thái đơn đặt phòng sang 'ĐÃ TRẢ PHÒNG'" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="646" y="875" as="sourcePoint" />
+            <mxPoint x="1134" y="875" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 14.1: Booking_Master trả lời -->
+        <mxCell id="msg_14_1" value="14.1: - - - - ▶ Xác nhận hồ sơ đặt phòng đã hoàn tất Check-out" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1134" y="900" as="sourcePoint" />
+            <mxPoint x="646" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 15: CONTROLLER TỰ ĐỘNG CHUYỂN PHÒNG SANG CHỜ DỌN (DIRTY) -->
+        <mxCell id="msg_15" value="15: Tự động đổi trạng thái phòng vật lý 302 sang 'CHỜ DỌN' (DIRTY)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="646" y="935" as="sourcePoint" />
+            <mxPoint x="1714" y="935" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 15.1: Physical_Rooms trả lời -->
+        <mxCell id="msg_15_1" value="15.1: - - - - ▶ Xác nhận phòng 302 đã chuyển sang trạng thái DIRTY" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1714" y="960" as="sourcePoint" />
+            <mxPoint x="646" y="960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 16: Controller trả về UI hoàn tất -->
+        <mxCell id="msg_16" value="16: - - - - ▶ Trả về kết quả hoàn tất thủ tục trả phòng thành công" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="634" y="1015" as="sourcePoint" />
+            <mxPoint x="426" y="1015" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 17: UI in hóa đơn cho Lễ tân -->
+        <mxCell id="msg_17" value="17: - - - - ▶ In Hóa đơn tài chính VAT đưa khách&#xa;&amp;amp; Tự động đổi màu phòng 302 sang Đỏ (DIRTY)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="414" y="1075" as="sourcePoint" />
+            <mxPoint x="86" y="1075" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

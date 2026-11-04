@@ -77,9 +77,15 @@ def api_get_hotels_dim():
 
 @system_bp.route('/api/dimensions/room-types', methods=['GET'])
 def api_get_room_types_dim():
+    hotel_id = request.args.get('hotel_id', type=int)
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("""
+    where_clause = "WHERE drt.is_active = 1"
+    params = []
+    if hotel_id:
+        where_clause += " AND drt.hotel_id = ?"
+        params.append(hotel_id)
+    cursor.execute(f"""
         SELECT drt.room_type_id, drt.room_type_code, drt.max_adults, drt.max_children,
                drt.base_price, drt.description, drt.amenities, drt.is_active, drt.hotel_id,
                COALESCE(drt.allow_child_sharing, 1) AS allow_child_sharing,
@@ -90,8 +96,9 @@ def api_get_room_types_dim():
                dh.hotel as hotel_name
         FROM Dim_RoomType drt
         LEFT JOIN Dim_Hotel dh ON drt.hotel_id = dh.hotel_id
+        {where_clause}
         ORDER BY drt.room_type_code
-    """)
+    """, params)
     room_types_list = []
     import json
     for r in cursor.fetchall():

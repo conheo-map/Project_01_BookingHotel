@@ -62,19 +62,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('.panel-section');
 
     function openPanel(type) {
-        // Hide all sections first
         sections.forEach(s => s.classList.add('d-none'));
         
-        // Show target section
+
         const target = document.getElementById('content-' + type);
         if (target) {
             target.classList.remove('d-none');
             
-            // GSAP Animations
+
             overlay.classList.add('active');
             gsap.to(panel, { right: 0, duration: 0.6, ease: 'power3.out' });
-            
-            // Animate content inside
+
             gsap.from(target.children, {
                 y: 30,
                 opacity: 0,
@@ -84,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 delay: 0.2
             });
             
-            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            document.body.style.overflow = 'hidden';
         }
     }
 

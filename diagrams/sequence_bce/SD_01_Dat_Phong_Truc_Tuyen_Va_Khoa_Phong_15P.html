@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD-01 Quy Trinh Dat Phong Va Khoa Phong 15P - Saigon Condao Resort Sequence Diagrams</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+    <style>
+        body { background-color: #f8fafc; font-family: Arial, Helvetica, sans-serif; }
+        .header-bar { background: #000000; color: #ffffff; padding: 20px 0; margin-bottom: 25px; }
+        .mxgraph { overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="header-bar text-center">
+        <h4 class="fw-bold mb-1">SD-01 Quy Trinh Dat Phong Va Khoa Phong 15P</h4>
+        <small class="text-white-50">Quy chuẩn OOAD Tiêu chuẩn Đồ án Điểm 10.0 • Kiến trúc BCE • 100% Monochrome Black & White</small>
+        <div class="mt-2">
+            <a href="viewer_sequence.html" class="btn btn-sm btn-outline-light me-2">&laquo; Quay lại Master Sequence Viewer</a>
+            <a href="SD_01_Dat_Phong_Truc_Tuyen_Va_Khoa_Phong_15P.drawio" download class="btn btn-sm btn-light">Tải tệp .drawio</a>
+        </div>
+    </div>
+    <div class="container-fluid px-4">
+        <div class="card shadow-sm border-dark">
+            <div class="card-body bg-white text-center p-3">
+                <div class="mxgraph" style="max-width:100%;border:1px solid #000;padding:15px;background:#ffffff;" 
+                     data-mxgraph="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;mxfile host=&quot;app.diagrams.net&quot; modified=&quot;2026-10-31T18:00:00.000Z&quot; agent=&quot;Mozilla/5.0&quot; version=&quot;24.0.0&quot; type=&quot;device&quot;&gt;
+  &lt;diagram id=&quot;saigon_condao_sequence&quot; name=&quot;SD-01 Quy Trinh Dat Phong Va Khoa Phong 15P&quot;&gt;
+    &lt;mxGraphModel dx=&quot;1400&quot; dy=&quot;900&quot; grid=&quot;1&quot; gridSize=&quot;10&quot; guides=&quot;1&quot; tooltips=&quot;1&quot; connect=&quot;1&quot; arrows=&quot;1&quot; fold=&quot;1&quot; page=&quot;1&quot; pageScale=&quot;1&quot; pageWidth=&quot;1750&quot; pageHeight=&quot;1050&quot; math=&quot;0&quot; shadow=&quot;0&quot;&gt;
+      &lt;root&gt;
+        &lt;mxCell id=&quot;0&quot; /&gt;
+        &lt;mxCell id=&quot;1&quot; parent=&quot;0&quot; /&gt;
+        &lt;mxCell id=&quot;cell_2&quot; value=&quot;SD-01: BIỂU ĐỒ TRÌNH TỰ ĐẶT PHÒNG TRỰC TUYẾN &amp;amp; KHÓA PHÒNG CHỐNG TRÙNG (BCE PATTERN)&quot; style=&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;40&quot; y=&quot;24&quot; width=&quot;1200&quot; height=&quot;30&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_3&quot; value=&quot;Ca sử dụng: Khách hàng đặt phòng B2C, Khóa phòng chống trùng 15 phút, Thanh toán VNPAY/MoMo và Sinh mã PNR&quot; style=&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;40&quot; y=&quot;52&quot; width=&quot;1200&quot; height=&quot;20&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_4&quot; value=&quot;Khách hàng
+(Customer)&quot; style=&quot;shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;58&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;75&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_5&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;80&quot; y=&quot;185&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;80&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_6&quot; value=&quot;:BookingUI&quot; style=&quot;shape=umlBoundary;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;238&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;45&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_7&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;260&quot; y=&quot;160&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;260&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_8&quot; value=&quot;:BookingService&quot; style=&quot;shape=umlControl;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;448&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;45&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_9&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;470&quot; y=&quot;160&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;470&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_10&quot; value=&quot;:Room_Inventory&quot; style=&quot;shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;668&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;45&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_11&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;690&quot; y=&quot;160&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;690&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_12&quot; value=&quot;:PaymentGatewayModal&quot; style=&quot;shape=umlBoundary;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;888&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;45&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_13&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;910&quot; y=&quot;160&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;910&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_14&quot; value=&quot;:PaymentService&quot; style=&quot;shape=umlControl;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1108&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;45&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_15&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1130&quot; y=&quot;160&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1130&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_16&quot; value=&quot;:Booking_Master&quot; style=&quot;shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1318&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;45&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_17&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1340&quot; y=&quot;160&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1340&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_18&quot; value=&quot;:Booking_Nights&quot; style=&quot;shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1518&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;45&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_19&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1540&quot; y=&quot;160&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1540&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_20&quot; value=&quot;Cổng thanh toán
+(VNPAY/MoMo)&quot; style=&quot;shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1658&quot; y=&quot;90&quot; width=&quot;45&quot; height=&quot;75&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_21&quot; style=&quot;endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1680&quot; y=&quot;185&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1680&quot; y=&quot;970&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_22&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;74&quot; y=&quot;190&quot; width=&quot;12&quot; height=&quot;740&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_23&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;254&quot; y=&quot;190&quot; width=&quot;12&quot; height=&quot;290&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_24&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;464&quot; y=&quot;220&quot; width=&quot;12&quot; height=&quot;230&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_25&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;684&quot; y=&quot;250&quot; width=&quot;12&quot; height=&quot;160&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_26&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;904&quot; y=&quot;490&quot; width=&quot;12&quot; height=&quot;130&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_27&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1124&quot; y=&quot;520&quot; width=&quot;12&quot; height=&quot;260&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_28&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1674&quot; y=&quot;580&quot; width=&quot;12&quot; height=&quot;90&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_29&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;464&quot; y=&quot;700&quot; width=&quot;12&quot; height=&quot;190&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_30&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1334&quot; y=&quot;730&quot; width=&quot;12&quot; height=&quot;40&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_31&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;1534&quot; y=&quot;790&quot; width=&quot;12&quot; height=&quot;30&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_32&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;684&quot; y=&quot;840&quot; width=&quot;12&quot; height=&quot;30&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_33&quot; value=&quot;&quot; style=&quot;rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;254&quot; y=&quot;880&quot; width=&quot;12&quot; height=&quot;50&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_34&quot; value=&quot;1: Chọn loại phòng, ngày đến/đi, số khách &amp;amp; bấm Đặt phòng&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;86&quot; y=&quot;190&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;254&quot; y=&quot;190&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_35&quot; value=&quot;2: holdLockRooms(roomTypeId, checkIn, checkOut, customerId)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;266&quot; y=&quot;220&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;464&quot; y=&quot;220&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_36&quot; value=&quot;3: checkAvailability(roomTypeId, checkIn, checkOut)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;250&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;684&quot; y=&quot;250&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_37&quot; value=&quot;3.1: status (AVAILABLE / LOCKED)&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;684&quot; y=&quot;280&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;280&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_38&quot; value=&quot;alt&quot; style=&quot;shape=umlFrame;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1.5;width=45;height=22;fontStyle=1;fontSize=11;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;200&quot; y=&quot;300&quot; width=&quot;1500&quot; height=&quot;640&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_39&quot; value=&quot;[Phòng còn trống &amp;amp; Chưa bị giữ chỗ]&quot; style=&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=3;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;208&quot; y=&quot;324&quot; width=&quot;1480&quot; height=&quot;20&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_40&quot; style=&quot;line;strokeWidth=1.2;dashed=1;labelBackgroundColor=none;strokeColor=#000000;html=1;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;200&quot; y=&quot;420&quot; width=&quot;1500&quot; height=&quot;10&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_41&quot; value=&quot;[Hết phòng hoặc phòng đang bị giữ chỗ trong 15 phút]&quot; style=&quot;text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=3;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;&quot; vertex=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry x=&quot;208&quot; y=&quot;430&quot; width=&quot;1480&quot; height=&quot;20&quot; as=&quot;geometry&quot; /&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_42&quot; value=&quot;3.2a: throw RoomAlreadyLockedError('Phòng đang bị giữ chỗ')&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;464&quot; y=&quot;440&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;266&quot; y=&quot;440&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_43&quot; value=&quot;Hiển thị thông báo: Phòng đang có người giữ chỗ, vui lòng thử lại sau!&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;254&quot; y=&quot;460&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;86&quot; y=&quot;460&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_44&quot; value=&quot;4: acquireHoldLock(roomTypeId, dates, expireSeconds=900)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;330&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;684&quot; y=&quot;330&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_45&quot; value=&quot;4.1: return lockId, expiresAt (Lock 15 phút)&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;684&quot; y=&quot;360&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;360&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_46&quot; value=&quot;4.2: return holdSuccess(lockId, timeout=900s)&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;464&quot; y=&quot;390&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;266&quot; y=&quot;390&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_47&quot; value=&quot;Hiển thị đếm ngược 15:00 &amp;amp; Mở biểu mẫu thanh toán&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;254&quot; y=&quot;410&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;86&quot; y=&quot;410&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_48&quot; value=&quot;5: Bấm 'Xác nhận &amp;amp; Thanh toán ngay'&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;86&quot; y=&quot;490&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;904&quot; y=&quot;490&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_49&quot; value=&quot;6: createPaymentUrl(lockId, amount, method='VNPAY')&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;916&quot; y=&quot;520&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1124&quot; y=&quot;520&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_50&quot; value=&quot;7: requestPaymentGateway(orderInfo, amount, returnUrl)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1136&quot; y=&quot;550&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1674&quot; y=&quot;550&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_51&quot; value=&quot;7.1: redirectPaymentGatewayPage(paymentUrl)&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1674&quot; y=&quot;580&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;916&quot; y=&quot;580&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_52&quot; value=&quot;8: Quét mã VNPAY-QR / Xác thực OTP ngân hàng&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;86&quot; y=&quot;610&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1674&quot; y=&quot;610&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_53&quot; value=&quot;8.1: Thông báo giao dịch trừ tiền thành công&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1674&quot; y=&quot;640&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;86&quot; y=&quot;640&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_54&quot; value=&quot;9: verifyPaymentWebhook(transId, code='00', secureHash)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1674&quot; y=&quot;670&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1136&quot; y=&quot;670&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_55&quot; value=&quot;10: confirmBookingAfterPayment(lockId, transId)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1124&quot; y=&quot;700&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;700&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_56&quot; value=&quot;11: createBookingRecord(PNR, customerId, status='CONFIRMED')&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;730&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1334&quot; y=&quot;730&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_57&quot; value=&quot;11.1: return bookingId, PNR&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1334&quot; y=&quot;760&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;760&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_58&quot; value=&quot;12: createBookingNights(bookingId, checkIn, checkOut, price)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;790&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;1534&quot; y=&quot;790&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_59&quot; value=&quot;12.1: return nightsCreated&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;1534&quot; y=&quot;820&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;820&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_60&quot; value=&quot;13: releaseHoldLockAndDeductInventory(lockId, roomTypeId)&quot; style=&quot;endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;840&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;684&quot; y=&quot;840&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_61&quot; value=&quot;13.1: return inventoryDeducted&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;684&quot; y=&quot;870&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;870&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_62&quot; value=&quot;14: sendConfirmationEmail(PNR, email)&quot; style=&quot;edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=5;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;875&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;476&quot; y=&quot;900&quot; as=&quot;targetPoint&quot; /&gt;
+    &lt;Array as=&quot;points&quot;&gt;
+      &lt;mxPoint x=&quot;506&quot; y=&quot;875&quot; /&gt;
+      &lt;mxPoint x=&quot;506&quot; y=&quot;900&quot; /&gt;
+    &lt;/Array&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_63&quot; value=&quot;15: return bookingSuccess(PNR, receiptUrl)&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;464&quot; y=&quot;900&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;266&quot; y=&quot;900&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+        &lt;mxCell id=&quot;cell_64&quot; value=&quot;Hiển thị Voucher xác nhận đặt phòng &amp;amp; Mã PNR thành công&quot; style=&quot;endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;&quot; edge=&quot;1&quot; parent=&quot;1&quot;&gt;
+  &lt;mxGeometry relative=&quot;1&quot; as=&quot;geometry&quot;&gt;
+    &lt;mxPoint x=&quot;254&quot; y=&quot;930&quot; as=&quot;sourcePoint&quot; /&gt;
+    &lt;mxPoint x=&quot;86&quot; y=&quot;930&quot; as=&quot;targetPoint&quot; /&gt;
+  &lt;/mxGeometry&gt;
+&lt;/mxCell&gt;
+      &lt;/root&gt;
+    &lt;/mxGraphModel&gt;
+  &lt;/diagram&gt;
+&lt;/mxfile&gt;
+"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

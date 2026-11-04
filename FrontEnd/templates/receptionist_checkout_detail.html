@@ -129,22 +129,32 @@
             </div>
             {% endif %}
             <div class="border-top pt-3 mt-2 d-flex justify-content-between">
-                <span class="fw-bold">Tổng thanh toán</span>
-                <span class="fw-bold fs-5 chu-datphong">
-                    {% if booking.total_price %}
-                    {{ (booking.total_price + (extra_grand_total or 0) - (booking.deposit_paid or 0))|vnd }}
-                    {% else %}—{% endif %}
+                <span class="fw-bold">Số tiền còn thiếu cần thu:</span>
+                <span class="fw-bold fs-5 text-danger">
+                    {% if statement and statement.remaining_balance is defined %}
+                        {{ statement.remaining_balance | format_vnd }}
+                    {% elif booking.total_price %}
+                        {{ (booking.total_price + (extra_grand_total or 0) - (booking.deposit_paid or 0)) | format_vnd }}
+                    {% else %}0 ₫{% endif %}
                 </span>
             </div>
         </div>
 
         <div class="the-chinh p-4">
             <h6 class="fw-bold mb-3"><i class="fas fa-sign-out-alt me-2 text-success"></i>Xác nhận trả phòng</h6>
-            <p class="small text-muted mb-3">Xác nhận rằng khách hàng đã thanh toán đầy đủ và bàn giao phòng.</p>
+            <p class="small text-muted mb-3">Xác nhận rằng khách hàng đã thanh toán đầy đủ số tiền còn thiếu và bàn giao phòng.</p>
             <form method="POST" action="/receptionist/checkout/{{ booking_id }}">
+                <div class="mb-3">
+                    <label class="bieumau-nhan-sach small">Phương thức thu tiền còn lại:</label>
+                    <select name="payment_method" class="form-select form-select-sm">
+                        <option value="cash" selected>Tiền mặt</option>
+                        <option value="credit_card">Thẻ tín dụng (POS)</option>
+                        <option value="bank_transfer">Chuyển khoản</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-success w-100 py-2 fw-bold"
-                        onclick="return confirm('Xác nhận check-out đặt phòng #{{ booking_id }}?')">
-                    <i class="fas fa-check me-2"></i>Hoàn tất Check-out
+                        onclick="return confirm('Xác nhận hoàn tất check-out đặt phòng #{{ booking_id }}?')">
+                    <i class="fas fa-check me-2"></i>Hoàn tất Check-out (Chuyển phòng sang Dirty)
                 </button>
             </form>
             <div class="mt-2">

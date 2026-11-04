@@ -18,7 +18,7 @@
             <div class="row g-2">
                 <div class="col-6">
                     <div class="text-muted small">Mã đặt phòng</div>
-                    <div class="fw-bold chu-datphong">#{{ booking.booking_id }}</div>
+                    <div class="fw-bold chu-datphong">BK-{{ booking.booking_id }}</div>
                 </div>
                 {% if booking.invoice_number %}
                 <div class="col-6">
@@ -28,12 +28,12 @@
                 {% endif %}
                 <div class="col-6 mt-2">
                     <div class="text-muted small">Tổng tiền</div>
-                    <div class="fw-bold fs-5 chu-datphong">{{ booking.total_price|vnd }}</div>
+                    <div class="fw-bold fs-5 chu-datphong">{{ (booking.total_amount or booking.total_price) | format_vnd }}</div>
                 </div>
                 {% if booking.deposit_paid %}
                 <div class="col-6 mt-2">
                     <div class="text-muted small">Đã thanh toán</div>
-                    <div class="fw-bold text-success">{{ booking.deposit_paid|vnd }}</div>
+                    <div class="fw-bold text-success">{{ booking.deposit_paid | format_vnd }}</div>
                 </div>
                 {% endif %}
                 <div class="col-6 mt-2">

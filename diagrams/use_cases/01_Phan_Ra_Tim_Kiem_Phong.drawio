@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-10-31T16:00:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device">
+  <diagram id="diagram_saigon_condao" name="Tìm Kiếm Phòng Trực Tuyến">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1550" pageHeight="880" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cell_2" value="PHÂN RÃ USE CASE: TÌM KIẾM PHÒNG TRỰC TUYẾN" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#0F172A;fontFamily=Arial;" vertex="1" parent="1">
+  <mxGeometry x="40" y="24" width="800" height="30" as="geometry" />
+</mxCell>
+        <mxCell id="cell_3" value="Hệ thống Quản lý và Đặt phòng Khách sạn Sài Gòn - Côn Đảo (Nghiệp vụ chi tiết)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#475569;fontFamily=Arial;" vertex="1" parent="1">
+  <mxGeometry x="40" y="52" width="800" height="20" as="geometry" />
+</mxCell>
+        <mxCell id="cell_4" value="RANH GIỚI NGHIỆP VỤ: TÌM KIẾM PHÒNG TRỰC TUYẾN" style="shape=rect;fillColor=none;strokeColor=#475569;strokeWidth=1.5;rounded=0;verticalAlign=top;fontStyle=1;fontSize=13;fontFamily=Arial;fontColor=#1E293B;align=center;spacingTop=12;" vertex="1" parent="1">
+  <mxGeometry x="240" y="90" width="1030" height="720" as="geometry" />
+</mxCell>
+        <mxCell id="cell_5" value="KHÁCH HÀNG
+(CUSTOMER)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#F8FAFC;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="70" y="280" width="50" height="90" as="geometry" />
+</mxCell>
+        <mxCell id="cell_6" value="TÌM KIẾM PHÒNG TRỰC TUYẾN" style="ellipse;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#1D4ED8;strokeWidth=2;fontColor=#1E3A8A;fontStyle=1;fontSize=11;fontFamily=Arial;align=center;verticalAlign=middle;spacing=6;" vertex="1" parent="1">
+  <mxGeometry x="560" y="270" width="240" height="85" as="geometry" />
+</mxCell>
+        <mxCell id="cell_7" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.2;rounded=0;" edge="1" parent="1" source="cell_5" target="cell_6">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_8" value="NHẬP TIÊU CHÍ (NGÀY, SỐ LƯỢNG KHÁCH)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+  <mxGeometry x="940" y="120" width="240" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_9" value="&lt;&lt;include&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial;html=1;rounded=0;labelBackgroundColor=#FFFFFF;labelBorderColor=#000000;" edge="1" parent="1" source="cell_6" target="cell_8">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_10" value="QUÉT PHÒNG TRỐNG THỜI GIAN THỰC (REALTIME)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+  <mxGeometry x="940" y="273" width="240" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_11" value="&lt;&lt;include&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial;html=1;rounded=0;labelBackgroundColor=#FFFFFF;labelBorderColor=#000000;" edge="1" parent="1" source="cell_6" target="cell_10">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_12" value="TÍNH BÁO GIÁ HIỆU LỰC CHO TỪNG ĐÊM LƯU TRÚ" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+  <mxGeometry x="940" y="426" width="240" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_13" value="&lt;&lt;include&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial;html=1;rounded=0;labelBackgroundColor=#FFFFFF;labelBorderColor=#000000;" edge="1" parent="1" source="cell_6" target="cell_12">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_14" value="LỌC THEO MỨC GIÁ, SAO &amp; TIỆN ÍCH" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+  <mxGeometry x="300" y="570" width="230" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_15" value="&lt;&lt;extend&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial;html=1;rounded=0;labelBackgroundColor=#FFFFFF;labelBorderColor=#000000;" edge="1" parent="1" source="cell_14" target="cell_6">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_16" value="Điểm mở rộng / Điều kiện:
+Khách hàng chọn áp dụng bộ lọc chi tiết ở sidebar" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.2;fontColor=#713F12;fontSize=10;fontFamily=Arial;fontStyle=2;align=left;spacing=6;" vertex="1" parent="1">
+  <mxGeometry x="300" y="650" width="230" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_17" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=3 3;endArrow=none;strokeColor=#CA8A04;strokeWidth=1;html=1;rounded=0;" edge="1" parent="1" source="cell_16" target="cell_14">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_18" value="SẮP XẾP KẾT QUẢ THEO GIÁ / RATING" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+  <mxGeometry x="513" y="570" width="230" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_19" value="&lt;&lt;extend&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial;html=1;rounded=0;labelBackgroundColor=#FFFFFF;labelBorderColor=#000000;" edge="1" parent="1" source="cell_18" target="cell_6">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_20" value="Điểm mở rộng / Điều kiện:
+Khách chọn tiêu chí sắp xếp tăng/giảm giá hoặc đánh giá" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.2;fontColor=#713F12;fontSize=10;fontFamily=Arial;fontStyle=2;align=left;spacing=6;" vertex="1" parent="1">
+  <mxGeometry x="513" y="650" width="230" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_21" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=3 3;endArrow=none;strokeColor=#CA8A04;strokeWidth=1;html=1;rounded=0;" edge="1" parent="1" source="cell_20" target="cell_18">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_22" value="GỢI Ý ĐẶT PHÒNG GHÉP PHÂN ĐOẠN" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontStyle=1;fontSize=11;fontFamily=Arial;align=center;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+  <mxGeometry x="726" y="570" width="230" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_23" value="&lt;&lt;extend&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=5 5;endArrow=open;endSize=8;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontStyle=1;fontFamily=Arial;html=1;rounded=0;labelBackgroundColor=#FFFFFF;labelBorderColor=#000000;" edge="1" parent="1" source="cell_22" target="cell_6">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+        <mxCell id="cell_24" value="Điểm mở rộng / Điều kiện:
+Hết phòng liền mạch cho toàn bộ số đêm khách yêu cầu" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#FEF9C3;strokeColor=#CA8A04;strokeWidth=1.2;fontColor=#713F12;fontSize=10;fontFamily=Arial;fontStyle=2;align=left;spacing=6;" vertex="1" parent="1">
+  <mxGeometry x="726" y="650" width="230" height="65" as="geometry" />
+</mxCell>
+        <mxCell id="cell_25" style="edgeStyle=orthogonalEdgeStyle;dashed=1;dashPattern=3 3;endArrow=none;strokeColor=#CA8A04;strokeWidth=1;html=1;rounded=0;" edge="1" parent="1" source="cell_24" target="cell_22">
+  <mxGeometry relative="1" as="geometry" />
+</mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

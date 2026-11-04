@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from services.api import api_get, api_post, api_put, api_delete
+from services.api import api_get, api_post, api_put, api_delete, create_booking
 
 booking_bp = Blueprint('booking', __name__)
 
@@ -317,13 +317,14 @@ def payment():
             'extra_services': choices.get('extra_services', []),
             'source_channel': 'direct',
         }
-        result = api_post('/api/bookings', payload)
+        result = create_booking(payload)
         if result.get('success'):
             session.pop('booking_lock', None)
             session.pop('checkout_choices', None)
             session['last_booking'] = {
                 'booking_id': result.get('booking_id'),
-                'total_price': result.get('total_price'),
+                'total_amount': result.get('total_amount') or result.get('total_price'),
+                'total_price': result.get('total_amount') or result.get('total_price'),
                 'deposit_paid': result.get('deposit_paid'),
                 'invoice_number': result.get('invoice_number', ''),
                 'payment_type': choices.get('payment_type'),
@@ -335,7 +336,9 @@ def payment():
                 'booking_id': result.get('booking_id'),
             })
             return redirect(url_for('booking.payment_success'))
-        flash(result.get('message', 'Thanh toán thất bại. Vui lòng thử lại.'), 'error')
+
+        flash_category = 'warning' if result.get('status_code') == 409 else 'error'
+        flash(result.get('message', 'Thanh toán thất bại. Vui lòng thử lại.'), flash_category)
 
     # GET: Hiển thị trang thanh toán Stripe-style
     # Tính giá

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-10-31T18:00:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device">
+  <diagram id="saigon_condao_sequence" name="SD-03 Ghi Nhan Dich Vu Phat Sinh">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="920" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cell_2" value="SD-03: BIỂU ĐỒ TRÌNH TỰ GHI NHẬN TIÊU DÙNG DỊCH VỤ PHÁT SINH (BCE PATTERN)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="40" y="24" width="1200" height="30" as="geometry" />
+</mxCell>
+        <mxCell id="cell_3" value="Ca sử dụng: Nhân viên nhập order minibar/giặt ủi, Tra cứu đơn giá catalog, Tính thuế phí &amp; Cập nhật vào công nợ phòng" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="40" y="52" width="1200" height="20" as="geometry" />
+</mxCell>
+        <mxCell id="cell_4" value="Nhân viên Lễ tân / Phục vụ
+(Staff)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="58" y="90" width="45" height="75" as="geometry" />
+</mxCell>
+        <mxCell id="cell_5" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="80" y="185" as="sourcePoint" />
+    <mxPoint x="80" y="850" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_6" value=":ServiceOrderUI" style="shape=umlBoundary;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="278" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_7" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="300" y="160" as="sourcePoint" />
+    <mxPoint x="300" y="850" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_8" value=":FolioBillingService" style="shape=umlControl;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="548" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_9" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="570" y="160" as="sourcePoint" />
+    <mxPoint x="570" y="850" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_10" value=":Booking_Master" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="818" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_11" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="840" y="160" as="sourcePoint" />
+    <mxPoint x="840" y="850" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_12" value=":Service_Items" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="1058" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_13" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1080" y="160" as="sourcePoint" />
+    <mxPoint x="1080" y="850" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_14" value=":Service_Consumptions" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="1278" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_15" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1300" y="160" as="sourcePoint" />
+    <mxPoint x="1300" y="850" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_16" value=":Invoices" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+  <mxGeometry x="1478" y="90" width="45" height="45" as="geometry" />
+</mxCell>
+        <mxCell id="cell_17" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1500" y="160" as="sourcePoint" />
+    <mxPoint x="1500" y="850" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_18" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="74" y="180" width="12" height="630" as="geometry" />
+</mxCell>
+        <mxCell id="cell_19" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="294" y="180" width="12" height="620" as="geometry" />
+</mxCell>
+        <mxCell id="cell_20" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="564" y="210" width="12" height="560" as="geometry" />
+</mxCell>
+        <mxCell id="cell_21" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="834" y="240" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_22" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="1074" y="440" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_23" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="1294" y="560" width="12" height="40" as="geometry" />
+</mxCell>
+        <mxCell id="cell_24" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+  <mxGeometry x="1494" y="670" width="12" height="50" as="geometry" />
+</mxCell>
+        <mxCell id="cell_25" value="1: Nhập số phòng '302' và bấm Tra cứu hóa đơn phòng" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="86" y="180" as="sourcePoint" />
+    <mxPoint x="294" y="180" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_26" value="2: validateOccupiedRoom(roomNumber='302')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="306" y="210" as="sourcePoint" />
+    <mxPoint x="564" y="210" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_27" value="3: getActiveBookingByRoom('302')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="576" y="240" as="sourcePoint" />
+    <mxPoint x="834" y="240" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_28" value="3.1: return bookingInfo (status='CHECKED_IN')" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="834" y="270" as="sourcePoint" />
+    <mxPoint x="576" y="270" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_29" value="3.2: return roomValid(bookingId, guestName)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="564" y="300" as="sourcePoint" />
+    <mxPoint x="306" y="300" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_30" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1.5;width=45;height=22;fontStyle=1;fontSize=11;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="220" y="320" width="1340" height="480" as="geometry" />
+</mxCell>
+        <mxCell id="cell_31" value="[Khách đang lưu trú hợp lệ tại phòng]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=3;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="228" y="344" width="1320" height="20" as="geometry" />
+</mxCell>
+        <mxCell id="cell_32" style="line;strokeWidth=1.2;dashed=1;labelBackgroundColor=none;strokeColor=#000000;html=1;" vertex="1" parent="1">
+  <mxGeometry x="220" y="380" width="1340" height="10" as="geometry" />
+</mxCell>
+        <mxCell id="cell_33" value="[Phòng trống hoặc khách đã Check-out]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=3;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+  <mxGeometry x="228" y="390" width="1320" height="20" as="geometry" />
+</mxCell>
+        <mxCell id="cell_34" value="Báo lỗi: Phòng hiện không có khách lưu trú!" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="294" y="400" as="sourcePoint" />
+    <mxPoint x="86" y="400" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_35" value="4: Chọn mặt hàng (2 Nước ngọt, 1 Giặt ủi) &amp; Bấm Ghi nợ" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="86" y="350" as="sourcePoint" />
+    <mxPoint x="294" y="350" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_36" value="5: postServiceConsumption(bookingId, itemsList)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="306" y="420" as="sourcePoint" />
+    <mxPoint x="564" y="420" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_37" value="6: getItemPricesAndTax(itemIds)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="576" y="440" as="sourcePoint" />
+    <mxPoint x="1074" y="440" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_38" value="6.1: return itemPrices, vatRate=10%" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1074" y="470" as="sourcePoint" />
+    <mxPoint x="576" y="470" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_39" value="7: calculateTotal(qty * unitPrice * 1.10)" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=5;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="576" y="490" as="sourcePoint" />
+    <mxPoint x="576" y="515" as="targetPoint" />
+    <Array as="points">
+      <mxPoint x="606" y="490" />
+      <mxPoint x="606" y="515" />
+    </Array>
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_40" value="8: createConsumptionRecords(bookingId, items, totalAmount)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="576" y="560" as="sourcePoint" />
+    <mxPoint x="1294" y="560" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_41" value="8.1: return consumptionIds" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1294" y="590" as="sourcePoint" />
+    <mxPoint x="576" y="590" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_42" value="9: accumulateRoomFolio(bookingId, additionalAmount)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=1;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="576" y="670" as="sourcePoint" />
+    <mxPoint x="1494" y="670" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_43" value="9.1: return newFolioBalance" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="1494" y="710" as="sourcePoint" />
+    <mxPoint x="576" y="710" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_44" value="10: return postSuccess(consumptionIds, newBalance)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="564" y="750" as="sourcePoint" />
+    <mxPoint x="306" y="750" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+        <mxCell id="cell_45" value="In Phiếu ký nhận dịch vụ (Voucher) và cập nhật số dư công nợ" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.3;fontSize=10;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;fontStyle=2;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+  <mxGeometry relative="1" as="geometry">
+    <mxPoint x="294" y="780" as="sourcePoint" />
+    <mxPoint x="86" y="780" as="targetPoint" />
+  </mxGeometry>
+</mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

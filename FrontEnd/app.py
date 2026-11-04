@@ -1,4 +1,7 @@
 import os
+import sys
+# Đảm bảo đường dẫn FrontEnd được ưu tiên trong sys.path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import uuid
 from datetime import timedelta
 from flask import Flask, session, render_template
@@ -14,12 +17,21 @@ def create_app():
     app.permanent_session_lifetime = timedelta(days=7)
 
     # ── Jinja2 Filters ──────────────────────────────────────────────────────────
+    @app.template_filter('format_vnd')
+    def format_vnd(value):
+        try:
+            val = int(round(float(value or 0)))
+            return f"{val:,.0f} ₫".replace(",", ".")
+        except (ValueError, TypeError):
+            return "0 ₫"
+
     @app.template_filter('vnd')
     def fmt_vnd(value):
         try:
-            return f"{float(value):,.0f}đ"
+            val = float(value or 0)
+            return f"{val:,.0f} đ"
         except Exception:
-            return "0đ"
+            return "0 đ"
 
     @app.template_filter('date_vn')
     def fmt_date_vn(value):
