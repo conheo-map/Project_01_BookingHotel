@@ -307,6 +307,9 @@ def api_room_detail():
     room_type_id = request.args.get('room_type_id', type=int)
     checkin_date_str = request.args.get('checkin_date', '')
     checkout_date_str = request.args.get('checkout_date', '')
+    number_of_adults = request.args.get('adults', 1, type=int)
+    number_of_children = request.args.get('children', 0, type=int)
+    manual_promo_code = request.args.get('promo_code', '').strip()
 
     if not room_type_id:
         return jsonify({'success': False, 'message': 'Thieu room_type_id'}), 400
@@ -318,7 +321,9 @@ def api_room_detail():
     cursor.execute("""
         SELECT drt.room_type_id, drt.room_type_code, drt.max_adults, drt.max_children,
                drt.base_price, drt.description, drt.amenities, drt.images, drt.main_image,
-               dh.hotel_id, dh.hotel AS hotel_name
+               dh.hotel_id, dh.hotel AS hotel_name,
+               COALESCE(dh.star_rating, 3) AS star_rating,
+               COALESCE(dh.hotel_type, 'City Hotel') AS hotel_type
         FROM Dim_RoomType drt
         JOIN Dim_Hotel dh ON dh.hotel_id = drt.hotel_id
         WHERE drt.room_type_id = ?
@@ -335,6 +340,79 @@ def api_room_detail():
     except:
         rt_data['images'] = []
 
+    # Check member tier for Gold/Silver discounts
+    user_id = None
+    if getattr(g, 'api_account_type', None) == 'customer' and getattr(g, 'api_user_id', None):
+        user_id = g.api_user_id
+
+    is_gold = False
+    membership_tier = 'Newbie'
+    if user_id:
+        cursor.execute("SELECT membership_tier FROM Customer_Accounts WHERE account_id = ?", (user_id,))
+        acc = cursor.fetchone()
+        if acc and acc['membership_tier']:
+            membership_tier = acc['membership_tier']
+        if membership_tier == 'Gold':
+            is_gold = True
+
+    current_promo = None
+    if manual_promo_code:
+        cursor.execute("SELECT discount_percent, discount_type, code FROM Promotions WHERE code = ? AND active = 1", (manual_promo_code,))
+        current_promo = cursor.fetchone()
+
+    # Calculate prices across nights and occupancy surcharge
+    occupancy_eval = evaluate_occupancy_policy(cursor, room_type_id, number_of_adults, number_of_children)
+    surcharge_per_night = occupancy_eval.get('surcharge_per_night', 0.0)
+
+    effective_price_max = room_type_row['base_price']
+    promo_price_min = room_type_row['base_price']
+    promo_price_max = room_type_row['base_price']
+
+    continuous_rooms = []
+    fragmented_rooms = []
+    if checkin_date_str and checkout_date_str:
+        try:
+            checkin_date_obj = datetime.strptime(checkin_date_str, '%Y-%m-%d').date()
+            checkout_date_obj = datetime.strptime(checkout_date_str, '%Y-%m-%d').date()
+            continuous_rooms, fragmented_rooms = get_room_availability(
+                cursor, room_type_id, checkin_date_obj, checkout_date_obj
+            )
+
+            list_of_nights = []
+            current_night = checkin_date_obj
+            while current_night < checkout_date_obj:
+                list_of_nights.append(current_night.strftime('%Y-%m-%d'))
+                current_night += timedelta(days=1)
+
+            if list_of_nights:
+                effective_prices = [get_effective_price_for_date(cursor, room_type_id, room_type_row['room_type_code'], d) + surcharge_per_night for d in list_of_nights]
+                if is_gold:
+                    effective_prices = [ep * 0.95 for ep in effective_prices]
+
+                if current_promo:
+                    promo_prices = []
+                    for ep in effective_prices:
+                        if current_promo['discount_type'] == 'fixed':
+                            promo_prices.append(max(0.0, ep - current_promo['discount_percent']))
+                        else:
+                            promo_prices.append(round(ep * (1 - current_promo['discount_percent'] / 100), 2))
+                else:
+                    promo_prices = [get_promo_price_for_date(cursor, ep, room_type_row['room_type_code'], d, membership_tier, room_type_row['hotel_id'])[0] for ep, d in zip(effective_prices, list_of_nights)]
+
+                effective_price_max = max(effective_prices) if effective_prices else room_type_row['base_price']
+                promo_price_min = min(promo_prices) if promo_prices else effective_price_max
+                promo_price_max = max(promo_prices) if promo_prices else effective_price_max
+        except Exception as e:
+            pass
+
+    rt_data['effective_price_max'] = round(effective_price_max, 2)
+    rt_data['promo_price_min'] = round(promo_price_min, 2)
+    rt_data['promo_price_max'] = round(promo_price_max, 2)
+    rt_data['effective_price'] = round(promo_price_min, 2)
+    rt_data['surcharge_per_night'] = surcharge_per_night
+    rt_data['adults'] = number_of_adults
+    rt_data['children'] = number_of_children
+
     cursor.execute("""
         SELECT rv.review_id, rv.rating, rv.comment, rv.review_date,
                COALESCE(ca.customer_name, 'Khach hang') AS reviewer_name
@@ -349,15 +427,6 @@ def api_room_detail():
     cursor.execute("SELECT AVG(rating) as avg_rating, COUNT(*) as total FROM Reviews WHERE hotel_id = ?",
                    (room_type_row['hotel_id'],))
     rating_summary = cursor.fetchone()
-
-    continuous_rooms = []
-    fragmented_rooms = []
-    if checkin_date_str and checkout_date_str:
-        checkin_date_obj = datetime.strptime(checkin_date_str, '%Y-%m-%d').date()
-        checkout_date_obj = datetime.strptime(checkout_date_str, '%Y-%m-%d').date()
-        continuous_rooms, fragmented_rooms = get_room_availability(
-            cursor, room_type_id, checkin_date_obj, checkout_date_obj
-        )
 
     conn.close()
     return jsonify({
@@ -395,10 +464,10 @@ def api_lock_room(physical_room_id=None):
         return jsonify({'success': False, 'message': 'physical_room_id không hợp lệ'}), 400
 
     try:
-        res = lock_room_for_nights(pid, list_of_night_dates, session_id, ttl_minutes=10, raise_on_error=True)
+        res = lock_room_for_nights(pid, list_of_night_dates, session_id, ttl_minutes=15, raise_on_error=True)
         return jsonify(res), 200
     except RoomAlreadyLockedError as e:
-        return jsonify({'success': False, 'message': 'Phòng đang được người khác giữ chỗ trong 10 phút'}), 409
+        return jsonify({'success': False, 'message': 'Phòng đang được người khác giữ chỗ trong 15 phút'}), 409
     except RoomNotAvailableError as e:
         return jsonify({'success': False, 'message': str(e)}), 400
     except Exception as e:

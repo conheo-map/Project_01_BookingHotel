@@ -23,15 +23,15 @@ def register_customer(email: str, password: str, full_name: str, phone: Optional
     try:
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO Accounts (email, password_hash, account_type, full_name, phone, is_active, created_at)
-            VALUES (?, ?, 'customer', ?, ?, 1, datetime('now'))
-        """, (email_clean, pwd_hash, name_clean, phone))
+            INSERT INTO Accounts (email, password_hash, account_type, is_active, created_at)
+            VALUES (?, ?, 'customer', 1, datetime('now'))
+        """, (email_clean, pwd_hash))
         new_account_id = cursor.lastrowid
 
         cursor.execute("""
-            INSERT INTO Customer_Profiles (account_id, loyalty_points, tier)
-            VALUES (?, 0, 'Newbie')
-        """, (new_account_id,))
+            INSERT INTO Customer_Profiles (account_id, full_name, phone, loyalty_points, tier)
+            VALUES (?, ?, ?, 0, 'Newbie')
+        """, (new_account_id, name_clean, phone))
 
         conn.commit()
         return True, {'user_id': new_account_id, 'email': email_clean, 'full_name': name_clean}, "Đăng ký tài khoản thành công."
@@ -61,7 +61,7 @@ def authenticate_user(login_input: str, password: str) -> Tuple[bool, Dict[str, 
 
         # 1. Thử tài khoản Khách hàng
         cursor.execute("""
-            SELECT a.account_id, a.email, a.password_hash, a.full_name, a.is_active,
+            SELECT a.account_id, a.email, a.password_hash, cp.full_name, a.is_active,
                    cp.loyalty_points, cp.tier
             FROM Accounts a
             JOIN Customer_Profiles cp ON a.account_id = cp.account_id
@@ -87,7 +87,7 @@ def authenticate_user(login_input: str, password: str) -> Tuple[bool, Dict[str, 
 
         # 2. Thử tài khoản Nhân viên (Staff)
         cursor.execute("""
-            SELECT a.account_id, a.email, a.password_hash, a.full_name, a.is_active,
+            SELECT a.account_id, a.email, a.password_hash, sp.full_name, a.is_active,
                    sp.username, r.role_name
             FROM Accounts a
             JOIN Staff_Profiles sp ON a.account_id = sp.account_id
@@ -137,9 +137,8 @@ def update_customer_profile(account_id: int, full_name: str, old_password: str =
             if not check_password_hash(acc['password_hash'], old_password):
                 return False, "Mật khẩu hiện tại không chính xác."
             new_hash = generate_password_hash(new_password)
-            cursor.execute("UPDATE Accounts SET full_name = ?, password_hash = ? WHERE account_id = ?", (name_clean, new_hash, account_id))
-        else:
-            cursor.execute("UPDATE Accounts SET full_name = ? WHERE account_id = ?", (name_clean, account_id))
+            cursor.execute("UPDATE Accounts SET password_hash = ? WHERE account_id = ?", (new_hash, account_id))
+        cursor.execute("UPDATE Customer_Profiles SET full_name = ? WHERE account_id = ?", (name_clean, account_id))
 
         conn.commit()
         return True, "Cập nhật hồ sơ thành công."

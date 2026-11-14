@@ -1,115 +1,458 @@
-/* Header */
-.sodophong-tieude { }
-.sodophong-nut-khachtructiep { background: #16a34a; color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; padding: 8px 18px; }
-.sodophong-nut-khachtructiep:hover { background: #15803d; color: #fff; }
+/* ═══════════════════════════════════════════════════════════════════════════
+   SƠ ĐỒ PHÒNG MATRIX (ROOM PLAN) - RESORT SÀI GÒN - CÔN ĐẢO 5 SAO
+   Bảng điều khiển trực quan thời gian thực: Chuẩn màu quốc tế, sang trọng, tinh tế
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Filter bar */
-.sodophong-loc-thanh { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; }
-.sodophong-loc-cuc { border: 1.5px solid #d1d5db; background: #fff; color: #4b5563; border-radius: 20px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all .2s; }
-.sodophong-loc-cuc:hover { border-color: var(--mau-xanh-chinh); color: var(--mau-xanh-chinh); }
-.sodophong-loc-cuc.active { background: var(--mau-xanh-chinh); color: #fff; border-color: var(--mau-xanh-chinh); }
+:root {
+  --rp-ocean: #072A44;
+  --rp-ocean-deep: #031826;
+  --rp-gold: #B89758;
+  --rp-gold-radiant: #DFB76C;
+  --rp-clean: #10B981;
+  --rp-occupied: #072A44;
+  --rp-dirty: #F59E0B;
+  --rp-maintenance: #64748B;
+  --rp-confirmed: #0284C7;
+  --rp-card-bg: #FFFFFF;
+  --rp-border: rgba(7, 42, 68, 0.08);
+}
 
-/* Legend */
-.sodophong-chugiai { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: #64748b; }
-.sodophong-chugiai-muc { display: flex; align-items: center; gap: 5px; }
-.sodophong-chugiai-cham { width: 12px; height: 12px; border-radius: 3px; }
-.sodophong-chugiai-cham-xanh { background: #16a34a; }
-.sodophong-chugiai-cham-cam { background: var(--mau-vang-chinh); }
-.sodophong-chugiai-cham-do { background: #dc2626; }
-.sodophong-chugiai-cham-xam { background: #6b7280; }
-.sodophong-chugiai-cham-xanhbien { background: var(--mau-phu); }
+/* Header & Action Bar */
+.sodophong-tieude h4 {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  color: var(--rp-ocean);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
 
-/* Stats */
-.sodophong-thongke-hang { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.sodophong-thongke-the { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: center; border-left: 4px solid; }
-.sodophong-thongke-the-xanh { border-left-color: #16a34a; }
-.sodophong-thongke-the-vang { border-left-color: var(--mau-vang-chinh); }
-.sodophong-thongke-the-do { border-left-color: #dc2626; }
-.sodophong-thongke-the-xam { border-left-color: #6b7280; }
-.sodophong-thongke-the-giatri { font-size: 28px; font-weight: 800; color: var(--mau-xanh-dam); }
-.sodophong-thongke-the-nhan { font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: .5px; }
+.sodophong-nut-khachtructiep {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 20px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: all 0.25s ease;
+}
+.sodophong-nut-khachtructiep:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+  background: linear-gradient(135deg, #34D399 0%, #059669 100%);
+}
 
-/* Type section */
-.sodophong-loai-phan { }
-.sodophong-loai-tieude { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; background: var(--mau-xanh-dam); color: #fff; padding: 10px 16px; border-radius: 10px 10px 0 0; }
-.sodophong-loai-tieude-ten { font-weight: 800; font-size: 15px; }
-.sodophong-loai-tieude-khachsan { font-size: 12px; color: #94a3b8; margin-left: 8px; }
-.sodophong-loai-tieude-trai { display: flex; align-items: center; gap: 16px; }
-.sodophong-loai-tieude-thongtin { font-size: 12px; color: #cbd5e1; }
-.sodophong-loai-tieude-gia { font-size: 13px; font-weight: 700; color: var(--mau-vang-chinh); }
-.sodophong-loai-tieude-cophong { font-size: 12px; background: rgba(255,255,255,.15); padding: 3px 10px; border-radius: 12px; font-weight: 600; }
+/* Filter Bar: Clean Luxury Floating Pill Bar */
+.sodophong-loc-thanh {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1px solid rgba(184, 151, 88, 0.25);
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: 0 8px 24px rgba(7, 42, 68, 0.04);
+}
 
-/* Room grid */
+.sodophong-loc-cuc {
+  border: 1px solid rgba(7, 42, 68, 0.12);
+  background: #F8FAFC;
+  color: #475569;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+}
+.sodophong-loc-cuc:hover {
+  border-color: var(--rp-ocean);
+  color: var(--rp-ocean);
+  background: #FFFFFF;
+  transform: translateY(-1px);
+}
+.sodophong-loc-cuc.active {
+  background: var(--rp-ocean);
+  color: #FFFFFF;
+  border-color: var(--rp-ocean);
+  box-shadow: 0 4px 12px rgba(7, 42, 68, 0.25);
+}
+
+/* Legend: Visual Color Strip */
+.sodophong-chugiai {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  padding: 6px 4px;
+}
+.sodophong-chugiai-muc {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.sodophong-chugiai-cham {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.sodophong-chugiai-cham-xanh { background: var(--rp-clean); box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+.sodophong-chugiai-cham-cam { background: var(--rp-occupied); border: 2px solid var(--rp-gold-radiant); }
+.sodophong-chugiai-cham-do { background: var(--rp-dirty); box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
+.sodophong-chugiai-cham-xam { background: var(--rp-maintenance); }
+.sodophong-chugiai-cham-xanhbien { background: var(--rp-confirmed); box-shadow: 0 0 8px rgba(2, 132, 199, 0.4); }
+
+/* KPI Stats Strip: Modern Resort Elevation */
+.sodophong-thongke-hang {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.sodophong-thongke-the {
+  background: #FFFFFF;
+  border: 1px solid rgba(7, 42, 68, 0.08);
+  border-radius: 14px;
+  padding: 18px 20px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(7, 42, 68, 0.03);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sodophong-thongke-the::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+}
+.sodophong-thongke-the:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(7, 42, 68, 0.08);
+}
+.sodophong-thongke-the-xanh::before { background: linear-gradient(90deg, #10B981, #059669); }
+.sodophong-thongke-the-vang::before { background: linear-gradient(90deg, #DFB76C, #B89758); }
+.sodophong-thongke-the-do::before { background: linear-gradient(90deg, #F59E0B, #D97706); }
+.sodophong-thongke-the-xam::before { background: linear-gradient(90deg, #64748B, #475569); }
+
+.sodophong-thongke-the-giatri {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--rp-ocean);
+  line-height: 1;
+  margin-bottom: 6px;
+  font-variant-numeric: lining-nums proportional-nums;
+}
+.sodophong-thongke-the-nhan {
+  font-size: 11px;
+  color: #64748B;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+/* Category Sections (Loại phòng) */
+.sodophong-loai-phan {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(7, 42, 68, 0.05);
+}
+
+.sodophong-loai-tieude {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: linear-gradient(135deg, #072A44 0%, #031826 100%);
+  color: #FFFFFF;
+  padding: 14px 20px;
+  border-bottom: 2px solid rgba(184, 151, 88, 0.35);
+}
+
+.sodophong-loai-tieude-ten {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.3px;
+  color: #FFFFFF;
+}
+.sodophong-loai-tieude-khachsan {
+  font-size: 12px;
+  color: #C5A880;
+  margin-left: 8px;
+  font-weight: 500;
+}
+.sodophong-loai-tieude-trai {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.sodophong-loai-tieude-thongtin {
+  font-size: 13px;
+  color: #E2E8F0;
+  font-weight: 500;
+}
+.sodophong-loai-tieude-gia {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F3D082;
+  font-variant-numeric: lining-nums proportional-nums;
+}
+.sodophong-loai-tieude-cophong {
+  font-size: 12px;
+  background: rgba(184, 151, 88, 0.25);
+  color: #F8F4EE;
+  border: 1px solid rgba(184, 151, 88, 0.4);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* Room Grid Container */
 .sodophong-phong-luoi {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 6px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  gap: 8px;
+  background: #F8FAFC;
+  border: 1px solid rgba(7, 42, 68, 0.08);
   border-top: none;
-  border-radius: 0 0 10px 10px;
-  padding: 10px;
+  padding: 16px;
 }
 
-/* Room card */
+/* Individual Room Card: Interactive 3D Tactile Design */
 .sodophong-phong-the {
-  border-radius: 8px;
-  padding: 8px 10px;
-  min-height: 80px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-height: 86px;
   position: relative;
-  cursor: default;
-  transition: transform .15s, box-shadow .15s;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease;
   display: flex;
   flex-direction: column;
+  border: 1.5px solid transparent;
 }
-.sodophong-phong-the:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
-.sodophong-phong-the-ten { font-weight: 800; font-size: 12px; color: #fff; }
-.sodophong-phong-the-loai { font-size: 10px; color: rgba(255,255,255,.7); margin-bottom: 4px; }
-.sodophong-phong-the-chitiet { font-size: 10px; color: rgba(255,255,255,.85); margin-top: auto; }
-.sodophong-phong-the-chitiet-gia { font-weight: 700; font-size: 11px; }
-.sodophong-phong-the-ngay { font-size: 10px; }
-.sodophong-phong-the-khach { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sodophong-phong-the-hanhdong { position: absolute; top: 4px; right: 4px; }
-.sodophong-hanhdong-nut { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; text-decoration: none; }
-.sodophong-hanhdong-nut-traphong { background: rgba(0,0,0,.3); }
-.sodophong-hanhdong-nut-traphong:hover { background: rgba(0,0,0,.6); color: #fff; }
-.sodophong-hanhdong-nut-khachtructiep { background: rgba(255,255,255,.3); cursor: pointer; }
-.sodophong-hanhdong-nut-khachtructiep:hover { background: rgba(255,255,255,.5); }
-
-/* Status colors */
-.sodophong-phong-the--available { background: #16a34a; cursor: pointer; }
-.sodophong-phong-the--occupied { background: var(--mau-vang-chinh); }
-.sodophong-phong-the--dirty { background: #dc2626; }
-.sodophong-phong-the--maintenance { background: #6b7280; }
-.sodophong-phong-the--confirmed { background: var(--mau-phu); color: var(--mau-xanh-dam) !important; }
-
-/* Adjust text color for light backgrounds if needed */
-.sodophong-phong-the--confirmed .sodophong-phong-the-ten,
-.sodophong-phong-the--confirmed .sodophong-phong-the-loai,
-.sodophong-phong-the--confirmed .sodophong-phong-the-chitiet {
-  color: var(--mau-xanh-dam);
+.sodophong-phong-the:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 24px rgba(7, 42, 68, 0.18) !important;
+  z-index: 5;
 }
 
-/* Empty */
-.sodophong-trong { text-align: center; padding: 60px; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; }
+.sodophong-phong-the-ten {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+.sodophong-phong-the-loai {
+  font-size: 10.5px;
+  margin-bottom: 4px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+.sodophong-phong-the-chitiet {
+  font-size: 10.5px;
+  margin-top: auto;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.sodophong-phong-the-chitiet-gia {
+  font-weight: 700;
+  font-size: 11px;
+  font-variant-numeric: lining-nums proportional-nums;
+}
+.sodophong-phong-the-khach {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
 
-/* Modal */
-.sodophong-bang-nen { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 1040; }
-.sodophong-bang { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 14px; padding: 24px; width: 480px; max-width: 95vw; z-index: 1050; box-shadow: 0 20px 60px rgba(0,0,0,.25); max-height: 90vh; overflow-y: auto; }
-.sodophong-bang-tieude { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; }
-.sodophong-bang-phong-huyhieu { background: var(--mau-xanh-dam); color: #fff; padding: 10px 14px; border-radius: 10px; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-.sodophong-loc-nhan { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 4px; display: block; }
+/* STATUS COLORS: Luxury Hotel Standards */
+/* 1. Trống & Sạch (Available & Clean) */
+.sodophong-phong-the--available {
+  background: #FFFFFF;
+  border-color: #10B981;
+  color: #065F46;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12);
+}
+.sodophong-phong-the--available .sodophong-phong-the-ten { color: #047857; }
+.sodophong-phong-the--available .sodophong-phong-the-loai { color: #059669; }
+.sodophong-phong-the--available .sodophong-phong-the-chitiet { color: #047857; }
+.sodophong-phong-the--available:hover {
+  background: #ECFDF5;
+  border-color: #059669;
+}
 
+/* 2. Đang có khách (Occupied / In-House) */
+.sodophong-phong-the--occupied {
+  background: linear-gradient(145deg, #072A44 0%, #031826 100%);
+  border-color: #B89758;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(7, 42, 68, 0.22);
+}
+.sodophong-phong-the--occupied .sodophong-phong-the-ten { color: #FFFFFF; }
+.sodophong-phong-the--occupied .sodophong-phong-the-loai { color: #C5A880; }
+.sodophong-phong-the--occupied .sodophong-phong-the-khach { color: #F3D082; }
+.sodophong-phong-the--occupied .sodophong-phong-the-chitiet { color: #E2E8F0; }
+
+/* 3. Bẩn / Cần dọn (Dirty / Housekeeping) */
+.sodophong-phong-the--dirty {
+  background: #FFFBEB;
+  border-color: #F59E0B;
+  color: #92400E;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.12);
+}
+.sodophong-phong-the--dirty .sodophong-phong-the-ten { color: #B45309; }
+.sodophong-phong-the--dirty .sodophong-phong-the-loai { color: #D97706; }
+.sodophong-phong-the--dirty .sodophong-phong-the-chitiet { color: #B45309; }
+
+/* 4. Bảo trì (Maintenance) */
+.sodophong-phong-the--maintenance {
+  background: #F1F5F9;
+  border-color: #94A3B8;
+  color: #475569;
+}
+.sodophong-phong-the--maintenance .sodophong-phong-the-ten { color: #334155; }
+.sodophong-phong-the--maintenance .sodophong-phong-the-loai { color: #64748B; }
+
+/* 5. Đã xác nhận / Incoming (Confirmed) */
+.sodophong-phong-the--confirmed {
+  background: #F0F9FF;
+  border-color: #0284C7;
+  color: #0369A1;
+}
+.sodophong-phong-the--confirmed .sodophong-phong-the-ten { color: #0284C7; }
+.sodophong-phong-the--confirmed .sodophong-phong-the-loai { color: #0EA5E9; }
+
+/* Action Button Corner in Room Card */
+.sodophong-phong-the-hanhdong {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+.sodophong-hanhdong-nut {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.sodophong-hanhdong-nut-traphong {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+.sodophong-hanhdong-nut-traphong:hover {
+  background: #EF4444;
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+.sodophong-hanhdong-nut-khachtructiep {
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+  cursor: pointer;
+}
+.sodophong-hanhdong-nut-khachtructiep:hover {
+  background: #10B981;
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+/* Modal Luxury Styling */
+.sodophong-bang-nen {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 42, 68, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1040;
+}
+.sodophong-bang {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #FFFFFF;
+  border-radius: 18px;
+  padding: 28px;
+  width: 520px;
+  max-width: 95vw;
+  z-index: 1050;
+  box-shadow: 0 25px 70px rgba(7, 42, 68, 0.35);
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid rgba(184, 151, 88, 0.3);
+}
+.sodophong-bang-tieude {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(7, 42, 68, 0.08);
+}
+.sodophong-bang-phong-huyhieu {
+  background: linear-gradient(135deg, #072A44 0%, #031826 100%);
+  color: #FFFFFF;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(184, 151, 88, 0.35);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+  .sodophong-phong-luoi { grid-template-columns: repeat(6, 1fr); }
+}
+@media (max-width: 992px) {
+  .sodophong-phong-luoi { grid-template-columns: repeat(5, 1fr); }
+  .sodophong-thongke-hang { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
 @media (max-width: 768px) {
-  .sodophong-phong-luoi { grid-template-columns: repeat(4, 1fr) !important; padding: 6px; gap: 4px; }
-  .sodophong-thongke-hang { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .sodophong-thongke-the { padding: 10px; }
-  .sodophong-thongke-the-giatri { font-size: 22px; }
-  .sodophong-loai-tieude { padding: 8px 12px; }
+  .sodophong-phong-luoi { grid-template-columns: repeat(4, 1fr) !important; padding: 10px; gap: 6px; }
+  .sodophong-thongke-the-giatri { font-size: 26px; }
+  .sodophong-loai-tieude { padding: 10px 14px; }
 }
-
 @media (max-width: 480px) {
   .sodophong-phong-luoi { grid-template-columns: repeat(3, 1fr) !important; }
-  .sodophong-phong-the { min-height: 70px; padding: 6px 8px; }
-  .sodophong-phong-the-ten { font-size: 11px; }
+  .sodophong-phong-the { min-height: 75px; padding: 8px; }
+  .sodophong-phong-the-ten { font-size: 12px; }
+}
+
+.btn-heritage-gold {
+  background: linear-gradient(135deg, #DFB76C 0%, #C59B47 100%) !important;
+  color: #072A44 !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(184, 151, 88, 0.3) !important;
+}
+.btn-heritage-gold:hover {
+  background: linear-gradient(135deg, #E6C47E 0%, #D4AA55 100%) !important;
+  color: #072A44 !important;
+}
+.wing-filter-btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.wing-filter-btn:hover {
+  transform: translateY(-1px);
 }

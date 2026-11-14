@@ -1,54 +1,143 @@
 {% extends "base.html" %}
-{% block title %}Xác nhận Giữ phòng - Hotel Booking{% endblock %}
+{% block title %}Xác nhận Khóa Giữ Phòng - Sài Gòn Côn Đảo Resort{% endblock %}
+
+{% block extra_css %}
+<!-- Auto redirect to /booking/checkout in 2 seconds according to SD-01 BCE flow -->
+<meta http-equiv="refresh" content="2;url=/booking/checkout">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<style>
+.vip-cert-wrapper {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+}
+.vip-cert-card {
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #C5A880;
+    box-shadow: 0 10px 40px rgba(7, 42, 68, 0.12);
+    max-width: 580px;
+    width: 100%;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.vip-cert-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #072A44 0%, #C5A880 50%, #072A44 100%);
+}
+.cert-seal {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(197, 168, 128, 0.15);
+    border: 2px solid #C5A880;
+    color: #072A44;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+}
+.cert-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #072A44;
+    margin-bottom: 0.5rem;
+}
+.cert-subtitle {
+    font-size: 0.9rem;
+    color: #64748B;
+    margin-bottom: 1.75rem;
+}
+.cert-info-box {
+    background: #FAF8F5;
+    border: 1px dashed rgba(197, 168, 128, 0.5);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 1.75rem;
+    text-align: left;
+}
+.cert-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.88rem;
+}
+.cert-label {
+    color: #64748B;
+}
+.cert-val {
+    font-weight: 700;
+    color: #072A44;
+}
+.btn-gold-action {
+    background: linear-gradient(135deg, #072A44 0%, #0F3B5F 100%);
+    color: #FFFFFF !important;
+    border: 1px solid #C5A880;
+    border-radius: 6px;
+    font-weight: 700;
+    padding: 0.85rem 1.75rem;
+    text-decoration: none;
+    display: block;
+    transition: all 0.25s ease;
+}
+.btn-gold-action:hover {
+    background: #C5A880;
+    color: #FFFFFF !important;
+}
+</style>
+{% endblock %}
+
 {% block content %}
-
-<div class="xacthuc-baoboc">
-    <div class="xacthuc-chon text-center">
-        <div class="mb-4">
-            <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle shadow-sm">
-                <i class="fas fa-lock fa-2x"></i>
-            </div>
+<div class="vip-cert-wrapper">
+    <div class="vip-cert-card">
+        <div class="cert-seal">
+            <i class="fas fa-shield-check"></i>
         </div>
+        <h2 class="cert-title">Đã Khóa Giữ Phòng Thành Công!</h2>
+        <p class="cert-subtitle">Phòng của Quý khách đã được bảo lưu độc quyền trong <strong>15 phút</strong> trên hệ thống PMS.</p>
 
-        <h2 class="fw-bold mb-1">Chúng tôi đã giữ phòng cho bạn!</h2>
-        <p class="text-muted mb-4 small">Phòng bạn chọn đã được khóa tạm thời riêng cho kỳ nghỉ của bạn.</p>
-
-        <div class="row g-3 mb-4 text-start">
-            <div class="col-6">
-                <div class="the-chinh p-3 bg-light border-0">
-                    <div class="kichthuoc-nho-hon text-muted uppercase fw-bold mb-1">Loại phòng</div>
-                    <div class="fw-bold text-dark">{{ room_type.room_type_code }}</div>
-                    <div class="kichthuoc-nho-hon text-muted italic">Mã phòng: {{ physical_room_id }}</div>
-                </div>
+        <div class="cert-info-box">
+            <div class="cert-row">
+                <span class="cert-label">Hạng phòng:</span>
+                <span class="cert-val">{{ room_name or room_type.room_type_code or 'Villa Deluxe Hướng Vườn' }}</span>
             </div>
-            <div class="col-6">
-                <div class="the-chinh p-3 bg-light border-0">
-                    <div class="kichthuoc-nho-hon text-muted uppercase fw-bold mb-1">Thời gian lưu trú</div>
-                    <div class="fw-bold text-dark">{{ checkin_date }}</div>
-                    <div class="kichthuoc-nho-hon text-muted italic">đến {{ checkout_date }}</div>
-                </div>
+            <div class="cert-row">
+                <span class="cert-label">Thời gian lưu trú:</span>
+                <span class="cert-val">{{ checkin_date }} ➔ {{ checkout_date }}</span>
             </div>
-        </div>
-
-        <div class="the-chinh p-3 border-danger border-opacity-25 bg-danger bg-opacity-10 mb-5">
-            <h6 class="fw-bold text-danger mb-1"><i class="fas fa-hourglass-half me-1"></i> Thời hạn giữ phòng</h6>
-            <div class="fs-5 fw-bold text-dark">{{ locked_until }}</div>
-            <p class="kichthuoc-nho-hon text-muted mb-0">Sau thời gian này, phòng sẽ được mở lại cho khách khác.</p>
+            <div class="cert-row">
+                <span class="cert-label">Thời hạn khóa giữ chỗ:</span>
+                <span class="cert-val text-danger"><i class="fas fa-clock me-1"></i> 15:00 phút</span>
+            </div>
         </div>
 
         <div class="d-grid gap-2 mb-3">
-            <a href="/booking/checkout" class="btn nut-xanh-datphong py-3 fw-bold rounded-4 shadow-sm">
-                TIẾP TỤC ĐẾN THANH TOÁN
+            <a href="/booking/checkout" class="btn-gold-action">
+                <i class="fas fa-arrow-right me-2"></i> TIẾP TỤC ĐẾN BƯỚC THANH TOÁN NGAY
             </a>
             <form action="/booking/release" method="POST" class="m-0">
-                <button type="submit" class="btn btn-outline-secondary w-100 py-2 border-0 small">Hủy giữ phòng và quay lại</button>
+                <button type="submit" class="btn btn-link text-muted text-decoration-none small">
+                    Hủy giữ phòng và quay lại
+                </button>
             </form>
         </div>
 
-        <div class="mt-4 pt-3 border-top">
-            <p class="kichthuoc-nho-hon text-muted mb-0 italic">Lưu ý: Bạn vẫn có thể thêm dịch vụ gia tăng ở bước tiếp theo.</p>
+        <div class="mt-3 pt-3 border-top text-muted small" style="font-size: 0.78rem;">
+            <i class="fas fa-spinner fa-spin me-1 text-gold"></i> Đang tự động chuyển tiếp đến trang thanh toán trong giây lát...
         </div>
     </div>
 </div>
-
 {% endblock %}

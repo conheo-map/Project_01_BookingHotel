@@ -80,7 +80,7 @@ def check_room_availability_internal(
             """, (physical_room_id, night, now_str))
 
         if cursor.fetchone():
-            return False, 'LOCKED', f"Đêm {night} hiện đang được giữ chỗ tạm thời trong 10 phút bởi khách khác."
+            return False, 'LOCKED', f"Đêm {night} hiện đang được giữ chỗ tạm thời trong 15 phút bởi khách khác."
 
     return True, None, None
 
@@ -124,12 +124,12 @@ def lock_room_for_nights(
     physical_room_id: int,
     nights_list: List[str],
     session_id: str,
-    ttl_minutes: int = 10,
+    ttl_minutes: int = 15,
     booking_temp_ref: Optional[str] = None,
     raise_on_error: bool = True
 ) -> Dict[str, Any]:
     """
-    Khóa giữ chỗ phòng vật lý tạm thời trong ttl_minutes (mặc định 10 phút).
+    Khóa giữ chỗ phòng vật lý tạm thời trong ttl_minutes (mặc định 15 phút theo chuẩn UC-01/SD-01).
     - Quét và dọn các khóa quá hạn
     - Kiểm tra tính khả dụng: Ném RoomAlreadyLockedError hoặc RoomNotAvailableError nếu raise_on_error=True
     - Ghi nhận khóa vào bảng Room_Lock
@@ -138,6 +138,10 @@ def lock_room_for_nights(
         if raise_on_error:
             raise ValueError("Danh sách ngày cần khóa không được để trống.")
         return {'success': False, 'message': 'Danh sách ngày cần khóa không được để trống.'}
+
+    import uuid
+    if not booking_temp_ref:
+        booking_temp_ref = f"HOLD-SCD-{uuid.uuid4().hex[:8].upper()}"
 
     conn = get_db_connection()
     try:
@@ -182,7 +186,8 @@ def lock_room_for_nights(
             'session_id': session_id,
             'physical_room_id': physical_room_id,
             'locked_until': locked_until_str,
-            'locked_nights': nights_list
+            'locked_nights': nights_list,
+            'booking_temp_ref': booking_temp_ref
         }
     except (RoomAlreadyLockedError, RoomNotAvailableError):
         conn.rollback()
@@ -200,7 +205,7 @@ def lock_physical_room(
     physical_room_id: int,
     night_dates: List[str],
     session_id: str,
-    ttl_minutes: int = 10,
+    ttl_minutes: int = 15,
     booking_temp_ref: Optional[str] = None
 ) -> Dict[str, Any]:
     """Tương thích ngược: lock_physical_room trả về dict (không raise exception)."""

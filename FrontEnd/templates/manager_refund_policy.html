@@ -1,120 +1,355 @@
 {% extends "base.html" %}
-{% block title %}Chính sách hoàn tiền - Hotel Booking{% endblock %}
+{% block title %}Chính Sách Hoàn Tiền & Phạt Hủy - Quản Trị Resort 5 Sao{% endblock %}
 {% block content %}
 
+<!-- Header & Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Chính sách hoàn tiền</h2>
-        <p class="text-muted small mb-0">Thiết lập tỷ lệ hoàn tiền theo thời gian hủy phòng.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-undo"></i> Quản Trị Chính Sách Hủy & Hoàn Tiền Cọc Resort 5 Sao
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Chính Sách Hoàn Tiền & Phạt Hủy
+        </h2>
+        <p class="text-muted small mb-0">Thiết lập các bậc thời gian hủy đặt phòng, tỷ lệ hoàn trả tiền cọc theo tiêu chuẩn minh bạch và tự động hóa quy trình quyết toán.</p>
     </div>
-    <div class="col-auto">
-        <a href="/manager" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-arrow-left me-1"></i>Dashboard
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-md-end">
+        <button class="btn btn-sm d-inline-flex align-items-center gap-2 px-3.5 py-2 fw-bold text-white shadow-sm" type="button"
+                data-bs-toggle="collapse" data-bs-target="#createPolicyCollapse" aria-expanded="false"
+                style="background: linear-gradient(135deg, #072A44 0%, #0F4C81 100%); border-radius: 8px; border: none;">
+            <i class="fas fa-plus text-warning"></i> Thêm Bậc Chính Sách
+        </button>
+        <a href="/manager" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #475569; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-arrow-left"></i> Dashboard
         </a>
     </div>
 </div>
 
-<div class="row g-4">
-    <!-- Add policy -->
-    <div class="col-lg-4">
-        <div class="the-chinh p-4">
-            <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-plus-circle me-2 text-success"></i>Thêm chính sách</h6>
-            <form method="POST" action="/manager/refund-policy">
-                <input type="hidden" name="action" value="create">
-                <div class="mb-3">
-                    <label class="bieumau-nhan-sach">Số giờ trước nhận phòng <span class="text-danger">*</span></label>
-                    <input type="number" name="hours_before_checkin" class="form-control bieumau-dieukhien-sach"
-                           min="0" step="1" required placeholder="VD: 48">
-                    <div class="kichthuoc-nho-hon text-muted mt-1">Áp dụng khi hủy trước X giờ</div>
-                </div>
-                <div class="mb-3">
-                    <label class="bieumau-nhan-sach">Số ngày trước nhận phòng</label>
-                    <input type="number" name="days_before_arrival" class="form-control bieumau-dieukhien-sach"
-                           min="0" step="0.5" placeholder="VD: 2">
-                </div>
-                <div class="mb-3">
-                    <label class="bieumau-nhan-sach">Tỷ lệ hoàn tiền (%) <span class="text-danger">*</span></label>
-                    <input type="number" name="refund_percent" class="form-control bieumau-dieukhien-sach"
-                           min="0" max="100" step="1" required placeholder="100">
-                    <div class="kichthuoc-nho-hon text-muted mt-1">0 = không hoàn, 100 = hoàn full</div>
-                </div>
-                <div class="mb-4">
-                    <label class="bieumau-nhan-sach">Mô tả</label>
-                    <textarea name="description" class="form-control bieumau-dieukhien-sach" rows="2"
-                              placeholder="Hủy trước 48 giờ được hoàn 100%..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-success w-100 py-2 fw-bold">
-                    <i class="fas fa-plus me-2"></i>Thêm chính sách
-                </button>
-            </form>
+<!-- 4 Top Executive Policy KPIs -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #072A44;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Tổng Bậc Quy Định</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1" style="color: #072A44;">{{ total_tiers }} <span style="font-size: 0.85rem; font-weight: 500;">mốc thời gian</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Phân cấp hoàn cọc bậc thang</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(7, 42, 68, 0.06); width: 48px; height: 48px;">
+                <i class="fas fa-layer-group fa-lg" style="color: #072A44;"></i>
+            </div>
         </div>
     </div>
-
-    <!-- Policies list -->
-    <div class="col-lg-8">
-        <div class="the-chinh p-0 overflow-hidden">
-            <div class="the-tieude-sach px-4 py-3">
-                <span class="fw-bold"><i class="fas fa-undo me-2"></i>Danh sách chính sách</span>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #10B981;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Hoàn Tiền Tối Đa</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1 text-success">{{ max_refund }}% <span style="font-size: 0.85rem; font-weight: 500;">tiền cọc</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Áp dụng khi hủy sớm ≥ 30 ngày</div>
             </div>
-            {% if policies %}
-            <div class="table-responsive">
-                <table class="bang-sach">
-                    <thead>
-                        <tr>
-                            <th>Giờ trước nhận phòng</th>
-                            <th>Ngày trước nhận phòng</th>
-                            <th>Tỷ lệ hoàn</th>
-                            <th>Mô tả</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for p in policies %}
-                        <tr>
-                            <td class="fw-bold">
-                                {% if p.hours_before_checkin is not none %}
-                                {{ p.hours_before_checkin }} giờ
-                                {% else %}—{% endif %}
-                            </td>
-                            <td class="small">
-                                {% if p.days_before_arrival is not none %}
-                                {{ p.days_before_arrival }} ngày
-                                {% else %}—{% endif %}
-                            </td>
-                            <td>
-                                <span class="fw-bold {% if p.refund_percent == 100 %}text-success{% elif p.refund_percent == 0 %}text-danger{% else %}text-warning{% endif %}">
-                                    {{ p.refund_percent }}%
-                                </span>
-                            </td>
-                            <td class="small text-muted">{{ p.description or '—' }}</td>
-                            <td>
-                                <form method="POST" action="/manager/refund-policy" class="d-inline">
-                                    <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="policy_id" value="{{ p.policy_id }}">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger px-2"
-                                            onclick="return confirm('Xóa chính sách này?')" title="Xóa">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(16, 185, 129, 0.08); width: 48px; height: 48px;">
+                <i class="fas fa-hand-holding-usd fa-lg text-success"></i>
             </div>
-            {% else %}
-            <div class="p-5 text-center text-muted">
-                <i class="fas fa-undo fa-3x opacity-25 mb-3 d-block"></i>
-                <p>Chưa có chính sách hoàn tiền nào.</p>
-            </div>
-            {% endif %}
         </div>
-
-        <div class="alert alert-info border-0 mt-3 small">
-            <i class="fas fa-info-circle me-2"></i>
-            Hệ thống tự động chọn chính sách phù hợp nhất dựa trên thời gian còn lại trước khi nhận phòng.
-            Chính sách có giờ cao hơn sẽ được ưu tiên nếu khách hủy sớm hơn.
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #EF4444;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Khung Phạt 100%</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1 text-danger">&lt; 7 ngày <span style="font-size: 0.85rem; font-weight: 500;">trước check-in</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Không hoàn tiền (Thu phí cọc)</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(239, 68, 68, 0.08); width: 48px; height: 48px;">
+                <i class="fas fa-exclamation-triangle fa-lg text-danger"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #DFB76C;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Cơ Chế Quyết Toán</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1" style="color: #B89758;">Tự Động <span style="font-size: 0.85rem; font-weight: 500;">(Realtime)</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Tính theo giờ thực tế hủy</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(223, 183, 108, 0.15); width: 48px; height: 48px;">
+                <i class="fas fa-calculator fa-lg" style="color: #B89758;"></i>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Visual Step-Ladder Cancellation Progression Strip -->
+<div class="bg-white rounded-3 shadow-sm p-4 mb-4" style="border: 1px solid #E2E8F0;">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h6 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', serif; font-size: 1.05rem;">
+                <i class="fas fa-stream text-primary me-2"></i>Sơ Đồ Bậc Thang Hoàn Trả Tiền Cọc Theo Thời Gian Hủy
+            </h6>
+            <div class="small text-muted mt-0.5">Khách hủy đơn đặt phòng trực tuyến sẽ nhận tiền hoàn tự động theo mốc thời gian còn lại trước 14:00 ngày nhận phòng</div>
+        </div>
+        <span class="badge bg-light text-muted border px-2.5 py-1 small">Tính tự động theo giờ</span>
+    </div>
+
+    <!-- Step Progress Line -->
+    <div class="row g-2 text-center pt-2">
+        <div class="col-md-3">
+            <div class="p-3 rounded-3 h-100" style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid rgba(16, 185, 129, 0.3);">
+                <div class="badge rounded-pill bg-success text-white px-3 py-1 mb-2">Hoàn 100% Cọc</div>
+                <div class="fw-bold text-dark" style="font-size: 0.95rem;">Hủy Trước ≥ 30 Ngày</div>
+                <div class="text-muted small sc-net-num mt-1" style="font-size: 0.75rem;">(Trước ≥ 720 giờ)</div>
+                <div class="text-success small fw-medium mt-2"><i class="fas fa-check-circle me-1"></i>Miễn phí hủy phòng</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-3 rounded-3 h-100" style="background: rgba(37, 99, 235, 0.08); border: 1.5px solid rgba(37, 99, 235, 0.3);">
+                <div class="badge rounded-pill bg-primary text-white px-3 py-1 mb-2">Hoàn 50% Cọc</div>
+                <div class="fw-bold text-dark" style="font-size: 0.95rem;">Hủy Từ 14 Đến 29 Ngày</div>
+                <div class="text-muted small sc-net-num mt-1" style="font-size: 0.75rem;">(336 giờ đến 719 giờ)</div>
+                <div class="text-primary small fw-medium mt-2"><i class="fas fa-percentage me-1"></i>Phí phạt hủy 50% cọc</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-3 rounded-3 h-100" style="background: rgba(223, 183, 108, 0.15); border: 1.5px solid rgba(184, 151, 88, 0.35);">
+                <div class="badge rounded-pill text-dark px-3 py-1 mb-2" style="background: #DFB76C;">Hoàn 25% Cọc</div>
+                <div class="fw-bold text-dark" style="font-size: 0.95rem;">Hủy Từ 7 Đến 13 Ngày</div>
+                <div class="text-muted small sc-net-num mt-1" style="font-size: 0.75rem;">(168 giờ đến 335 giờ)</div>
+                <div class="small fw-medium mt-2" style="color: #8C733E;"><i class="fas fa-shield-alt me-1"></i>Phí phạt hủy 75% cọc</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-3 rounded-3 h-100" style="background: rgba(239, 68, 68, 0.08); border: 1.5px solid rgba(239, 68, 68, 0.3);">
+                <div class="badge rounded-pill bg-danger text-white px-3 py-1 mb-2">Hoàn 0% (Phạt 100%)</div>
+                <div class="fw-bold text-dark" style="font-size: 0.95rem;">Hủy Trong Vòng &lt; 7 Ngày</div>
+                <div class="text-muted small sc-net-num mt-1" style="font-size: 0.75rem;">(Dưới 168 giờ hoặc No-Show)</div>
+                <div class="text-danger small fw-medium mt-2"><i class="fas fa-times-circle me-1"></i>Thu hồi toàn bộ tiền cọc</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Collapsible Create Policy Form (Horizontal Layout) -->
+<div class="collapse mb-4" id="createPolicyCollapse">
+    <div class="bg-white rounded-3 shadow-sm p-4" style="border: 1px solid #E2E8F0; border-top: 3px solid #B89758;">
+        <div class="d-flex align-items-center justify-content-between pb-3 mb-3" style="border-bottom: 1px solid #F1F5F9;">
+            <div>
+                <h6 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', serif; font-size: 1.15rem;">
+                    <i class="fas fa-plus-circle text-warning me-2"></i>Thêm Mốc Quy Định Hoàn Tiền / Phạt Hủy Mới
+                </h6>
+                <div class="small text-muted mt-1">Hệ thống sẽ tự động đối chiếu số giờ thực tế khi khách bấm hủy đơn để tính tiền hoàn</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#createPolicyCollapse"></button>
+        </div>
+
+        <form method="POST" action="/manager/refund-policy">
+            <input type="hidden" name="action" value="create">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-muted">Số Ngày Trước Check-in <span class="text-danger">*</span></label>
+                    <input type="number" name="days_before_arrival" id="inputDays" class="form-control form-control-sm sc-net-num"
+                           min="0" step="1" required placeholder="VD: 30" style="border-radius: 6px;">
+                    <div class="text-muted mt-1" style="font-size: 0.7rem;">Mốc ngày tối thiểu (VD: 30 ngày)</div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-muted">Số Giờ Trước Check-in</label>
+                    <input type="number" name="hours_before_checkin" id="inputHours" class="form-control form-control-sm sc-net-num"
+                           min="0" step="1" placeholder="Tự động tính = Ngày × 24" style="border-radius: 6px;">
+                    <div class="text-muted mt-1" style="font-size: 0.7rem;">Hệ thống tự động quy đổi nếu để trống</div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-muted">Tỷ Lệ Hoàn Cọc (%) <span class="text-danger">*</span></label>
+                    <input type="number" name="refund_percent" class="form-control form-control-sm sc-net-num fw-bold"
+                           min="0" max="100" step="1" required placeholder="VD: 100" style="border-radius: 6px; color: #065F46;">
+                    <div class="text-muted mt-1" style="font-size: 0.7rem;">0 = Không hoàn, 100 = Hoàn toàn bộ</div>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-muted">Chọn Nhanh Tỷ Lệ</label>
+                    <div class="d-flex gap-1">
+                        <button type="button" class="btn btn-sm btn-outline-secondary px-2" onclick="setPercent(100)">100%</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary px-2" onclick="setPercent(50)">50%</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary px-2" onclick="setPercent(25)">25%</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary px-2" onclick="setPercent(0)">0%</button>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <label class="form-label small fw-bold text-muted">Mô Tả Quy Định Hoàn Trả</label>
+                    <input type="text" name="description" class="form-control form-control-sm"
+                           placeholder="VD: Hủy trước 30 ngày: Hoàn toàn bộ 100% tiền đặt cọc..." style="border-radius: 6px;">
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end justify-content-end gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2" data-bs-toggle="collapse" data-bs-target="#createPolicyCollapse">
+                        Hủy
+                    </button>
+                    <button type="submit" class="btn btn-sm px-4 py-2 fw-bold text-white shadow-sm"
+                            style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); border-radius: 6px; border: none;">
+                        <i class="fas fa-check-circle me-1"></i> Lưu Bậc Chính Sách
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Full-Width Luxury Refund Policy Table -->
+<div class="bg-white rounded-3 shadow-sm overflow-hidden mb-4" style="border: 1px solid #E2E8F0;">
+    <div class="px-4 py-3 d-flex justify-content-between align-items-center" 
+         style="background: #072A44; border-bottom: 2px solid #B89758; color: #FFFFFF;">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-file-invoice-dollar text-warning"></i>
+            <span class="fw-bold" style="font-family: 'Playfair Display', serif; font-size: 1.1rem;">
+                Danh Mục Bậc Quy Định Hoàn Cọc & Phạt Hủy
+            </span>
+            <span class="badge rounded-pill bg-white text-dark ms-2 fw-bold">{{ policies|length }}</span>
+        </div>
+        <div class="small opacity-75">
+            <i class="fas fa-shield-alt me-1"></i>Áp dụng tự động cho toàn bộ đơn đặt phòng online & lễ tân
+        </div>
+    </div>
+
+    {% if policies %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+            <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: #64748B;">
+                <tr>
+                    <th class="ps-4" style="width: 200px;">Mốc Thời Gian Hủy</th>
+                    <th style="width: 170px;">Quy Đổi Số Giờ</th>
+                    <th style="width: 180px;">Tỷ Lệ Hoàn Cọc</th>
+                    <th style="width: 180px;">Phí Phạt Hủy Phòng</th>
+                    <th>Nội Dung Quy Định Nghiệp Vụ</th>
+                    <th class="text-end pe-4" style="width: 120px;">Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in policies %}
+                {% set penalty_percent = 100 - p.refund_percent %}
+                <tr style="border-bottom: 1px solid #F1F5F9;">
+                    <!-- Mốc Thời Gian Hủy -->
+                    <td class="ps-4 py-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge rounded-circle p-2" 
+                                  style="background: {% if p.refund_percent == 100 %}rgba(16, 185, 129, 0.1){% elif p.refund_percent == 0 %}rgba(239, 68, 68, 0.1){% else %}rgba(37, 99, 235, 0.1){% endif %}; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="{% if p.refund_percent == 100 %}fas fa-check text-success{% elif p.refund_percent == 0 %}fas fa-times text-danger{% else %}fas fa-percentage text-primary{% endif %}" style="font-size: 0.8rem;"></i>
+                            </span>
+                            <div>
+                                <div class="fw-bold text-dark font-monospace" style="font-size: 0.95rem;">
+                                    {% if p.days_before_arrival and p.days_before_arrival > 0 %}
+                                    ≥ {{ p.days_before_arrival|int }} ngày
+                                    {% else %}
+                                    &lt; 7 ngày (Trong tuần)
+                                    {% endif %}
+                                </div>
+                                <div class="text-muted" style="font-size: 0.72rem;">Trước ngày check-in</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!-- Quy Đổi Số Giờ -->
+                    <td>
+                        <div class="sc-net-num fw-bold text-secondary" style="font-size: 0.88rem;">
+                            <i class="far fa-clock me-1 text-primary"></i>
+                            {% if p.hours_before_checkin and p.hours_before_checkin > 0 %}
+                            {{ p.hours_before_checkin|int }} giờ
+                            {% else %}
+                            0 giờ
+                            {% endif %}
+                        </div>
+                        <div class="text-muted" style="font-size: 0.7rem;">Trước 14:00 giờ G</div>
+                    </td>
+
+                    <!-- Tỷ Lệ Hoàn Cọc -->
+                    <td>
+                        <div class="d-inline-flex align-items-center gap-1.5 px-2.5 py-1 rounded" 
+                             style="background: {% if p.refund_percent == 100 %}rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25);{% elif p.refund_percent == 0 %}rgba(239, 68, 68, 0.1); color: #DC2626; border: 1px solid rgba(239, 68, 68, 0.25);{% else %}rgba(37, 99, 235, 0.1); color: #2563EB; border: 1px solid rgba(37, 99, 235, 0.25);{% endif %}">
+                            <i class="{% if p.refund_percent == 100 %}fas fa-undo-alt{% elif p.refund_percent == 0 %}fas fa-ban{% else %}fas fa-coins{% endif %}" style="font-size: 0.75rem;"></i>
+                            <span class="fw-bold sc-net-num" style="font-size: 0.95rem;">
+                                Hoàn {{ p.refund_percent }}%
+                            </span>
+                        </div>
+                    </td>
+
+                    <!-- Phí Phạt Hủy Phòng -->
+                    <td>
+                        <div class="d-inline-flex align-items-center gap-1.5 px-2.5 py-1 rounded"
+                             style="background: #F8FAFC; border: 1px solid #E2E8F0; color: #475569;">
+                            <span class="fw-bold sc-net-num {% if penalty_percent == 100 %}text-danger{% elif penalty_percent == 0 %}text-success{% else %}text-warning{% endif %}" style="font-size: 0.88rem;">
+                                Phạt {{ penalty_percent }}%
+                            </span>
+                        </div>
+                    </td>
+
+                    <!-- Mô Tả Nghiệp Vụ -->
+                    <td>
+                        <div class="fw-medium text-dark" style="font-size: 0.85rem;">
+                            {{ p.description or 'Chính sách hoàn tiền tiêu chuẩn' }}
+                        </div>
+                        <div class="text-muted small mt-0.5" style="font-size: 0.72rem;">
+                            Mã chính sách #{{ p.policy_id }}
+                        </div>
+                    </td>
+
+                    <!-- Thao Tác -->
+                    <td class="text-end pe-4">
+                        <form method="POST" action="/manager/refund-policy" class="d-inline">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="policy_id" value="{{ p.policy_id }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger px-2.5 py-1"
+                                    onclick="return confirm('Xác nhận xóa bậc chính sách này? Hành động có thể ảnh hưởng đến các đơn hủy phòng tiếp theo.')" 
+                                    title="Xóa bậc chính sách">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="p-5 text-center text-muted">
+        <i class="fas fa-undo fa-3x opacity-25 mb-3 d-block"></i>
+        <p class="mb-0">Chưa có chính sách hoàn tiền nào trong cơ sở dữ liệu.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Operational Guideline Note Box -->
+<div class="p-4 rounded-3 d-flex align-items-start gap-3" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #072A44;">
+    <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="background: rgba(7, 42, 68, 0.08); width: 36px; height: 36px; min-width: 36px;">
+        <i class="fas fa-info text-primary"></i>
+    </div>
+    <div class="small text-muted" style="line-height: 1.6;">
+        <div class="fw-bold text-dark mb-1" style="font-size: 0.85rem;">Quy Chuẩn Nghiệp Vụ Quyết Toán Tiền Cọc Khi Hủy Phòng:</div>
+        <div>• <strong>Công thức tính:</strong> <code>Tiền hoàn trả = Tiền đặt cọc (50%) × (Tỷ lệ hoàn % / 100)</code>.</div>
+        <div>• <strong>Thời gian quyết toán:</strong> Khi khách hàng bấm hủy đơn trên Cổng Khách Hàng hoặc Lễ tân hủy trên Sơ đồ phòng, hệ thống tự động tính <code>hours_remaining = (checkin_time - cancel_time)</code> và ghi nhận vào bảng <code>Cancellation_Records</code>.</div>
+        <div>• <strong>Hoàn trả ngân hàng:</strong> Tiền hoàn được kế toán chuyển trả qua cổng VNPAY hoặc tài khoản ngân hàng trong vòng 3-5 ngày làm việc theo đúng quy chuẩn giao dịch khách sạn 5 sao.</div>
+    </div>
+</div>
+
+{% block extra_scripts %}
+<script>
+// Auto calculate hours from days
+document.getElementById('inputDays')?.addEventListener('input', function() {
+    const days = parseFloat(this.value);
+    const hoursInput = document.getElementById('inputHours');
+    if (!isNaN(days) && hoursInput) {
+        hoursInput.value = Math.round(days * 24);
+    }
+});
+
+function setPercent(val) {
+    const input = document.querySelector('input[name="refund_percent"]');
+    if (input) input.value = val;
+}
+</script>
+{% endblock %}
+
 {% endblock %}

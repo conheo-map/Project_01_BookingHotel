@@ -1,140 +1,307 @@
 {% extends "base.html" %}
-{% block title %}Hội Viên Luxury - {{ full_name }}{% endblock %}
+{% block title %}Hồ Sơ Hội Viên VIP — Sài Gòn Côn Đảo Resort{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/profile.css') }}">
 {% endblock %}
 
 {% block content %}
-<!-- Hero Banner -->
-<div class="profile-hero"></div>
-
-<div class="container profile-content">
-    <div class="profile-header">
-        <h1 class="fw-bold mb-2">Chào mừng trở lại, {{ full_name }}</h1>
-        <p class="opacity-75 fs-5">Tận hưởng những đặc quyền riêng biệt dành cho quý khách tại Saigon-Condao Resort</p>
-    </div>
-
-    <div class="row g-5">
-        <!-- Profile & Security Form -->
-        <div class="col-lg-7">
-            <div class="profile-glass-card">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3 text-primary">
-                        <i class="fas fa-user-cog fa-lg"></i>
-                    </div>
-                    <div>
-                        <h4 class="fw-bold mb-0">Thông tin cá nhân</h4>
-                        <p class="text-muted small mb-0">Cập nhật chi tiết tài khoản và bảo mật</p>
-                    </div>
-                </div>
-
-                <form method="POST" action="/profile">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="caidat-nhan">Địa chỉ Email</label>
-                            <input type="email" class="form-control caidat-input" value="{{ email }}" disabled>
-                            <small class="text-muted">Liên kết định danh vĩnh viễn với tài khoản của bạn.</small>
-                        </div>
-                        <div class="col-12">
-                            <label class="caidat-nhan">Họ và tên khách hàng</label>
-                            <input type="text" name="customer_name" class="form-control caidat-input" value="{{ full_name }}" required>
-                        </div>
-                        
-                        <div class="col-12 mt-4 pt-4 border-top">
-                            <h6 class="fw-bold text-uppercase small text-primary mb-3">Thay đổi mật khẩu</h6>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="caidat-nhan">Mật khẩu hiện tại</label>
-                                    <input type="password" name="old_password" class="form-control caidat-input" placeholder="••••••••">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="caidat-nhan">Mật khẩu mới</label>
-                                    <input type="password" name="new_password" class="form-control caidat-input" placeholder="Tối thiểu 6 ký tự" minlength="6">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-4">
-                            <button type="submit" class="btn nut-xanh-datphong w-100 py-3 fw-bold rounded-3 shadow">
-                                <i class="fas fa-check-circle me-2"></i>Cập nhật thông tin hội viên
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Loyalty & Quick Links Sidebar -->
-        <div class="col-lg-5">
-            <!-- Physical-style Loyalty Card -->
-            {% set tier = loyalty.tier or 'Newbie' %}
-            {% set points = loyalty.points or 0 %}
-            <div class="loyalty-the-vip vip-bg-{{ tier|lower }}">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="vip-tier-name">{{ tier }}</div>
-                        <div class="small opacity-75">Resort Luxury Member</div>
-                    </div>
-                    <i class="fas fa-gem fa-2x"></i>
-                </div>
-                
-                <div class="vip-chip"></div>
-
-                <div class="d-flex justify-content-between align-items-end">
-                    <div>
-                        <div class="vip-member-name">{{ full_name }}</div>
-                        <div class="small mt-1 opacity-75">Member since 2024</div>
-                    </div>
-                    <div class="text-end">
-                        <div class="small opacity-75">Total Points</div>
-                        <div class="fw-bold fs-4">{{ points }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Loyalty Status Details -->
-            <div class="profile-glass-card mb-4">
-                <h5 class="fw-bold mb-4">Trạng thái tích lũy</h5>
-                
-                <div class="mb-4">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Tiến trình hạng tiếp theo</span>
-                        <span class="fw-bold">{{ points }} / {% if tier == 'Newbie' %}50{% elif tier == 'Silver' %}210{% else %}Max{% endif %}</span>
-                    </div>
-                    <div class="progress-vip">
-                        {% if tier == 'Newbie' %}
-                            <div class="progress-vip-bar" style="width:{{ [points * 2, 100]|min }}%"></div>
-                        {% elif tier == 'Silver' %}
-                            <div class="progress-vip-bar" style="width:{{ [(points - 50) * 100 // 160, 100]|min }}%"></div>
-                        {% else %}
-                            <div class="progress-vip-bar" style="width: 100%"></div>
-                        {% endif %}
-                    </div>
-                    
-                    {% if tier == 'Newbie' %}
-                        <p class="small text-muted mt-2">Cần thêm <strong>{{ 50 - points }}</strong> điểm để đạt hạng <strong>Silver</strong></p>
-                    {% elif tier == 'Silver' %}
-                        <p class="small text-muted mt-2">Cần thêm <strong>{{ 210 - points }}</strong> điểm để đạt hạng <strong>Gold</strong></p>
-                    {% else %}
-                        <p class="small text-success mt-2"><i class="fas fa-star me-1"></i> Bạn đang tận hưởng ưu đãi 5% cao nhất!</p>
-                    {% endif %}
-                </div>
-
-                <div class="d-flex align-items-center p-3 bg-light rounded-3 mb-3">
-                    <i class="fas fa-moon text-primary me-3 fa-lg"></i>
-                    <div>
-                        <div class="small text-muted">Đêm nghỉ tích lũy</div>
-                        <div class="fw-bold">{{ points // 10 }} đêm</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Links -->
-            
-        </div>
-    </div>
+<!-- ══ HERO BANNER DI SẢN (ARCHITECTURAL HERO) ══ -->
+<div class="profile-hero">
+  <div class="profile-hero-overlay"></div>
 </div>
+
+<div class="container profile-content mb-5">
+  <!-- ── 1. HEADER CHÀO MỪNG DI SẢN (HERITAGE WELCOME STRIP) ── -->
+  <div class="profile-header text-center">
+    <div class="heritage-kicker mb-2">
+      <span>SAIGON-CONDAO RESORT</span>
+      <span>·</span>
+      <span>PRIVILEGE HERITAGE CLUB</span>
+    </div>
+    <h1 class="profile-hero-heading m-0">
+      Kính chào Quý khách, <span class="highlight-name">{{ full_name }}</span>
+    </h1>
+    <p class="profile-hero-subtitle mt-2">
+      Đặc quyền hội viên thượng lưu &amp; Trung tâm quản lý an toàn hồ sơ lưu trú
+    </p>
+  </div>
+
+  <div class="row g-4 align-items-start">
+    <!-- ══ CỘT TRÁI: HỒ SƠ ĐỊNH DANH & BẢO MẬT (7 COLS) ══ -->
+    <div class="col-lg-7">
+      <div class="profile-atelier-card">
+        <div class="card-head-stripe d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <div class="atelier-kicker">HỒ SƠ CÁ NHÂN</div>
+            <h3 class="atelier-title m-0">Thông tin tài khoản &amp; Bảo mật</h3>
+          </div>
+          <span class="badge-account-active">
+            <i class="fas fa-shield-alt me-1 text-gold"></i>Tài khoản bảo mật
+          </span>
+        </div>
+
+        <form method="POST" action="/profile" id="profileUpdateForm">
+          <div class="row g-3">
+            <!-- 1. Email định danh (Read-only Luxury) -->
+            <div class="col-12">
+              <label class="form-label-atelier">Địa chỉ Email định danh</label>
+              <div class="atelier-readonly-box d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="far fa-envelope text-gold"></i>
+                  <span class="email-text">{{ email }}</span>
+                </div>
+                <span class="badge-verified"><i class="fas fa-check-circle me-1"></i>Đã liên kết</span>
+              </div>
+              <small class="helper-note mt-1 d-block">
+                Email dùng để đăng nhập và bảo lưu vĩnh viễn quyền lợi hội viên của Quý khách.
+              </small>
+            </div>
+
+            <!-- 2. Họ và tên khách hàng -->
+            <div class="col-12">
+              <label class="form-label-atelier" for="inputCustomerName">Họ và tên chủ thẻ hội viên</label>
+              <div class="atelier-input-wrapper">
+                <i class="far fa-user input-icon-left"></i>
+                <input type="text" id="inputCustomerName" name="customer_name" class="form-control atelier-input" value="{{ full_name }}" required placeholder="Nhập họ và tên đầy đủ...">
+              </div>
+              <small class="helper-note mt-1 d-block">
+                Tên hiển thị dập nổi trên thẻ VIP và dùng để đối soát danh tính khi nhận phòng (Check-in).
+              </small>
+            </div>
+
+            <!-- 3. Khu vực Đổi mật khẩu bảo mật (3 trường chuẩn an toàn UX) -->
+            <div class="col-12 mt-4 pt-3 border-top-atelier">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="fas fa-key text-gold"></i>
+                <h5 class="atelier-subhead m-0">Cập nhật mật khẩu đăng nhập</h5>
+              </div>
+              <p class="small text-muted mb-3">
+                Chỉ nhập các ô bên dưới nếu Quý khách có nhu cầu thiết lập lại mật khẩu mới.
+              </p>
+
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label-atelier" for="inputOldPw">Mật khẩu hiện tại</label>
+                  <div class="atelier-input-wrapper">
+                    <i class="fas fa-lock input-icon-left"></i>
+                    <input type="password" id="inputOldPw" name="old_password" class="form-control atelier-input" placeholder="Nhập mật khẩu đang dùng...">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label-atelier" for="inputNewPw">Mật khẩu mới</label>
+                  <div class="atelier-input-wrapper">
+                    <i class="fas fa-shield-alt input-icon-left"></i>
+                    <input type="password" id="inputNewPw" name="new_password" class="form-control atelier-input" placeholder="Tối thiểu 6 ký tự..." minlength="6">
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label-atelier" for="inputConfirmPw">Xác nhận mật khẩu mới</label>
+                  <div class="atelier-input-wrapper">
+                    <i class="fas fa-check-double input-icon-left"></i>
+                    <input type="password" id="inputConfirmPw" name="confirm_password" class="form-control atelier-input" placeholder="Nhập lại mật khẩu mới..." minlength="6">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Nút Submit -->
+            <div class="col-12 mt-4 pt-2">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <span class="text-muted small">
+                  <i class="fas fa-info-circle me-1 text-gold"></i>Hệ thống tự động đồng bộ thẻ &amp; hồ sơ
+                </span>
+                <button type="submit" class="btn-atelier-submit">
+                  <i class="fas fa-save me-2"></i>Lưu thay đổi hồ sơ
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ══ CỘT PHẢI: THẺ VIP KIM LOẠI & ĐẶC QUYỀN (5 COLS) ══ -->
+    <div class="col-lg-5">
+      {% set tier = loyalty.tier or 'Newbie' %}
+      {% set points = loyalty.points or 0 %}
+
+      <!-- 1. THẺ HỘI VIÊN VẬT LÝ KIM LOẠI (CHAMPAGNE METALLIC CARD) -->
+      <div class="physical-vip-card vip-tier-{{ tier|lower }} shadow-lg">
+        <!-- Texture Glare & Watermark Waves -->
+        <div class="card-glare-overlay"></div>
+        <div class="card-wave-watermark">
+          <svg viewBox="0 0 200 120" preserveAspectRatio="none">
+            <path d="M0,40 C50,20 150,60 200,40 L200,120 L0,120 Z" fill="currentColor" opacity="0.08"></path>
+            <path d="M0,60 C60,40 140,80 200,60 L200,120 L0,120 Z" fill="currentColor" opacity="0.05"></path>
+          </svg>
+        </div>
+
+        <!-- Card Header: Brand Logo & Tier Pill -->
+        <div class="card-top-row d-flex justify-content-between align-items-start">
+          <div class="card-brand-group">
+            <div class="card-brand-title">SAIGON - CONDAO</div>
+            <div class="card-brand-sub">ISLANDS RESORT · EST. 1920</div>
+          </div>
+          <div class="card-tier-pill">
+            <i class="fas fa-crown me-1"></i>{{ tier | upper }}
+          </div>
+        </div>
+
+        <!-- Card Middle: Realistic Smart Chip & Wireless Wave -->
+        <div class="card-mid-row d-flex align-items-center gap-3">
+          <div class="emv-smart-chip">
+            <div class="chip-circuit"></div>
+          </div>
+          <div class="contactless-wave" title="Thẻ hỗ trợ Check-in một chạm">
+            <i class="fas fa-wifi fa-rotate-90"></i>
+          </div>
+        </div>
+
+        <!-- Card Number: Embossed Monospace -->
+        <div class="card-embossed-num">
+          <span>SCD</span>
+          <span>1920</span>
+          <span>8829</span>
+          <span>{{ "%04d"|format(points) }}</span>
+        </div>
+
+        <!-- Card Bottom Row: Holder & Points -->
+        <div class="card-bot-row d-flex justify-content-between align-items-end">
+          <div class="holder-info">
+            <div class="card-micro-label">CARDHOLDER NAME</div>
+            <div class="card-holder-name">{{ full_name | upper }}</div>
+          </div>
+          <div class="points-info text-end">
+            <div class="card-micro-label">TOTAL POINTS</div>
+            <div class="card-points-val">{{ points }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. BẢNG 4 ĐẶC QUYỀN HỘI VIÊN THƯỢNG LƯU -->
+      <div class="profile-atelier-card mb-4 mt-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="atelier-subhead m-0">Đặc quyền Hạng {{ tier }}</h5>
+          <span class="badge-discount-gold">Ưu đãi độc quyền</span>
+        </div>
+
+        <ul class="privilege-list m-0 p-0">
+          <li class="privilege-item">
+            <div class="privilege-icon-box">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <div>
+              <strong class="privilege-title">Giảm thêm 5% trực tiếp</strong>
+              <p class="m-0 small text-muted">Tự động áp dụng khấu trừ trên giá phòng trực tuyến</p>
+            </div>
+          </li>
+          <li class="privilege-item">
+            <div class="privilege-icon-box">
+              <i class="fas fa-coffee"></i>
+            </div>
+            <div>
+              <strong class="privilege-title">Miễn phí tiệc trà chiều</strong>
+              <p class="m-0 small text-muted">Phục vụ hàng ngày tại Heritage Lounge &amp; Bar</p>
+            </div>
+          </li>
+          <li class="privilege-item">
+            <div class="privilege-icon-box">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div>
+              <strong class="privilege-title">Ưu tiên nhận sớm / trả trễ</strong>
+              <p class="m-0 small text-muted">Nhận phòng từ 11:00 (tùy tình trạng phòng thực tế)</p>
+            </div>
+          </li>
+          <li class="privilege-item">
+            <div class="privilege-icon-box">
+              <i class="fas fa-shuttle-van"></i>
+            </div>
+            <div>
+              <strong class="privilege-title">Đưa đón sân bay Cỏ Ống</strong>
+              <p class="m-0 small text-muted">Dịch vụ xe riêng đón tiễn 2 chiều miễn phí</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 3. TIẾN TRÌNH & ĐÊM LƯU TRÚ TÍCH LŨY -->
+      <div class="profile-atelier-card mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="atelier-subhead m-0">Thống kê lưu trú</h5>
+          <span class="small fw-bold text-navy">{{ points }} / {% if tier == 'Newbie' %}50{% elif tier == 'Silver' %}210{% else %}Hạng tối đa{% endif %}</span>
+        </div>
+
+        <div class="progress-bar-atelier mb-3">
+          {% if tier == 'Newbie' %}
+            <div class="progress-fill" style="width:{{ [points * 2, 100]|min }}%"></div>
+          {% elif tier == 'Silver' %}
+            <div class="progress-fill" style="width:{{ [(points - 50) * 100 // 160, 100]|min }}%"></div>
+          {% else %}
+            <div class="progress-fill" style="width: 100%"></div>
+          {% endif %}
+        </div>
+
+        <div class="stat-night-badge d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-moon text-gold fa-lg"></i>
+            <div>
+              <div class="small text-muted">Tổng đêm nghỉ dưỡng</div>
+              <div class="fw-bold text-navy fs-6">{{ points // 10 }} đêm tại Côn Đảo</div>
+            </div>
+          </div>
+          <span class="badge-vip-status">Thành viên VIP</span>
+        </div>
+      </div>
+
+      <!-- 4. LỐI TẮT NHANH (FAST SHORTCUTS) -->
+      <div class="shortcuts-grid d-flex flex-column gap-2">
+        <a href="/history" class="btn-atelier-shortcut">
+          <div class="d-flex align-items-center gap-3">
+            <div class="shortcut-icon-circle">
+              <i class="fas fa-receipt"></i>
+            </div>
+            <div class="text-start">
+              <div class="shortcut-title">Lịch sử đặt phòng &amp; Hóa đơn</div>
+              <div class="shortcut-sub">Tra cứu và quản lý các kỳ nghỉ dưỡng</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right text-muted"></i>
+        </a>
+        <a href="/search" class="btn-atelier-shortcut">
+          <div class="d-flex align-items-center gap-3">
+            <div class="shortcut-icon-circle shortcut-icon-gold">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="text-start">
+              <div class="shortcut-title">Đặt kỳ nghỉ mới (Ưu đãi 5%)</div>
+              <div class="shortcut-sub">Áp dụng trực tiếp đặc quyền hội viên Gold</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right text-muted"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('profileUpdateForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      const newPw = document.getElementById('inputNewPw').value;
+      const confirmPw = document.getElementById('inputConfirmPw').value;
+      if (newPw && newPw !== confirmPw) {
+        e.preventDefault();
+        alert('Mật khẩu mới và xác nhận mật khẩu không trùng khớp! Vui lòng kiểm tra lại.');
+        document.getElementById('inputConfirmPw').focus();
+      }
+    });
+  }
+});
+</script>
 {% endblock %}
-
-

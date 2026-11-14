@@ -3,7 +3,7 @@ import sys
 # Đảm bảo đường dẫn FrontEnd được ưu tiên trong sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import uuid
-from datetime import timedelta
+from datetime import timedelta, date, datetime
 from flask import Flask, session, render_template
 from dotenv import load_dotenv
 
@@ -29,7 +29,7 @@ def create_app():
     def fmt_vnd(value):
         try:
             val = float(value or 0)
-            return f"{val:,.0f} đ"
+            return f"{val:,.0f} đ".replace(",", ".")
         except Exception:
             return "0 đ"
 
@@ -58,6 +58,11 @@ def create_app():
         except Exception:
             return value
 
+    @app.template_filter('urlencode')
+    def fmt_urlencode(value):
+        from urllib.parse import quote_plus
+        return quote_plus(str(value or ''))
+
     @app.template_filter('stars')
     def fmt_stars(value):
         try:
@@ -78,7 +83,9 @@ def create_app():
                 'role': session.get('role', 'Guest'),
                 'account_type': session.get('account_type', 'customer'),
                 'token': session.get('token', ''),
-            }
+            },
+            'today': date.today().strftime('%Y-%m-%d'),
+            'now_time': datetime.now().strftime('%H:%M')
         }
 
     # ── Session ID for cart / room locks ────────────────────────────────────────

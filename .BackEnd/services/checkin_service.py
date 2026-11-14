@@ -115,6 +115,10 @@ def assign_room_and_checkin(
         if bm['booking_status'] in ('Canceled', 'No-Show'):
             return False, {}, f"Đơn đặt phòng #{booking_id} đang ở trạng thái '{bm['booking_status']}', không thể Check-in."
 
+        today_str = datetime.now().strftime('%Y-%m-%d')
+        if bm['arrival_date'] and today_str < bm['arrival_date']:
+            return False, {}, f"Chưa tới ngày nhận phòng ({bm['arrival_date']}). Không thể hoàn tất thủ tục Check-in trước ngày đến."
+
         # 2. Kiểm tra phòng vật lý
         cursor.execute("SELECT * FROM Physical_Room WHERE physical_room_id = ?", (physical_room_id,))
         pr = cursor.fetchone()

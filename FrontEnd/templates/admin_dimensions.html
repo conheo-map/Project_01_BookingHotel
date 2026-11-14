@@ -1,155 +1,498 @@
 {% extends "base.html" %}
-{% block title %}Quản trị Danh mục - Hotel Booking{% endblock %}
+{% block title %}Cấu Hình Hệ Thống & Bảng Chiều - Admin Resort 5 Sao{% endblock %}
 {% block content %}
 
+<!-- Header & Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Cấu hình Hệ thống</h2>
-        <p class="text-muted d-none d-md-block">Quản lý các bảng danh mục (Dimension Tables) cốt lõi của ứng dụng.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-cubes"></i> Cấu Hình Hạ Tầng & Bảng Chiều Chuẩn Hóa 3NF
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Cấu Hình Hệ Thống & Bảng Chiều
+        </h2>
+        <p class="text-muted small mb-0">Quản lý các bảng danh mục thực thể gốc (Dimension Tables): Chi nhánh khách sạn và Mã hạng loại phòng.</p>
+    </div>
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex justify-content-md-end gap-2">
+        <button class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-dark shadow-sm"
+                style="background: linear-gradient(135deg, #DFB76C 0%, #C99B42 100%); border: none; border-radius: 8px;"
+                data-bs-toggle="modal" data-bs-target="#addRTModal">
+            <i class="fas fa-plus-circle"></i> Thêm Hạng Phòng Mới
+        </button>
+        <a href="/manager" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-arrow-left"></i> Dashboard Quản Lý
+        </a>
     </div>
 </div>
 
-<div class="row g-4">
-    <!-- KHÁCH SẠN (READ ONLY OR CORE) -->
-    <div class="col-lg-5">
-        <div class="the-chinh overflow-hidden shadow-sm border-0 bo-goc-8 bg-white h-100">
-            <div class="the-tieude-sach bg-light">
-                <h6 class="fw-bold mb-0">Danh sách Khách sạn (Partner Hotels)</h6>
+<!-- Top 4 Dimension KPIs -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" style="background: #FFFFFF; border-left: 4px solid #072A44 !important;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Cơ Sở Nghỉ Dưỡng</span>
+                    <h3 class="fw-bold mb-0 mt-1 sc-net-num" style="color: #072A44; font-size: 1.65rem;">{{ total_hotels }} <span style="font-size: 0.9rem; font-weight: 500; color: #64748B;">Cơ sở</span></h3>
+                </div>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(7, 42, 68, 0.08); color: #072A44;">
+                    <i class="fas fa-hotel fs-5"></i>
+                </div>
             </div>
-            <div class="table-responsive">
-                <table class="table bang-sach mb-0">
-                    <thead>
+            <div class="mt-2 pt-2 border-top small text-muted" style="font-size: 0.75rem;">
+                <span class="text-success fw-bold"><i class="fas fa-check-circle"></i> 100%</span> Trực tuyến đồng bộ
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" style="background: #FFFFFF; border-left: 4px solid #DFB76C !important;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Hạng Loại Phòng</span>
+                    <h3 class="fw-bold mb-0 mt-1 sc-net-num" style="color: #072A44; font-size: 1.65rem;">{{ total_room_types }} <span style="font-size: 0.9rem; font-weight: 500; color: #64748B;">Hạng</span></h3>
+                </div>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(223, 183, 108, 0.15); color: #8C733E;">
+                    <i class="fas fa-door-open fs-5"></i>
+                </div>
+            </div>
+            <div class="mt-2 pt-2 border-top small text-muted" style="font-size: 0.75rem;">
+                <span class="text-primary fw-bold sc-net-num">{{ total_active_types }}</span> Đang kích hoạt mở bán
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" style="background: #FFFFFF; border-left: 4px solid #10B981 !important;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Tổng Buồng Phòng</span>
+                    <h3 class="fw-bold mb-0 mt-1 sc-net-num" style="color: #072A44; font-size: 1.65rem;">{{ total_rooms }} <span style="font-size: 0.9rem; font-weight: 500; color: #64748B;">Buồng</span></h3>
+                </div>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(16, 185, 129, 0.12); color: #10B981;">
+                    <i class="fas fa-bed fs-5"></i>
+                </div>
+            </div>
+            <div class="mt-2 pt-2 border-top small text-muted" style="font-size: 0.75rem;">
+                <span class="text-muted">Ánh xạ từ <code>Physical_Room</code></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" style="background: #FFFFFF; border-left: 4px solid #3B82F6 !important;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Kiến Trúc Dữ Liệu</span>
+                    <h3 class="fw-bold mb-0 mt-1" style="color: #072A44; font-size: 1.5rem;">Chuẩn 3NF</h3>
+                </div>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: rgba(59, 130, 246, 0.12); color: #3B82F6;">
+                    <i class="fas fa-database fs-5"></i>
+                </div>
+            </div>
+            <div class="mt-2 pt-2 border-top small text-muted" style="font-size: 0.75rem;">
+                <span class="text-success fw-bold"><i class="fas fa-shield-alt"></i> Toàn vẹn PK/FK</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3NF Schema Architecture Diagram Banner -->
+<div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+    <div class="px-4 py-3 d-flex align-items-center justify-content-between" style="background: #072A44; color: #FFFFFF;">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-project-diagram text-warning"></i>
+            <span class="fw-bold" style="font-size: 0.95rem;">Mô Hình Liên Kết Bảng Chiều & Thực Thể (3NF Relational Architecture)</span>
+        </div>
+        <span class="badge px-3 py-1 rounded-pill" style="background: rgba(223, 183, 108, 0.2); color: #DFB76C; border: 1px solid rgba(223, 183, 108, 0.4); font-size: 0.75rem;">
+            Enterprise OLAP/OLTP Schema
+        </span>
+    </div>
+    <div class="p-4" style="background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);">
+        <div class="row g-3 text-center align-items-center">
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 bg-white shadow-sm border border-primary h-100">
+                    <span class="badge bg-primary mb-2">Bảng Chiều Cấp 1</span>
+                    <h6 class="fw-bold text-dark mb-1">Dim_Hotel</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.75rem;">
+                        <strong>PK:</strong> <code>hotel_id</code><br>
+                        Tên cơ sở, xếp hạng sao, phân loại nghỉ dưỡng.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-1 d-none d-md-block text-muted">
+                <i class="fas fa-long-arrow-alt-right fs-3 text-primary"></i>
+                <div class="small fw-bold text-muted" style="font-size: 0.65rem;">1 : N</div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 bg-white shadow-sm border border-warning h-100">
+                    <span class="badge bg-warning text-dark mb-2">Bảng Chiều Cấp 2</span>
+                    <h6 class="fw-bold text-dark mb-1">Dim_RoomType</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.75rem;">
+                        <strong>PK:</strong> <code>room_type_id</code> | <strong>FK:</strong> <code>hotel_id</code><br>
+                        Mã hạng, giá niêm yết, sức chứa tối đa.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-1 d-none d-md-block text-muted">
+                <i class="fas fa-long-arrow-alt-right fs-3 text-warning"></i>
+                <div class="small fw-bold text-muted" style="font-size: 0.65rem;">1 : N</div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 rounded-3 bg-white shadow-sm border border-success h-100">
+                    <span class="badge bg-success mb-2">Thực Thể Vận Hành</span>
+                    <h6 class="fw-bold text-dark mb-1">Physical_Room & Booking_Master</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.75rem;">
+                        <strong>FK:</strong> <code>room_type_id</code> &rarr; Gán số phòng vật lý (P.01/Villa) và tính tổng thanh toán đơn đặt phòng chuẩn xác.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content: Hotels & Room Types -->
+<div class="row g-4">
+    <!-- KHÁCH SẠN (PARTNER HOTELS) -->
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100 d-flex flex-column" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3 d-flex align-items-center justify-content-between" style="background: #072A44; border-bottom: 2px solid #DFB76C; color: #FFFFFF;">
+                <h6 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif; font-size: 1.05rem;">
+                    <i class="fas fa-hotel text-warning me-2"></i>Danh Sách Chi Nhánh (Dim_Hotel)
+                </h6>
+                <span class="badge bg-light text-dark fw-bold sc-net-num">{{ total_hotels }} Cơ sở</span>
+            </div>
+            <div class="table-responsive flex-grow-1">
+                <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+                    <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: #64748B;">
                         <tr>
-                            <th>ID</th>
-                            <th>Tên Khách sạn</th>
+                            <th class="ps-4" style="width: 70px;">Mã #</th>
+                            <th>Cơ Sở Nghỉ Dưỡng</th>
+                            <th class="text-center">Hạng Sao</th>
+                            <th class="text-center">Quy Mô</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for hotel in hotels %}
-                        <tr>
-                            <td><span class="badge bg-light text-muted border">#{{ hotel.hotel_id }}</span></td>
-                            <td class="fw-bold text-dark">{{ hotel.hotel_name }}</td>
+                        <tr style="border-bottom: 1px solid #F1F5F9;">
+                            <td class="ps-4">
+                                <span class="badge bg-light text-muted border px-2 py-1 sc-net-num fw-bold">#{{ hotel.hotel_id }}</span>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-dark" style="font-size: 0.95rem;">
+                                    {% if hotel.hotel_id == 1 %}
+                                        <i class="fas fa-umbrella-beach text-primary me-2"></i>Sài Gòn - Côn Đảo Resort
+                                    {% else %}
+                                        <i class="fas fa-city text-info me-2"></i>Sài Gòn - City Hotel Luxury
+                                    {% endif %}
+                                </div>
+                                <div class="small text-muted" style="font-size: 0.75rem;">
+                                    {{ hotel.hotel_type or 'Khách sạn cao cấp' }} • Tên mã: <code>{{ hotel.hotel_name }}</code>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="text-warning small text-nowrap">
+                                    {% set stars = hotel.star_rating or 4 %}
+                                    {% for _ in range(stars) %}<i class="fas fa-star"></i>{% endfor %}
+                                </div>
+                                <span class="badge bg-light text-dark border px-2 py-0 mt-1" style="font-size: 0.65rem;">{{ stars }} Sao Chuẩn</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-primary-subtle text-primary fw-bold sc-net-num px-2 py-1 mb-1 d-inline-block">
+                                    {{ hotel.room_types_count }} Hạng phòng
+                                </span>
+                                <div class="small text-muted sc-net-num fw-bold" style="font-size: 0.75rem;">
+                                    {{ hotel.physical_rooms_count }} Buồng phòng
+                                </div>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-            <div class="p-3 bg-light bg-opacity-50 border-top mt-auto">
-                <p class="kichthuoc-nho-hon text-muted mb-0"><i class="fas fa-info-circle me-1"></i> Để thêm chi nhánh mới, vui lòng liên hệ Bộ phận Kỹ thuật để thiết lập hạ tầng.</p>
+            <div class="p-3 bg-light border-top mt-auto">
+                <div class="d-flex align-items-center gap-2 small text-muted" style="font-size: 0.75rem;">
+                    <i class="fas fa-shield-alt text-success fs-6"></i>
+                    <span>Bảng chiều <code>Dim_Hotel</code> được quản trị tập trung. Phục vụ chia luồng báo cáo tài chính và công suất phòng đa chi nhánh.</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- LOẠI PHÒNG (CRUD) -->
+    <!-- LOẠI PHÒNG (CRUD DIM_ROOM_TYPE) -->
     <div class="col-lg-7">
-        <div class="the-chinh overflow-hidden shadow-sm border-0 bo-goc-8 bg-white h-100">
-            <div class="the-tieude-sach bg-light d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0">Quản lý Loại phòng Đặc thù</h6>
-                <button class="btn btn-sm nut-xanh-datphong px-3" data-bs-toggle="modal" data-bs-target="#addRTModal">
-                    <i class="fas fa-plus me-1"></i> Thêm mới
-                </button>
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden h-100" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3 d-flex justify-content-between align-items-center" 
+                 style="background: #072A44; border-bottom: 2px solid #DFB76C; color: #FFFFFF;">
+                <div class="d-flex align-items-center gap-2">
+                    <h6 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif; font-size: 1.05rem;">
+                        <i class="fas fa-door-closed text-warning me-2"></i>Danh Mục Hạng Phòng (Dim_RoomType)
+                    </h6>
+                    <span class="badge bg-warning text-dark fw-bold sc-net-num">{{ total_room_types }} Mã</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-light fw-bold text-dark px-3 py-1 shadow-sm" data-bs-toggle="modal" data-bs-target="#addRTModal" style="border-radius: 6px; font-size: 0.8rem;">
+                        <i class="fas fa-plus me-1 text-primary"></i> Thêm Hạng Phòng
+                    </button>
+                </div>
             </div>
+            
             <div class="table-responsive">
-                <table class="table table-hover bang-sach mb-0">
-                    <thead>
+                <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+                    <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: #64748B;">
                         <tr>
-                            <th>ID</th>
-                            <th>Mã Loại Phòng</th>
-                            <th class="text-end">Hành động</th>
+                            <th class="ps-4" style="width: 60px;">Mã</th>
+                            <th>Mã Ký Hiệu & Tên Thương Mại</th>
+                            <th>Chi Nhánh</th>
+                            <th class="text-end">Giá Niêm Yết Gốc</th>
+                            <th class="text-center">Kho Phòng</th>
+                            <th class="text-end pe-4">Thao Tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% if room_types %}
                             {% for rt in room_types %}
-                            <tr class="align-middle {% if not rt.is_active %}opacity-50{% endif %}">
-                                <td class="kichthuoc-nho-hon text-muted fw-bold">#{{ rt.room_type_id }}</td>
+                            {% set comm_name = room_type_name_map.get(rt.room_type_code, rt.room_type_code) %}
+                            {% set specs = room_specs.get(rt.room_type_code, {}) %}
+                            <tr class="align-middle {% if not rt.is_active %}opacity-50 bg-light{% endif %}" style="border-bottom: 1px solid #F1F5F9;">
+                                <td class="ps-4 text-muted sc-net-num fw-bold small">#{{ rt.room_type_id }}</td>
                                 <td>
-                                    <form method="POST" action="/admin/dimensions" class="d-flex gap-2 align-items-center">
-                                        <input type="hidden" name="action" value="update_room_type">
-                                        <input type="hidden" name="room_type_id" value="{{ rt.room_type_id }}">
-                                        <input type="text" name="room_type_code" value="{{ rt.room_type_code }}" 
-                                               class="form-control form-control-sm bieumau-dieukhien-sach border-primary border-opacity-10 fw-bold"
-                                               {% if not rt.is_active %}readonly{% endif %}>
-                                        {% if not rt.is_active %}
-                                            <span class="badge bg-secondary">Vô hiệu hóa</span>
-                                        {% else %}
-                                            <button type="submit" class="btn btn-sm btn-light border bg-white" title="Lưu thay đổi"><i class="fas fa-save text-primary"></i></button>
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="badge font-monospace px-2 py-1 fw-bold" 
+                                              style="background: #072A44; color: #DFB76C; font-size: 0.75rem; letter-spacing: 0.05em;">
+                                            {{ rt.room_type_code }}
+                                        </span>
+                                        <span class="fw-bold text-dark" style="font-size: 0.9rem;">{{ comm_name }}</span>
+                                    </div>
+                                    <div class="small text-muted d-flex align-items-center gap-2" style="font-size: 0.75rem;">
+                                        <span><i class="fas fa-user-friends me-1"></i>{{ rt.max_adults }} Lớn, {{ rt.max_children }} Nhỏ</span>
+                                        {% if specs.get('area') %}
+                                            <span>• <i class="fas fa-vector-square me-1"></i>{{ specs.get('area') }}</span>
                                         {% endif %}
-                                    </form>
+                                        {% if specs.get('bed') %}
+                                            <span>• <i class="fas fa-bed me-1"></i>{{ specs.get('bed') }}</span>
+                                        {% endif %}
+                                    </div>
                                 </td>
-                                <td class="text-end text-nowrap">
+                                <td>
+                                    {% if rt.hotel_id == 1 %}
+                                        <span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1 rounded-pill" style="font-size: 0.7rem;">
+                                            <i class="fas fa-umbrella-beach me-1"></i>Resort Hotel
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-info-subtle text-info-emphasis border border-info px-2 py-1 rounded-pill" style="font-size: 0.7rem;">
+                                            <i class="fas fa-city me-1"></i>City Hotel
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">
+                                    <div class="fw-bold sc-net-num" style="color: #072A44; font-size: 0.95rem;">
+                                        {{ "{:,.0f}".format(rt.base_price).replace(",", ".") }} đ
+                                    </div>
+                                    <div class="small text-muted" style="font-size: 0.7rem;">/ đêm cơ bản</div>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-light text-dark border px-2 py-1 sc-net-num fw-bold">
+                                        {{ rt.physical_rooms_count or 0 }} buồng
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4 text-nowrap">
+                                    <button type="button" class="btn btn-sm btn-outline-primary py-1 px-2 me-1" 
+                                            title="Sửa thông số"
+                                            onclick="openEditRTModal('{{ rt.room_type_id }}', '{{ rt.room_type_code }}', '{{ rt.hotel_id }}', '{{ rt.base_price }}', '{{ rt.max_adults }}', '{{ rt.max_children }}')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
                                     {% if rt.is_active %}
-                                        <button type="button" class="btn btn-sm btn-outline-danger p-1 px-2" 
+                                        <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" 
                                                 data-bs-toggle="modal" data-bs-target="#deleteRTModal"
-                                                onclick="document.getElementById('delete_rt_id').value='{{ rt.room_type_id }}'; document.getElementById('delete_rt_code').innerText='{{ rt.room_type_code }}';">
+                                                onclick="document.getElementById('delete_rt_id').value='{{ rt.room_type_id }}'; document.getElementById('delete_rt_code').innerText='{{ rt.room_type_code }} ({{ comm_name }})';">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     {% else %}
-                                        <button type="button" class="btn btn-sm btn-outline-secondary p-1 px-2" disabled title="Đã vô hiệu hóa">
-                                            <i class="fas fa-trash-alt"></i>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2" disabled title="Đã vô hiệu hóa">
+                                            <i class="fas fa-ban"></i>
                                         </button>
                                     {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
                         {% else %}
-                            <tr><td colspan="3" class="text-center py-5 text-muted small italic">Chưa có loại phòng chuyên dụng nào.</td></tr>
+                            <tr><td colspan="6" class="text-center py-5 text-muted small">Chưa có loại phòng nào.</td></tr>
                         {% endif %}
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="p-3 bg-light border-top mt-auto d-flex justify-content-between align-items-center">
+                <div class="small text-muted" style="font-size: 0.75rem;">
+                    <i class="fas fa-info-circle text-primary me-1"></i> Mã loại phòng là khóa ngoại liên kết đa chiều tới bảng <code>Inventory_Pricing</code> và <code>Booking_Master</code>.
+                </div>
+                <a href="/manager/room-catalog" class="btn btn-sm btn-outline-secondary fw-bold" style="font-size: 0.75rem;">
+                    <i class="fas fa-external-link-alt me-1"></i> Xem Chi Tiết Trình Diễn Khách Hàng
+                </a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Thêm -->
-<div class="modal fade" id="addRTModal" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content shadow-lg border-0">
+<!-- Modal Add Room Type -->
+<div class="modal fade" id="addRTModal" tabindex="-1" aria-labelledby="addRTModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 border-0 shadow">
+            <div class="modal-header" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+                <h5 class="modal-title fs-6 fw-bold" id="addRTModalLabel">
+                    <i class="fas fa-plus-circle text-warning me-2"></i>Thêm Mới Hạng Loại Phòng (Dim_RoomType)
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <form method="POST" action="/admin/dimensions">
                 <input type="hidden" name="action" value="create_room_type">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Thêm Loại phòng</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
                 <div class="modal-body p-4">
-                    <div class="mb-0">
-                        <label class="bieumau-nhan-sach">Mã loại phòng mới</label>
-                        <input type="text" name="room_type_code" class="form-control bieumau-dieukhien-sach text-uppercase fw-bold" placeholder="VD: VIP_SUITE" required>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Thuộc Chi Nhánh Khách Sạn <span class="text-danger">*</span></label>
+                        <select name="hotel_id" class="form-select" required style="border-radius: 6px;">
+                            {% for hotel in hotels %}
+                                <option value="{{ hotel.hotel_id }}">
+                                    #{{ hotel.hotel_id }} - {{ 'Sài Gòn - Côn Đảo Resort' if hotel.hotel_id == 1 else 'Sài Gòn - City Hotel Luxury' }} ({{ hotel.hotel_name }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Mã Ký Hiệu Hạng Phòng (Code) <span class="text-danger">*</span></label>
+                        <input type="text" name="room_type_code" class="form-control font-monospace text-uppercase fw-bold" 
+                               placeholder="VD: RES_DELUXE, CITY_SUITE" required maxlength="50" style="border-radius: 6px;">
+                        <div class="text-muted small mt-1" style="font-size: 0.75rem;">Viết hoa, không dấu, ngăn cách bằng dấu gạch dưới <code>_</code>.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Giá Niêm Yết Cơ Bản (VNĐ / Đêm) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="base_price" class="form-control fw-bold sc-net-num" value="1200000" step="50000" min="100000" required style="border-radius: 6px 0 0 6px;">
+                            <span class="input-group-text bg-light text-muted">VNĐ</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-dark">Số Người Lớn Tối Đa</label>
+                            <input type="number" name="max_adults" class="form-control" value="2" min="1" max="10" required style="border-radius: 6px;">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-dark">Số Trẻ Em Tối Đa</label>
+                            <input type="number" name="max_children" class="form-control" value="1" min="0" max="6" required style="border-radius: 6px;">
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn nut-xanh-datphong px-4">Xác nhận</button>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Hủy Bỏ</button>
+                    <button type="submit" class="btn btn-sm fw-bold px-3 text-dark" style="background: linear-gradient(135deg, #DFB76C 0%, #C99B42 100%); border: none;">
+                        <i class="fas fa-check me-1"></i> Khởi Tạo Hạng Phòng
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Modal Xóa -->
-<div class="modal fade" id="deleteRTModal" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content shadow-lg border-0">
+<!-- Modal Edit Room Type -->
+<div class="modal fade" id="editRTModal" tabindex="-1" aria-labelledby="editRTModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 border-0 shadow">
+            <div class="modal-header" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+                <h5 class="modal-title fs-6 fw-bold" id="editRTModalLabel">
+                    <i class="fas fa-edit text-warning me-2"></i>Cập Nhật Hạng Loại Phòng (Dim_RoomType)
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <form method="POST" action="/admin/dimensions">
-                <input type="hidden" name="action" value="delete_room_type">
-                <input type="hidden" name="room_type_id" id="delete_rt_id" value="">
-                <div class="modal-header bg-danger text-white border-0">
-                    <h5 class="modal-title fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>Xác nhận xóa</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <input type="hidden" name="action" value="update_room_type">
+                <input type="hidden" name="room_type_id" id="edit_rt_id">
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Thuộc Chi Nhánh Khách Sạn</label>
+                        <select name="hotel_id" id="edit_rt_hotel_id" class="form-select" required style="border-radius: 6px;">
+                            {% for hotel in hotels %}
+                                <option value="{{ hotel.hotel_id }}">
+                                    #{{ hotel.hotel_id }} - {{ 'Sài Gòn - Côn Đảo Resort' if hotel.hotel_id == 1 else 'Sài Gòn - City Hotel Luxury' }} ({{ hotel.hotel_name }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Mã Ký Hiệu Hạng Phòng (Code) <span class="text-danger">*</span></label>
+                        <input type="text" name="room_type_code" id="edit_rt_code" class="form-control font-monospace text-uppercase fw-bold" required maxlength="50" style="border-radius: 6px;">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Giá Niêm Yết Cơ Bản (VNĐ / Đêm) <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="number" name="base_price" id="edit_rt_base_price" class="form-control fw-bold sc-net-num" step="50000" min="100000" required style="border-radius: 6px 0 0 6px;">
+                            <span class="input-group-text bg-light text-muted">VNĐ</span>
+                        </div>
+                    </div>
+
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-dark">Số Người Lớn Tối Đa</label>
+                            <input type="number" name="max_adults" id="edit_rt_max_adults" class="form-control" min="1" max="10" required style="border-radius: 6px;">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-dark">Số Trẻ Em Tối Đa</label>
+                            <input type="number" name="max_children" id="edit_rt_max_children" class="form-control" min="0" max="6" required style="border-radius: 6px;">
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body p-4 text-center">
-                    <p class="mb-1 text-muted">Bạn có chắc chắn muốn xóa mã phòng này?</p>
-                    <h4 class="fw-bold text-danger my-3" id="delete_rt_code"></h4>
-                    <p class="small text-muted mb-0">Hệ thống sẽ <strong>vô hiệu hóa</strong> thay vì xóa vĩnh viễn nếu loại phòng đang được sử dụng trong hóa đơn.</p>
-                </div>
-                <div class="modal-footer justify-content-center border-0 pb-4">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-danger px-4 fw-bold">Xác nhận</button>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Hủy Bỏ</button>
+                    <button type="submit" class="btn btn-sm btn-primary fw-bold px-3" style="background: #072A44; border: none;">
+                        <i class="fas fa-save me-1"></i> Lưu Cập Nhật
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<!-- Modal Delete Room Type -->
+<div class="modal fade" id="deleteRTModal" tabindex="-1" aria-labelledby="deleteRTModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 border-0 shadow">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fs-6 fw-bold" id="deleteRTModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>Xác Nhận Vô Hiệu Hóa Hạng Phòng</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="/admin/dimensions">
+                <input type="hidden" name="action" value="delete_room_type">
+                <input type="hidden" name="room_type_id" id="delete_rt_id">
+                <div class="modal-body p-4">
+                    <p class="mb-2">Bạn có chắc chắn muốn vô hiệu hóa mã loại phòng <strong id="delete_rt_code" class="text-danger font-monospace"></strong>?</p>
+                    <div class="alert alert-warning small mb-0 py-2" style="font-size: 0.75rem;">
+                        <i class="fas fa-info-circle me-1"></i> Thao tác này sẽ đánh dấu <code>is_active = 0</code> để bảo toàn toàn vẹn lịch sử đơn đặt phòng cũ (Soft Delete).
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Hủy Bỏ</button>
+                    <button type="submit" class="btn btn-sm btn-danger fw-bold">Xác Nhận Vô Hiệu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function openEditRTModal(id, code, hotelId, basePrice, maxAdults, maxChildren) {
+    document.getElementById('edit_rt_id').value = id;
+    document.getElementById('edit_rt_code').value = code;
+    document.getElementById('edit_rt_hotel_id').value = hotelId;
+    document.getElementById('edit_rt_base_price').value = Math.round(parseFloat(basePrice) || 0);
+    document.getElementById('edit_rt_max_adults').value = maxAdults || 2;
+    document.getElementById('edit_rt_max_children').value = maxChildren || 1;
+    new bootstrap.Modal(document.getElementById('editRTModal')).show();
+}
+</script>
 
 {% endblock %}

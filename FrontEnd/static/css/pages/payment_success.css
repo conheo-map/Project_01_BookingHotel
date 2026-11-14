@@ -1,0 +1,891 @@
+/* ==========================================================================
+   VIP E-VOUCHER CONFIRMATION STYLES - EDITORIAL COASTAL HERITAGE LUXURY
+   Sài Gòn - Côn Đảo Resort
+   Synchronized with Draw.io Architecture (UC-01 & SD-01 BCE Pattern)
+   ========================================================================== */
+
+:root {
+  --navy-primary: #072A44;
+  --navy-dark: #041B2D;
+  --navy-light: #0B395E;
+  --gold-accent: #C5A880;
+  --gold-hover: #B39368;
+  --gold-light: #F4EFEA;
+  --gold-shimmer: #D4AF37;
+  --bg-ivory: #FAF8F5;
+  --surface-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-muted: #64748B;
+  --border-light: #E2E8F0;
+  --border-gold: rgba(197, 168, 128, 0.45);
+  --emerald-green: #059669;
+  --emerald-bg: #ECFDF5;
+  --card-shadow: 0 16px 50px rgba(7, 42, 68, 0.12);
+}
+
+body {
+  background-color: var(--bg-ivory) !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  color: var(--text-dark);
+}
+
+.voucher-page-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3.5rem;
+}
+
+/* ── BREADCRUMB ── */
+.voucher-breadcrumb-nav {
+  margin-bottom: 1.25rem;
+}
+
+.voucher-breadcrumb-nav .breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.voucher-breadcrumb-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.voucher-breadcrumb-nav a:hover {
+  color: var(--navy-primary);
+  text-decoration: underline;
+}
+
+.voucher-breadcrumb-nav .active {
+  color: var(--navy-primary);
+  font-weight: 700;
+}
+
+/* ── ALERT BANNER ── */
+.voucher-alert-banner {
+  background: linear-gradient(90deg, #ECFDF5 0%, #F0FDF4 100%);
+  border: 1px solid #A7F3D0;
+  border-left: 5px solid var(--emerald-green);
+  border-radius: 8px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.08);
+}
+
+.alert-icon-box {
+  background: var(--emerald-green);
+  color: #FFFFFF;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.alert-text-box {
+  font-size: 0.9rem;
+  color: #065F46;
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-text-box strong {
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+
+/* ── HERO BANNER ── */
+.voucher-hero-area {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.voucher-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(197, 168, 128, 0.16);
+  border: 1px solid var(--border-gold);
+  color: var(--navy-primary);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.45rem 1.5rem;
+  border-radius: 30px;
+  margin-bottom: 0.85rem;
+}
+
+.voucher-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.35rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.voucher-hero-sub {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── 2-PIECE LUXURY E-VOUCHER CARD (BOARDING PASS) ── */
+.vip-voucher-wrapper {
+  margin-bottom: 2.5rem;
+}
+
+.vip-voucher-card {
+  background: var(--surface-white);
+  border-radius: 14px;
+  border: 1.5px solid var(--gold-accent);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 992px) {
+  .vip-voucher-card {
+    flex-direction: column;
+  }
+}
+
+/* Perforation Notches on top & bottom */
+.vip-voucher-card::before,
+.vip-voucher-card::after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--bg-ivory);
+  left: 68%;
+  transform: translateX(-50%);
+  z-index: 5;
+  box-shadow: inset 0 0 6px rgba(7, 42, 68, 0.18);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+}
+
+.vip-voucher-card::before {
+  top: -13px;
+}
+
+.vip-voucher-card::after {
+  bottom: -13px;
+}
+
+@media (max-width: 992px) {
+  .vip-voucher-card::before,
+  .vip-voucher-card::after {
+    display: none;
+  }
+}
+
+/* ── LEFT MAIN SECTION (68%) ── */
+.voucher-main {
+  flex: 0 0 68%;
+  padding: 2.25rem 2.5rem;
+  position: relative;
+  background: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+  .voucher-main {
+    padding: 1.5rem;
+  }
+}
+
+/* Resort Header */
+.voucher-resort-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
+}
+
+.voucher-brand-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-crest-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-crest-icon {
+  color: var(--gold-accent);
+  font-size: 1.25rem;
+}
+
+.voucher-brand-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+  letter-spacing: 0.5px;
+}
+
+.voucher-brand-tagline {
+  font-size: 0.78rem;
+  color: var(--gold-hover);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.voucher-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.voucher-status-stamp {
+  background: var(--emerald-bg);
+  border: 1.5px solid var(--emerald-green);
+  color: var(--emerald-green);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.75px;
+  padding: 0.4rem 0.85rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Room block */
+.voucher-room-block {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5F1EB 100%);
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .voucher-room-block {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.voucher-room-img {
+  width: 95px;
+  height: 95px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1.5px solid var(--gold-accent);
+  box-shadow: 0 4px 12px rgba(7, 42, 68, 0.1);
+  flex-shrink: 0;
+}
+
+.voucher-room-details {
+  flex: 1;
+}
+
+.room-category-tag {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 800;
+  color: var(--gold-hover);
+  margin-bottom: 0.2rem;
+}
+
+.room-title-h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+  margin-bottom: 0.25rem;
+}
+
+.room-desc-p {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.45;
+}
+
+.guest-rep-meta {
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 0.4rem;
+  border-top: 1px dashed rgba(197, 168, 128, 0.35);
+}
+
+.text-gold {
+  color: var(--gold-hover);
+}
+
+/* 4-Box Key Highlights Grid */
+.voucher-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .voucher-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.voucher-grid-item {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+  background: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.voucher-grid-item:hover {
+  border-color: var(--gold-accent);
+  transform: translateY(-1px);
+}
+
+.voucher-grid-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.voucher-grid-val {
+  font-weight: 800;
+  color: var(--navy-primary);
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+
+.voucher-grid-sub {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* VIP Inclusions Grid */
+.voucher-inclusions {
+  background: #F8FAFC;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.voucher-inclusions-title {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  color: var(--navy-primary);
+  font-weight: 800;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.voucher-inclusions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .voucher-inclusions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inclusion-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+}
+
+.inclusion-box i {
+  color: var(--emerald-green);
+  font-size: 1.1rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.inclusion-box strong {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--navy-primary);
+  margin-bottom: 0.15rem;
+}
+
+.inclusion-box p {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Financial Settlement Strip */
+.voucher-finance-strip {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 1.2fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding-top: 1.25rem;
+  border-top: 1.5px dashed var(--border-light);
+}
+
+@media (max-width: 768px) {
+  .voucher-finance-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.voucher-finance-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.voucher-finance-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.voucher-finance-val {
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--navy-primary);
+}
+
+.voucher-finance-val.val-total {
+  color: var(--navy-primary);
+}
+
+.voucher-finance-val.val-paid {
+  color: var(--emerald-green);
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.voucher-finance-val.val-remaining {
+  color: #D97706;
+}
+
+.payment-badge {
+  background: var(--navy-primary);
+  color: #FFFFFF;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* ── RIGHT STUB SECTION (32%) WITH PERFORATION ── */
+.voucher-stub {
+  flex: 0 0 32%;
+  background: linear-gradient(150deg, #072A44 0%, #041B2D 100%);
+  color: #FFFFFF;
+  padding: 2.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border-left: 2px dashed rgba(197, 168, 128, 0.45);
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .voucher-stub {
+    border-left: none;
+    border-top: 2px dashed rgba(197, 168, 128, 0.45);
+  }
+}
+
+.stub-header {
+  margin-bottom: 1.25rem;
+}
+
+.stub-resort-title {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-accent);
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.stub-pnr-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+}
+
+.stub-pnr-code {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 2px;
+  margin: 0.35rem 0 0.15rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.stub-invoice-no {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-family: monospace;
+}
+
+/* Scannable QR code */
+.stub-qr-section {
+  margin: 1.1rem 0;
+}
+
+.stub-qr-wrapper {
+  background: #FFFFFF;
+  padding: 10px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  border: 1.5px solid var(--gold-accent);
+}
+
+.stub-qr-img {
+  width: 145px;
+  height: 145px;
+  object-fit: contain;
+  display: block;
+}
+
+.stub-qr-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 0.75rem;
+  line-height: 1.4;
+  padding: 0 0.5rem;
+}
+
+/* Concierge Airport notice */
+.stub-concierge-info {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  border-radius: 8px;
+  padding: 0.85rem;
+  font-size: 0.76rem;
+  text-align: left;
+  line-height: 1.45;
+  margin-bottom: 1rem;
+}
+
+.stub-concierge-title {
+  color: var(--gold-accent);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.35rem;
+}
+
+.stub-concierge-desc {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0.5rem;
+}
+
+.stub-hotline-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 0.4rem;
+  font-size: 0.75rem;
+}
+
+.stub-hotline-row strong {
+  color: #FFFFFF;
+  font-size: 0.85rem;
+}
+
+.stub-footer-note {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── ACTION BUTTON GROUP ── */
+.voucher-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.btn-print-voucher {
+  background: linear-gradient(135deg, var(--gold-accent) 0%, var(--gold-hover) 100%);
+  color: #FFFFFF !important;
+  border: 1px solid #FFFFFF;
+  padding: 0.85rem 1.85rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 15px rgba(197, 168, 128, 0.35);
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-print-voucher:hover {
+  background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-dark) 100%);
+  border-color: var(--gold-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(7, 42, 68, 0.25);
+}
+
+.btn-history-view {
+  background: var(--surface-white);
+  color: var(--navy-primary) !important;
+  border: 1.5px solid var(--navy-primary);
+  padding: 0.85rem 1.85rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.btn-history-view:hover {
+  background: var(--navy-primary);
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(7, 42, 68, 0.15);
+}
+
+.btn-share-voucher {
+  background: #FFFFFF;
+  color: var(--gold-hover) !important;
+  border: 1.5px solid var(--gold-accent);
+  padding: 0.85rem 1.65rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.btn-share-voucher:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+.btn-home-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s ease;
+}
+
+.btn-home-link:hover {
+  color: var(--navy-primary);
+  text-decoration: underline;
+}
+
+/* ── HELPFUL TRAVEL GUIDE CARDS ── */
+.voucher-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .voucher-guide-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.guide-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.guide-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(7, 42, 68, 0.08);
+}
+
+.guide-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(197, 168, 128, 0.15);
+  color: var(--navy-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.guide-card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy-primary);
+  margin-bottom: 0.5rem;
+}
+
+.guide-card-text {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── COPY TOAST NOTIFICATION ── */
+.voucher-copy-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--navy-dark);
+  color: #FFFFFF;
+  padding: 0.85rem 1.75rem;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 9999;
+  border: 1px solid var(--gold-accent);
+}
+
+.voucher-copy-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ── PRINT MEDIA OPTIMIZATION (1-PAGE PERFECTION) ── */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  header, footer, .payment-top-bar, .voucher-actions, .voucher-breadcrumb-nav,
+  .voucher-hero-area, .voucher-alert-banner, .voucher-guide-grid, .voucher-copy-toast {
+    display: none !important;
+  }
+
+  body, html {
+    background: #FFFFFF !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11pt !important;
+    color: #000000 !important;
+  }
+
+  .voucher-page-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .vip-voucher-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .vip-voucher-card {
+    box-shadow: none !important;
+    border: 2px solid #072A44 !important;
+    page-break-inside: avoid !important;
+    border-radius: 8px !important;
+  }
+
+  .voucher-main {
+    padding: 1.5rem !important;
+  }
+
+  .voucher-stub {
+    background: #F8FAFC !important;
+    color: #000000 !important;
+    border-left: 2px dashed #072A44 !important;
+    padding: 1.5rem 1rem !important;
+  }
+
+  .stub-resort-title, .stub-pnr-label, .stub-invoice-no, .stub-qr-hint, .stub-footer-note {
+    color: #333333 !important;
+  }
+
+  .stub-pnr-code {
+    color: #072A44 !important;
+    text-shadow: none !important;
+  }
+
+  .stub-concierge-info {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border: 1px solid #CCCCCC !important;
+  }
+
+  .stub-concierge-title {
+    color: #072A44 !important;
+  }
+
+  .stub-concierge-desc {
+    color: #333333 !important;
+  }
+
+  .stub-hotline-row strong {
+    color: #000000 !important;
+  }
+}

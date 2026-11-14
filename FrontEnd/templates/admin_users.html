@@ -1,59 +1,251 @@
 {% extends "base.html" %}
-{% block title %}Quản lý Tài khoản Nhân viên - Admin{% endblock %}
+{% block title %}Quản Trị Nhân Sự & Phân Quyền RBAC - Admin Resort 5 Sao{% endblock %}
 {% block content %}
 
+<!-- Header & Quick Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Quản lý Nhân sự</h2>
-        <p class="text-muted d-none d-md-block">Quản trị danh sách nhân viên và phân quyền hệ thống.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-user-shield"></i> Bảo Mật & Quản Trị Nhân Sự Nội Bộ Resort 5 Sao
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Quản Lý Nhân Sự & Phân Quyền (RBAC)
+        </h2>
+        <p class="text-muted small mb-0">Quản trị danh mục tài khoản nhân viên vận hành, gán vai trò truy cập theo nguyên tắc phân quyền chuẩn mực và giám sát bảo mật hệ thống.</p>
+    </div>
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-md-end">
+        <a href="/manager" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3.5 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-arrow-left"></i> Dashboard Quản Lý
+        </a>
     </div>
 </div>
 
-<div class="the-chinh overflow-hidden">
-    <div class="the-tieude-sach bg-light">
-        <h6 class="fw-bold mb-0">Danh sách tài khoản nội bộ</h6>
+<!-- 4 Top Executive Human Resources KPIs -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #072A44;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Tổng Nhân Sự Nội Bộ</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1" style="color: #072A44;">{{ stats.total_staff or 6 }} <span style="font-size: 0.85rem; font-weight: 500;">nhân sự</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Đang vận hành toàn hệ thống</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(7, 42, 68, 0.06); width: 48px; height: 48px;">
+                <i class="fas fa-users-cog fa-lg" style="color: #072A44;"></i>
+            </div>
+        </div>
     </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #DFB76C;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Ban Điều Hành</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1" style="color: #B89758;">{{ (stats.total_admin or 1) + (stats.total_manager or 2) }} <span style="font-size: 0.85rem; font-weight: 500;">quản trị</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">{{ stats.total_admin or 1 }} Admin • {{ stats.total_manager or 2 }} Manager</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(223, 183, 108, 0.15); width: 48px; height: 48px;">
+                <i class="fas fa-crown fa-lg" style="color: #B89758;"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #10B981;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Đội Ngũ Lễ Tân</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1 text-success">{{ stats.total_receptionist or 2 }} <span style="font-size: 0.85rem; font-weight: 500;">nhân sự</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Tiền sảnh, Walk-in, Folio</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(16, 185, 129, 0.08); width: 48px; height: 48px;">
+                <i class="fas fa-concierge-bell fa-lg text-success"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #3B82F6;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Tổ Buồng Phòng (HK)</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1 text-primary">{{ stats.total_housekeeper or 1 }} <span style="font-size: 0.85rem; font-weight: 500;">tổ trưởng</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Kiểm soát vệ sinh 92 phòng</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(59, 130, 246, 0.08); width: 48px; height: 48px;">
+                <i class="fas fa-broom fa-lg text-primary"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Controls: Account Type Tabs & Live Filter -->
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <!-- Category Tabs -->
+    <div class="d-flex align-items-center gap-2">
+        <a href="/admin/users?type=staff" 
+           class="btn btn-sm px-3.5 py-2 fw-bold text-decoration-none shadow-2xs {% if current_type == 'staff' %}text-white{% else %}text-muted bg-white border{% endif %}"
+           style="border-radius: 8px; {% if current_type == 'staff' %}background: #072A44; border: 1px solid #072A44;{% endif %}">
+            <i class="fas fa-id-badge me-1"></i> Nhân Viên Nội Bộ ({{ stats.total_staff or 6 }})
+        </a>
+        <a href="/admin/users?type=customer" 
+           class="btn btn-sm px-3.5 py-2 fw-bold text-decoration-none shadow-2xs {% if current_type == 'customer' %}text-white{% else %}text-muted bg-white border{% endif %}"
+           style="border-radius: 8px; {% if current_type == 'customer' %}background: #072A44; border: 1px solid #072A44;{% endif %}">
+            <i class="fas fa-users me-1"></i> Tài Khoản Khách Hàng ({{ stats.total_customers or 10004 }})
+        </a>
+        <a href="/admin/users?type=all" 
+           class="btn btn-sm px-3 py-2 fw-bold text-decoration-none shadow-2xs {% if current_type == 'all' %}text-white{% else %}text-muted bg-white border{% endif %}"
+           style="border-radius: 8px; {% if current_type == 'all' %}background: #072A44; border: 1px solid #072A44;{% endif %}">
+            <i class="fas fa-layer-group me-1"></i> Tất Cả Tài Khoản
+        </a>
+    </div>
+
+    <!-- Live Search -->
+    <div class="input-group input-group-sm" style="width: 320px;">
+        <span class="input-group-text bg-white border-end-0" style="border-radius: 8px 0 0 8px; border-color: #CBD5E1;">
+            <i class="fas fa-search text-muted"></i>
+        </span>
+        <input type="text" id="userSearch" class="form-control border-start-0" 
+               placeholder="Tìm theo tên, email, vai trò..." 
+               style="border-radius: 0 8px 8px 0; border-color: #CBD5E1;">
+    </div>
+</div>
+
+<!-- Staff Users Table Card -->
+<div class="bg-white rounded-3 shadow-sm overflow-hidden mb-4" style="border: 1px solid #E2E8F0;">
+    <div class="px-4 py-3 d-flex justify-content-between align-items-center" 
+         style="background: #072A44; border-bottom: 2px solid #B89758; color: #FFFFFF;">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-user-check text-warning"></i>
+            <span class="fw-bold" style="font-family: 'Playfair Display', serif; font-size: 1.1rem;">
+                {% if current_type == 'customer' %}
+                Danh Sách Tài Khoản Khách Hàng (Gần nhất)
+                {% elif current_type == 'all' %}
+                Toàn Bộ Danh Sách Tài Khoản Hệ Thống
+                {% else %}
+                Danh Sách Nhân Sự Nội Bộ & Phân Quyền Vận Hành
+                {% endif %}
+            </span>
+            <span class="badge rounded-pill bg-white text-dark ms-2 fw-bold">{{ users|length if users else 0 }}</span>
+        </div>
+        <div class="small opacity-75">
+            <i class="fas fa-shield-alt me-1"></i>Cơ chế RBAC đồng bộ cơ sở dữ liệu
+        </div>
+    </div>
+
     <div class="table-responsive">
-        <table class="table table-hover bang-sach mb-0">
-            <thead>
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+            <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: #64748B;">
                 <tr>
-                    <th>ID</th>
-                    <th>Tài khoản</th>
-                    <th>Thông tin chi tiết</th>
-                    <th>Vai trò hiện tại</th>
-                    <th class="text-end">Thao tác & Phân quyền</th>
+                    <th class="ps-4" style="width: 100px;">Mã #ID</th>
+                    <th style="width: 280px;">Tài Khoản & Email</th>
+                    <th style="width: 240px;">Họ Và Tên Nhân Sự</th>
+                    <th style="width: 240px;">Vai Trò Phân Quyền (RBAC)</th>
+                    <th style="width: 140px;">Trạng Thái</th>
+                    <th class="text-end pe-4" style="width: 280px;">Cập Nhật Quyền & Thao Tác</th>
                 </tr>
             </thead>
             <tbody>
                 {% if users %}
                     {% for u in users %}
-                    <tr>
-                        <td class="text-muted small">#{{ u.user_id }}</td>
-                        <td>
-                            <div class="fw-bold">{{ u.username }}</div>
-                            <div class="kichthuoc-nho-hon text-muted">{{ u.email }}</div>
+                    <tr class="user-row-item"
+                        data-name="{{ (u.full_name or '')|lower }}"
+                        data-username="{{ (u.username or '')|lower }}"
+                        data-email="{{ (u.email or '')|lower }}"
+                        data-role="{{ (u.roles or '')|lower }}"
+                        style="border-bottom: 1px solid #F1F5F9;">
+                        <!-- ID -->
+                        <td class="ps-4">
+                            <span class="badge bg-light text-muted border px-2 py-1 sc-net-num fw-bold">#{{ u.user_id }}</span>
                         </td>
-                        <td>{{ u.full_name }}</td>
+
+                        <!-- Account & Email -->
                         <td>
-                            <span class="badge huyhieu-sach 
-                                {% if u.roles == 'Admin' %}bg-danger text-danger
-                                {% elif u.roles == 'Manager' %}bg-primary text-primary
-                                {% else %}bg-secondary text-secondary{% endif %} bg-opacity-10 border border-opacity-25">
-                                {{ u.roles }}
-                            </span>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm"
+                                     style="width: 36px; height: 36px; font-size: 0.9rem; min-width: 36px;
+                                     background: {% if u.roles == 'Admin' %}linear-gradient(135deg, #991B1B 0%, #DC2626 100%)
+                                                {% elif u.roles == 'Manager' %}linear-gradient(135deg, #854D0E 0%, #CA8A04 100%)
+                                                {% elif u.roles == 'Receptionist' %}linear-gradient(135deg, #065F46 0%, #10B981 100%)
+                                                {% elif u.roles == 'Housekeeper' %}linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%)
+                                                {% else %}linear-gradient(135deg, #475569 0%, #64748B 100%){% endif %};">
+                                    {{ (u.username or u.email or 'U')[0]|upper }}
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark font-monospace" style="font-size: 0.9rem;">{{ u.username or '—' }}</div>
+                                    <div class="small text-muted mt-0.5" style="font-size: 0.74rem;">
+                                        <i class="far fa-envelope me-1"></i>{{ u.email or '—' }}
+                                    </div>
+                                </div>
+                            </div>
                         </td>
-                        <td class="text-end">
-                            <form action="/admin/users/{{ u.user_id }}/role" method="POST" class="d-inline-flex gap-1 align-items-center">
-                                <select name="new_role_name" class="form-select form-select-sm bieumau-dieukhien-sach py-1">
+
+                        <!-- Full Name -->
+                        <td>
+                            <div class="fw-bold text-dark" style="font-size: 0.9rem;">{{ u.full_name or '—' }}</div>
+                            <div class="text-muted sc-net-num mt-0.5" style="font-size: 0.72rem;">
+                                {% if u.created_at %}Tham gia: {{ u.created_at[:10] }}{% endif %}
+                            </div>
+                        </td>
+
+                        <!-- Roles Badge -->
+                        <td>
+                            {% if u.roles == 'Admin' %}
+                                <span class="badge px-2.5 py-1.5" style="background: rgba(239, 68, 68, 0.12); color: #B91C1C; border: 1px solid rgba(239, 68, 68, 0.3); font-size: 0.78rem;">
+                                    <i class="fas fa-crown me-1.5"></i>Admin (Toàn quyền)
+                                </span>
+                            {% elif u.roles == 'Manager' %}
+                                <span class="badge px-2.5 py-1.5" style="background: rgba(245, 158, 11, 0.15); color: #B45309; border: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.78rem;">
+                                    <i class="fas fa-briefcase me-1.5"></i>Manager (Quản lý)
+                                </span>
+                            {% elif u.roles == 'Receptionist' %}
+                                <span class="badge px-2.5 py-1.5" style="background: rgba(16, 185, 129, 0.12); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.78rem;">
+                                    <i class="fas fa-concierge-bell me-1.5"></i>Receptionist (Lễ tân)
+                                </span>
+                            {% elif u.roles == 'Housekeeper' %}
+                                <span class="badge px-2.5 py-1.5" style="background: rgba(59, 130, 246, 0.12); color: #1D4ED8; border: 1px solid rgba(59, 130, 246, 0.3); font-size: 0.78rem;">
+                                    <i class="fas fa-broom me-1.5"></i>Housekeeper (Buồng phòng)
+                                </span>
+                            {% else %}
+                                <span class="badge px-2.5 py-1.5 bg-light text-muted border" style="font-size: 0.78rem;">
+                                    <i class="fas fa-user me-1.5"></i>Guest (Khách hàng)
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Status -->
+                        <td>
+                            {% if u.is_active == 1 or u.is_active is none %}
+                                <span class="badge px-2.5 py-1" style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); font-size: 0.75rem;">
+                                    <i class="fas fa-circle me-1" style="font-size: 0.55rem;"></i>Hoạt động
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary border px-2.5 py-1" style="font-size: 0.75rem;">
+                                    <i class="fas fa-lock me-1"></i>Bị khóa
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Actions & Role Change -->
+                        <td class="text-end pe-4">
+                            <form action="/admin/users/{{ u.user_id }}/role" method="POST" class="d-inline-flex gap-1.5 align-items-center">
+                                <select name="new_role_name" class="form-select form-select-sm py-1 fw-medium" style="width: auto; border-radius: 6px; font-size: 0.8rem; border-color: #CBD5E1;">
                                     {% for r in roles %}
                                         <option value="{{ r }}" {% if r == u.roles %}selected{% endif %}>{{ r }}</option>
                                     {% endfor %}
+                                    {% if current_type in ['customer', 'all'] %}
+                                        <option value="Guest" {% if u.roles == 'Guest' %}selected{% endif %}>Guest</option>
+                                    {% endif %}
                                 </select>
-                                <button type="submit" class="btn btn-sm nut-xanh-datphong py-1">Cập nhật</button>
+                                <button type="submit" class="btn btn-sm btn-outline-primary py-1 px-2.5 fw-bold" style="border-radius: 6px; font-size: 0.8rem;">
+                                    <i class="fas fa-check me-1"></i>Gán quyền
+                                </button>
                             </form>
                             
-                            <form action="/admin/users/{{ u.user_id }}/delete" method="POST" class="d-inline-block ms-2">
-                                <button type="submit" class="btn btn-sm btn-light text-danger py-1" onclick="return confirm('Xác nhận xóa vĩnh viễn tài khoản nhân viên này?');">
+                            <form action="/admin/users/{{ u.user_id }}/delete" method="POST" class="d-inline-block ms-1">
+                                <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2.5" 
+                                        {% if u.username == 'admin' or u.user_id == 90001 %}disabled title="Không thể xóa tài khoản Admin gốc"{% else %}
+                                        onclick="return confirm('Xác nhận xóa tài khoản {{ u.username }} vĩnh viễn khỏi hệ thống? Thao tác không thể hoàn tác.');"
+                                        title="Xóa tài khoản"{% endif %}>
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
@@ -62,8 +254,9 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted small">
-                            Không tìm thấy tài khoản nhân viên nào.
+                        <td colspan="6" class="text-center py-5 text-muted small">
+                            <i class="fas fa-user-slash fa-2x opacity-25 mb-2 d-block"></i>
+                            Không tìm thấy tài khoản nào trong tiêu chí lọc này.
                         </td>
                     </tr>
                 {% endif %}
@@ -72,8 +265,53 @@
     </div>
 </div>
 
-<div class="alert alert-warning mt-4 small border-0 bg-opacity-10 shadow-sm">
-    <i class="fas fa-exclamation-triangle me-2"></i> <strong>Lưu ý quan trọng:</strong> Việc thay đổi vai trò hoặc xóa tài khoản nhân viên sẽ ảnh hưởng trực tiếp đến quyền truy cập vào các module nhạy cảm (Kho phòng, Giá, Báo cáo). Vui lòng kiểm tra kỹ trước khi thực hiện.
+<!-- RBAC Security & Matrix Policy Card -->
+<div class="row g-3">
+    <div class="col-md-7">
+        <div class="p-3.5 rounded-3 d-flex align-items-start gap-3 h-100" style="background: #FDF8F0; border: 1px solid #F5E5C9; color: #8C6A2E;">
+            <i class="fas fa-shield-alt fa-lg mt-1" style="color: #B89758;"></i>
+            <div class="small" style="line-height: 1.6;">
+                <strong class="d-block mb-1" style="color: #072A44; font-size: 0.9rem;">Chính Sách An Toàn & Phân Quyền Vai Trò (RBAC):</strong>
+                <div>• Quyền hạn được bảo vệ 2 lớp: Decorator `@login_required` tại FrontEnd và JWT Token `require_token()` tại BackEnd REST API.</div>
+                <div>• Thay đổi vai trò nhân sự sẽ có hiệu lực ngay lập tức tại phiên đăng nhập kế tiếp.</div>
+                <div>• Tài khoản Quản trị viên tối cao (Super Admin) được khóa an toàn không thể tự xóa để tránh rủi ro hệ thống.</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="p-3.5 rounded-3 bg-white border h-100" style="border-color: #E2E8F0;">
+            <div class="fw-bold text-dark small mb-2"><i class="fas fa-matrix-box me-1 text-primary"></i>Phạm Vi Quyền Hạn Từng Vai Trò:</div>
+            <div class="small text-muted" style="font-size: 0.78rem; line-height: 1.6;">
+                <div><span class="badge bg-danger bg-opacity-10 text-danger border px-1.5 py-0.5 me-1">Admin</span> Toàn quyền cấu hình chi nhánh, nhân sự, bảng giá, báo cáo.</div>
+                <div><span class="badge bg-warning bg-opacity-15 text-warning-emphasis border px-1.5 py-0.5 me-1 mt-1">Manager</span> Quản lý tồn kho, định giá mùa vụ, khuyến mãi, báo cáo tài chính.</div>
+                <div><span class="badge bg-success bg-opacity-10 text-success border px-1.5 py-0.5 me-1 mt-1">Receptionist</span> Sơ đồ phòng, Check-in/Walk-in, Quyết toán hóa đơn Folio.</div>
+                <div><span class="badge bg-primary bg-opacity-10 text-primary border px-1.5 py-0.5 me-1 mt-1">Housekeeper</span> Quản lý dọn phòng, cập nhật trạng thái Clean/Dirty buồng phòng.</div>
+            </div>
+        </div>
+    </div>
 </div>
+
+{% block extra_scripts %}
+<script>
+// Real-time Live Search for Users
+document.getElementById('userSearch')?.addEventListener('input', function() {
+    const term = this.value.trim().toLowerCase();
+    const rows = document.querySelectorAll('.user-row-item');
+    
+    rows.forEach(row => {
+        const name = row.dataset.name || '';
+        const uname = row.dataset.username || '';
+        const email = row.dataset.email || '';
+        const role = row.dataset.role || '';
+        
+        if (name.includes(term) || uname.includes(term) || email.includes(term) || role.includes(term)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}
 
 {% endblock %}

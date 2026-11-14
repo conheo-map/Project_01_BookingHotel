@@ -39,15 +39,15 @@ function closeMobileSidebar() {
     if (overlay) overlay.style.display = 'none';
 }
 
-// ── Customer Navbar: scroll bubble effect ──
+// ── Customer Navbar: scroll elevation & solid background effect ──
 document.addEventListener('DOMContentLoaded', function() {
     var custNav = document.getElementById('customerNavbar');
     if (custNav) {
         window.addEventListener('scroll', function() {
-            if (window.scrollY > 40) {
-                custNav.classList.add('dieu-huong-cuon');
+            if (window.scrollY > 30) {
+                custNav.classList.add('scrolled');
             } else {
-                custNav.classList.remove('dieu-huong-cuon');
+                custNav.classList.remove('scrolled');
             }
         });
     }

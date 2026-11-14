@@ -1,185 +1,378 @@
 {% extends "base.html" %}
-{% block title %}Danh mục loại phòng - Hotel Booking{% endblock %}
+{% block title %}Danh Mục Hạng Phòng - Quản Trị Resort 5 Sao - Saigon - Condao Resort{% endblock %}
 {% block content %}
 
-<div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Danh mục loại phòng</h2>
-        <p class="text-muted small mb-0">Quản lý cấu hình và giá cơ bản cho từng loại phòng.</p>
+{# ── HEADER QUẢN TRỊ DANH MỤC PHÒNG ── #}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+    <div>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2"
+             style="background: rgba(184, 151, 88, 0.12); border: 1px solid rgba(184, 151, 88, 0.35); font-size: 0.75rem; font-weight: 700; color: #8C6221; text-transform: uppercase; letter-spacing: 1px;">
+            <i class="fas fa-bed text-gold"></i> QUẢN TRỊ DANH MỤC & TIÊU CHUẨN SẢN PHẨM 5 SAO
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: var(--font-display, 'Playfair Display', serif); color: var(--sc-ocean, #072A44); font-size: 1.85rem;">
+            Danh Mục Hạng Phòng Nghỉ
+        </h2>
+        <p class="text-secondary small mb-0">
+            Quản lý chuẩn mực diện tích, ảnh đại diện, sức chứa, tiện nghi và biểu giá niêm yết theo từng hạng phòng.
+        </p>
     </div>
-    <div class="col-auto">
-        <a href="/manager" class="btn btn-outline-secondary btn-sm">
+    <div class="d-flex gap-2">
+        <button class="btn btn-heritage-gold px-3 py-2 fw-bold shadow-sm d-flex align-items-center gap-2"
+                type="button" data-bs-toggle="collapse" data-bs-target="#createRoomCollapse" aria-expanded="false"
+                style="background: linear-gradient(135deg, #DFB76C 0%, #C59B47 100%); color: #072A44; border: none; border-radius: 10px; font-size: 0.88rem;">
+            <i class="fas fa-plus-circle"></i>
+            <span>Thêm Hạng Phòng Mới</span>
+        </button>
+        <a href="/manager" class="btn btn-outline-secondary px-3 py-2 fw-semibold shadow-sm" style="border-radius: 10px; font-size: 0.88rem;">
             <i class="fas fa-arrow-left me-1"></i>Dashboard
         </a>
     </div>
 </div>
 
-<!-- Create new -->
-<div class="the-chinh p-4 mb-4">
-    <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-plus-circle me-2 text-success"></i>Tạo loại phòng mới</h6>
-    <form method="POST" action="/manager/room-catalog">
-        <input type="hidden" name="action" value="create">
-        <div class="row g-3">
-            <div class="col-md-3">
-                <label class="bieumau-nhan-sach">Mã loại phòng <span class="text-danger">*</span></label>
-                <input type="text" name="room_type_code" class="form-control bieumau-dieukhien-sach text-uppercase"
-                       placeholder="DLXKING" required maxlength="50">
-            </div>
-            <div class="col-md-3">
-                <label class="bieumau-nhan-sach">Khách sạn <span class="text-danger">*</span></label>
-                <select name="hotel_id" class="form-select bieumau-dieukhien-sach" required>
-                    <option value="">-- Chọn khách sạn --</option>
-                    {% for h in hotels %}
-                    <option value="{{ h.hotel_id }}">{{ h.hotel_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label class="bieumau-nhan-sach">Người lớn tối đa</label>
-                <input type="number" name="max_adults" class="form-control bieumau-dieukhien-sach"
-                       min="1" max="10" value="2">
-            </div>
-            <div class="col-md-2">
-                <label class="bieumau-nhan-sach">Trẻ em tối đa</label>
-                <input type="number" name="max_children" class="form-control bieumau-dieukhien-sach"
-                       min="0" max="5" value="1">
-            </div>
-            <div class="col-md-2">
-                <label class="bieumau-nhan-sach">Giá cơ bản (đ) <span class="text-danger">*</span></label>
-                <input type="number" name="base_price" class="form-control bieumau-dieukhien-sach"
-                       min="0" step="1000" value="500000" required>
-            </div>
-            <div class="col-md-4">
-                <label class="bieumau-nhan-sach">Mô tả</label>
-                <input type="text" name="description" class="form-control bieumau-dieukhien-sach"
-                       placeholder="Phòng Deluxe với view biển...">
-            </div>
-            <div class="col-md-4">
-                <label class="bieumau-nhan-sach">Tiện nghi</label>
-                <input type="text" name="amenities" class="form-control bieumau-dieukhien-sach"
-                       placeholder="WiFi, Smart TV, Hồ bơi...">
-            </div>
-            <div class="col-md-2">
-                <label class="bieumau-nhan-sach">Phụ phí người lớn thêm</label>
-                <input type="number" name="extra_adult_fee" class="form-control bieumau-dieukhien-sach"
-                       min="0" step="1000" value="0">
-            </div>
-            <div class="col-md-2">
-                <label class="bieumau-nhan-sach">Giường phụ</label>
-                <input type="number" name="extra_bed_capacity" class="form-control bieumau-dieukhien-sach"
-                       min="0" max="5" value="0">
-            </div>
-            <div class="col-md-2">
-                <label class="bieumau-nhan-sach">Phí bữa sáng trẻ em</label>
-                <input type="number" name="child_breakfast_fee" class="form-control bieumau-dieukhien-sach"
-                       min="0" step="1000" value="0">
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="allow_child_sharing" id="allowChild" checked>
-                    <label class="form-check-label small" for="allowChild">Cho trẻ em ngủ chung</label>
+{# ── COLLAPSIBLE: FORM THÊM MỚI HẠNG PHÒNG NGHỈ (TỰ ĐỘNG THU GỌN) ── #}
+<div class="collapse mb-4" id="createRoomCollapse">
+    <div class="card border-0 shadow-sm p-4" style="border-radius: 16px; background: #FFFFFF; border: 1.5px solid rgba(184, 151, 88, 0.35) !important;">
+        <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom">
+            <h6 class="fw-bold mb-0 text-dark" style="font-family: var(--font-display); font-size: 1.15rem;">
+                <i class="fas fa-plus-circle text-gold me-2"></i>Khởi Tạo Hạng Phòng Lưu Trú Mới
+            </h6>
+            <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#createRoomCollapse" aria-label="Close"></button>
+        </div>
+
+        <form method="POST" action="/manager/room-catalog">
+            <input type="hidden" name="action" value="create">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Mã Hạng Phòng <span class="text-danger">*</span></label>
+                    <input type="text" name="room_type_code" class="form-control font-monospace text-uppercase fw-bold"
+                           placeholder="VD: CIT_PREMIUM" required maxlength="50" style="border-radius: 10px;">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Phân Khu / Chi Nhánh <span class="text-danger">*</span></label>
+                    <select name="hotel_id" class="form-select fw-semibold" required style="border-radius: 10px;">
+                        <option value="">-- Chọn phân khu --</option>
+                        {% for h in hotels %}
+                        <option value="{{ h.hotel_id }}">
+                            {% if h.hotel_id == 2 %}🏢 Khu City Hotel (Khách sạn Phố Côn Đảo){% else %}🏖️ Khu Resort Hotel (Biệt Thự Biển Côn Đảo){% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold text-secondary">Người Lớn Tối Đa</label>
+                    <input type="number" name="max_adults" class="form-control" min="1" max="10" value="2" style="border-radius: 10px;">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold text-secondary">Trẻ Em Tối Đa</label>
+                    <input type="number" name="max_children" class="form-control" min="0" max="5" value="1" style="border-radius: 10px;">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold text-secondary">Giá Niêm Yết / Đêm <span class="text-danger">*</span></label>
+                    <input type="number" name="base_price" class="form-control fw-bold text-success" min="0" step="1000" value="850000" required style="border-radius: 10px;">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold text-secondary">Mô Tả Tổng Quan</label>
+                    <input type="text" name="description" class="form-control"
+                           placeholder="View biển Côn Sơn trực diện, ban công riêng đón gió trong lành..." style="border-radius: 10px;">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold text-secondary">Tiện Nghi Đính Kèm (Cách nhau bằng dấu phẩy)</label>
+                    <input type="text" name="amenities" class="form-control"
+                           placeholder="WiFi tốc độ cao, Smart TV, Minibar, Bồn tắm nằm cao cấp, Két sắt" style="border-radius: 10px;">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Số Giường Phụ Tối Đa</label>
+                    <input type="number" name="extra_bed_capacity" class="form-control" min="0" max="5" value="0" style="border-radius: 10px;">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Phụ Phí Người Lớn Thêm (VND)</label>
+                    <input type="number" name="extra_adult_fee" class="form-control" min="0" step="1000" value="0" style="border-radius: 10px;">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Phí Bữa Sáng Trẻ Em (VND)</label>
+                    <input type="number" name="child_breakfast_fee" class="form-control" min="0" step="1000" value="0" style="border-radius: 10px;">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-check pb-2">
+                        <input class="form-check-input" type="checkbox" name="allow_child_sharing" id="allowChild" checked>
+                        <label class="form-check-label small fw-medium text-dark" for="allowChild">Cho phép trẻ ngủ chung giường</label>
+                    </div>
+                </div>
+
+                <div class="col-12 text-end pt-2 border-top">
+                    <button type="button" class="btn btn-light px-3 py-2 fw-semibold me-2" data-bs-toggle="collapse" data-bs-target="#createRoomCollapse" style="border-radius: 10px;">
+                        Hủy Bỏ
+                    </button>
+                    <button type="submit" class="btn btn-heritage-gold px-4 py-2 fw-bold shadow-sm"
+                            style="background: linear-gradient(135deg, #072A44 0%, #0F4C81 100%); color: #FFFFFF; border: none; border-radius: 10px;">
+                        <i class="fas fa-check-circle me-1"></i>LƯU HẠNG PHÒNG MỚI
+                    </button>
                 </div>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-success px-5 py-2 fw-bold">
-                    <i class="fas fa-plus me-2"></i>Tạo loại phòng
+        </form>
+    </div>
+</div>
+
+{# ── BỘ LỌC PHÂN KHU & TÌM KIẾM HẠNG PHÒNG ── #}
+<div class="card border-0 shadow-sm p-3 mb-4" style="border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(7, 42, 68, 0.08) !important;">
+    <div class="row g-3 align-items-center justify-content-between">
+        {# Tabs lọc phân khu 1-chạm #}
+        <div class="col-12 col-lg-8">
+            <div class="d-flex flex-wrap gap-2 align-items-center" id="catalog-wing-pills">
+                <span class="text-secondary small fw-bold me-1"><i class="fas fa-layer-group text-gold me-1"></i>Phân khu:</span>
+                <button type="button" class="btn btn-sm btn-dark px-3 rounded-pill fw-bold active text-nowrap" data-wing="all" onclick="filterCatalog('all')">
+                    Tất cả ({{ room_types|length }} hạng)
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-dark px-3 rounded-pill fw-bold text-nowrap" data-wing="2" onclick="filterCatalog('2')">
+                    🏢 Khách Sạn Phố (City)
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-dark px-3 rounded-pill fw-bold text-nowrap" data-wing="1" onclick="filterCatalog('1')">
+                    🏖️ Biệt Thự Biển (Resort)
                 </button>
             </div>
         </div>
-    </form>
+
+        {# Ô tìm kiếm nhanh #}
+        <div class="col-12 col-lg-4 text-lg-end">
+            <div class="input-group input-group-sm">
+                <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                <input type="text" id="catalog-search" class="form-control border-start-0 ps-0"
+                       placeholder="Tìm tên hạng phòng, mã phòng..." oninput="searchCatalog(this.value)">
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Room types list -->
-<div class="the-chinh p-0 overflow-hidden">
-    <div class="the-tieude-sach px-4 py-3">
-        <span class="fw-bold"><i class="fas fa-list me-2"></i>Danh sách loại phòng</span>
-        <span class="badge bg-secondary ms-2">{{ room_types|length }}</span>
-    </div>
+{# ── DANH SÁCH THẺ HẠNG PHÒNG EDITORIAL COASTAL LUXURY ── #}
+<div class="d-flex flex-column gap-4 mb-5" id="room-types-catalog-list">
     {% if room_types %}
     {% for rt in room_types %}
-    <div class="border-bottom p-4 {% if not rt.is_active %}opacity-50{% endif %}">
-        <div class="row align-items-start g-3">
-            <div class="col-md-6">
-                <div class="fw-bold chu-datphong">{{ rt.room_type_code }}</div>
-                {% if rt.hotel_name %}
-                <div class="kichthuoc-nho-hon text-muted"><i class="fas fa-hotel me-1"></i>{{ rt.hotel_name }}</div>
-                {% endif %}
-                {% if rt.description %}
-                <p class="small text-muted mb-0 mt-1">{{ rt.description }}</p>
-                {% endif %}
-                {% if rt.amenities %}
-                <div class="kichthuoc-nho-hon text-muted mt-1"><i class="fas fa-star me-1"></i>{{ rt.amenities }}</div>
-                {% endif %}
-            </div>
-            <div class="col-md-3">
-                <div class="d-flex flex-wrap gap-2 small">
-                    <span class="huyhieu-sach bg-light border text-dark">
-                        <i class="fas fa-user me-1"></i>{{ rt.max_adults }} người lớn
+    {% set commercial_name = room_type_name_map.get(rt.room_type_code, rt.room_type_code) %}
+    {% set spec = room_specs.get(rt.room_type_code, {}) %}
+    {% set img_url = rt.main_image if rt.main_image else (rt.images[0] if rt.images and rt.images|length > 0 else '/static/images/tropical-swimming-pool.jpg') %}
+    
+    <div class="card border-0 shadow-sm overflow-hidden catalog-item-card"
+         data-wing="{{ rt.hotel_id }}"
+         data-name="{{ commercial_name }} {{ rt.room_type_code }}"
+         style="border-radius: 18px; background: #FFFFFF; border: 1.5px solid rgba(184, 151, 88, 0.22) !important; transition: transform 0.2s, box-shadow 0.2s;">
+        
+        <div class="row g-0">
+            {# CỘT 1: ẢNH ĐẠI DIỆN 16:9 SẮC NÉT & BADGES OVERLAY (COL-LG-4) #}
+            <div class="col-lg-4 position-relative">
+                <div class="h-100" style="min-height: 220px; max-height: 260px;">
+                    <img src="{{ img_url }}" alt="{{ commercial_name }}" class="w-100 h-100"
+                         style="object-fit: cover;"
+                         onerror="this.src='/static/images/tropical-swimming-pool.jpg'">
+                </div>
+                
+                {# Overlay Badges #}
+                <div class="position-absolute top-0 start-0 m-3 d-flex flex-column gap-1">
+                    <span class="badge rounded-pill px-25 py-1 text-white shadow-sm"
+                          style="background: {% if rt.hotel_id == 2 %}rgba(7, 42, 68, 0.88){% else %}rgba(184, 151, 88, 0.92){% endif %}; backdrop-filter: blur(4px); font-size: 0.72rem; font-weight: 700;">
+                        {% if rt.hotel_id == 2 %}🏢 Khu City Hotel{% else %}🏖️ Khu Biệt Thự Biển{% endif %}
                     </span>
-                    <span class="huyhieu-sach bg-light border text-dark">
-                        <i class="fas fa-child me-1"></i>{{ rt.max_children }} trẻ em
+                    <span class="badge rounded-pill bg-white text-dark shadow-sm px-2 py-1" style="font-size: 0.7rem; font-weight: 700;">
+                        <i class="fas fa-door-open text-primary me-1"></i>{{ rt.physical_rooms_count or 0 }} buồng phòng vật lý
                     </span>
-                    {% if rt.extra_bed_capacity and rt.extra_bed_capacity > 0 %}
-                    <span class="huyhieu-sach bg-info bg-opacity-10 text-info border">
-                        +{{ rt.extra_bed_capacity }} giường phụ
+                </div>
+
+                <div class="position-absolute bottom-0 start-0 m-3">
+                    {% if rt.is_active %}
+                    <span class="badge bg-success bg-opacity-90 text-white rounded-pill px-25 py-1 shadow-sm" style="font-size: 0.72rem;">
+                        <i class="fas fa-check-circle me-1"></i>Đang kinh doanh
+                    </span>
+                    {% else %}
+                    <span class="badge bg-secondary rounded-pill px-25 py-1 shadow-sm" style="font-size: 0.72rem;">
+                        Tạm ngưng
                     </span>
                     {% endif %}
                 </div>
-                <div class="fw-bold chu-datphong mt-2">{{ rt.base_price|vnd }}/đêm</div>
-                {% if rt.extra_adult_fee and rt.extra_adult_fee > 0 %}
-                <div class="kichthuoc-nho-hon text-muted">+{{ rt.extra_adult_fee|vnd }}/người lớn thêm</div>
-                {% endif %}
             </div>
-            <div class="col-md-3">
-                <!-- Inline edit form -->
-                <form method="POST" action="/manager/room-catalog" class="d-inline">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="room_type_id" value="{{ rt.room_type_id }}">
-                    <input type="hidden" name="room_type_code" value="{{ rt.room_type_code }}">
-                    <input type="hidden" name="hotel_id" value="{{ rt.hotel_id or 1 }}">
-                    <input type="hidden" name="max_adults" value="{{ rt.max_adults }}">
-                    <input type="hidden" name="max_children" value="{{ rt.max_children }}">
-                    <input type="hidden" name="description" value="{{ rt.description or '' }}">
-                    <input type="hidden" name="amenities" value="{{ rt.amenities or '' }}">
-                    <input type="hidden" name="extra_bed_capacity" value="{{ rt.extra_bed_capacity or 0 }}">
-                    <input type="hidden" name="extra_adult_fee" value="{{ rt.extra_adult_fee or 0 }}">
-                    <input type="hidden" name="child_breakfast_fee" value="{{ rt.child_breakfast_fee or 0 }}">
-                    <input type="hidden" name="allow_child_sharing" value="{{ rt.allow_child_sharing or 1 }}">
-                    <div class="input-group input-group-sm mb-2">
-                        <input type="number" name="base_price" class="form-control bieumau-dieukhien-sach"
-                               value="{{ rt.base_price }}" min="0" step="1000">
-                        <button type="submit" class="btn btn-success px-2" title="Cập nhật giá">
-                            <i class="fas fa-save"></i>
-                        </button>
+
+            {# CỘT 2: THÔNG TIN THƯƠNG MẠI & RUY-BĂNG THÔNG SỐ 5 SAO (COL-LG-5) #}
+            <div class="col-lg-5 p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="font-monospace fw-bold px-2 py-05 rounded" style="background: rgba(7, 42, 68, 0.08); color: #072A44; font-size: 0.82rem; letter-spacing: 0.5px;">
+                            {{ rt.room_type_code }}
+                        </span>
+                        <span class="text-muted small" style="font-size: 0.75rem;">· ID: #{{ rt.room_type_id }}</span>
                     </div>
-                </form>
-                <div class="d-flex gap-1">
-                    <a href="/manager/room-edit/{{ rt.room_type_id }}" class="btn btn-sm btn-outline-primary px-2"
-                       title="Chỉnh sửa chi tiết">
-                        <i class="fas fa-pen-alt"></i>
+
+                    <h4 class="fw-bold mb-2 text-dark" style="font-family: var(--font-display, 'Playfair Display'); font-size: 1.45rem;">
+                        {{ commercial_name }}
+                    </h4>
+
+                    {# Ruy-băng thông số chuẩn 5 sao (Specs Ribbon) #}
+                    <div class="d-flex flex-wrap gap-2 mb-3 pb-2 border-bottom" style="font-size: 0.78rem;">
+                        {% if spec.area %}
+                        <span class="badge bg-light text-dark border px-2 py-1 fw-semibold">
+                            <i class="fas fa-vector-square text-secondary me-1"></i>{{ spec.area }}
+                        </span>
+                        {% endif %}
+                        {% if spec.bed %}
+                        <span class="badge bg-light text-dark border px-2 py-1 fw-semibold">
+                            <i class="fas fa-bed text-gold me-1"></i>{{ spec.bed }}
+                        </span>
+                        {% endif %}
+                        {% if spec.view %}
+                        <span class="badge bg-light text-dark border px-2 py-1 fw-semibold">
+                            <i class="fas fa-mountain-sun text-success me-1"></i>{{ spec.view }}
+                        </span>
+                        {% endif %}
+                        {% if spec.bath %}
+                        <span class="badge bg-light text-dark border px-2 py-1 fw-semibold">
+                            <i class="fas fa-bath text-info me-1"></i>{{ spec.bath }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    {# Mô tả & Tiện ích đặc trưng #}
+                    {% if rt.description %}
+                    <p class="text-secondary small mb-2 line-clamp-2" style="font-size: 0.82rem; line-height: 1.45;">
+                        {{ rt.description }}
+                    </p>
+                    {% endif %}
+
+                    {% if rt.amenities %}
+                    <div class="text-muted small" style="font-size: 0.76rem;">
+                        <i class="fas fa-concierge-bell text-gold me-1"></i>{{ rt.amenities }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                {# Sức chứa khách #}
+                <div class="d-flex align-items-center gap-2 mt-3 pt-2">
+                    <span class="badge bg-light text-dark border px-2 py-1 small">
+                        <i class="fas fa-user text-primary me-1"></i>Tối đa {{ rt.max_adults }} người lớn
+                    </span>
+                    <span class="badge bg-light text-dark border px-2 py-1 small">
+                        <i class="fas fa-child text-info me-1"></i>{{ rt.max_children }} trẻ em
+                    </span>
+                    {% if rt.extra_bed_capacity and rt.extra_bed_capacity > 0 %}
+                    <span class="badge bg-light text-dark border px-2 py-1 small">
+                        <i class="fas fa-plus text-success me-1"></i>{{ rt.extra_bed_capacity }} giường phụ
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# CỘT 3: BIỂU GIÁ NIÊM YẾT & ĐỔI GIÁ NHANH & TÁC VỤ (COL-LG-3) #}
+            <div class="col-lg-3 p-4 d-flex flex-column justify-content-between border-start" style="background: rgba(7, 42, 68, 0.02);">
+                <div>
+                    <span class="text-muted small text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+                        Giá Niêm Yết Hệ Thống
+                    </span>
+                    <div class="fw-bold fs-4 text-dark mb-1" style="font-family: var(--font-display); color: #072A44 !important;">
+                        {{ "{:,.0f}".format(rt.base_price or 0) }} ₫ <span class="fs-6 text-muted fw-normal">/đêm</span>
+                    </div>
+                    <div class="text-muted small mb-3" style="font-size: 0.72rem;">* Đã bao gồm buffet sáng & thuế GTGT</div>
+
+                    {# Hộp Cập Nhật Giá Nhanh 1-Chạm #}
+                    <form method="POST" action="/manager/room-catalog" class="mb-3">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="room_type_id" value="{{ rt.room_type_id }}">
+                        <input type="hidden" name="room_type_code" value="{{ rt.room_type_code }}">
+                        <input type="hidden" name="hotel_id" value="{{ rt.hotel_id or 1 }}">
+                        <input type="hidden" name="max_adults" value="{{ rt.max_adults }}">
+                        <input type="hidden" name="max_children" value="{{ rt.max_children }}">
+                        <input type="hidden" name="description" value="{{ rt.description or '' }}">
+                        <input type="hidden" name="amenities" value="{{ rt.amenities or '' }}">
+                        <input type="hidden" name="extra_bed_capacity" value="{{ rt.extra_bed_capacity or 0 }}">
+                        <input type="hidden" name="extra_adult_fee" value="{{ rt.extra_adult_fee or 0 }}">
+                        <input type="hidden" name="child_breakfast_fee" value="{{ rt.child_breakfast_fee or 0 }}">
+                        <input type="hidden" name="allow_child_sharing" value="{{ rt.allow_child_sharing or 1 }}">
+
+                        <label class="form-label small fw-bold text-secondary mb-1">Cập nhật nhanh giá:</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" name="base_price" class="form-control fw-bold"
+                                   value="{{ rt.base_price }}" min="0" step="1000" style="border-radius: 8px 0 0 8px; color: #072A44;">
+                            <button type="submit" class="btn btn-success fw-bold px-3" style="border-radius: 0 8px 8px 0;" title="Lưu giá mới">
+                                <i class="fas fa-save me-1"></i>Lưu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {# Nút Sửa Chi Tiết & Xóa #}
+                <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                    <a href="/manager/room-edit/{{ rt.room_type_id }}" class="btn btn-sm btn-outline-secondary px-3 py-1 fw-semibold flex-grow-1"
+                       style="border-radius: 8px;" title="Chỉnh sửa cấu hình toàn diện">
+                        <i class="fas fa-edit me-1 text-gold"></i>Sửa chi tiết
                     </a>
                     <form method="POST" action="/manager/room-catalog" class="d-inline">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="room_type_id" value="{{ rt.room_type_id }}">
-                        <button type="submit" class="btn btn-sm btn-outline-danger px-2"
-                                onclick="return confirm('Xóa loại phòng {{ rt.room_type_code }}?')"
-                                title="Xóa">
-                            <i class="fas fa-trash"></i>
+                        <button type="submit" class="btn btn-sm btn-outline-danger px-2 py-1"
+                                style="border-radius: 8px;"
+                                onclick="return confirm('Xác nhận vô hiệu hóa hạng phòng {{ commercial_name }} ({{ rt.room_type_code }})?')"
+                                title="Vô hiệu hóa hạng phòng">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     </form>
-                    <span class="huyhieu-sach kichthuoc-nho-hon {% if rt.is_active %}bg-success bg-opacity-10 text-success border-success{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} border">
-                        {% if rt.is_active %}Hoạt động{% else %}Ẩn{% endif %}
-                    </span>
                 </div>
             </div>
         </div>
     </div>
     {% endfor %}
     {% else %}
-    <div class="p-5 text-center text-muted">
+    <div class="card border-0 shadow-sm p-5 text-center text-muted" style="border-radius: 18px;">
         <i class="fas fa-bed fa-3x opacity-25 mb-3 d-block"></i>
-        <p>Chưa có loại phòng nào. Hãy tạo mới!</p>
+        Chưa có hạng phòng nào được thiết lập. Hãy nhấn "Thêm Hạng Phòng Mới" để bắt đầu.
     </div>
     {% endif %}
 </div>
+
+{# ── JAVASCRIPT BỘ LỌC PHÂN KHU & TÌM KIẾM ── #}
+<script>
+let activeWing = 'all';
+let searchQuery = '';
+
+function filterCatalog(wing) {
+    activeWing = wing;
+    const btns = document.querySelectorAll('#catalog-wing-pills button');
+    btns.forEach(b => {
+        if (b.dataset.wing === wing) {
+            b.className = 'btn btn-sm btn-dark px-3 rounded-pill fw-bold active text-nowrap';
+        } else {
+            b.className = 'btn btn-sm btn-outline-dark px-3 rounded-pill fw-bold text-nowrap';
+        }
+    });
+    applyCatalogFilter();
+}
+
+function searchCatalog(val) {
+    searchQuery = val.toLowerCase().trim();
+    applyCatalogFilter();
+}
+
+function applyCatalogFilter() {
+    const items = document.querySelectorAll('.catalog-item-card');
+    items.forEach(item => {
+        const matchesWing = (activeWing === 'all') || (item.dataset.wing === activeWing);
+        const matchesSearch = !searchQuery || item.dataset.name.toLowerCase().includes(searchQuery);
+        if (matchesWing && matchesSearch) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+</script>
+
+<style>
+.catalog-item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(7, 42, 68, 0.08) !important;
+}
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
+
 {% endblock %}

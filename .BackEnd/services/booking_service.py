@@ -260,7 +260,7 @@ def create_online_booking(data: Dict[str, Any], customer_account_id: int, raise_
                     WHERE physical_room_id = ? AND locked_until > ?
                 """, (physical_room_id, now_str))
                 if cursor.fetchone():
-                    msg = "Phòng hiện đang được giữ chỗ tạm thời trong 10 phút bởi khách hàng khác."
+                    msg = "Phòng hiện đang được giữ chỗ tạm thời trong 15 phút bởi khách hàng khác."
                     if raise_on_error:
                         raise RoomAlreadyLockedError(msg)
                     return False, {}, msg
@@ -288,17 +288,37 @@ def create_online_booking(data: Dict[str, Any], customer_account_id: int, raise_
         if not price_res.get('allowed'):
             return False, {}, price_res.get('message', 'Chính sách phòng không phù hợp số khách.')
 
-        base_room_total = price_res['base_room_total']
+        standard_base_total = price_res['base_room_total']
+        locked_unit_price = data.get('locked_unit_price') or data.get('unit_price')
 
-        # 5. Áp dụng mã khuyến mãi qua Promotion Service
-        is_promo_valid, discount_amount, total_after_promo, promo_msg = validate_and_apply_promo(
-            cursor, promo_code, membership_tier, base_room_total, checkin_date_str, atomic_increment=True
-        )
-        if not is_promo_valid:
-            conn.rollback()
-            if raise_on_error:
-                raise PromotionInvalidError(promo_msg)
-            return False, {}, promo_msg
+        if locked_unit_price and float(locked_unit_price) > 0:
+            base_room_total = int(round(float(locked_unit_price))) * len(list_of_nights)
+            discount_amount = max(0, standard_base_total - base_room_total)
+            total_after_promo = base_room_total
+        else:
+            base_room_total = standard_base_total
+            # Kiểm tra khuyến mãi tự động hoặc hạng thành viên nếu không truyền mã ưu đãi cụ thể
+            promo_p, promo_c = get_promo_price_for_date(
+                cursor, standard_base_total // len(list_of_nights), room_type_code, checkin_date_str, membership_tier, hotel_id
+            )
+            if membership_tier == 'Gold':
+                promo_p = int(round(promo_p * 0.95))
+
+            calculated_promo_total = promo_p * len(list_of_nights)
+            if calculated_promo_total < standard_base_total and not promo_code:
+                base_room_total = calculated_promo_total
+                total_after_promo = calculated_promo_total
+                discount_amount = standard_base_total - calculated_promo_total
+            else:
+                # 5. Áp dụng mã khuyến mãi qua Promotion Service
+                is_promo_valid, discount_amount, total_after_promo, promo_msg = validate_and_apply_promo(
+                    cursor, promo_code, membership_tier, base_room_total, checkin_date_str, atomic_increment=True
+                )
+                if not is_promo_valid:
+                    conn.rollback()
+                    if raise_on_error:
+                        raise PromotionInvalidError(promo_msg)
+                    return False, {}, promo_msg
 
         # 6. Tính thuế GTGT (VAT 10%) và tiền đặt cọc (VND nguyên)
         tax_amount = int(round(total_after_promo * DEFAULT_TAX_RATE))
@@ -535,6 +555,8 @@ def create_walkin_booking(data: Dict[str, Any], staff_account_id: Optional[int] 
         return True, result, "Tạo đơn đặt phòng Walk-in thành công."
     except Exception as e:
         conn.rollback()
+        if raise_on_error:
+            raise
         return False, {}, f"Lỗi tạo đơn walk-in: {str(e)}"
     finally:
         conn.close()
@@ -781,8 +803,8 @@ def add_extra_service(booking_id: int, service_name: str, quantity: int, unit_pr
 
 # ─── REPOSITORIES / QUERY HELPERS ─────────────────────────────────────────────
 
-def get_bookings_list(user_id: int, role: str, status_filter: str = '', page: int = 1, per_page: int = 20) -> List[Dict[str, Any]]:
-    """Truy vấn danh sách đơn đặt phòng kèm phân trang."""
+def get_bookings_list(user_id: int, role: str, status_filter: str = '', page: int = 1, per_page: int = 20, return_total: bool = False):
+    """Truy vấn danh sách đơn đặt phòng kèm phân trang và lọc trạng thái thời gian thực."""
     offset = (page - 1) * per_page
     conn = get_db_connection()
     try:
@@ -794,22 +816,39 @@ def get_bookings_list(user_id: int, role: str, status_filter: str = '', page: in
             where_sql = "WHERE bm.customer_id = ?"
             params = [user_id]
 
-        if status_filter == 'canceled':
+        today_str = datetime.now().strftime('%Y-%m-%d')
+        if status_filter in ('canceled', 'Canceled'):
             where_sql += " AND bm.booking_status = 'Canceled'"
         elif status_filter == 'active':
             where_sql += " AND bm.booking_status NOT IN ('Canceled', 'Checked-out', 'No-Show')"
+        elif status_filter == 'today_arrivals':
+            where_sql += f" AND bm.arrival_date = '{today_str}' AND bm.booking_status = 'Confirmed'"
+        elif status_filter == 'today_departures':
+            where_sql += f" AND bm.departure_date = '{today_str}' AND bm.booking_status = 'Checked-In'"
+        elif status_filter == 'overdue':
+            where_sql += f" AND bm.departure_date < '{today_str}' AND bm.booking_status = 'Confirmed'"
+        elif status_filter in ('Checked-In', 'inhouse'):
+            where_sql += " AND bm.booking_status = 'Checked-In'"
         elif status_filter:
             where_sql += " AND bm.booking_status = ?"
             params.append(status_filter)
 
+        # Đếm tổng số bản ghi phục vụ phân trang
+        cursor.execute(f"SELECT COUNT(*) AS total FROM Booking_Master bm {where_sql}", params)
+        total_count = cursor.fetchone()['total']
+
         cursor.execute(f"""
             SELECT bm.booking_id, bm.customer_id AS user_id,
                    COALESCE(a.email, bm.guest_email, '') AS customer_email,
-                   COALESCE(a.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_name,
+                   COALESCE(bm.guest_phone, cp.phone, '') AS customer_phone,
                    bm.hotel_id, dh.hotel AS hotel_name,
                    bm.room_type_id, drt.room_type_code,
-                   bm.physical_room_id, pr.room_name AS physical_room_name,
-                   bm.arrival_date, bm.departure_date, bm.nights,
+                   bm.physical_room_id, pr.room_name AS physical_room_name, pr.housekeeping_status,
+                   bm.arrival_date, bm.arrival_date AS checkin_date,
+                   bm.departure_date, bm.departure_date AS checkout_date,
+                   bm.nights,
                    bm.adults, bm.children, bm.babies,
                    bm.total_amount AS total_price, bm.deposit_paid, bm.tax_amount,
                    CASE WHEN bm.booking_status = 'Canceled' THEN 1 ELSE 0 END AS is_canceled,
@@ -818,6 +857,8 @@ def get_bookings_list(user_id: int, role: str, status_filter: str = '', page: in
                    bm.promo_code, bm.discount_amount, bm.created_at
             FROM Booking_Master bm
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             LEFT JOIN Dim_Hotel dh ON bm.hotel_id = dh.hotel_id
             LEFT JOIN Dim_RoomType drt ON bm.room_type_id = drt.room_type_id
             LEFT JOIN Physical_Room pr ON bm.physical_room_id = pr.physical_room_id
@@ -825,7 +866,10 @@ def get_bookings_list(user_id: int, role: str, status_filter: str = '', page: in
             ORDER BY bm.arrival_date DESC, bm.created_at DESC
             LIMIT ? OFFSET ?
         """, params + [per_page, offset])
-        return [dict(r) for r in cursor.fetchall()]
+        bookings = [dict(r) for r in cursor.fetchall()]
+        if return_total:
+            return bookings, total_count
+        return bookings
     finally:
         conn.close()
 
@@ -838,25 +882,31 @@ def search_bookings(keyword: str) -> List[Dict[str, Any]]:
         cursor.execute("""
             SELECT bm.booking_id, bm.customer_id AS user_id,
                    COALESCE(a.email, bm.guest_email, '') AS customer_email,
-                   COALESCE(a.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_name,
+                   COALESCE(bm.guest_phone, cp.phone, '') AS customer_phone,
                    bm.hotel_id, dh.hotel AS hotel_name,
                    bm.room_type_id, drt.room_type_code,
-                   bm.physical_room_id, pr.room_name AS physical_room_name,
-                   bm.arrival_date, bm.departure_date, bm.nights,
+                   bm.physical_room_id, pr.room_name AS physical_room_name, pr.housekeeping_status,
+                   bm.arrival_date, bm.arrival_date AS checkin_date,
+                   bm.departure_date, bm.departure_date AS checkout_date,
+                   bm.nights,
                    bm.total_amount AS total_price, bm.deposit_paid, bm.booking_status AS status_detail,
                    bm.booking_type, '' AS selected_nights,
                    CASE WHEN bm.booking_status = 'Canceled' THEN 1 ELSE 0 END AS is_canceled,
                    bm.special_requests
             FROM Booking_Master bm
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             LEFT JOIN Dim_Hotel dh ON bm.hotel_id = dh.hotel_id
             LEFT JOIN Dim_RoomType drt ON bm.room_type_id = drt.room_type_id
             LEFT JOIN Physical_Room pr ON bm.physical_room_id = pr.physical_room_id
-            WHERE a.email LIKE ? OR a.full_name LIKE ? OR bm.guest_name LIKE ?
+            WHERE a.email LIKE ? OR cp.full_name LIKE ? OR sp.full_name LIKE ? OR bm.guest_name LIKE ?
                OR bm.guest_phone LIKE ? OR CAST(bm.booking_id AS TEXT) = ?
             ORDER BY bm.arrival_date DESC
-            LIMIT 20
-        """, (f'%{keyword}%', f'%{keyword}%', f'%{keyword}%', f'%{keyword}%', keyword))
+            LIMIT 30
+        """, (f'%{keyword}%', f'%{keyword}%', f'%{keyword}%', f'%{keyword}%', f'%{keyword}%', keyword))
         return [dict(r) for r in cursor.fetchall()]
     finally:
         conn.close()
@@ -870,7 +920,7 @@ def get_active_bookings() -> List[Dict[str, Any]]:
         cursor.execute("""
             SELECT bm.booking_id, bm.customer_id AS user_id,
                    COALESCE(a.email, bm.guest_email, '') AS customer_email,
-                   COALESCE(a.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
                    bm.hotel_id, dh.hotel AS hotel_name,
                    bm.room_type_id, drt.room_type_code,
                    bm.physical_room_id, pr.room_name AS physical_room_name,
@@ -881,6 +931,8 @@ def get_active_bookings() -> List[Dict[str, Any]]:
                    bm.special_requests
             FROM Booking_Master bm
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             LEFT JOIN Dim_Hotel dh ON bm.hotel_id = dh.hotel_id
             LEFT JOIN Dim_RoomType drt ON bm.room_type_id = drt.room_type_id
             LEFT JOIN Physical_Room pr ON bm.physical_room_id = pr.physical_room_id
@@ -900,16 +952,22 @@ def get_invoice_details(booking_id: int) -> Tuple[bool, Dict[str, Any], str]:
         cursor.execute("""
             SELECT bm.booking_id, bm.customer_id AS user_id,
                    COALESCE(a.email, bm.guest_email, '') AS customer_email,
-                   COALESCE(a.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
+                   COALESCE(cp.phone, bm.guest_phone, '') AS customer_phone,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_full_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_name,
                    bm.hotel_id, dh.hotel AS hotel_name,
                    bm.room_type_id, drt.room_type_code,
-                   bm.physical_room_id, pr.room_name AS physical_room_name,
-                   bm.arrival_date, bm.departure_date, bm.nights,
+                   bm.physical_room_id, pr.room_name AS physical_room_name, pr.room_name,
+                   bm.arrival_date, bm.departure_date,
+                   bm.arrival_date AS checkin_date, bm.departure_date AS checkout_date,
+                   bm.nights,
                    bm.total_amount AS total_price, bm.deposit_paid, bm.tax_amount, bm.discount_amount,
                    bm.booking_status AS status_detail, bm.booking_status AS status,
                    inv.invoice_number, inv.issued_at AS invoice_issued_at
             FROM Booking_Master bm
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             LEFT JOIN Dim_Hotel dh ON bm.hotel_id = dh.hotel_id
             LEFT JOIN Dim_RoomType drt ON bm.room_type_id = drt.room_type_id
             LEFT JOIN Physical_Room pr ON bm.physical_room_id = pr.physical_room_id
@@ -944,9 +1002,11 @@ def get_cancel_preview(booking_id: int) -> Tuple[bool, Dict[str, Any], str]:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT bm.booking_id, bm.customer_id, bm.arrival_date, bm.total_amount, bm.deposit_paid,
-                   bm.booking_status, COALESCE(a.full_name, bm.guest_name, 'Khách hàng') AS customer_name
+                   bm.booking_status, COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách hàng') AS customer_name
             FROM Booking_Master bm
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             WHERE bm.booking_id = ?
         """, (booking_id,))
         b = cursor.fetchone()
@@ -1023,12 +1083,14 @@ def get_noshow_candidates() -> List[Dict[str, Any]]:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT bm.booking_id, bm.arrival_date,
-                   COALESCE(a.full_name, bm.guest_name, 'Khách hàng') AS customer_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách hàng') AS customer_name,
                    COALESCE(a.email, bm.guest_email, '') AS customer_email,
                    bm.hotel_id, dh.hotel AS hotel_name,
                    drt.room_type_code, pr.room_name AS physical_room_name
             FROM Booking_Master bm
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             LEFT JOIN Dim_Hotel dh ON bm.hotel_id = dh.hotel_id
             LEFT JOIN Dim_RoomType drt ON bm.room_type_id = drt.room_type_id
             LEFT JOIN Physical_Room pr ON bm.physical_room_id = pr.physical_room_id
@@ -1047,11 +1109,13 @@ def get_booking_by_id(booking_id: int) -> Optional[Dict[str, Any]]:
         cursor = conn.cursor()
         cursor.execute("""
             SELECT bm.*, COALESCE(a.email, bm.guest_email, '') AS customer_email,
-                   COALESCE(a.full_name, bm.guest_name, 'Khách hàng') AS customer_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách hàng') AS customer_name,
                    pr.room_name, rt.room_type_code, dh.hotel AS hotel_name,
                    inv.invoice_number
             FROM Booking_Master bm
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             LEFT JOIN Physical_Room pr ON bm.physical_room_id = pr.physical_room_id
             LEFT JOIN Dim_RoomType rt ON bm.room_type_id = rt.room_type_id
             LEFT JOIN Dim_Hotel dh ON bm.hotel_id = dh.hotel_id
@@ -1095,10 +1159,12 @@ def get_room_plan_matrix(start_date_str: Optional[str] = None, number_of_days: i
         end_date_str = list_of_dates[-1]
         cursor.execute("""
             SELECT bn.physical_room_id, bn.night_date, bn.booking_id,
-                   bm.booking_status, COALESCE(a.full_name, bm.guest_name, 'Khách hàng') AS customer_name
+                   bm.booking_status, COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách hàng') AS customer_name
             FROM Booking_Nights bn
             JOIN Booking_Master bm ON bn.booking_id = bm.booking_id
             LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             WHERE bm.booking_status NOT IN ('Canceled', 'No-Show')
               AND bn.night_date >= ? AND bn.night_date <= ?
         """, (list_of_dates[0], end_date_str))

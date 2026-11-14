@@ -10,6 +10,7 @@ Kiểm thử giao diện Flask SSR, Template Filters và luồng xử lý xung �
 import sys
 import os
 import unittest
+import importlib.util
 from unittest.mock import patch
 
 if hasattr(sys.stdout, 'reconfigure'):
@@ -20,7 +21,13 @@ FRONTEND_DIR = os.path.join(ROOT_DIR, 'FrontEnd')
 if FRONTEND_DIR not in sys.path:
     sys.path.insert(0, FRONTEND_DIR)
 
-from app import create_app as create_frontend_app
+# Tránh va chạm namespace sys.modules['app'] giữa .BackEnd/app.py và FrontEnd/app.py
+frontend_app_spec = importlib.util.spec_from_file_location("frontend_app_module", os.path.join(FRONTEND_DIR, "app.py"))
+frontend_app_module = importlib.util.module_from_spec(frontend_app_spec)
+# Cần set sys.modules tạm thời để routes trong FrontEnd import đúng
+sys.modules["frontend_app_module"] = frontend_app_module
+frontend_app_spec.loader.exec_module(frontend_app_module)
+create_frontend_app = frontend_app_module.create_app
 
 
 class TestFrontendViews(unittest.TestCase):
@@ -111,6 +118,91 @@ class TestFrontendViews(unittest.TestCase):
             f"Giao diện cần hiển thị thông báo flash cảnh báo giữ phòng. HTML preview: {html[:500]}"
         )
         print("[PASS] Test 4: Bắt lỗi 409 Conflict và hiển thị flash message cảnh báo giữ chỗ chuẩn mực.")
+
+    def test_5_vip_evoucher_success_page_renders_flawlessly(self):
+        """
+        Test 5: Trang Xác nhận Đặt phòng (/payment/success) hiển thị đầy đủ
+        thông tin chứng thư VIP E-Voucher 5 sao: PNR code, QR Check-in,
+        thông tin phòng, đặc quyền đón tiễn sân bay, và bảng quyết toán.
+        """
+        with self.client.session_transaction() as sess:
+            sess['last_booking'] = {
+                'booking_id': 119850,
+                'total_amount': 1463000,
+                'deposit_paid': 731500,
+                'remaining_amount': 731500,
+                'invoice_number': 'INV-20261106-119850',
+                'payment_type': 'deposit',
+                'payment_method': 'bank_transfer',
+                'room_title': 'Hạng phòng Villa Deluxe Hướng Vườn',
+                'room_name': 'Villa 01',
+                'hotel_name': 'Sài Gòn - Côn Đảo Resort',
+                'checkin_date': '2026-11-06',
+                'checkout_date': '2026-11-08',
+                'num_nights': 2,
+                'adults': 2,
+                'children': 0,
+                'customer_name': 'Trần Thị Du Khách',
+                'customer_email': 'guest1@example.com',
+                'membership_tier': 'VIP Diamond Member',
+            }
+
+        resp = self.client.get('/payment/success')
+        self.assertEqual(resp.status_code, 200)
+        html = resp.data.decode('utf-8')
+
+        self.assertIn('BK-119850', html)
+        self.assertIn('INV-20261106-119850', html)
+        self.assertIn('Hạng phòng Villa Deluxe Hướng Vườn', html)
+        self.assertIn('2026-11-06', html)
+        self.assertIn('2026-11-08', html)
+        self.assertIn('1.463.000', html)
+        self.assertIn('731.500', html)
+        self.assertIn('api.qrserver.com', html)
+        self.assertIn('Sân bay Cỏ Ống', html)
+        self.assertIn('vip-voucher-card', html)
+        print("[PASS] Test 5: VIP E-Voucher 5 sao hiển thị hoàn mỹ với đầy đủ PNR, QR code và đặc quyền.")
+
+    @patch('routes.booking.api_get')
+    def test_06_booking_history_renders_bookings(self, mock_api_get):
+        """Test 6: Truy cập lịch sử đặt phòng `/history` hiển thị danh sách đơn thành công."""
+        mock_api_get.return_value = {
+            'success': True,
+            'bookings': [
+                {
+                    'booking_id': 119850,
+                    'user_id': 1,
+                    'customer_full_name': 'Trần Thị Du Khách',
+                    'hotel_name': 'Sài Gòn - Côn Đảo Resort',
+                    'room_type_code': 'RES_VDEL',
+                    'physical_room_name': 'RES_VDEL_01',
+                    'arrival_date': '2026-11-06',
+                    'departure_date': '2026-11-08',
+                    'nights': 2,
+                    'total_price': 1463000,
+                    'deposit_paid': 731500,
+                    'status': 'Confirmed',
+                    'status_detail': 'Confirmed',
+                    'booking_type': 'continuous',
+                    'is_canceled': 0
+                }
+            ]
+        }
+        with self.client.session_transaction() as sess:
+            sess['token'] = 'test-valid-token'
+            sess['user_id'] = 1
+            sess['username'] = 'guest1@example.com'
+            sess['role'] = 'Guest'
+            sess['account_type'] = 'customer'
+
+        resp = self.client.get('/history')
+        self.assertEqual(resp.status_code, 200)
+        html = resp.data.decode('utf-8')
+        self.assertIn('119850', html)
+        self.assertIn('RES_VDEL', html)
+        self.assertIn('journey-card', html)
+        self.assertNotIn('Chưa có hành trình nào', html)
+        print("[PASS] Test 6: Lịch sử đặt phòng `/history` render chính xác các thẻ hành trình booking.")
 
 
 if __name__ == '__main__':

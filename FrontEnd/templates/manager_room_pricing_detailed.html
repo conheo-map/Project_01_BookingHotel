@@ -1,141 +1,298 @@
 {% extends "base.html" %}
-{% block title %}Chi tiết giá phòng theo ngày - Hotel Booking{% endblock %}
-{% block extra_head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/manager_room_pricing_detailed.css') }}">
-{% endblock %}
-
+{% block title %}Lịch Giá Phòng Chi Tiết 7 Ngày - Quản Trị Resort 5 Sao{% endblock %}
 {% block content %}
 
+<!-- Header & Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Lịch giá phòng chi tiết</h2>
-        <p class="text-muted small mb-0">Quản lý giá ghi đè cho từng phòng vật lý trong 7 ngày tới.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-calendar-alt"></i> Lịch Giá Chi Tiết & Ghi Đè Giá Buồng Phòng
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Lịch Giá Buồng Phòng Chi Tiết
+        </h2>
+        <p class="text-muted small mb-0">Theo dõi biểu giá 7 ngày liên tiếp của từng buồng phòng vật lý, hỗ trợ nhấp để cập nhật giá ghi đè theo từng ngày và ngày lễ.</p>
     </div>
-    <div class="col-auto">
-        <a href="/manager/inventory-pricing" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-th-list me-1"></i>Về Kho phòng
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-md-end">
+        <a href="/manager/inventory-pricing{% if selected_hotel %}?hotel_id={{ selected_hotel }}{% endif %}" 
+           class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-white shadow-sm"
+           style="background: linear-gradient(135deg, #072A44 0%, #0F4C81 100%); border-radius: 8px;">
+            <i class="fas fa-layer-group text-warning"></i> Về Kho Buồng Phòng
+        </a>
+        <a href="/receptionist/room-plan" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-th text-primary"></i> Sơ Đồ Phòng
+        </a>
+        <a href="/manager" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #475569; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-arrow-left"></i> Dashboard
         </a>
     </div>
 </div>
 
-<!-- Filter -->
-<div class="the-chinh p-3 mb-4">
-    <form action="/manager/room-pricing-detailed" method="GET" class="row g-2 align-items-end">
-        <input type="hidden" name="start_date" value="{{ start_date }}">
-        <div class="col-md-4">
-            <label class="bieumau-nhan-sach">Chọn khách sạn</label>
-            <select name="hotel_id" class="form-select bieumau-dieukhien-sach">
-                <option value="">-- Tất cả khách sạn --</option>
-                {% for h in hotels %}
-                <option value="{{ h.hotel_id }}" {% if selected_hotel == h.hotel_id %}selected{% endif %}>
-                    {{ h.hotel_name }}
-                </option>
-                {% endfor %}
-            </select>
+<!-- Controls: Hotel Filter & Date Navigation Strip -->
+<div class="bg-white rounded-3 shadow-sm p-3 mb-4" style="border: 1px solid #E2E8F0;">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <!-- Hotel Filter Tabs -->
+        <div class="d-flex align-items-center gap-2">
+            <a href="/manager/room-pricing-detailed?start_date={{ start_date }}" 
+               class="btn btn-sm px-3 py-2 fw-bold text-decoration-none shadow-2xs {% if not selected_hotel %}text-white{% else %}text-muted bg-white border{% endif %}"
+               style="border-radius: 8px; {% if not selected_hotel %}background: #072A44; border: 1px solid #072A44;{% endif %}">
+                <i class="fas fa-hotel me-1"></i> Tất Cả Cơ Sở
+            </a>
+            {% for h in hotels %}
+            <a href="/manager/room-pricing-detailed?hotel_id={{ h.hotel_id }}&start_date={{ start_date }}" 
+               class="btn btn-sm px-3 py-2 fw-bold text-decoration-none shadow-2xs {% if selected_hotel == h.hotel_id %}text-white{% else %}text-muted bg-white border{% endif %}"
+               style="border-radius: 8px; {% if selected_hotel == h.hotel_id %}background: #072A44; border: 1px solid #072A44;{% endif %}">
+                <i class="{% if 'Resort' in h.hotel_name %}fas fa-umbrella-beach{% else %}fas fa-city{% endif %} me-1"></i>
+                {{ h.hotel_name }}
+            </a>
+            {% endfor %}
         </div>
-        <div class="col-auto">
-            <button type="submit" class="btn nut-xanh-datphong px-4 py-2">
-                <i class="fas fa-search me-1"></i>Xem lịch
-            </button>
-        </div>
-    </form>
-</div>
 
-<!-- Date Navigation -->
-<div class="d-flex justify-content-between align-items-center mb-4 p-3 the-chinh bg-light bg-opacity-50">
-    <div class="d-flex align-items-center gap-3">
-        <a href="/manager/room-pricing-detailed?start_date={{ prev_week }}{% if selected_hotel %}&hotel_id={{ selected_hotel }}{% endif %}" 
-           class="btn btn-outline-primary btn-sm rounded-pill px-3">
-            <i class="fas fa-chevron-left me-1"></i> Tuần trước
-        </a>
-        <div class="text-center px-4 border-start border-end">
-            <div class="kichthuoc-nho-hon text-muted uppercase fw-bold ls-1">Đang xem giai đoạn</div>
-            <div class="fw-bold chu-datphong">
-                {{ dates[0]|date_parse|format_date('%d/%m/%Y') }} - {{ dates[-1]|date_parse|format_date('%d/%m/%Y') }}
+        <!-- Date Navigation Bar -->
+        <div class="d-flex align-items-center gap-2">
+            <a href="/manager/room-pricing-detailed?start_date={{ prev_week }}{% if selected_hotel %}&hotel_id={{ selected_hotel }}{% endif %}" 
+               class="btn btn-outline-secondary btn-sm px-3 py-1.5 fw-bold" style="border-radius: 6px;">
+                <i class="fas fa-chevron-left me-1"></i> 7 Ngày Trước
+            </a>
+            <div class="px-3 py-1 rounded bg-light border text-center">
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.05em;">Giai Đoạn Đang Xem</div>
+                <div class="fw-bold sc-net-num" style="color: #072A44; font-size: 0.88rem;">
+                    {{ dates[0]|date_parse|format_date('%d/%m/%Y') }} — {{ dates[-1]|date_parse|format_date('%d/%m/%Y') }}
+                </div>
             </div>
+            <a href="/manager/room-pricing-detailed?start_date={{ next_week }}{% if selected_hotel %}&hotel_id={{ selected_hotel }}{% endif %}" 
+               class="btn btn-outline-secondary btn-sm px-3 py-1.5 fw-bold" style="border-radius: 6px;">
+                7 Ngày Tiếp <i class="fas fa-chevron-right ms-1"></i>
+            </a>
+            <a href="/manager/room-pricing-detailed{% if selected_hotel %}?hotel_id={{ selected_hotel }}{% endif %}" 
+               class="btn btn-sm btn-light border px-2.5 py-1.5 text-muted" title="Về ngày hôm nay" style="border-radius: 6px;">
+                <i class="fas fa-calendar-check text-primary"></i> Hôm nay
+            </a>
         </div>
-        <a href="/manager/room-pricing-detailed?start_date={{ next_week }}{% if selected_hotel %}&hotel_id={{ selected_hotel }}{% endif %}" 
-           class="btn btn-outline-primary btn-sm rounded-pill px-3">
-            Tuần sau <i class="fas fa-chevron-right ms-1"></i>
-        </a>
-    </div>
-    <div class="col-auto">
-        <a href="/manager/room-pricing-detailed{% if selected_hotel %}?hotel_id={{ selected_hotel }}{% endif %}" 
-           class="btn btn-link btn-sm text-decoration-none text-muted">
-            <i class="fas fa-history me-1"></i>Về hôm nay
-        </a>
     </div>
 </div>
 
+{% set day_map = {'Sun': 'CN', 'Mon': 'T2', 'Tue': 'T3', 'Wed': 'T4', 'Thu': 'T5', 'Fri': 'T6', 'Sat': 'T7'} %}
+
+<!-- Detailed Pricing Matrix by Room Type -->
 {% if inventory %}
     {% for rt in inventory %}
-    <div class="mb-5">
-        <div class="d-flex align-items-center mb-3">
-            <h5 class="fw-bold mb-0 chu-datphong">{{ rt.room_type_code }}</h5>
-            <span class="badge bg-light text-dark ms-2 border small fw-normal">{{ rt.physical_rooms|length }} phòng</span>
-            <div class="ms-auto kichthuoc-nho-hon text-muted">
-                Giá gốc loại phòng: <span class="fw-bold">{{ rt.base_price|vnd }}</span>
+    {% set commercial_name = room_type_name_map.get(rt.room_type_code, rt.room_type_code) %}
+    {% set is_resort = rt.room_type_code.startswith('RES') %}
+    {% set total_rooms_in_type = rt.physical_rooms|length if rt.physical_rooms else 0 %}
+    
+    <div class="bg-white rounded-3 shadow-sm overflow-hidden mb-4" style="border: 1px solid #E2E8F0;">
+        <!-- Header -->
+        <div class="px-4 py-3 d-flex flex-wrap align-items-center justify-content-between" 
+             style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0;">
+            <div class="d-flex align-items-center gap-3">
+                <span class="fw-bold font-monospace px-2.5 py-1 rounded" style="background: #072A44; color: #FFFFFF; font-size: 0.95rem;">
+                    {{ rt.room_type_code }}
+                </span>
+                <div>
+                    <h5 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem;">
+                        {{ commercial_name }}
+                    </h5>
+                    <div class="d-flex align-items-center gap-2 mt-0.5">
+                        {% if rt.hotel_name %}
+                        <span class="badge bg-light text-secondary border px-2 py-0.5 small" style="font-size: 0.72rem;">
+                            <i class="fas fa-hotel me-1 text-primary"></i>{{ rt.hotel_name }}
+                        </span>
+                        {% endif %}
+                        <span class="badge bg-light text-muted border px-2 py-0.5 small" style="font-size: 0.72rem;">
+                            {{ total_rooms_in_type }} phòng vận hành
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0">
+                <span class="text-muted small">Biểu giá gốc loại phòng:</span>
+                <span class="fw-bold sc-net-num" style="color: #072A44; font-size: 1.05rem;">
+                    {{ rt.base_price|vnd }}
+                </span><span class="text-muted small">/đêm</span>
             </div>
         </div>
 
-        <div class="the-chinh p-0 overflow-hidden shadow-sm">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0" style="min-width: 900px;">
-                    <thead class="bg-light border-bottom">
-                        <tr>
-                            <th class="ps-4 py-3 border-end" style="width: 250px;">Phòng & Trạng thái</th>
-                            {% for d_str in dates %}
-                            <th class="text-center py-3">
-                                <div class="kichthuoc-nho-hon text-muted">{{ d_str[8:10] }}/{{ d_str[5:7] }}</div>
-                                <div class="small fw-bold">{{ d_str|date_parse|format_date('%a') if d_str|date_parse else '' }}</div>
-                            </th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pr in rt.physical_rooms %}
-                        <tr class="align-middle">
-                            <td class="ps-4 py-3 border-end">
-                                <div class="fw-bold text-dark mb-0">{{ pr.room_name }}</div>
-                                <div class="kichthuoc-nho-hon text-muted d-flex align-items-center gap-2">
-                                    <span>ID: <code class="text-primary">{{ pr.physical_room_id }}</code></span>
-                                    <span>•</span>
-                                    <span class="{% if pr.housekeeping_status == 'Clean' %}text-success{% else %}text-warning{% endif %}">
-                                        <i class="fas fa-magic me-1"></i>{{ pr.housekeeping_status }}
-                                    </span>
-                                </div>
-                            </td>
-                            {% for wp in pr.weekly_prices %}
-                            <td class="text-center p-2">
-                                <div class="gia-bongbong p-2 rounded-3 border transition-all hover-scale contro-chuot 
-                                    {% if wp.is_holiday %}bg-danger bg-opacity-10 border-danger border-opacity-25{% else %}bg-white border-light{% endif %}"
-                                     data-bs-toggle="tooltip" title="{{ wp.date }}">
-                                    <div class="fw-bold small {% if wp.is_holiday %}text-danger{% else %}chu-datphong{% endif %}">
-                                        {{ (wp.price / 1000)|int }}k
-                                    </div>
-                                    <div class="kichthuoc-nho-hon opacity-75" style="font-size: 0.65rem;">
-                                        {% if wp.is_holiday %}Lễ{% else %}Thường{% endif %}
-                                    </div>
-                                </div>
-                            </td>
-                            {% endfor %}
-                        </tr>
+        <!-- 7-Day Pricing Matrix Table -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" style="min-width: 900px; font-size: 0.85rem;">
+                <thead style="background: #F1F5F9; border-bottom: 1px solid #CBD5E1;">
+                    <tr>
+                        <th class="ps-4 py-3 border-end" style="width: 250px;">
+                            <div class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 0.05em;">Buồng Phòng & Trạng Thái</div>
+                        </th>
+                        {% for d_str in dates %}
+                        {% set eng_day = d_str|date_parse|format_date('%a') if d_str|date_parse else '' %}
+                        {% set vn_day = day_map.get(eng_day, eng_day) %}
+                        {% set is_weekend = eng_day in ['Sat', 'Sun'] %}
+                        <th class="text-center py-2.5 px-2 {% if is_weekend %}bg-warning bg-opacity-10{% endif %}" style="min-width: 95px;">
+                            <div class="fw-bold {% if is_weekend %}text-danger{% else %}text-dark{% endif %}" style="font-size: 0.85rem;">
+                                {{ vn_day }}
+                            </div>
+                            <div class="text-muted sc-net-num" style="font-size: 0.72rem;">
+                                {{ d_str[8:10] }}/{{ d_str[5:7] }}
+                            </div>
+                        </th>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pr in rt.physical_rooms %}
+                    {% set rname = pr.room_name or '' %}
+                    {% set clean_num = rname.split('_')[-1] if '_' in rname else rname %}
+                    {% set is_occupied = pr.current_booking_id is not none and pr.current_booking_id > 0 %}
+                    
+                    <tr style="border-bottom: 1px solid #F1F5F9;">
+                        <!-- Room Column -->
+                        <td class="ps-4 py-2.5 border-end">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge rounded-circle p-1.5" style="background: rgba(7, 42, 68, 0.08); color: #072A44; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-door-closed" style="font-size: 0.75rem;"></i>
+                                </span>
+                                <div>
+                                    <div class="fw-bold text-dark font-monospace" style="font-size: 0.9rem;">
+                                        {% if is_resort %}
+                                        Villa {{ clean_num }}
+                                        {% else %}
+                                        P.{{ clean_num }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1.5 text-muted" style="font-size: 0.7rem;">
+                                        <span>#{{ pr.physical_room_id }}</span>
+                                        <span>•</span>
+                                        {% if pr.housekeeping_status == 'Clean' %}
+                                        <span class="text-success"><i class="fas fa-check-circle me-0.5"></i>Sạch</span>
+                                        {% elif pr.housekeeping_status == 'Dirty' %}
+                                        <span class="text-warning"><i class="fas fa-broom me-0.5"></i>Cần dọn</span>
+                                        {% else %}
+                                        <span class="text-secondary"><i class="fas fa-tools me-0.5"></i>Bảo trì</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- 7-Day Price Cells -->
+                        {% for wp in pr.weekly_prices %}
+                        <td class="text-center p-2">
+                            <div class="price-cell p-2 rounded-3 border transition-all cursor-pointer shadow-2xs" 
+                                 onclick="openPriceModal('{{ pr.physical_room_id }}', '{{ is_resort|string }}', '{{ clean_num }}', '{{ rname }}', '{{ wp.date }}', '{{ wp.price }}', {{ wp.is_holiday }})"
+                                 style="background: {% if wp.is_holiday %}#FEF2F2{% else %}#FFFFFF{% endif %}; border-color: {% if wp.is_holiday %}#FCA5A5{% else %}#E2E8F0{% endif %}; cursor: pointer; transition: all 0.15s ease;"
+                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='#072A44';"
+                                 onmouseout="this.style.transform='none'; this.style.borderColor='{% if wp.is_holiday %}#FCA5A5{% else %}#E2E8F0{% endif %}';"
+                                 title="Nhấp để cập nhật giá ngày {{ wp.date }}">
+                                <div class="fw-bold sc-net-num small {% if wp.is_holiday %}text-danger{% else %}text-dark{% endif %}">
+                                    {{ (wp.price / 1000)|int }}k
+                                </div>
+                                <div class="text-muted" style="font-size: 0.65rem;">
+                                    {% if wp.is_holiday %}
+                                    <span class="badge bg-danger text-white rounded-pill px-1" style="font-size: 0.58rem;">Lễ</span>
+                                    {% else %}
+                                    <span class="opacity-75">Chuẩn</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
     {% endfor %}
 {% else %}
-<div class="text-center py-5">
-    <div class="text-muted mb-3"><i class="fas fa-bed fa-3x opacity-25"></i></div>
-    <h5 class="text-muted">Không tìm thấy dữ liệu phòng cho khách sạn này.</h5>
+<div class="bg-white rounded-3 shadow-sm p-5 text-center text-muted" style="border: 1px solid #E2E8F0;">
+    <i class="fas fa-hotel fa-3x opacity-25 mb-3 d-block"></i>
+    <h5 class="text-muted">Không tìm thấy dữ liệu buồng phòng cho cơ sở này.</h5>
 </div>
 {% endif %}
 
+<!-- Quick Price Modal for Single Cell Click -->
+<div class="modal fade" id="cellPriceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header text-white" style="background: #072A44; border-bottom: none;">
+                <div>
+                    <h6 class="modal-title fw-bold" id="modalRoomTitle">
+                        <i class="fas fa-tags text-warning me-2"></i>Cập Nhật Giá Buồng Phòng
+                    </h6>
+                    <div class="small opacity-75 mt-0.5" id="modalRoomSubtitle">Áp dụng giá ghi đè cho phòng cụ thể</div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="/manager/inventory-pricing{% if selected_hotel %}?hotel_id={{ selected_hotel }}{% endif %}">
+                <input type="hidden" name="mode" value="room">
+                <input type="hidden" name="target_id" id="modalTargetId" value="">
+                
+                <div class="modal-body p-4">
+                    <div class="p-3 rounded-3 mb-3" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Buồng phòng:</span>
+                            <span class="fw-bold font-monospace text-dark" id="modalRoomDisplay">—</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted small">Ngày áp dụng:</span>
+                            <span class="fw-bold sc-net-num text-primary" id="modalDateDisplay">—</span>
+                        </div>
+                    </div>
 
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-muted">Từ ngày</label>
+                            <input type="date" name="start_date" id="modalStartDate" class="form-control form-control-sm sc-net-num" required style="border-radius: 6px;">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-muted">Đến ngày</label>
+                            <input type="date" name="end_date" id="modalEndDate" class="form-control form-control-sm sc-net-num" required style="border-radius: 6px;">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted">Biểu giá ghi đè mới (VNĐ/đêm)</label>
+                            <input type="number" name="new_price" id="modalNewPrice" class="form-control sc-net-num fw-bold" 
+                                   min="0" step="1000" required style="border-radius: 8px; font-size: 1.1rem; color: #065F46;">
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_holiday" id="modalIsHoliday">
+                                <label class="form-check-label small fw-bold text-danger" for="modalIsHoliday">
+                                    Áp dụng tính chất Ngày Lễ / Tết
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-top p-3 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary px-3" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-sm px-4 fw-bold text-white shadow-sm"
+                            style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); border: none; border-radius: 6px;">
+                        <i class="fas fa-check-circle me-1"></i> Lưu Biểu Giá
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-<script src="{{ url_for('static', filename='js/pages/manager_room_pricing_detailed.js') }}"></script>
+{% block extra_scripts %}
+<script>
+function openPriceModal(prId, isResort, cleanNum, rname, validDate, currentPrice, isHoliday) {
+    document.getElementById('modalTargetId').value = prId;
+    const roomText = (isResort === 'True' || isResort === true) ? 'Villa ' + cleanNum : 'Phòng ' + cleanNum;
+    document.getElementById('modalRoomDisplay').innerText = roomText + ' (' + rname + ')';
+    document.getElementById('modalDateDisplay').innerText = validDate;
+    document.getElementById('modalStartDate').value = validDate;
+    document.getElementById('modalEndDate').value = validDate;
+    document.getElementById('modalNewPrice').value = currentPrice;
+    document.getElementById('modalIsHoliday').checked = (isHoliday == 1);
+    
+    var modal = new bootstrap.Modal(document.getElementById('cellPriceModal'));
+    modal.show();
+}
+</script>
+{% endblock %}
 
 {% endblock %}

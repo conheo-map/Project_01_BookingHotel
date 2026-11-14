@@ -1,74 +1,295 @@
 {% extends "base.html" %}
-{% block title %}Đặt phòng thành công - Hotel Booking{% endblock %}
+{% block title %}Xác Nhận Đặt Phòng Thành Công (VIP E-Voucher) - Sài Gòn Côn Đảo Resort{% endblock %}
+
+{% block extra_head %}
+<!-- Google Fonts: Playfair Display + Plus Jakarta Sans with full Vietnamese accents -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/payment_success.css') }}">
+{% endblock %}
+
 {% block content %}
-<div class="xacthuc-baoboc">
-    <div class="xacthuc-chon text-center">
-        <div class="mb-4">
-            <div class="d-inline-flex align-items-center justify-content-center rounded-circle shadow"
-                 style="width:80px;height:80px;background:rgba(16,185,129,.12)">
-                <i class="fas fa-check-circle fa-3x text-success"></i>
-            </div>
-        </div>
-        <h2 class="fw-bold mb-2 text-success">Đặt phòng thành công!</h2>
-        <p class="text-muted small mb-4">Cảm ơn bạn đã sử dụng dịch vụ. Chúng tôi sẽ liên hệ xác nhận sớm nhất.</p>
+<div class="voucher-page-container">
 
-        {% if booking and booking.booking_id %}
-        <div class="the-chinh p-4 mb-4 text-start">
-            <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-receipt me-2 chu-datphong"></i>Thông tin đặt phòng</h6>
-            <div class="row g-2">
-                <div class="col-6">
-                    <div class="text-muted small">Mã đặt phòng</div>
-                    <div class="fw-bold chu-datphong">BK-{{ booking.booking_id }}</div>
-                </div>
-                {% if booking.invoice_number %}
-                <div class="col-6">
-                    <div class="text-muted small">Số hóa đơn</div>
-                    <div class="fw-bold">{{ booking.invoice_number }}</div>
-                </div>
-                {% endif %}
-                <div class="col-6 mt-2">
-                    <div class="text-muted small">Tổng tiền</div>
-                    <div class="fw-bold fs-5 chu-datphong">{{ (booking.total_amount or booking.total_price) | format_vnd }}</div>
-                </div>
-                {% if booking.deposit_paid %}
-                <div class="col-6 mt-2">
-                    <div class="text-muted small">Đã thanh toán</div>
-                    <div class="fw-bold text-success">{{ booking.deposit_paid | format_vnd }}</div>
-                </div>
-                {% endif %}
-                <div class="col-6 mt-2">
-                    <div class="text-muted small">Phương thức</div>
-                    <div class="fw-bold">
-                        {% if booking.payment_method == 'credit_card' %}Thẻ tín dụng
-                        {% elif booking.payment_method == 'bank_transfer' %}Chuyển khoản
-                        {% elif booking.payment_method == 'cash' %}Tiền mặt
-                        {% else %}{{ booking.payment_method }}{% endif %}
-                    </div>
-                </div>
-                <div class="col-6 mt-2">
-                    <div class="text-muted small">Loại thanh toán</div>
-                    <div class="fw-bold">
-                        {% if booking.payment_type == 'full' %}Thanh toán đủ
-                        {% elif booking.payment_type == 'deposit' %}Đặt cọc
-                        {% else %}{{ booking.payment_type }}{% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
+  <!-- BREADCRUMB -->
+  <nav aria-label="breadcrumb" class="voucher-breadcrumb-nav">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>Trang chủ</a></li>
+      <li class="breadcrumb-item"><a href="/booking">Đặt phòng</a></li>
+      <li class="breadcrumb-item"><a href="/history">Lịch sử đặt phòng</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Chứng thư VIP E-Voucher</li>
+    </ol>
+  </nav>
 
-        <div class="alert alert-info border-0 py-2 small mb-4 text-start">
-            <i class="fas fa-info-circle me-2"></i>Bạn có thể xem chi tiết và hủy đặt phòng trong <strong>Lịch sử đặt phòng</strong>.
-        </div>
-
-        <div class="d-grid gap-2">
-            <a href="/history" class="btn nut-xanh-datphong py-2 fw-bold">
-                <i class="fas fa-list me-2"></i>Xem lịch sử đặt phòng
-            </a>
-            <a href="/" class="btn btn-outline-secondary py-2">
-                <i class="fas fa-home me-2"></i>Về trang chủ
-            </a>
-        </div>
+  <!-- SUCCESS TOAST BANNER -->
+  <div class="voucher-alert-banner">
+    <div class="alert-icon-box">
+      <i class="fas fa-check-double"></i>
     </div>
+    <div class="alert-text-box">
+      <strong>Giao dịch bảo lãnh thành công!</strong>
+      <span>Đơn đặt phòng <strong>BK-{{ booking.booking_id }}</strong> đã được khóa phòng chính thức trên hệ thống PMS Sài Gòn - Côn Đảo Resort.</span>
+    </div>
+  </div>
+
+  <!-- HERO AREA -->
+  <div class="voucher-hero-area">
+    <div class="voucher-hero-badge">
+      <i class="fas fa-crown text-warning me-2"></i> CHỨNG THƯ ĐẶT PHÒNG DANH DỰ (VIP E-VOUCHER)
+    </div>
+    <h1 class="voucher-hero-title">Kỳ Nghỉ Của Quý Khách Đã Được Xác Nhận!</h1>
+    <p class="voucher-hero-sub">
+      Sài Gòn - Côn Đảo Resort trân trọng kính chào Quý khách. Thông tin đặt phòng và quyền lợi lưu trú độc quyền đã được kích hoạt thành công trên hệ thống Quản lý Khách sạn (PMS) và gửi xác nhận qua thư điện tử.
+    </p>
+  </div>
+
+  <!-- 2-PIECE VIP E-VOUCHER CARD (BOARDING PASS / CERTIFICATE) -->
+  <div class="vip-voucher-wrapper" id="printableVoucher">
+    <div class="vip-voucher-card">
+
+      {# ── PHẦN THÂN CHÍNH (MAIN SECTION - 68%) ── #}
+      <div class="voucher-main">
+
+        {# Resort Header with Heritage Branding #}
+        <div class="voucher-resort-header">
+          <div class="voucher-brand-info">
+            <div class="brand-crest-row">
+              <i class="fas fa-hotel brand-crest-icon"></i>
+              <span class="voucher-brand-name">SÀI GÒN - CÔN ĐẢO RESORT</span>
+            </div>
+            <span class="voucher-brand-tagline">Di sản Côn Đảo từ năm 1920 • Khu nghỉ dưỡng 4 sao quốc tế</span>
+          </div>
+          <div class="voucher-header-badges">
+            <div class="voucher-status-stamp">
+              <i class="fas fa-shield-check"></i> ĐÃ XÁC NHẬN PMS
+            </div>
+          </div>
+        </div>
+
+        {# Room Block with High-Res Thumbnail #}
+        <div class="voucher-room-block">
+          <img src="{{ url_for('static', filename='uploads/rooms/14_0c0ce6d3.jpg') }}"
+               alt="Phòng Villa Deluxe"
+               class="voucher-room-img"
+               onerror="this.src='/static/images/hero_resort.jpg'">
+          <div class="voucher-room-details">
+            <div class="room-category-tag">HẠNG PHÒNG NGHỈ DƯỠNG CAO CẤP</div>
+            <h3 class="room-title-h3">{{ booking.room_title or 'Hạng phòng Villa Deluxe Hướng Vườn' }}</h3>
+            <p class="room-desc-p">
+              Khu Biệt thự di sản Pháp cổ · Phòng <strong>{{ booking.room_name or 'Villa 01' }}</strong> · 1 Giường King lớn & Ban công riêng nhìn ra vịnh Côn Sơn
+            </p>
+            <div class="guest-rep-meta">
+              <span><i class="fas fa-user-circle me-1 text-gold"></i> Khách hàng: <strong>{{ booking.customer_name or 'Trần Thị Du Khách' }}</strong></span>
+              <span class="ms-3"><i class="fas fa-gem me-1 text-warning"></i> Hạng thẻ: <strong>{{ booking.membership_tier or 'VIP Diamond Member' }}</strong></span>
+              <span class="ms-3 text-muted"><i class="fas fa-envelope me-1"></i> {{ booking.customer_email or 'guest1@example.com' }}</span>
+            </div>
+          </div>
+        </div>
+
+        {# 4-Box Key Highlights Grid #}
+        <div class="voucher-grid">
+          <div class="voucher-grid-item">
+            <div class="voucher-grid-label"><i class="fas fa-calendar-check me-1"></i> Nhận phòng (Check-in)</div>
+            <div class="voucher-grid-val">{{ booking.checkin_date or '2026-11-06' }}</div>
+            <div class="voucher-grid-sub">Từ 14:00 (Hỗ trợ check-in sớm tùy tình trạng phòng)</div>
+          </div>
+          <div class="voucher-grid-item">
+            <div class="voucher-grid-label"><i class="fas fa-calendar-times me-1"></i> Trả phòng (Check-out)</div>
+            <div class="voucher-grid-val">{{ booking.checkout_date or '2026-11-08' }}</div>
+            <div class="voucher-grid-sub">Trước 12:00 (Hỗ trợ gửi hành lý miễn phí)</div>
+          </div>
+          <div class="voucher-grid-item">
+            <div class="voucher-grid-label"><i class="fas fa-moon me-1"></i> Thời gian nghỉ dưỡng</div>
+            <div class="voucher-grid-val">{{ booking.num_nights or 2 }} đêm lưu trú</div>
+            <div class="voucher-grid-sub">Trọn vẹn kỳ nghỉ cuối tuần thanh bình</div>
+          </div>
+          <div class="voucher-grid-item">
+            <div class="voucher-grid-label"><i class="fas fa-users me-1"></i> Số lượng khách</div>
+            <div class="voucher-grid-val">{{ booking.adults or 2 }} Người lớn{% if booking.children %}, {{ booking.children }} Trẻ em{% endif %}</div>
+            <div class="voucher-grid-sub">Tiêu chuẩn nghỉ dưỡng phòng cao cấp</div>
+          </div>
+        </div>
+
+        {# VIP Inclusions List #}
+        <div class="voucher-inclusions">
+          <div class="voucher-inclusions-title">
+            <i class="fas fa-award text-warning me-2"></i> ĐẶC QUYỀN NGHỈ DƯỠNG ĐÃ BAO GỒM TRONG KỲ NGHỈ:
+          </div>
+          <div class="voucher-inclusions-grid">
+            <div class="inclusion-box">
+              <i class="fas fa-plane-arrival"></i>
+              <div>
+                <strong>Đưa đón Sân bay Cỏ Ống</strong>
+                <p>Xe riêng 2 chiều miễn phí từ sân bay về resort</p>
+              </div>
+            </div>
+            <div class="inclusion-box">
+              <i class="fas fa-utensils"></i>
+              <div>
+                <strong>Buffet Sáng Quốc Tế</strong>
+                <p>Ẩm thực Á - Âu thượng hạng tại Nhà hàng Poulo Condore</p>
+              </div>
+            </div>
+            <div class="inclusion-box">
+              <i class="fas fa-glass-cheers"></i>
+              <div>
+                <strong>Trà Chiều &amp; Welcome Drink</strong>
+                <p>Khăn lạnh thảo mộc &amp; Nước trái cây nhiệt đới khi nhận phòng</p>
+              </div>
+            </div>
+            <div class="inclusion-box">
+              <i class="fas fa-swimming-pool"></i>
+              <div>
+                <strong>Tiện Ích Hồ Bơi &amp; Bãi Biển</strong>
+                <p>Toàn quyền sử dụng hồ bơi biển &amp; bãi tắm riêng tư</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {# Financial Settlement Strip #}
+        <div class="voucher-finance-strip">
+          <div class="voucher-finance-col">
+            <span class="voucher-finance-label">Tổng giá trị đơn đặt</span>
+            <span class="voucher-finance-val val-total">{{ (booking.total_amount or booking.total_price) | format_vnd }}</span>
+            <small class="text-muted" style="font-size: 0.72rem;">(Đã gồm 10% thuế GTGT &amp; phí dịch vụ)</small>
+          </div>
+          <div class="voucher-finance-col">
+            <span class="voucher-finance-label">Số tiền đã thanh toán</span>
+            <span class="voucher-finance-val val-paid">{{ (booking.deposit_paid or booking.total_amount) | format_vnd }}</span>
+            <small class="text-success fw-bold" style="font-size: 0.72rem;"><i class="fas fa-check-circle"></i> Đã bảo lãnh thành công</small>
+          </div>
+          <div class="voucher-finance-col">
+            <span class="voucher-finance-label">Số dư còn lại khi Check-in</span>
+            <span class="voucher-finance-val val-remaining">{{ (booking.remaining_amount or 0) | format_vnd }}</span>
+            {% if (booking.remaining_amount or 0) > 0 %}
+              <small class="text-muted" style="font-size: 0.72rem;">(Quyết toán tại quầy Lễ tân)</small>
+            {% else %}
+              <small class="text-success fw-bold" style="font-size: 0.72rem;"><i class="fas fa-check-circle"></i> Đã quyết toán 100%</small>
+            {% endif %}
+          </div>
+          <div class="voucher-finance-col text-end">
+            <span class="voucher-finance-label">Hình thức giao dịch</span>
+            <span class="badge payment-badge">
+              {% if booking.payment_type == 'deposit' %}
+                <i class="fas fa-percentage me-1"></i> Đặt cọc 50%
+              {% else %}
+                <i class="fas fa-check-circle me-1"></i> Thanh toán đủ 100%
+              {% endif %}
+            </span>
+            <div class="text-muted mt-1" style="font-size: 0.72rem;">VietQR / VNPAY An Toàn</div>
+          </div>
+        </div>
+
+      </div>
+
+      {# ── PHẦN CUỐNG VÉ ĐIỆN TỬ (STUB - 32%) ── #}
+      <div class="voucher-stub">
+
+        <div class="stub-header">
+          <div class="stub-resort-title">SÀI GÒN - CÔN ĐẢO</div>
+          <div class="stub-pnr-label">MÃ ĐẶT PHÒNG ĐIỆN TỬ (PNR)</div>
+          <div class="stub-pnr-code">BK-{{ booking.booking_id }}</div>
+          <div class="stub-invoice-no">Hóa đơn: {{ booking.invoice_number or ('INV-20261106-' ~ booking.booking_id) }}</div>
+        </div>
+
+        {# Scannable QR Code for Fast Check-In #}
+        <div class="stub-qr-section">
+          <div class="stub-qr-wrapper">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=SAIGON-CONDAO-BK{{ booking.booking_id }}"
+                 alt="Mã QR Check-in BK-{{ booking.booking_id }}"
+                 class="stub-qr-img">
+          </div>
+          <div class="stub-qr-hint">
+            <i class="fas fa-qrcode text-warning me-1"></i>
+            Xuất trình mã này tại Quầy Lễ tân để nhận phòng nhanh (Express Check-in) trong 60 giây
+          </div>
+        </div>
+
+        {# Concierge Transfer Notice #}
+        <div class="stub-concierge-info">
+          <div class="stub-concierge-title">
+            <i class="fas fa-plane-arrival text-warning me-1"></i> ĐÓN TIỄN SÂN BAY CỎ ỐNG (MIỄN PHÍ)
+          </div>
+          <div class="stub-concierge-desc">
+            Đội ngũ Concierge sẽ chủ động liên hệ Quý khách trước 24 giờ để cập nhật số hiệu chuyến bay và chuẩn bị xe đón Quý khách tại sảnh đến Sân bay Cỏ Ống.
+          </div>
+          <div class="stub-hotline-row">
+            <span>Hotline 24/7:</span>
+            <strong>(0254) 3830 111</strong>
+          </div>
+        </div>
+
+        <div class="stub-footer-note">
+          18-24 Tôn Đức Thắng, Côn Đảo, Bà Rịa - Vũng Tàu
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACTION BUTTON GROUP -->
+  <div class="voucher-actions">
+    <button type="button" class="btn-print-voucher" onclick="window.print()">
+      <i class="fas fa-print me-2"></i> IN CHỨNG THƯ / LƯU PDF
+    </button>
+    <a href="/history" class="btn-history-view">
+      <i class="fas fa-calendar-check me-2"></i> QUẢN LÝ TRONG LỊCH SỬ ĐẶT PHÒNG
+    </a>
+    <button type="button" class="btn-share-voucher" onclick="copyVoucherLink()">
+      <i class="fas fa-share-alt me-2"></i> SAO CHÉP LIÊN KẾT CHỨNG THƯ
+    </button>
+    <a href="/" class="btn-home-link">
+      <i class="fas fa-arrow-left me-1"></i> Quay lại trang chủ
+    </a>
+  </div>
+
+  <!-- HELPFUL TRAVEL GUIDE CARDS (3 COLUMNS) -->
+  <div class="voucher-guide-grid">
+    <div class="guide-card">
+      <div class="guide-card-icon"><i class="fas fa-map-marked-alt"></i></div>
+      <h4 class="guide-card-title">Vị Trí &amp; Đường Đi</h4>
+      <p class="guide-card-text">
+        Tọa lạc tại số 18-24 Tôn Đức Thắng, trung tâm thị trấn Côn Đảo, đối diện trực tiếp Vịnh Côn Sơn. Resort cách sân bay Cỏ Ống 14km (khoảng 20 phút xe riêng).
+      </p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-card-icon"><i class="fas fa-clock"></i></div>
+      <h4 class="guide-card-title">Giờ Giấc &amp; Hành Lý</h4>
+      <p class="guide-card-text">
+        Giờ nhận phòng từ 14:00, giờ trả phòng trước 12:00. Resort hỗ trợ giữ hành lý an toàn miễn phí 24/7 nếu Quý khách có chuyến bay đến sớm hoặc về muộn.
+      </p>
+    </div>
+    <div class="guide-card">
+      <div class="guide-card-icon"><i class="fas fa-id-card"></i></div>
+      <h4 class="guide-card-title">Thủ Tục Cần Thiết</h4>
+      <p class="guide-card-text">
+        Quý khách vui lòng xuất trình CCCD gắn chip / Hộ chiếu bản gốc hoặc ứng dụng VNeID mức 2 cho từng thành viên lưu trú kèm mã E-Voucher này khi nhận phòng.
+      </p>
+    </div>
+  </div>
+
 </div>
+
+<!-- TOAST SCRIPT FOR LINK COPYING -->
+<div id="copyToast" class="voucher-copy-toast">
+  <i class="fas fa-check-circle me-2 text-success"></i> Đã sao chép liên kết chứng thư E-Voucher vào khay nhớ tạm!
+</div>
+
+<script>
+function copyVoucherLink() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(function() {
+    const toast = document.getElementById('copyToast');
+    toast.classList.add('show');
+    setTimeout(function() {
+      toast.classList.remove('show');
+    }, 3000);
+  }).catch(function() {
+    alert('Đã sao chép liên kết: ' + url);
+  });
+}
+</script>
 {% endblock %}

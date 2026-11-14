@@ -1,352 +1,678 @@
-/* Base Styles */
+/* ══════════════════════════════════════════════════════════════
+   EDITORIAL COASTAL HERITAGE LUXURY (Sài Gòn - Côn Đảo Resort)
+   Thiết kế Mỹ thuật Nghỉ dưỡng Di sản — Loại bỏ hoàn toàn AI Card Soup
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── FONT IMPORTS ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --mau-xanh-chinh: #00b4d8;
-  --mau-xanh-dam: #023e8a;
-  --mau-vang-chinh: #ffb703;
-  --mau-phu: #fb8500;
-  --radius-lg: 20px;
-  --shadow-sm: 0 2px 10px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --font-serif: 'Playfair Display', 'Georgia', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Bảng màu di sản Côn Đảo (Deep Ocean Navy & Antique Heritage Gold) */
+  --mau-navy-sau: #072A44;
+  --mau-navy-chinh: #0A3D62;
+  --mau-navy-sang: #0E4F7D;
+  --mau-vang-di-san: #B89758;
+  --mau-vang-kim: #C5A880;
+  --mau-vang-sang: #E1B12C;
+  --mau-kem-nghi-duong: #FAF8F5;
+  --mau-giay-co: #F5EFEB;
+  
+  /* Màu văn bản & đường kẻ kiến trúc */
+  --mau-chu-tieu-de: #0F172A;
+  --mau-chu-than: #334155;
+  --mau-chu-mo: #64748B;
+  --mau-duong-ke: #E2E8F0;
+  --mau-duong-ke-vang: #E8DFC8;
+  
+  /* Bán kính bo góc sắc sảo kiến trúc (Không dùng bo tròn bong bóng AI) */
+  --radius-sharp: 4px;
+  --radius-subtle: 6px;
+  --radius-card: 8px;
+  
+  --shadow-architectural: 0 4px 20px rgba(10, 61, 98, 0.06);
+  --shadow-elevated: 0 12px 32px rgba(10, 61, 98, 0.10);
 }
 
-/* Breadcrumb */
-.chitietphong-duongdan { font-size: 13px; margin-top: 10px; }
-.chitietphong-duongdan a { color: #64748b; text-decoration: none; }
-.chitietphong-duongdan a:hover { color: var(--mau-xanh-chinh); }
-.chitietphong-duongdan .sep { color: #cbd5e1; margin: 0 8px; }
-.chitietphong-duongdan .current { color: #94a3b8; }
+body {
+  font-family: var(--font-sans);
+  color: var(--mau-chu-than);
+  background-color: #F8FAFC;
+}
 
-/* Header */
-.chitietphong-khachsan-ten { font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
-.chitietphong-sao { color: #fbbf24; font-size: 16px; margin-left: 8px; }
-.chitietphong-khachsan-thongtin { font-size: 14px; color: #64748b; }
+/* ── BREADCRUMB BIÊN TẬP ── */
+.chitietphong-duongdan {
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--mau-chu-mo);
+  margin-top: 4px;
+}
+.chitietphong-duongdan a {
+  color: var(--mau-chu-mo);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.chitietphong-duongdan a:hover {
+  color: var(--mau-navy-chinh);
+}
+.chitietphong-duongdan .sep {
+  color: #CBD5E1;
+  margin: 0 10px;
+}
+.chitietphong-duongdan .current {
+  color: var(--mau-navy-chinh);
+  font-weight: 700;
+}
 
-/* MODERN GALLERY (1+2 Grid) */
+/* ── TIÊU ĐỀ DI SẢN (EDITORIAL HEADER) ── */
+.editorial-room-header {
+  border-bottom: 1px solid var(--mau-duong-ke);
+  padding-bottom: 24px;
+  margin-bottom: 28px;
+}
+
+.heritage-kicker {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--mau-vang-di-san);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.heritage-kicker::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background-color: var(--mau-vang-di-san);
+}
+
+.chitietphong-khachsan-ten {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--mau-navy-sau);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+.editorial-header-meta {
+  font-size: 13.5px;
+  color: var(--mau-chu-mo);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.editorial-header-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.meta-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #CBD5E1;
+}
+
+.btn-back-editorial {
+  background: transparent;
+  border: 1px solid #CBD5E1;
+  color: var(--mau-navy-chinh);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: var(--radius-sharp);
+  transition: all 0.25s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-back-editorial:hover {
+  background: var(--mau-navy-chinh);
+  border-color: var(--mau-navy-chinh);
+  color: #FFFFFF;
+}
+
+/* ── THƯ VIỆN ẢNH KIẾN TRÚC (ARCHITECTURAL MOSAIC) ── */
 .chitietphong-thuvien-khung {
   position: relative;
-  border-radius: var(--radius-lg);
   overflow: hidden;
   height: 480px;
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-subtle);
+  box-shadow: var(--shadow-architectural);
+  background-color: #E2E8F0;
+  margin-bottom: 32px;
 }
 
 .chitietphong-thuvien-luoi-moi {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 12px;
+  gap: 8px;
   height: 100%;
 }
-
-/* Dynamic Gallery Layouts */
 .chitietphong-thuvien-luoi-moi.grid-single {
   grid-template-columns: 1fr;
-}
-
-.chitietphong-thuvien-luoi-moi.grid-double {
-  grid-template-columns: 1.8fr 1fr;
 }
 
 .chitietphong-anh-chinh-khung {
   position: relative;
   height: 100%;
+  overflow: hidden;
 }
 
 .chitietphong-anh-phu-khung {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  gap: 12px;
+  gap: 8px;
   height: 100%;
-}
-
-.chitietphong-anh-phu-khung.single-side {
-  grid-template-rows: 1fr;
 }
 
 .chitietphong-anh-phu-o {
   position: relative;
   height: 100%;
-}
-
-.chitietphong-anh-phu-o.full-height {
-  height: 100%;
+  overflow: hidden;
 }
 
 .chitietphong-anh-moi {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
-
 .chitietphong-anh-chinh-khung:hover .chitietphong-anh-moi,
 .chitietphong-anh-phu-o:hover .chitietphong-anh-moi {
   transform: scale(1.03);
 }
 
-.chitietphong-anh-trong-moi, .chitietphong-anh-trong-full {
-  width: 100%;
-  height: 100%;
-  background: #e2e8f0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* See all photos button */
-.chitietphong-nut-xem-tat-ca {
+.gallery-editorial-btn {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(7, 42, 68, 0.88);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 14px;
-  color: #1e293b;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  color: #FFFFFF;
+  border: 1px solid rgba(197, 168, 128, 0.6);
+  padding: 8px 22px;
+  border-radius: var(--radius-sharp);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
   z-index: 10;
 }
-
-.chitietphong-nut-xem-tat-ca:hover {
-  background: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+.gallery-editorial-btn:hover {
+  background: var(--mau-navy-sau);
+  border-color: var(--mau-vang-sang);
+  color: var(--mau-vang-sang);
+  transform: translateY(-1px);
 }
 
-.chitietphong-gia-huyhieu {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: #dc2626;
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 50px;
-  font-weight: 800;
-  font-size: 14px;
-  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
+/* ── DẢI THÔNG SỐ BIÊN TẬP (EDITORIAL METRICS STRIP) ── */
+/* Xóa bỏ hoàn toàn 4 hộp tròn pastel của AI */
+.editorial-specs-ribbon {
+  background: var(--mau-kem-nghi-duong);
+  border: 1px solid var(--mau-duong-ke-vang);
+  border-left: 3px solid var(--mau-vang-di-san);
+  border-radius: var(--radius-subtle);
+  padding: 24px 30px;
+  margin-bottom: 32px;
 }
 
-/* Sidebar Cards (iVIVU Style) */
-.chitietphong-danhgia-the {
-  background: #fff;
-  border: 1px solid #edf2f7;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--shadow-sm);
+.spec-column {
+  border-right: 1px solid var(--mau-duong-ke-vang);
+  padding: 0 16px;
+}
+.spec-column:first-child {
+  padding-left: 0;
+}
+.spec-column:last-child {
+  border-right: none;
+  padding-right: 0;
 }
 
-.chitietphong-danhgia-the-diem {
+.spec-eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mau-vang-di-san);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.spec-headline {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--mau-navy-sau);
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+.spec-subline {
+  font-size: 12px;
+  color: var(--mau-chu-mo);
+}
+
+/* ── KHỐI BIÊN TẬP MỞ (OPEN EDITORIAL SECTION) ── */
+/* Thay thế cho các hộp bo tròn rập khuôn */
+.editorial-section {
+  border-bottom: 1px solid var(--mau-duong-ke);
+  padding-bottom: 32px;
+  margin-bottom: 36px;
+}
+.editorial-section:last-of-type {
+  border-bottom: none;
+}
+
+.editorial-section-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--mau-navy-sau);
+  letter-spacing: -0.3px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
+  gap: 12px;
+}
+.editorial-section-title i {
+  font-size: 18px;
+  color: var(--mau-vang-di-san);
+}
+
+.editorial-narrative-quote {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.8;
+  color: #1E293B;
+  background: #FFFFFF;
+  border: 1px solid var(--mau-duong-ke);
+  border-radius: var(--radius-sharp);
+  padding: 24px 28px;
+  position: relative;
+}
+
+/* ── BẢNG GÓI LƯU TRÚ CAO CẤP (RATE PLANS TABLE) ── */
+/* Thay thế hoàn toàn cho bàn cờ 22 nút chọn ghế rạp chiếu phim */
+.rate-plans-container {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
-.chitietphong-danhgia-so {
-  font-size: 36px;
-  font-weight: 900;
-  color: #fff;
-  background: #023e8a;
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+.rate-plan-card {
+  background: #FFFFFF;
+  border: 1px solid var(--mau-duong-ke);
+  border-radius: var(--radius-subtle);
+  padding: 22px 24px;
+  transition: all 0.25s ease;
+  position: relative;
+  cursor: pointer;
+}
+.rate-plan-card:hover {
+  border-color: var(--mau-vang-kim);
+  box-shadow: var(--shadow-architectural);
+}
+
+.rate-plan-card.active-plan {
+  border: 2px solid var(--mau-vang-di-san) !important;
+  background-color: #FDFBF7 !important;
+  box-shadow: 0 4px 16px rgba(184, 151, 88, 0.18) !important;
+}
+
+.rate-plan-card.featured-plan {
+  border: 1.5px solid var(--mau-vang-di-san);
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--mau-kem-nghi-duong) 100%);
+}
+
+.featured-plan-badge {
+  position: absolute;
+  top: -11px;
+  left: 20px;
+  background: var(--mau-navy-chinh);
+  color: var(--mau-vang-sang);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: var(--radius-sharp);
+  border: 1px solid var(--mau-vang-kim);
+}
+
+.plan-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--mau-navy-sau);
+  margin-bottom: 8px;
+}
+
+.plan-perks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.plan-perks-list li {
+  font-size: 13px;
+  color: var(--mau-chu-than);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.plan-perks-list li i {
+  color: #10B981;
+  font-size: 12px;
+}
+
+.plan-price-num {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--mau-navy-sau);
+  font-variant-numeric: lining-nums proportional-nums !important;
+  -webkit-font-feature-settings: "lnum" 1 !important;
+  font-feature-settings: "lnum" 1 !important;
+}
+.plan-price-unit {
+  font-size: 12px;
+  color: var(--mau-chu-mo);
+}
+
+.btn-select-plan {
+  background: var(--mau-navy-chinh);
+  color: #FFFFFF !important;
+  border: 1px solid var(--mau-navy-chinh);
+  border-radius: var(--radius-sharp);
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-select-plan:hover {
+  background: var(--mau-navy-sau);
+  color: var(--mau-vang-sang) !important;
+  border-color: var(--mau-vang-kim);
+}
+
+.btn-select-plan.btn-featured {
+  background: linear-gradient(135deg, #E1B12C 0%, #C5A880 100%);
+  color: var(--mau-navy-sau) !important;
+  border: 1px solid #F5D77F;
+  font-weight: 700;
+}
+.btn-select-plan.btn-featured:hover {
+  background: linear-gradient(135deg, #F39C12 0%, #D4AF37 100%);
+  color: #FFFFFF !important;
+}
+
+/* ── TIỆN NGHI KIẾN TRÚC 4 CỘT (ARCHITECTURAL AMENITIES) ── */
+.amenities-grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.amenity-block {
+  border-left: 2px solid var(--mau-duong-ke-vang);
+  padding-left: 16px;
+}
+.amenity-block-title {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mau-vang-di-san);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.amenity-block-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.amenity-block-list li {
+  font-size: 13px;
+  color: var(--mau-chu-than);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.amenity-block-list li i {
+  color: var(--mau-navy-chinh);
+  font-size: 12px;
+}
+
+/* ── CHÍNH SÁCH NGHỈ DƯỠNG (RESORT POLICIES) ── */
+.policy-grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.policy-card-editorial {
+  background: #FFFFFF;
+  border: 1px solid var(--mau-duong-ke);
+  border-radius: var(--radius-sharp);
+  padding: 16px 20px;
+}
+.policy-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--mau-navy-sau);
+  margin-bottom: 4px;
+}
+.policy-desc {
+  font-size: 12px;
+  color: var(--mau-chu-mo);
+  line-height: 1.5;
+}
+
+/* ── ĐÁNH GIÁ BIÊN TẬP (EDITORIAL REVIEWS) ── */
+.review-score-hero {
+  font-family: var(--font-serif);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--mau-navy-sau);
+  line-height: 1;
+}
+
+.review-item-editorial {
+  border-bottom: 1px solid var(--mau-duong-ke);
+  padding: 18px 0;
+}
+.review-item-editorial:last-child {
+  border-bottom: none;
+}
+
+.review-author-initial {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sharp);
+  background: var(--mau-kem-nghi-duong);
+  border: 1px solid var(--mau-duong-ke-vang);
+  color: var(--mau-navy-sau);
+  font-family: var(--font-serif);
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(2, 62, 138, 0.2);
+  font-size: 14px;
 }
 
-.chitietphong-danhgia-chu {
-  font-size: 18px;
-  color: #1e293b;
+.review-quote-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--mau-chu-than);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
-/* Booking Card (iVIVU/Traveloka) */
-.chitietphong-datphong-the {
-  background: #fff;
-  border: 1px solid #edf2f7;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--shadow-md);
+/* ══════════════════════════════════════════════════════════════
+   CỘT PHẢI: FLOATING BOOKING CONSOLE (ĐẲNG CẤP & SẮC NÉT)
+   ══════════════════════════════════════════════════════════════ */
+.chitietphong-sidebar-sticky {
   position: sticky;
-  top: 20px;
+  top: 96px;
+  z-index: 100;
 }
 
-.chitietphong-datphong-the-gia {
+.editorial-booking-console {
+  background: #FFFFFF;
+  border: 1px solid var(--mau-duong-ke);
+  border-top: 3px solid var(--mau-vang-di-san);
+  border-radius: var(--radius-subtle);
+  padding: 26px 24px;
+  box-shadow: var(--shadow-elevated);
+}
+
+.console-hotel-name {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mau-vang-di-san);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.console-price-block {
   margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #f1f5f9;
 }
-
-.chitietphong-gia-chinh {
-  font-size: 32px;
-  font-weight: 900;
-  color: #023e8a;
+.console-price-amount {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--mau-navy-sau);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  font-variant-numeric: lining-nums proportional-nums !important;
+  -webkit-font-feature-settings: "lnum" 1 !important;
+  font-feature-settings: "lnum" 1 !important;
 }
-
-.chitietphong-gia-donvi {
-  font-size: 18px;
-  color: #64748b;
-  font-weight: 400;
-}
-
-/* New Unified Date Box (Image 1 Style) */
-.chitietphong-chon-ngay-moi {
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: #fff;
-  display: flex;
-  overflow: hidden;
-}
-
-.chitietphong-ngay-cot-moi {
-  padding: 12px 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.chitietphong-ngay-icon-moi {
-  font-size: 22px;
-  color: #64748b;
-  margin-top: 2px;
-}
-
-.chitietphong-ngay-giatri-moi {
-  font-size: 15px;
-  font-weight: 800;
-  color: #1e293b;
-  line-height: 1.2;
-}
-
-.chitietphong-ngay-thu-moi {
-  font-size: 13px;
-  color: #94a3b8;
+.console-price-note {
+  font-size: 12px;
+  color: var(--mau-chu-mo);
   margin-top: 4px;
 }
 
-.chitietphong-vach-ngan {
-  position: absolute;
-  right: 0;
-  top: 10%;
-  height: 80%;
-  width: 1px;
-  background-color: #cbd5e1;
+/* Date Range Selector */
+.console-dates-box {
+  border: 1px solid var(--mau-duong-ke);
+  border-radius: var(--radius-sharp);
+  background: var(--mau-kem-nghi-duong);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 12px 14px;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.date-slot {
+  display: flex;
+  flex-direction: column;
+}
+.date-slot-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--mau-vang-di-san);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.date-slot-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--mau-navy-sau);
 }
 
-.nut-datngay {
-  background: linear-gradient(135deg, #ffb703, #fb8500);
-  color: #fff;
-  border: none;
-  border-radius: 15px;
-  font-weight: 800;
+/* Primary CTA Button */
+.btn-cta-luxury {
+  background: linear-gradient(135deg, #E1B12C 0%, #C5A880 100%);
+  color: var(--mau-navy-sau) !important;
+  border: 1px solid #F5D77F;
+  border-radius: var(--radius-sharp);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   padding: 14px;
   width: 100%;
-  font-size: 16px;
-  box-shadow: 0 4px 15px rgba(251, 133, 0, 0.3);
-  transition: all 0.3s ease;
-  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(225, 177, 44, 0.35);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+.btn-cta-luxury:hover {
+  background: linear-gradient(135deg, #F39C12 0%, #D4AF37 100%);
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(225, 177, 44, 0.5);
 }
 
-.nut-datngay:hover {
-  background: linear-gradient(135deg, #fb8500, #ffb703);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(251, 133, 0, 0.4);
-  color: #fff;
+/* Trust Perks */
+.console-trust-perks {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--mau-duong-ke);
+}
+.trust-perk-item {
+  font-size: 12px;
+  color: var(--mau-chu-than);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.trust-perk-item i {
+  color: var(--mau-vang-di-san);
+  font-size: 12px;
 }
 
 /* Modal Gallery */
 .chitietphong-gallery-modal-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
 }
-
 .chitietphong-gallery-modal-item img {
   width: 100%;
-  height: 250px;
+  height: 220px;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: var(--radius-sharp);
 }
 
-/* Sections */
-.chitietphong-phan {
-  background: #fff;
-  border: 1px solid #edf2f7;
-  border-radius: 20px;
-  padding: 28px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow-sm);
-}
-
-.chitietphong-phan-tieude {
-  font-size: 18px;
-  font-weight: 800;
-  color: #1e293b;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.chitietphong-phan-tieude i {
-  color: #00b4d8;
-  margin-right: 12px;
-}
-
-/* Perks */
-.chitietphong-loiich {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #f1f5f9;
-}
-
-.chitietphong-loiich-muc {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 13px;
-  color: #475569;
-  margin-bottom: 10px;
-}
-
-/* Responsive */
-@media (max-width: 992px) {
-  .chitietphong-thuvien-khung { height: 350px; }
-  .chitietphong-thuvien-luoi-moi.grid-double,
+/* ── RESPONSIVE ── */
+@media (max-width: 991.98px) {
+  .chitietphong-khachsan-ten { font-size: 28px; }
+  .chitietphong-thuvien-khung { height: 320px; }
   .chitietphong-thuvien-luoi-moi { grid-template-columns: 1fr; }
   .chitietphong-anh-phu-khung { display: none; }
-}
-
-@media (max-width: 576px) {
-  .chitietphong-thuvien-khung { height: 250px; }
-  .chitietphong-khachsan-ten { font-size: 22px; }
-}
-
-/* Hot badge - Red & Sticky theme */
-.chitietphong-hot-huyhieu {
-  background: #fff5f5;
-  color: #e53e3e;
-  border: 1px solid #fed7d7;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(229, 62, 62, 0.05);
-}
-
-.chitietphong-hot-huyhieu i {
-  color: #e53e3e;
-  animation: pulse-fire 1.5s infinite;
-}
-
-@keyframes pulse-fire {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.15); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
+  .spec-column { border-right: none; border-bottom: 1px solid var(--mau-duong-ke-vang); padding: 12px 0; }
+  .spec-column:last-child { border-bottom: none; }
+  .amenities-grid-editorial,
+  .policy-grid-editorial { grid-template-columns: 1fr; }
+  .chitietphong-sidebar-sticky { position: static; margin-top: 32px; }
 }

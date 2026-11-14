@@ -1,0 +1,253 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="DEPLOYMENT DIAGRAM" id="Deployment_Saigon_Condao_3Tier">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1150" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ==================== TIÊU ĐỀ BIỂU ĐỒ ==================== -->
+        <mxCell id="title_banner" value="&lt;b style=&quot;font-size: 16px; color: #000000;&quot;&gt;HỆ THỐNG QUẢN LÝ VÀ ĐẶT PHÒNG SÀI GÒN - CÔN ĐẢO RESORT&lt;/b&gt;&lt;br&gt;&lt;b style=&quot;font-size: 13px; color: #1E293B;&quot;&gt;BIỂU ĐỒ TRIỂN KHAI VẬT LÝ HỆ THỐNG (UML 2.x DEPLOYMENT DIAGRAM - MINIMALIST ACADEMIC STANDARD)&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#000000;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="15" width="1200" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== KHUNG PHÂN TẦNG (SWIMLANES) ==================== -->
+        <!-- Tier 1 Container -->
+        <mxCell id="tier1_boundary" value="&lt;b style=&quot;color: #0F172A;&quot;&gt;TẦNG 1: THIẾT BỊ NGƯỜI DÙNG &amp;amp; ĐẦU CUỐI (CLIENT TIER)&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#F8FAFC;strokeColor=#475569;strokeWidth=1.5;dashed=1;fontStyle=1;fontSize=12;fontColor=#000000;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="70" width="1700" height="300" as="geometry" />
+        </mxCell>
+
+        <!-- Tier 2 Container -->
+        <mxCell id="tier2_boundary" value="&lt;b style=&quot;color: #0F172A;&quot;&gt;TẦNG 2: MÁY CHỦ ỨNG DỤNG &amp;amp; XỬ LÝ NGHIỆP VỤ (APPLICATION SERVER TIER)&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#F8FAFC;strokeColor=#475569;strokeWidth=1.5;dashed=1;fontStyle=1;fontSize=12;fontColor=#000000;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="440" width="1080" height="660" as="geometry" />
+        </mxCell>
+
+        <!-- Tier 3 Container -->
+        <mxCell id="tier3_boundary" value="&lt;b style=&quot;color: #0F172A;&quot;&gt;TẦNG 3: DỮ LIỆU &amp;amp; HỆ THỐNG NGOẠI VI (DATA &amp;amp; EXTERNAL SERVICES TIER)&lt;/b&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#F8FAFC;strokeColor=#475569;strokeWidth=1.5;dashed=1;fontStyle=1;fontSize=12;fontColor=#000000;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="440" width="590" height="660" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TẦNG 1: CÁC NÚT THIẾT BỊ ==================== -->
+        <!-- Node 1: Khách hàng B2C Device (Nới rộng width=365px để các artifact bên trong thoáng 100%) -->
+        <mxCell id="node_client_b2c" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&lt;u style=&quot;color: #000000; font-size: 12px;&quot;&gt;:KhachHangDevice&lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #475569; font-weight: normal;&quot;&gt;[OS: iOS / Android / Windows]&lt;/font&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.1;size=15;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.6;verticalAlign=top;spacingTop=16;fontStyle=1;fontSize=11;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="70" y="110" width="365" height="245" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1 Env: Web Browser (Width=335px) -->
+        <mxCell id="env_browser_b2c" value="&amp;lt;&amp;lt;execution env&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;color: #000000;&quot;&gt;:WebBrowser&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.06;size=10;fillColor=#F1F5F9;strokeColor=#334155;strokeWidth=1.3;verticalAlign=top;spacingTop=12;fontStyle=1;fontSize=11;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="85" y="195" width="335" height="145" as="geometry" />
+        </mxCell>
+
+        <!-- Artifacts inside B2C Browser: Nới rộng width, padding cân đối, triệt tiêu chạm viền phải -->
+        <mxCell id="art_b2c_ui" value="&amp;lt;&amp;lt;artifact&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 10.5px; color: #000000;&quot;&gt;SPA_ClientBookingApp&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=left;spacingLeft=24;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="93" y="255" width="162" height="52" as="geometry" />
+        </mxCell>
+
+        <mxCell id="art_b2c_timer" value="&amp;lt;&amp;lt;artifact&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 10.5px; color: #000000;&quot;&gt;HoldLockCountdown.js&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=left;spacingLeft=22;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="260" y="255" width="152" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Housekeeping Mobile Device -->
+        <mxCell id="node_housekeeping" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&lt;u style=&quot;color: #000000; font-size: 12px;&quot;&gt;:HousekeepingMobile&lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #475569; font-weight: normal;&quot;&gt;[OS: Android / iOS Tablet]&lt;/font&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.1;size=15;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.6;verticalAlign=top;spacingTop=16;fontStyle=1;fontSize=11;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="455" y="110" width="315" height="245" as="geometry" />
+        </mxCell>
+
+        <mxCell id="env_hk_browser" value="&amp;lt;&amp;lt;execution env&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;color: #000000;&quot;&gt;:MobileBrowser / PWA&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.06;size=10;fillColor=#F1F5F9;strokeColor=#334155;strokeWidth=1.3;verticalAlign=top;spacingTop=12;fontStyle=1;fontSize=11;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="470" y="195" width="285" height="145" as="geometry" />
+        </mxCell>
+
+        <mxCell id="art_hk_app" value="&amp;lt;&amp;lt;artifact&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 11px; color: #000000;&quot;&gt;HousekeepingApp.js&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="480" y="255" width="265" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: FrontDesk Workstation (Lễ tân) -->
+        <mxCell id="node_workstation_pms" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&lt;u style=&quot;color: #000000; font-size: 12px;&quot;&gt;:FrontDeskWorkstation&lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #475569; font-weight: normal;&quot;&gt;[OS: Windows 11 Pro 64-bit]&lt;/font&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.1;size=15;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.6;verticalAlign=top;spacingTop=16;fontStyle=1;fontSize=11;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="795" y="110" width="375" height="245" as="geometry" />
+        </mxCell>
+
+        <mxCell id="env_browser_pms" value="&amp;lt;&amp;lt;execution env&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;color: #000000;&quot;&gt;:DesktopBrowser&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.06;size=10;fillColor=#F1F5F9;strokeColor=#334155;strokeWidth=1.3;verticalAlign=top;spacingTop=12;fontStyle=1;fontSize=11;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="810" y="195" width="345" height="145" as="geometry" />
+        </mxCell>
+
+        <!-- Nới rộng width=162px, font 10.5px, spacingRight=8px: chữ 's' không còn dính viền phải -->
+        <mxCell id="art_pms_gantt" value="&amp;lt;&amp;lt;artifact&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 10.5px; color: #000000;&quot;&gt;FrontDesk_GanttRack.js&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=left;spacingLeft=22;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="820" y="255" width="162" height="52" as="geometry" />
+        </mxCell>
+
+        <mxCell id="art_pms_folio" value="&amp;lt;&amp;lt;artifact&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 10.5px; color: #000000;&quot;&gt;FolioSettlementUI.js&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=left;spacingLeft=22;spacingRight=8;" vertex="1" parent="1">
+          <mxGeometry x="987" y="255" width="158" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4: POS Thermal Receipt Printer (Thuần túy tối giản) -->
+        <mxCell id="node_printer" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt; &amp;lt;&amp;lt;printer&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 11px; color: #000000;&quot;&gt;&lt;u&gt;:ThermalReceiptPrinter&lt;/u&gt;&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.1;size=15;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.6;verticalAlign=middle;fontSize=10;fontColor=#000000;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="195" width="210" height="75" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TẦNG 2: MÁY CHỦ ỨNG DỤNG ==================== -->
+        <!-- Node 5: Application Server -->
+        <mxCell id="node_app_server" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&lt;u style=&quot;color: #000000; font-size: 13px;&quot;&gt;:ApplicationServer&lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #334155; font-weight: normal;&quot;&gt;[OS: Ubuntu Linux 22.04 LTS | 8 vCPU, 16GB RAM]&lt;/font&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.1;size=20;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;verticalAlign=top;spacingTop=20;fontStyle=1;fontSize=12;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="70" y="475" width="1035" height="595" as="geometry" />
+        </mxCell>
+
+        <!-- Env 1: Nginx Web Server -->
+        <mxCell id="env_nginx" value="&amp;lt;&amp;lt;execution env&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;color: #000000;&quot;&gt;:NginxWebServer&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.06;size=12;fillColor=#F8FAFC;strokeColor=#1E293B;strokeWidth=1.4;verticalAlign=top;spacingTop=12;fontSize=11;fontColor=#000000;align=center;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="95" y="565" width="255" height="215" as="geometry" />
+        </mxCell>
+
+        <mxCell id="art_nginx_conf" value="&amp;lt;&amp;lt;artifact&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 12px; color: #000000;&quot;&gt;nginx.conf&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="110" y="650" width="225" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Env 2: Python WSGI Application Container -->
+        <mxCell id="env_python_wsgi" value="&amp;lt;&amp;lt;execution env&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;color: #000000;&quot;&gt;:PythonWSGIContainer&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.06;size=12;fillColor=#F8FAFC;strokeColor=#1E293B;strokeWidth=1.4;verticalAlign=top;spacingTop=12;fontSize=11;fontColor=#000000;align=center;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="375" y="565" width="710" height="215" as="geometry" />
+        </mxCell>
+
+        <!-- 4 Core Application Services (Tinh gọn chuẩn UML 2.x, không phụ đề) -->
+        <mxCell id="art_service_booking" value="&amp;lt;&amp;lt;application&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 12px; color: #000000;&quot;&gt;BookingService.py&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="395" y="625" width="325" height="52" as="geometry" />
+        </mxCell>
+
+        <mxCell id="art_service_folio" value="&amp;lt;&amp;lt;application&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 12px; color: #000000;&quot;&gt;FolioSettlementService.py&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="740" y="625" width="325" height="52" as="geometry" />
+        </mxCell>
+
+        <mxCell id="art_service_refund" value="&amp;lt;&amp;lt;application&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 12px; color: #000000;&quot;&gt;CancellationService.py&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="395" y="700" width="325" height="52" as="geometry" />
+        </mxCell>
+
+        <mxCell id="art_service_housekeeping" value="&amp;lt;&amp;lt;application&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 12px; color: #000000;&quot;&gt;HousekeepingService.py&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="740" y="700" width="325" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Env 3: Cron Background Daemon -->
+        <mxCell id="env_cron_daemon" value="&amp;lt;&amp;lt;execution env&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;color: #000000;&quot;&gt;:CronDaemonService&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.06;size=12;fillColor=#F8FAFC;strokeColor=#1E293B;strokeWidth=1.4;verticalAlign=top;spacingTop=12;fontSize=11;fontColor=#000000;align=center;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="375" y="810" width="710" height="185" as="geometry" />
+        </mxCell>
+
+        <!-- Cron worker -->
+        <mxCell id="art_cron_worker" value="&amp;lt;&amp;lt;executable&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 12px; color: #000000;&quot;&gt;cron_worker.py&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="395" y="885" width="670" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- IPC: Nginx to WSGI -->
+        <mxCell id="ipc_nginx_wsgi" value="&amp;lt;&amp;lt;Unix Socket / HTTP&amp;gt;&amp;gt;&lt;br&gt;[localhost:8000]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=1.6;fontSize=9;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;spacing=2;" edge="1" parent="1" source="env_nginx" target="env_python_wsgi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Internal trigger: Cron calling WSGI -->
+        <mxCell id="ipc_cron_wsgi" value="&amp;lt;&amp;lt;Local Function Call&amp;gt;&amp;gt;&lt;br&gt;[Tự động theo chu kỳ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;dashed=1;strokeColor=#000000;strokeWidth=1.4;fontSize=9;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;" edge="1" parent="1" source="env_cron_daemon" target="env_python_wsgi">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="795" />
+              <mxPoint x="450" y="795" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== TẦNG 3: DỮ LIỆU & HỆ THỐNG NGOẠI VI ==================== -->
+        <!-- Node 6: Database Server (Nới chiều cao 270px, hạ thấp Env xuống y=575 để lộ 100% dòng OS/Subnet) -->
+        <mxCell id="node_db_server" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&lt;u style=&quot;color: #000000; font-size: 13px;&quot;&gt;:DatabaseServer&lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #334155; font-weight: normal;&quot;&gt;[OS: Windows Server 2022 / Dedicated DB Subnet]&lt;/font&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.1;size=20;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;verticalAlign=top;spacingTop=20;fontStyle=1;fontSize=12;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1185" y="475" width="540" height="270" as="geometry" />
+        </mxCell>
+
+        <!-- Env: SQL Server 2022 Engine (Hạ thấp xuống y=575, cách xa dòng OS 20px) -->
+        <mxCell id="env_rdbms" value="&amp;lt;&amp;lt;execution env&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;color: #000000;&quot;&gt;:SQLServer2022Engine&lt;/b&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.06;size=12;fillColor=#F8FAFC;strokeColor=#1E293B;strokeWidth=1.4;verticalAlign=top;spacingTop=12;fontSize=11;fontColor=#000000;align=center;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="575" width="500" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- Database Cylinder (Đặt ngay ngắn giữa Engine, y=642) -->
+        <mxCell id="art_database" value="&amp;lt;&amp;lt;database&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 12px; color: #000000;&quot;&gt;DB_SaigonConDao_3NF&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.6;fontSize=10;fontColor=#000000;align=center;spacingTop=4;spacingBottom=4;" vertex="1" parent="1">
+          <mxGeometry x="1235" y="642" width="440" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Node 7: VNPay External System (Nới cao 145px, hạ thấp artifact xuống y=850 để lộ trọn vẹn dòng đối tác) -->
+        <mxCell id="node_vnpay" value="&amp;lt;&amp;lt;external system&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&lt;u style=&quot;color: #000000; font-size: 12px;&quot;&gt;:VNPayPaymentGateway&lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #334155; font-weight: normal;&quot;&gt;[Hệ thống đối tác thanh toán tài chính VNPay]&lt;/font&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.08;size=15;fillColor=#FFFFFF;strokeColor=#334155;strokeWidth=1.6;strokeDasharray=3 3;verticalAlign=top;spacingTop=14;fontSize=11;fontColor=#000000;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1185" y="765" width="540" height="145" as="geometry" />
+        </mxCell>
+
+        <!-- Hộp web service hạ xuống y=850, cách dòng tiêu đề 18px -->
+        <mxCell id="art_vnpay_api" value="&amp;lt;&amp;lt;web service&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 11px; color: #000000;&quot;&gt;VNPay_Payment_IPN_API&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="850" width="500" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Node 8: Transactional Mail Server (Nới cao 145px, hạ thấp artifact xuống y=1015 để lộ trọn vẹn dòng mô tả) -->
+        <mxCell id="node_mail_server" value="&amp;lt;&amp;lt;cloud service&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;&lt;u style=&quot;color: #000000; font-size: 12px;&quot;&gt;:CloudMailGateway&lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 10px; color: #334155; font-weight: normal;&quot;&gt;[SendGrid / Google Cloud Transactional SMTP]&lt;/font&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.08;size=15;fillColor=#FFFFFF;strokeColor=#334155;strokeWidth=1.6;strokeDasharray=3 3;verticalAlign=top;spacingTop=14;fontSize=11;fontColor=#000000;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1185" y="930" width="540" height="145" as="geometry" />
+        </mxCell>
+
+        <!-- Hộp web service hạ xuống y=1015, cách dòng tiêu đề 18px -->
+        <mxCell id="art_smtp_service" value="&amp;lt;&amp;lt;web service&amp;gt;&amp;gt;&lt;br&gt;&lt;b style=&quot;font-size: 11px; color: #000000;&quot;&gt;SMTP Transactional Service&lt;/b&gt;" style="shape=module;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontColor=#000000;align=center;spacingLeft=18;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="1015" width="500" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== CÁC ĐƯỜNG LIÊN KẾT MẠNG VÀ GIAO THỨC ==================== -->
+        <!-- Link 1: Khách hàng Device -> Nginx Web Server (Trục đứng x=120, cách xa nhãn VLAN 20) -->
+        <mxCell id="link_b2c_nginx" value="&amp;lt;&amp;lt;HTTPS&amp;gt;&amp;gt;&lt;br&gt;[TLS 1.3 / Port 443 / Internet]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontSize=10;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;spacing=3;" edge="1" parent="1" source="node_client_b2c" target="env_nginx">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="355" />
+              <mxPoint x="120" y="565" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Link 2: Housekeeping Mobile -> Nginx Web Server (Nhãn VLAN 20 dịch offset sang phải +85px, cách xa hoàn toàn trục dây x=120) -->
+        <mxCell id="link_hk_nginx" value="&amp;lt;&amp;lt;HTTPS&amp;gt;&amp;gt;&lt;br&gt;[Wi-Fi nội bộ Resort / VLAN 20]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=1.8;fontSize=10;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;spacing=3;" edge="1" parent="1" source="node_housekeeping" target="env_nginx">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" x="85" y="0" />
+            <Array as="points">
+              <mxPoint x="550" y="385" />
+              <mxPoint x="220" y="385" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Link 3: FrontDesk Workstation -> Nginx Web Server (WEBSOCKET REAL-TIME) -->
+        <mxCell id="link_pms_nginx" value="&amp;lt;&amp;lt;HTTPS / WSS&amp;gt;&amp;gt;&lt;br&gt;[WebSocket Real-time buồng phòng &amp;amp; Thanh toán / Port 443]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontSize=10;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;spacing=3;" edge="1" parent="1" source="node_workstation_pms" target="env_nginx">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="415" />
+              <mxPoint x="290" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Link 4: FrontDesk Workstation -> Printer (USB/TCP - CHẠY NGANG THẲNG TẮP y=232) -->
+        <mxCell id="link_pms_printer" value="&amp;lt;&amp;lt;USB / Raw TCP&amp;gt;&amp;gt;&lt;br&gt;[Cáp USB 2.0 / Port 9100]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=1.8;fontSize=10;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;spacing=3;" edge="1" parent="1" source="node_workstation_pms" target="node_printer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Link 5: Python WSGI -> Database Server -->
+        <mxCell id="link_wsgi_db" value="&amp;lt;&amp;lt;ODBC / TCP/IP&amp;gt;&amp;gt;&lt;br&gt;[TCP Port 1433 / Dedicated DB Subnet]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2.2;fontSize=10;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#000000;spacing=3;" edge="1" parent="1" source="env_python_wsgi" target="env_rdbms">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1145" y="650" />
+              <mxPoint x="1145" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Link 6: Python WSGI -> VNPay Gateway -->
+        <mxCell id="link_wsgi_vnpay" value="&amp;lt;&amp;lt;Web services&amp;gt;&amp;gt;&lt;br&gt;[RESTful API &amp;amp; Webhook IPN / HTTPS Port 443]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontSize=10;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;spacing=3;" edge="1" parent="1" source="env_python_wsgi" target="node_vnpay">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1135" y="750" />
+              <mxPoint x="1135" y="837" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Link 7: Python WSGI -> Mail Server (SMTP Port 587) -->
+        <mxCell id="link_wsgi_mail" value="&amp;lt;&amp;lt;SMTP&amp;gt;&amp;gt;&lt;br&gt;[TCP Port 587 / TLS Encrypted]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=1.8;fontSize=10;fontStyle=1;fontColor=#000000;labelBackgroundColor=#FFFFFF;labelBorderColor=#334155;spacing=3;" edge="1" parent="1" source="env_cron_daemon" target="node_mail_server">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1140" y="900" />
+              <mxPoint x="1140" y="1002" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

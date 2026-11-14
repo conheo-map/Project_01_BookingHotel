@@ -1,172 +1,362 @@
 {% extends "base.html" %}
-{% block title %}Quản lý giá phòng - Hotel Booking{% endblock %}
+{% block title %}Kho Phòng & Thiết Lập Giá - Quản Trị Resort 5 Sao{% endblock %}
 {% block content %}
 
+<!-- Header & Quick Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Kho phòng & Định giá</h2>
-        <p class="text-muted small mb-0">Xem tình trạng phòng và cập nhật giá theo ngày/mùa.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-layer-group"></i> Quản Trị Kho Phòng & Thiết Lập Giá Linh Hoạt
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Kho Buồng Phòng & Định Giá Động
+        </h2>
+        <p class="text-muted small mb-0">Quản trị toàn bộ 92 buồng phòng theo cơ sở, kiểm soát hiện trạng lưu trú In-House và cập nhật biểu giá theo thời vụ, ngày lễ.</p>
     </div>
-    <div class="col-auto">
-        <a href="/manager/room-pricing-detailed" class="btn btn-primary btn-sm me-2 fw-bold">
-            <i class="fas fa-calendar-day me-1"></i>Xem lịch giá chi tiết
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-md-end">
+        <a href="/manager/room-pricing-detailed" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-white shadow-sm"
+           style="background: linear-gradient(135deg, #072A44 0%, #0F4C81 100%); border-radius: 8px;">
+            <i class="fas fa-calendar-alt text-warning"></i> Lịch Giá Chi Tiết 7 Ngày
         </a>
-        <a href="/manager" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-arrow-left me-1"></i>Dashboard
+        <a href="/receptionist/room-plan" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-th text-primary"></i> Sơ Đồ Phòng
+        </a>
+        <a href="/manager" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #475569; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-arrow-left"></i> Dashboard
         </a>
     </div>
 </div>
 
-<!-- Hotel filter -->
-<div class="the-chinh p-3 mb-4">
-    <form action="/manager/inventory-pricing" method="GET" class="row g-2 align-items-end">
-        <div class="col-md-4">
-            <label class="bieumau-nhan-sach">Lọc theo khách sạn</label>
-            <select name="hotel_id" class="form-select bieumau-dieukhien-sach">
-                <option value="">-- Tất cả khách sạn --</option>
-                {% for h in hotels %}
-                <option value="{{ h.hotel_id }}" {% if selected_hotel == h.hotel_id %}selected{% endif %}>
-                    {{ h.hotel_name }}
-                </option>
-                {% endfor %}
-            </select>
+<!-- 4 Top Executive Inventory KPIs -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #072A44;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Tổng Buồng Phòng</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1" style="color: #072A44;">{{ total_rooms }} <span style="font-size: 0.85rem; font-weight: 500;">phòng</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Toàn bộ 2 cơ sở vận hành</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(7, 42, 68, 0.06); width: 48px; height: 48px;">
+                <i class="fas fa-door-open fa-lg" style="color: #072A44;"></i>
+            </div>
         </div>
-        <div class="col-auto">
-            <button type="submit" class="btn nut-xanh-datphong px-4 py-2">
-                <i class="fas fa-filter me-1"></i>Lọc
-            </button>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #2563EB;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Đang Có Khách Ở</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1 text-primary">{{ total_occupied }} <span style="font-size: 0.85rem; font-weight: 500;">phòng</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Lưu trú thực tế In-House</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(37, 99, 235, 0.08); width: 48px; height: 48px;">
+                <i class="fas fa-user-check fa-lg text-primary"></i>
+            </div>
         </div>
-    </form>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #10B981;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Sẵn Sàng Đón Khách</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1 text-success">{{ total_clean }} <span style="font-size: 0.85rem; font-weight: 500;">phòng</span></div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Đạt chuẩn vệ sinh (Clean)</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(16, 185, 129, 0.08); width: 48px; height: 48px;">
+                <i class="fas fa-broom fa-lg text-success"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bg-white rounded-3 p-3 shadow-sm h-100 d-flex align-items-center justify-content-between"
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #B89758;">
+            <div>
+                <div class="text-muted text-uppercase fw-bold" style="font-size: 0.68rem; letter-spacing: 0.05em;">Giá Niêm Yết Bình Quân</div>
+                <div class="fs-4 fw-bold sc-net-num mt-1" style="color: #B89758;">{{ avg_price|vnd }}</div>
+                <div class="small text-muted mt-1" style="font-size: 0.72rem;">Biểu giá tiêu chuẩn / đêm</div>
+            </div>
+            <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(184, 151, 88, 0.1); width: 48px; height: 48px;">
+                <i class="fas fa-tags fa-lg" style="color: #B89758;"></i>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Quick price update -->
-<div class="the-chinh p-4 mb-4">
-    <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-edit me-2 text-success"></i>Cập nhật giá nhanh</h6>
-    <form method="POST" action="/manager/inventory-pricing" class="row g-3 align-items-end">
-        <div class="col-md-2">
-            <label class="bieumau-nhan-sach">Chế độ</label>
-            <select name="mode" class="form-select bieumau-dieukhien-sach">
-                <option value="type">Theo loại phòng</option>
-                <option value="room">Theo phòng cụ thể</option>
-            </select>
+<!-- Controls: Hotel Filter Tabs & Search -->
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <!-- Hotel Filter Tabs -->
+    <div class="d-flex align-items-center gap-2">
+        <a href="/manager/inventory-pricing" 
+           class="btn btn-sm px-3 py-2 fw-bold text-decoration-none shadow-2xs {% if not selected_hotel %}text-white{% else %}text-muted bg-white border{% endif %}"
+           style="border-radius: 8px; {% if not selected_hotel %}background: #072A44; border: 1px solid #072A44;{% endif %}">
+            <i class="fas fa-hotel me-1"></i> Tất Cả Cơ Sở ({{ total_rooms }})
+        </a>
+        {% for h in hotels %}
+        <a href="/manager/inventory-pricing?hotel_id={{ h.hotel_id }}" 
+           class="btn btn-sm px-3 py-2 fw-bold text-decoration-none shadow-2xs {% if selected_hotel == h.hotel_id %}text-white{% else %}text-muted bg-white border{% endif %}"
+           style="border-radius: 8px; {% if selected_hotel == h.hotel_id %}background: #072A44; border: 1px solid #072A44;{% endif %}">
+            <i class="{% if 'Resort' in h.hotel_name %}fas fa-umbrella-beach{% else %}fas fa-city{% endif %} me-1"></i>
+            {{ h.hotel_name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Quick Live Filter & Bulk Price Toggle -->
+    <div class="d-flex align-items-center gap-2">
+        <div class="input-group input-group-sm" style="width: 280px;">
+            <span class="input-group-text bg-white border-end-0" style="border-radius: 8px 0 0 8px; border-color: #CBD5E1;">
+                <i class="fas fa-search text-muted"></i>
+            </span>
+            <input type="text" id="inventorySearch" class="form-control border-start-0" 
+                   placeholder="Tìm số phòng, loại phòng..." 
+                   style="border-radius: 0 8px 8px 0; border-color: #CBD5E1;">
         </div>
-        <div class="col-md-3">
-            <label class="bieumau-nhan-sach" id="targetLabel">Chọn Loại phòng</label>
-            <div id="typeSelector">
-                <select name="target_id" class="form-select bieumau-dieukhien-sach">
-                    <option value="">-- Chọn Loại phòng --</option>
-                    {% for rt in inventory %}
-                    <option value="{{ rt.room_type_code }}">{{ rt.room_type_code }} ({{ rt.hotel_name }})</option>
-                    {% endfor %}
+        <button class="btn btn-sm px-3 py-2 fw-bold text-white shadow-sm" type="button" 
+                data-bs-toggle="collapse" data-bs-target="#bulkPriceForm" aria-expanded="false"
+                style="background: linear-gradient(135deg, #DFB76C 0%, #B89758 100%); border: none; border-radius: 8px;">
+            <i class="fas fa-bolt me-1"></i> Cập Nhật Giá Hàng Loạt
+        </button>
+    </div>
+</div>
+
+<!-- Collapsible Bulk Price Update Card -->
+<div class="collapse mb-4" id="bulkPriceForm">
+    <div class="bg-white rounded-3 shadow-sm p-4" style="border: 1px solid #E2E8F0; border-top: 3px solid #B89758;">
+        <div class="d-flex align-items-center justify-content-between pb-3 mb-3" style="border-bottom: 1px solid #F1F5F9;">
+            <div>
+                <h6 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', serif; font-size: 1.15rem;">
+                    <i class="fas fa-bolt text-warning me-2"></i>Thiết Lập Biểu Giá Hàng Loạt Theo Thời Vụ
+                </h6>
+                <div class="small text-muted mt-1">Áp dụng trực tiếp vào bảng Room_Rates theo loại phòng hoặc phòng đơn lẻ</div>
+            </div>
+            <span class="badge bg-light text-muted border px-2 py-1 small">Ghi đè tức thì (Override)</span>
+        </div>
+        
+        <form method="POST" action="/manager/inventory-pricing{% if selected_hotel %}?hotel_id={{ selected_hotel }}{% endif %}" class="row g-3 align-items-end">
+            <div class="col-md-2">
+                <label class="form-label small fw-bold text-muted">Chế độ định giá</label>
+                <select name="mode" class="form-select form-select-sm" style="border-radius: 6px;">
+                    <option value="type">Theo Loại phòng</option>
+                    <option value="room">Theo Phòng cụ thể</option>
                 </select>
             </div>
-            <div id="roomSelector" style="display: none;">
-                <input type="number" name="target_id_manual" class="form-control bieumau-dieukhien-sach" placeholder="Nhập ID phòng (VD: 101)">
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-muted" id="targetLabel">Chọn Loại phòng áp dụng</label>
+                <div id="typeSelector">
+                    <select name="target_id" class="form-select form-select-sm" style="border-radius: 6px;">
+                        <option value="">-- Chọn Loại phòng --</option>
+                        {% for rt in inventory %}
+                        {% set cname = room_type_name_map.get(rt.room_type_code, rt.room_type_code) %}
+                        <option value="{{ rt.room_type_code }}">{{ cname }} ({{ rt.room_type_code }}) - {{ rt.hotel_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="roomSelector" style="display: none;">
+                    <input type="number" name="target_id_manual" class="form-control form-control-sm font-monospace" placeholder="Nhập ID phòng (VD: 89, 127...)" style="border-radius: 6px;">
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <label class="bieumau-nhan-sach">Từ ngày</label>
-            <input type="date" name="start_date" class="form-control bieumau-dieukhien-sach" required>
-        </div>
-        <div class="col-md-2">
-            <label class="bieumau-nhan-sach">Đến ngày</label>
-            <input type="date" name="end_date" class="form-control bieumau-dieukhien-sach" required>
-        </div>
-        <div class="col-md-2">
-            <label class="bieumau-nhan-sach">Giá mới (đ/đêm)</label>
-            <input type="number" name="new_price" class="form-control bieumau-dieukhien-sach"
-                   min="0" step="1000" required placeholder="500000">
-        </div>
-        <div class="col-md-1">
-            <div class="form-check mt-4">
-                <input class="form-check-input" type="checkbox" name="is_holiday" id="isHoliday">
-                <label class="form-check-label kichthuoc-nho-hon" for="isHoliday">Ngày lễ</label>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold text-muted">Từ ngày</label>
+                <input type="date" name="start_date" class="form-control form-control-sm sc-net-num" required style="border-radius: 6px;">
             </div>
-        </div>
-        <div class="col-12">
-            <button type="submit" class="btn btn-success px-5 py-2 fw-bold">
-                <i class="fas fa-save me-2"></i>Cập nhật giá
-            </button>
-        </div>
-    </form>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold text-muted">Đến ngày</label>
+                <input type="date" name="end_date" class="form-control form-control-sm sc-net-num" required style="border-radius: 6px;">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold text-muted">Giá mới (VNĐ/đêm)</label>
+                <input type="number" name="new_price" class="form-control form-control-sm sc-net-num fw-bold"
+                       min="0" step="1000" required placeholder="VD: 850000" style="border-radius: 6px; color: #065F46;">
+            </div>
+            <div class="col-md-1">
+                <div class="form-check pb-2">
+                    <input class="form-check-input" type="checkbox" name="is_holiday" id="isHoliday">
+                    <label class="form-check-label small fw-bold text-danger" for="isHoliday">Lễ Tết</label>
+                </div>
+            </div>
+            <div class="col-12 mt-2 d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary px-3" data-bs-toggle="collapse" data-bs-target="#bulkPriceForm">
+                    Đóng
+                </button>
+                <button type="submit" class="btn btn-sm px-4 py-2 fw-bold text-white shadow-sm"
+                        style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); border-radius: 6px; border: none;">
+                    <i class="fas fa-check-circle me-1"></i> Lưu & Áp Dụng Giá Mới
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
-<!-- Inventory table -->
+<!-- Inventory & Pricing Matrix by Room Type -->
 {% if inventory %}
 {% for rt in inventory %}
-<div class="the-chinh p-0 overflow-hidden mb-3">
-    <div class="the-tieude-sach px-4 py-3 d-flex justify-content-between align-items-center">
-        <div>
-            <span class="fw-bold">{{ rt.room_type_code }}</span>
-            {% if rt.hotel_name %}
-            <span class="text-muted small ms-2">— {{ rt.hotel_name }}</span>
-            {% endif %}
-            <a href="/manager/room-edit/{{ rt.room_type_id }}" class="btn btn-sm btn-outline-primary ms-2 py-0 px-2"
-               title="Chỉnh sửa chi tiết">
-                <i class="fas fa-pen-alt me-1"></i><span class="kichthuoc-nho-hon">Chỉnh sửa</span>
+{% set commercial_name = room_type_name_map.get(rt.room_type_code, rt.room_type_code) %}
+{% set spec = room_specs.get(rt.room_type_code, {}) %}
+{% set is_resort = rt.room_type_code.startswith('RES') %}
+{% set total_rooms_in_type = rt.physical_rooms|length if rt.physical_rooms else 0 %}
+{% set clean_rooms = rt.physical_rooms|selectattr('housekeeping_status','equalto','Clean')|list|length if rt.physical_rooms else 0 %}
+{% set occupied_rooms = rt.physical_rooms|selectattr('current_booking_id')|list|length if rt.physical_rooms else 0 %}
+
+<div class="room-type-card bg-white rounded-3 shadow-sm overflow-hidden mb-4" 
+     data-room-type="{{ rt.room_type_code|lower }}" 
+     data-commercial-name="{{ commercial_name|lower }}"
+     data-hotel="{{ rt.hotel_name|lower if rt.hotel_name else '' }}"
+     style="border: 1px solid #E2E8F0;">
+    <!-- Room Type Card Header -->
+    <div class="px-4 py-3 d-flex flex-wrap justify-content-between align-items-center" 
+         style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0;">
+        <div class="d-flex align-items-center gap-3">
+            <span class="fw-bold font-monospace px-2.5 py-1 rounded" style="background: #072A44; color: #FFFFFF; font-size: 0.95rem;">
+                {{ rt.room_type_code }}
+            </span>
+            <div>
+                <h5 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem;">
+                    {{ commercial_name }}
+                </h5>
+                <div class="d-flex align-items-center gap-2 mt-0.5">
+                    {% if rt.hotel_name %}
+                    <span class="badge bg-light text-secondary border px-2 py-0.5 small" style="font-size: 0.72rem;">
+                        <i class="fas fa-hotel me-1 text-primary"></i>{{ rt.hotel_name }}
+                    </span>
+                    {% endif %}
+                    {% if spec.area %}
+                    <span class="text-muted small" style="font-size: 0.75rem;">• {{ spec.area }} • {{ spec.bed }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <a href="/manager/room-edit/{{ rt.room_type_id }}" class="btn btn-sm btn-outline-secondary py-0.5 px-2 ms-2"
+               title="Chỉnh sửa cấu hình hạng phòng">
+                <i class="fas fa-pen-alt me-1"></i><span style="font-size: 0.72rem;">Sửa Hạng Phòng</span>
             </a>
         </div>
-        {% set total_rooms = rt.physical_rooms|length if rt.physical_rooms else 0 %}
-        {% set clean_rooms = rt.physical_rooms|selectattr('housekeeping_status','equalto','Clean')|list|length if rt.physical_rooms else 0 %}
-        <div class="d-flex gap-3 align-items-center kichthuoc-nho-hon text-muted">
-            <span><i class="fas fa-user me-1"></i>{{ rt.max_adults }}</span>
-            <span><i class="fas fa-child me-1"></i>{{ rt.max_children }}</span>
-            <span class="fw-bold chu-datphong">{{ rt.base_price|vnd }}/đêm</span>
-            <span class="huyhieu-sach {% if total_rooms > 0 %}bg-success bg-opacity-10 text-success border-success{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} border">
-                {{ clean_rooms }}/{{ total_rooms }} sạch
+        
+        <div class="d-flex gap-3 align-items-center small mt-2 mt-sm-0">
+            <span class="text-muted"><i class="fas fa-user me-1 text-primary"></i>{{ rt.max_adults }} lớn</span>
+            <span class="text-muted"><i class="fas fa-child me-1 text-info"></i>{{ rt.max_children }} trẻ</span>
+            <div class="vr bg-secondary opacity-25" style="height: 20px;"></div>
+            <div>
+                <span class="text-muted small">Giá chuẩn:</span>
+                <span class="fw-bold sc-net-num ms-1" style="color: #072A44; font-size: 1.05rem;">
+                    {{ rt.base_price|vnd }}
+                </span><span class="text-muted small">/đêm</span>
+            </div>
+            <span class="badge {% if total_rooms_in_type > 0 and clean_rooms == total_rooms_in_type %}bg-success{% elif clean_rooms > 0 %}bg-warning text-dark{% else %}bg-secondary{% endif %} bg-opacity-10 border text-dark px-2.5 py-1">
+                <i class="fas fa-broom me-1 text-success"></i>{{ clean_rooms }}/{{ total_rooms_in_type }} sạch
+            </span>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-2.5 py-1">
+                <i class="fas fa-user-check me-1"></i>{{ occupied_rooms }} đang ở
             </span>
         </div>
     </div>
     
-    <!-- Lịch giá tuần -->
-    <div class="px-4 py-2 border-top bg-light d-flex align-items-center gap-3">
-        <div class="kichthuoc-nho-hon fw-bold text-muted text-uppercase" style="min-width: 100px;">
-            <i class="fas fa-calendar-alt me-1"></i>Lịch giá tuần:
+    <!-- 7-Day Seasonal Price Strip -->
+    <div class="px-4 py-2 border-top bg-light bg-opacity-50 d-flex align-items-center gap-3">
+        <div class="fw-bold text-muted text-uppercase" style="font-size: 0.72rem; min-width: 120px; letter-spacing: 0.04em;">
+            <i class="fas fa-calendar-week me-1 text-primary"></i>Lịch Giá 7 Ngày:
         </div>
-        <div class="d-flex flex-grow-1 justify-content-between overflow-auto">
+        <div class="d-flex flex-grow-1 justify-content-between overflow-auto gap-2 py-1">
             {% for wp in rt.weekly_prices %}
-            <div class="text-center px-2 py-1 rounded {% if wp.is_holiday %}bg-danger bg-opacity-10{% endif %}" style="min-width: 60px;">
-                <div class="kichthuoc-nho-hon text-muted">{{ wp.date[8:10] }}/{{ wp.date[5:7] }}</div>
-                <div class="fw-bold small {% if wp.is_holiday %}text-danger{% else %}chu-datphong{% endif %}">
+            <div class="text-center px-3 py-1.5 rounded shadow-2xs" 
+                 style="background: {% if wp.is_holiday %}#FEF2F2{% else %}#FFFFFF{% endif %}; border: 1px solid {% if wp.is_holiday %}#FCA5A5{% else %}#E2E8F0{% endif %}; min-width: 78px;">
+                <div class="text-muted sc-net-num" style="font-size: 0.7rem;">{{ wp.date[8:10] }}/{{ wp.date[5:7] }}</div>
+                <div class="fw-bold sc-net-num small {% if wp.is_holiday %}text-danger{% else %}text-dark{% endif %}">
                     {{ (wp.price / 1000)|int }}k
                 </div>
+                {% if wp.is_holiday %}
+                <span class="badge bg-danger rounded-pill px-1.5" style="font-size: 0.6rem;">Lễ Tết</span>
+                {% else %}
+                <span class="text-muted" style="font-size: 0.62rem;">Chuẩn</span>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
     </div>
 
+    <!-- Danh Sách Phòng Vật Lý Thuộc Loại Này -->
     {% if rt.physical_rooms %}
     <div class="table-responsive">
-        <table class="bang-sach">
-            <thead>
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+            <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: #64748B;">
                 <tr>
-                    <th style="width: 60px;">ID</th>
-                    <th>Tên phòng</th>
-                    <th>Trạng thái HK</th>
-                    <th>Đặt phòng hiện tại</th>
-                    <th>Giá hiện tại</th>
-                    <th class="text-end">Thao tác</th>
+                    <th class="ps-4" style="width: 120px;">Mã #ID</th>
+                    <th style="width: 220px;">Số Hiệu Buồng Phòng</th>
+                    <th style="width: 200px;">Tình Trạng Vệ Sinh</th>
+                    <th>Hiện Trạng Lưu Trú (In-House)</th>
+                    <th style="width: 180px;">Biểu Giá Cơ Bản</th>
+                    <th class="text-end pe-4" style="width: 140px;">Thao Tác</th>
                 </tr>
             </thead>
             <tbody>
                 {% for pr in rt.physical_rooms %}
-                <tr>
-                    <td class="text-muted small">#{{ pr.physical_room_id }}</td>
-                    <td class="fw-bold">{{ pr.room_name }}</td>
+                {% set rname = pr.room_name or '' %}
+                {% set clean_num = rname.split('_')[-1] if '_' in rname else rname %}
+                {% set is_occupied = pr.current_booking_id is not none and pr.current_booking_id > 0 %}
+                
+                <tr class="room-row-item" 
+                    data-room-name="{{ rname|lower }}"
+                    data-clean-num="{{ clean_num|lower }}"
+                    data-guest="{{ pr.guest_name|lower if pr.guest_name else '' }}"
+                    style="border-bottom: 1px solid #F1F5F9;">
+                    <td class="ps-4 text-muted sc-net-num small">#{{ pr.physical_room_id }}</td>
                     <td>
-                        <span class="huyhieu-sach kichthuoc-nho-hon
-                            {% if pr.housekeeping_status == 'Clean' %}bg-success bg-opacity-10 text-success border-success
-                            {% elif pr.housekeeping_status == 'Dirty' %}bg-danger bg-opacity-10 text-danger border-danger
-                            {% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} border">
-                            {{ pr.housekeeping_status or 'Unknown' }}
-                        </span>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge rounded-circle p-2" style="background: rgba(7, 42, 68, 0.08); color: #072A44; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-door-closed" style="font-size: 0.8rem;"></i>
+                            </span>
+                            <div>
+                                <div class="fw-bold text-dark font-monospace" style="font-size: 0.95rem;">
+                                    {% if is_resort %}
+                                    Villa {{ clean_num }}
+                                    {% else %}
+                                    P.{{ clean_num }}
+                                    {% endif %}
+                                </div>
+                                <div class="text-muted" style="font-size: 0.7rem;">Mã hệ thống: {{ rname }}</div>
+                            </div>
+                        </div>
                     </td>
-                    <td class="small text-muted">—</td>
-                    <td class="fw-bold small chu-datphong">{{ rt.base_price|vnd }}</td>
-                    <td class="text-end">
+                    <td>
+                        {% if pr.housekeeping_status == 'Clean' %}
+                            <span class="badge px-2 py-1" style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25);">
+                                <i class="fas fa-check-circle me-1"></i>Sạch sẽ (Clean)
+                            </span>
+                        {% elif pr.housekeeping_status == 'Dirty' %}
+                            <span class="badge px-2 py-1" style="background: rgba(245, 158, 11, 0.15); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.3);">
+                                <i class="fas fa-broom me-1"></i>Cần dọn (Dirty)
+                            </span>
+                        {% else %}
+                            <span class="badge px-2 py-1" style="background: rgba(100, 116, 139, 0.12); color: #475569; border: 1px solid rgba(100, 116, 139, 0.25);">
+                                <i class="fas fa-tools me-1"></i>Bảo trì
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pr.guest_name %}
+                            <div class="d-inline-flex align-items-center gap-1.5 px-2.5 py-1 rounded" 
+                                 style="background: rgba(7, 42, 68, 0.06); border: 1px solid rgba(7, 42, 68, 0.15);">
+                                <i class="fas fa-user-check text-primary" style="font-size: 0.75rem;"></i>
+                                <span class="fw-bold text-dark" style="font-size: 0.82rem;">{{ pr.guest_name }}</span>
+                            </div>
+                            <div class="text-muted sc-net-num mt-1" style="font-size: 0.72rem;">
+                                <i class="far fa-calendar-alt me-1 text-secondary"></i>#{{ pr.current_booking_id }}: {{ pr.current_checkin }} → {{ pr.current_checkout }}
+                            </div>
+                        {% else %}
+                            <span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.75rem;">
+                                <i class="fas fa-door-open me-1 opacity-50"></i>Trống (Ready)
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="fw-bold sc-net-num" style="color: #072A44; font-size: 0.95rem;">{{ rt.base_price|vnd }}</span>
+                    </td>
+                    <td class="text-end pe-4">
                         <a href="/manager/physical-room-edit/{{ pr.physical_room_id }}"
-                           class="btn btn-sm btn-outline-primary py-0 px-2" title="Chỉnh sửa phòng">
-                            <i class="fas fa-pen-alt me-1"></i><span class="kichthuoc-nho-hon">Sửa</span>
+                           class="btn btn-sm btn-outline-secondary py-1 px-2.5" title="Chỉnh sửa cấu hình buồng phòng">
+                            <i class="fas fa-pen-alt me-1"></i>Sửa
                         </a>
                     </td>
                 </tr>
@@ -178,14 +368,15 @@
 </div>
 {% endfor %}
 {% else %}
-<div class="the-chinh p-5 text-center text-muted">
+<div class="bg-white rounded-3 shadow-sm p-5 text-center text-muted" style="border: 1px solid #E2E8F0;">
     <i class="fas fa-hotel fa-3x opacity-25 mb-3 d-block"></i>
-    <p>Chưa có dữ liệu kho phòng.</p>
+    <p class="mb-0">Chưa có dữ liệu kho phòng cho tiêu chí tìm kiếm này.</p>
 </div>
 {% endif %}
 
 {% block extra_scripts %}
 <script>
+// Dynamic Selector Toggle in Bulk Price Form
 document.querySelector('select[name="mode"]').addEventListener('change', function() {
     const mode = this.value;
     const label = document.getElementById('targetLabel');
@@ -196,7 +387,7 @@ document.querySelector('select[name="mode"]').addEventListener('change', functio
     const roomInput = roomDiv.querySelector('input');
 
     if (mode === 'type') {
-        label.innerText = 'Chọn Loại khách sạn';
+        label.innerText = 'Chọn Loại phòng áp dụng';
         typeDiv.style.display = 'block';
         roomDiv.style.display = 'none';
         
@@ -216,6 +407,41 @@ document.querySelector('select[name="mode"]').addEventListener('change', functio
         typeSelect.removeAttribute('name');
         typeSelect.removeAttribute('required');
     }
+});
+
+// Real-time Search Filter for Room Rows and Room Types
+document.getElementById('inventorySearch')?.addEventListener('input', function() {
+    const term = this.value.trim().toLowerCase();
+    const cards = document.querySelectorAll('.room-type-card');
+    
+    cards.forEach(card => {
+        const typeCode = card.dataset.roomType || '';
+        const commName = card.dataset.commercialName || '';
+        const hotel = card.dataset.hotel || '';
+        const matchesType = typeCode.includes(term) || commName.includes(term) || hotel.includes(term);
+        
+        const rows = card.querySelectorAll('.room-row-item');
+        let visibleRows = 0;
+        
+        rows.forEach(row => {
+            const rname = row.dataset.roomName || '';
+            const cnum = row.dataset.cleanNum || '';
+            const guest = row.dataset.guest || '';
+            
+            if (matchesType || rname.includes(term) || cnum.includes(term) || guest.includes(term)) {
+                row.style.display = '';
+                visibleRows++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        if (matchesType || visibleRows > 0) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
 });
 </script>
 {% endblock %}

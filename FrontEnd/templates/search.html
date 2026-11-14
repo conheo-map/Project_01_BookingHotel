@@ -1,68 +1,133 @@
 {% extends "base.html" %}
-{% block title %}Tìm phòng - Hotel Booking{% endblock %}
+{% block title %}Tìm phòng nghỉ dưỡng - Sài Gòn Côn Đảo Resort{% endblock %}
 {% block content %}
 
-{# ── THANH TÌM KIẾM TRÊN CÙNG ── #}
-{# ── MODERN SEARCH BAR ── #}
-<div class="modern-search-container mb-5">
-  <form action="/search" method="GET" id="search-form">
-    <div class="modern-search-bar shadow-sm">
+{# ══════════════════════════════════════════════════════════════════
+   BẢNG ÁNH XẠ TÊN HẠNG PHÒNG CHUẨN KHÁCH SẠN NGHỈ DƯỠNG CAO CẤP
+   (Loại bỏ hoàn toàn mã kỹ thuật DB như CIT_SUI, RES_VDEL)
+   ══════════════════════════════════════════════════════════════════ #}
+{% set code_display_names = {
+  'RES_VDEL': 'Villa Deluxe Hướng Vườn',
+  'RES_VSUI': 'Villa Suite Hướng Biển',
+  'RES_VSUP': 'Villa Superior Cao Cấp',
+  'CIT_SUP': 'Phòng City Superior Tiêu Chuẩn',
+  'CIT_DEL': 'Phòng City Deluxe Tiện Nghi',
+  'CIT_SUI': 'Phòng City Suite Hạng Sang'
+} %}
+
+{# Bảng thông số vật lý phòng nghỉ dưỡng cao cấp (Diện tích · Giường · Hướng nhìn) #}
+{% set room_specs = {
+  'RES_VSUI': '58 m² · 1 Giường King lớn · Ban công riêng hướng biển',
+  'RES_VDEL': '46 m² · 1 Giường đôi / 2 Đơn · Ban công hướng vườn nhiệt đới',
+  'RES_VSUP': '38 m² · 1 Giường đôi Queen · View vườn xanh mát',
+  'CIT_SUI': '52 m² · 1 Giường King cao cấp · Cửa kính panorama ngắm phố',
+  'CIT_DEL': '38 m² · 1 Giường Queen · Không gian thanh tĩnh',
+  'CIT_SUP': '32 m² · 1 Giường đôi · Tiện nghi hiện đại'
+} %}
+
+{# Bảng câu chuyện cảm quan & định vị phòng nghỉ dưỡng Côn Đảo cao cấp #}
+{% set room_narratives = {
+  'RES_VSUI': 'Biệt thự biệt lập ngắm trọn hoàng hôn Bãi Đầm Trầu, bồn tắm nằm mở hướng thiên nhiên thanh tịnh.',
+  'RES_VDEL': 'Lối kiến trúc mở nép mình dưới rặng dừa xanh mát, đón trọn làn gió đại dương và bóng mát nhiệt đới nguyên sơ.',
+  'RES_VSUP': 'Nội thất gỗ trầm ấm cúng, ban công ngắm nhìn khu vườn nhiệt đới tĩnh lặng, riêng tư tuyệt đối.',
+  'CIT_SUI': 'Tầm nhìn panorama toàn cảnh phố đảo Côn Đảo, kết hợp nội thất sang trọng chuẩn boutique đẳng cấp.',
+  'CIT_DEL': 'Không gian trang nhã ngay trung tâm thị trấn Côn Đảo, thuận tiện dạo bộ và chiêm bái di tích lịch sử.',
+  'CIT_SUP': 'Thiết kế tinh gọn, ngập tràn ánh sáng tự nhiên với đầy đủ tiện nghi cho kỳ nghỉ thảnh thơi.'
+} %}
+
+{# ══════════════════════════════════════════════════════════════════
+   1. FLOATING SEARCH CAPSULE (THANH TÌM KIẾM NỔI TINH TẾ)
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="sc-search-wrap mb-5">
+  <form action="/search" method="GET" id="search-form" class="w-100 d-flex justify-content-center">
+    <div class="sc-capsule">
       
-      {# Phân đoạn Ngày #}
-      <div class="ms-segment ms-dates">
-        <div class="d-flex align-items-center gap-3">
-          <div class="ms-date-box">
-             <i class="far fa-calendar-alt ms-icon"></i>
-             <input type="date" name="checkin_date" value="{{ params.checkin_date }}" required class="ms-input-date">
+      {# Khối 0: Khu nghỉ dưỡng (Khu vực lưu trú) #}
+      <div class="sc-capsule-seg sc-seg-hotel">
+        <div class="sc-seg-icon">
+          <i class="fas fa-hotel"></i>
+        </div>
+        <div class="sc-hotel-cell">
+          <span class="sc-lbl">Khu nghỉ dưỡng</span>
+          <select name="hotel_id" class="sc-clean-select" aria-label="Chọn khu nghỉ dưỡng">
+            <option value="">Tất cả khu nghỉ dưỡng</option>
+            {% for h in hotels %}
+            <option value="{{ h.hotel_id }}" {% if params.hotel_id|string == h.hotel_id|string %}selected{% endif %}>{{ h.hotel_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="sc-divider d-none d-md-block"></div>
+
+      {# Khối 1: Lựa chọn Ngày nhận & Trả phòng #}
+      <div class="sc-capsule-seg sc-seg-dates">
+        <div class="sc-seg-icon">
+          <i class="far fa-calendar-alt"></i>
+        </div>
+        <div class="sc-dates-flex">
+          <div class="sc-date-cell" onclick="var inp=this.querySelector('input'); if(inp && inp.showPicker) inp.showPicker(); else if(inp) inp.focus();">
+            <span class="sc-lbl">Nhận phòng</span>
+            <input type="date" name="checkin_date" value="{{ params.checkin_date }}" required class="sc-date-input" aria-label="Ngày nhận phòng">
           </div>
-          <span class="ms-separator-dash">—</span>
-          <div class="ms-date-box">
-             <i class="far fa-calendar-alt ms-icon"></i>
-             <input type="date" name="checkout_date" value="{{ params.checkout_date }}" required class="ms-input-date">
+          <span class="sc-arrow"><i class="fas fa-arrow-right"></i></span>
+          <div class="sc-date-cell" onclick="var inp=this.querySelector('input'); if(inp && inp.showPicker) inp.showPicker(); else if(inp) inp.focus();">
+            <span class="sc-lbl">Trả phòng</span>
+            <input type="date" name="checkout_date" value="{{ params.checkout_date }}" required class="sc-date-input" aria-label="Ngày trả phòng">
           </div>
         </div>
       </div>
 
-      <div class="ms-v-divider"></div>
+      <div class="sc-divider d-none d-md-block"></div>
 
-      {# Phân đoạn Khách #}
-      <div class="ms-segment ms-guests" id="guestDropdownTrigger">
-        <div class="d-flex align-items-center gap-2">
-          <i class="far fa-user ms-icon-user"></i>
-          <div class="ms-guest-text">
-            <span id="guestDisplay">
-              {{ params.adults if params.adults else 2 }} người lớn · {{ params.children if params.children else 0 }} trẻ em
-            </span>
-          </div>
-          <i class="fas fa-caret-down ms-caret"></i>
+      {# Khối 2: Số lượng khách lưu trú (Dropdown) #}
+      <div class="sc-capsule-seg sc-seg-guests" id="guestDropdownTrigger" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">
+        <div class="sc-seg-icon">
+          <i class="fas fa-user-friends"></i>
         </div>
+        <div class="sc-guest-cell">
+          <span class="sc-lbl">Số lượng khách</span>
+          <div class="sc-guest-val" id="guestDisplay">
+            {{ params.adults if params.adults else 2 }} người lớn · {{ params.children if params.children else 0 }} trẻ em
+          </div>
+        </div>
+        <i class="fas fa-chevron-down sc-caret-icon"></i>
 
-        {# Dropdown chọn khách #}
-        <div class="ms-dropdown-box d-none" id="guestDropdown">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="fw-bold small text-dark">Người lớn</div>
-            <div class="ms-counter">
-              <button type="button" class="btn-count" onclick="updateGuest('adults', -1)">-</button>
+        {# Dropdown tùy chỉnh số lượng người lớn & trẻ em #}
+        <div class="sc-dropdown-menu shadow-lg d-none" id="guestDropdown">
+          <div class="sc-counter-item">
+            <div>
+              <div class="fw-bold text-dark">Người lớn</div>
+              <small class="text-muted">Từ 12 tuổi trở lên</small>
+            </div>
+            <div class="sc-stepper">
+              <button type="button" class="sc-btn-step" onclick="updateGuest('adults', -1)" aria-label="Giảm người lớn">-</button>
               <input type="number" name="adults" id="inputAdults" value="{{ params.adults if params.adults else 2 }}" readonly>
-              <button type="button" class="btn-count" onclick="updateGuest('adults', 1)">+</button>
+              <button type="button" class="sc-btn-step" onclick="updateGuest('adults', 1)" aria-label="Tăng người lớn">+</button>
             </div>
           </div>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="fw-bold small text-dark">Trẻ em</div>
-            <div class="ms-counter">
-              <button type="button" class="btn-count" onclick="updateGuest('children', -1)">-</button>
+          
+          <div class="sc-counter-item border-top pt-3 mt-3">
+            <div>
+              <div class="fw-bold text-dark">Trẻ em</div>
+              <small class="text-muted">Dưới 12 tuổi</small>
+            </div>
+            <div class="sc-stepper">
+              <button type="button" class="sc-btn-step" onclick="updateGuest('children', -1)" aria-label="Giảm trẻ em">-</button>
               <input type="number" name="children" id="inputChildren" value="{{ params.children if params.children else 0 }}" readonly>
-              <button type="button" class="btn-count" onclick="updateGuest('children', 1)">+</button>
+              <button type="button" class="sc-btn-step" onclick="updateGuest('children', 1)" aria-label="Tăng trẻ em">+</button>
             </div>
           </div>
         </div>
       </div>
 
-      {# Nút Tìm #}
-      <button type="submit" class="ms-btn-find">Tìm</button>
+      {# Nút Tìm kiếm (Căn lề mép phải) #}
+      <button type="submit" class="sc-btn-submit">
+        <i class="fas fa-search me-2"></i>Tìm phòng
+      </button>
     </div>
 
-    {# Ẩn bộ lọc sidebar khi submit form #}
+    {# Bảo tồn các filter hiện tại khi người dùng search lại ngày/khách #}
     {% for sr in params.star_ratings %}<input type="hidden" name="star_ratings[]" value="{{ sr }}">{% endfor %}
     {% for ht in params.hotel_types %}<input type="hidden" name="hotel_types[]" value="{{ ht }}">{% endfor %}
     {% for rtc in params.room_type_codes %}<input type="hidden" name="room_type_codes[]" value="{{ rtc }}">{% endfor %}
@@ -74,616 +139,1868 @@
 
 {% set total = rooms|length %}
 
-{# ── LAYOUT 2 CỘT ── #}
-<div class="row g-4">
+{# ══════════════════════════════════════════════════════════════════
+   2. MAIN 2-COLUMN LAYOUT (BỐ CỤC NGHỈ DƯỠNG CHUẨN QUỐC TẾ)
+   ══════════════════════════════════════════════════════════════════ #}
+<div class="container-fluid px-lg-4 px-2">
+  <div class="row g-4">
 
-  {# ══════════════════════════════════════════════════
-     CỘT TRÁI: SIDEBAR BỘ LỌC
-  ══════════════════════════════════════════════════ #}
-  <div class="col-lg-3 col-md-4">
-                    <div style="overflow: hidden; border-radius: 1rem; position: relative; height: 180px; margin-bottom: 10px;">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.6!2d106.6!3d8.68!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNDAnNDguMCJOIDEwNsKwMzYnMDAuMCJF!5e0!3m2!1svi!2s!4v1!5m2!1svi!2s"
-                            style="border:0; position: absolute; top: -60px; left: 0; width: 100%; height: calc(100% + 110px);" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-    <form action="/search" method="GET" id="filter-form">
-      {# Preserve search params #}
-      <input type="hidden" name="checkin_date" value="{{ params.checkin_date }}">
-      <input type="hidden" name="checkout_date" value="{{ params.checkout_date }}">
-      <input type="hidden" name="adults" value="{{ params.adults }}">
-      <input type="hidden" name="children" value="{{ params.children }}">
-      {% if params.promo_code %}<input type="hidden" name="promo_code" value="{{ params.promo_code }}">{% endif %}
-      <input type="hidden" name="sort_by" value="{{ params.sort_by or 'price_asc' }}">
+    {# ── CỘT TRÁI: BẢN ĐỒ & BỘ LỌC THÔNG MINH (3 COLS) ── #}
+    <aside class="col-lg-3 col-md-4">
+      
+      {# Card Bản đồ vị trí Côn Đảo #}
+      <div class="sc-map-box mb-4">
+        <a href="https://maps.google.com/?q=Con+Dao+Resort" target="_blank" rel="noopener noreferrer" class="sc-map-link text-decoration-none">
+          <div class="sc-map-inner">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.6!2d106.6!3d8.68!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwNDAnNDguMCJOIDEwNsKwMzYnMDAuMCJF!5e0!3m2!1svi!2s!4v1!5m2!1svi!2s"
+              loading="lazy"></iframe>
+            <div class="sc-map-tag">
+              <i class="fas fa-map-marker-alt text-danger me-1"></i> Bãi biển Côn Đảo
+            </div>
+            <div class="sc-map-action-hint">
+              <i class="fas fa-external-link-alt me-1"></i>Xem bản đồ
+            </div>
+          </div>
+        </a>
+      </div>
 
-      <div class="filter-panel">
-        {# Mobile Header with Toggle #}
-        <div class="d-flex justify-content-between align-items-center mb-0 mb-md-3" id="filterToggleHeader">
-          <h6 class="fw-bold mb-0"><i class="fas fa-sliders-h me-2 text-primary"></i>Bộ lọc</h6>
-          <div class="d-flex align-items-center gap-2">
-            <a href="/search?checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}&adults={{ params.adults }}&children={{ params.children }}"
-               class="btn-clear-filter small text-muted">Xóa tất cả</a>
-            <button class="btn btn-sm btn-outline-primary d-md-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterContent" aria-expanded="false" aria-controls="filterContent">
-              <i class="fas fa-chevron-down"></i>
+      {# Card Bộ lọc (Filter Panel) #}
+      <form action="/search" method="GET" id="filter-form">
+        {# Bảo tồn tham số #}
+        <input type="hidden" name="checkin_date" value="{{ params.checkin_date }}">
+        <input type="hidden" name="checkout_date" value="{{ params.checkout_date }}">
+        <input type="hidden" name="adults" value="{{ params.adults }}">
+        <input type="hidden" name="children" value="{{ params.children }}">
+        {% if params.promo_code %}<input type="hidden" name="promo_code" value="{{ params.promo_code }}">{% endif %}
+        <input type="hidden" name="sort_by" value="{{ params.sort_by or 'price_asc' }}">
+
+        <div class="sc-filter-card shadow-sm">
+          
+          {# Tiêu đề bộ lọc & Nút Đặt lại #}
+          <div class="sc-filter-head d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <i class="fas fa-sliders-h text-primary"></i>
+              <span class="sc-filter-title">Bộ lọc tìm kiếm</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <a href="/search?checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}&adults={{ params.adults }}&children={{ params.children }}"
+                 class="sc-reset-link text-decoration-none">
+                Đặt lại
+              </a>
+              <button class="btn btn-sm btn-outline-secondary d-md-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterContentCollapse" aria-expanded="false">
+                <i class="fas fa-chevron-down"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="collapse d-md-block" id="filterContentCollapse">
+            
+            {# Khoảng giá mỗi đêm (Kèm thanh trượt kéo thả trực quan) #}
+            <div class="sc-filter-sec">
+              <label class="sc-sec-label">Khoảng giá mỗi đêm</label>
+
+              {# Thanh trượt kép chuẩn OTA #}
+              <div class="sc-range-wrap mb-3">
+                <div class="sc-range-track" id="priceRangeTrack">
+                  <div class="sc-range-fill" id="priceRangeFill"></div>
+                </div>
+                <input type="range" class="sc-range-thumb" id="rangeMin" min="500000" max="10000000" step="100000"
+                       value="{{ params.min_price or 500000 }}" aria-label="Giá tối thiểu">
+                <input type="range" class="sc-range-thumb" id="rangeMax" min="500000" max="10000000" step="100000"
+                       value="{{ params.max_price or 10000000 }}" aria-label="Giá tối đa">
+              </div>
+
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="sc-input-box flex-grow-1">
+                  <input type="number" name="min_price" id="inputMinPrice" class="form-control form-control-sm sc-clean-input"
+                         placeholder="Tối thiểu" value="{{ params.min_price }}" min="0" step="100000">
+                  <span class="sc-cur">đ</span>
+                </div>
+                <span class="text-muted">—</span>
+                <div class="sc-input-box flex-grow-1">
+                  <input type="number" name="max_price" id="inputMaxPrice" class="form-control form-control-sm sc-clean-input"
+                         placeholder="Tối đa" value="{{ params.max_price }}" min="0" step="500000">
+                  <span class="sc-cur">đ</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between text-muted sc-fine-text">
+                <span>500.000 đ</span>
+                <span>10.000.000 đ</span>
+              </div>
+            </div>
+
+            {# Tiêu chuẩn xếp hạng sao #}
+            <div class="sc-filter-sec">
+              <label class="sc-sec-label">Tiêu chuẩn khách sạn</label>
+              <div class="sc-stars-list">
+                {% for star, star_desc in [(5, 'Resort 5 sao đẳng cấp'), (4, 'Khách sạn 4 sao cao cấp')] %}
+                <label class="sc-check-row" for="star_{{ star }}">
+                  <input class="sc-checkbox" type="checkbox" name="star_ratings[]"
+                         value="{{ star }}" id="star_{{ star }}"
+                         {% if star|string in params.star_ratings %}checked{% endif %}
+                         onchange="this.form.submit()">
+                  <span class="sc-stars-view">
+                    {% for i in range(star) %}<i class="fas fa-star text-warning"></i>{% endfor %}
+                    <span class="ms-1 sc-star-count">({{ star }} sao - {{ star_desc }})</span>
+                  </span>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+
+            {# Hạng phòng nghỉ dưỡng (hiển thị tên tự nhiên, giữ nguyên value mã phòng) #}
+            <div class="sc-filter-sec">
+              <label class="sc-sec-label">Hạng phòng nghỉ dưỡng</label>
+              <div class="sc-rtypes-list">
+                {% for rt in all_room_types %}
+                <label class="sc-check-row" for="rtc_{{ rt.room_type_code }}">
+                  <input class="sc-checkbox" type="checkbox" name="room_type_codes[]"
+                         value="{{ rt.room_type_code }}" id="rtc_{{ rt.room_type_code }}"
+                         {% if rt.room_type_code in params.room_type_codes %}checked{% endif %}
+                         onchange="this.form.submit()">
+                  <span class="sc-rtype-info">
+                    <span class="sc-rtype-name">{{ code_display_names.get(rt.room_type_code, rt.room_type_code) }}</span>
+                    <span class="sc-rtype-badge">{{ rt.hotel_name }}</span>
+                  </span>
+                </label>
+                {% endfor %}
+              </div>
+            </div>
+
+            {# Loại hình cơ sở lưu trú #}
+            <div class="sc-filter-sec border-bottom-0 pb-1">
+              <label class="sc-sec-label">Loại hình lưu trú</label>
+              <div class="d-flex flex-wrap gap-2 mt-2">
+                {% for ht in ['City Hotel', 'Resort Hotel'] %}
+                <button type="button"
+                        class="sc-tag-pill {% if ht in params.hotel_types %}active{% endif %}"
+                        onclick="toggleHotelType(this, '{{ ht }}')">
+                  {% if ht == 'Resort Hotel' %}<i class="fas fa-umbrella-beach me-1"></i>{% else %}<i class="fas fa-hotel me-1"></i>{% endif %}
+                  {{ ht }}
+                </button>
+                {% endfor %}
+              </div>
+              <div id="hotel-type-inputs">
+                {% for ht in params.hotel_types %}
+                <input type="hidden" name="hotel_types[]" value="{{ ht }}">
+                {% endfor %}
+              </div>
+            </div>
+
+            {# Nút áp dụng bộ lọc #}
+            <button type="submit" class="sc-btn-apply w-100 mt-3">
+              <i class="fas fa-filter me-1"></i> Áp dụng bộ lọc
             </button>
+
           </div>
         </div>
+      </form>
+    </aside>
 
-        {# Collapsible content #}
-        <div class="collapse d-md-block mt-3" id="filterContent">
+    {# ── CỘT PHẢI: KẾT QUẢ TÌM KIẾM & DANH SÁCH PHÒNG (9 COLS) ── #}
+    <main class="col-lg-9 col-md-8">
 
-        {# KHOẢNG GIÁ #}
-        <div class="filter-section">
-          <div class="filter-title">Khoảng giá (VND)</div>
-          <div class="d-flex gap-2 mb-2">
-            <input type="number" name="min_price" class="form-control form-control-sm"
-                   placeholder="Từ" value="{{ params.min_price }}" min="0" step="100000">
-            <input type="number" name="max_price" class="form-control form-control-sm"
-                   placeholder="Đến" value="{{ params.max_price }}" min="0" step="500000">
-          </div>
-          <div class="price-hint d-flex justify-content-between text-muted" style="font-size:11px">
-            <span>500.000đ</span><span>10.000.000đ</span>
-          </div>
+      {% if not params.checkin_date or not params.checkout_date %}
+      {# Trạng thái: Chưa chọn ngày #}
+      <div class="sc-empty-box text-center py-5">
+        <div class="sc-empty-ico mb-3">
+          <i class="far fa-calendar-check"></i>
         </div>
-
-        {# XẾP HẠNG SAO #}
-        <div class="filter-section">
-          <div class="filter-title">Xếp hạng sao</div>
-          {% for star in [5, 4, 3, 2, 1] %}
-          <div class="form-check filter-check">
-            <input class="form-check-input" type="checkbox" name="star_ratings[]"
-                   value="{{ star }}" id="star_{{ star }}"
-                   {% if star|string in params.star_ratings %}checked{% endif %}
-                   onchange="this.form.submit()">
-            <label class="form-check-label" for="star_{{ star }}">
-              {% for i in range(star) %}<i class="fas fa-star" style="color:#f59e0b;font-size:12px"></i>{% endfor %}
-            </label>
-          </div>
-          {% endfor %}
-        </div>
-
-        {# HẠNG PHÒNG #}
-        <div class="filter-section">
-          <div class="filter-title">Hạng phòng</div>
-          {% for rt in all_room_types %}
-          <div class="form-check filter-check">
-            <input class="form-check-input" type="checkbox" name="room_type_codes[]"
-                   value="{{ rt.room_type_code }}" id="rtc_{{ rt.room_type_code }}"
-                   {% if rt.room_type_code in params.room_type_codes %}checked{% endif %}
-                   onchange="this.form.submit()">
-            <label class="form-check-label" for="rtc_{{ rt.room_type_code }}">
-              {{ rt.room_type_code }}
-              <span class="text-muted small">— {{ rt.hotel_name }}</span>
-            </label>
-          </div>
-          {% endfor %}
-        </div>
-
-        {# LOẠI KHÁCH SẠN #}
-        <div class="filter-section">
-          <div class="filter-title">Loại hình khách sạn</div>
-          <div class="d-flex flex-wrap gap-2 mt-1">
-            {% for ht in ['City Hotel', 'Resort Hotel'] %}
-            <button type="button"
-                    class="btn-hotel-type {% if ht in params.hotel_types %}active{% endif %}"
-                    onclick="toggleHotelType(this, '{{ ht }}')">
-              {{ ht }}
-            </button>
-            {% endfor %}
-          </div>
-          {# Hidden inputs cho hotel_types[] #}
-          <div id="hotel-type-inputs">
-            {% for ht in params.hotel_types %}
-            <input type="hidden" name="hotel_types[]" value="{{ ht }}">
-            {% endfor %}
-          </div>
-        </div>
-
-        {# Nút Áp dụng #}
-        <button type="submit" class="btn btn-apply-filter w-100 mt-3">
-          <i class="fas fa-check me-1"></i>Áp dụng bộ lọc
-        </button>
-        </div> {# end filterContent #}
-      </div>
-    </form>
-  </div>
-
-  {# ══════════════════════════════════════════════════
-     CỘT PHẢI: KẾT QUẢ
-  ══════════════════════════════════════════════════ #}
-  <div class="col-lg-9 col-md-8">
-
-    {% if not params.checkin_date or not params.checkout_date %}
-    {# Chưa chọn ngày #}
-    <div class="empty-state text-center py-5">
-      <div class="empty-icon mb-3"><i class="fas fa-calendar-alt fa-3x text-muted opacity-25"></i></div>
-      <h5 class="fw-bold">Chọn ngày để tìm phòng</h5>
-      <p class="text-muted">Vui lòng chọn ngày nhận và trả phòng ở thanh tìm kiếm phía trên.</p>
-    </div>
-
-    {% elif total == 0 %}
-    {# Không tìm thấy #}
-    <div class="empty-state text-center py-5">
-      <div class="empty-icon mb-3"><i class="fas fa-bed fa-3x text-muted opacity-25"></i></div>
-      <h5 class="fw-bold">Không tìm thấy phòng trống</h5>
-      <p class="text-muted">Không có phòng nào phù hợp với bộ lọc hiện tại.</p>
-      <a href="/search?checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}&adults={{ params.adults }}&children={{ params.children }}"
-         class="btn btn-outline-secondary me-2">Xóa bộ lọc</a>
-      <a href="/" class="btn btn-primary px-4">Tìm kiếm mới</a>
-    </div>
-
-    {% else %}
-    {# ── Thanh kết quả + sắp xếp ── #}
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-      <div>
-        {% set n_continuous = rooms | selectattr('availability_type', 'equalto', 'continuous') | list | length %}
-        {% set n_fragmented = rooms | selectattr('availability_type', 'equalto', 'fragmented') | list | length %}
-        <span class="fw-semibold text-dark">
-          <span class="text-primary fs-5 fw-bold">{{ total }}</span> kết quả
-        </span>
-        <span class="ms-2">
-          {% if n_continuous %}<span class="badge-avail continuous">{{ n_continuous }} toàn thời gian</span>{% endif %}
-          {% if n_fragmented %}<span class="badge-avail fragmented ms-1">{{ n_fragmented }} đêm lẻ</span>{% endif %}
-        </span>
+        <h4 class="fw-bold text-dark mb-2">Khám phá thiên đường nghỉ dưỡng Côn Đảo</h4>
+        <p class="text-muted mb-4 max-w-500 mx-auto">Vui lòng chọn ngày nhận phòng và ngày trả phòng ở thanh tìm kiếm phía trên để chúng tôi kiểm tra phòng trống tốt nhất cho bạn.</p>
       </div>
 
-      {# Sắp xếp #}
-      <div class="d-flex align-items-center gap-2">
-        <span class="text-muted small">Sắp xếp:</span>
-        <a href="?{{ request.query_string.decode() | replace('sort_by=price_asc','') | replace('sort_by=price_desc','') | replace('sort_by=rating_desc','') }}&sort_by=price_asc"
-           class="sort-btn {% if params.sort_by == 'price_asc' or not params.sort_by %}active{% endif %}">Giá thấp nhất</a>
-        <a href="?{{ request.query_string.decode() | replace('sort_by=price_asc','') | replace('sort_by=price_desc','') | replace('sort_by=rating_desc','') }}&sort_by=price_desc"
-           class="sort-btn {% if params.sort_by == 'price_desc' %}active{% endif %}">Giá cao nhất</a>
-        <a href="?{{ request.query_string.decode() | replace('sort_by=price_asc','') | replace('sort_by=price_desc','') | replace('sort_by=rating_desc','') }}&sort_by=rating_desc"
-           class="sort-btn {% if params.sort_by == 'rating_desc' %}active{% endif %}">Đánh giá</a>
-      </div>
-    </div>
-
-    {# ── DANH SÁCH PHÒNG (horizontal cards) ── #}
-    <div class="d-flex flex-column gap-3">
-    {% for room in rooms %}
-    <div class="result-card d-flex {% if room.availability_type == 'fragmented' %}result-card--fragmented{% endif %}">
-
-      {# Ảnh bên trái #}
-      <div class="result-card__img flex-shrink-0">
-        {% if room.main_image %}
-          <img src="{{ room.main_image }}" alt="{{ room.room_name }}" class="w-100 h-100 object-fit-cover">
-          <div class="img-badge {% if room.availability_type == 'fragmented' %}img-badge--amber{% endif %}">
-            {% if room.availability_type == 'continuous' %}PHÒNG TRỐNG{% else %}ƯU ĐÃI ĐÊM LẺ{% endif %}
-          </div>
-        {% elif room.availability_type == 'continuous' %}
-          <div class="img-placeholder img-placeholder--blue">
-            <i class="fas fa-door-open fa-2x text-white opacity-60"></i>
-            <div class="img-badge">PHÒNG TRỐNG</div>
-          </div>
-        {% else %}
-          <div class="img-placeholder img-placeholder--amber">
-            <i class="fas fa-moon fa-2x text-white opacity-60"></i>
-            <div class="img-badge img-badge--amber">ƯU ĐÃI ĐÊM LẺ</div>
-          </div>
-        {% endif %}
+      {% elif total == 0 %}
+      {# Trạng thái: Không tìm thấy phòng #}
+      <div class="sc-empty-box text-center py-5">
+        <div class="sc-empty-ico mb-3">
+          <i class="fas fa-bed"></i>
+        </div>
+        <h4 class="fw-bold text-dark mb-2">Không tìm thấy phòng phù hợp</h4>
+        <p class="text-muted mb-4 max-w-500 mx-auto">Tất cả các phòng thuộc tiêu chí tìm kiếm của bạn đã được đặt kín hoặc không thỏa mãn bộ lọc hiện tại.</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="/search?checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}&adults={{ params.adults }}&children={{ params.children }}"
+             class="btn sc-btn-clear">
+            <i class="fas fa-undo me-1"></i> Xóa bộ lọc
+          </a>
+          <a href="/" class="btn sc-btn-pri">
+            <i class="fas fa-search me-1"></i> Tìm ngày khác
+          </a>
+        </div>
       </div>
 
-      {# Nội dung giữa #}
-      <div class="result-card__body flex-grow-1 p-3">
-        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+      {% else %}
+      {# ── THANH TIÊU ĐỀ KẾT QUẢ & TAB SẮP XẾP ── #}
+      {% set display_list = grouped_rooms if (grouped_rooms is defined and grouped_rooms) else rooms %}
+      {% set total_types = display_list|length %}
+      {% set total_rooms = rooms|length %}
+      <div class="sc-header-bar d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+        <div>
+          {% set n_continuous = rooms | selectattr('availability_type', 'equalto', 'continuous') | list | length %}
+          {% set n_fragmented = rooms | selectattr('availability_type', 'equalto', 'fragmented') | list | length %}
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <h5 class="fw-bold text-dark mb-0 fs-5 sc-result-heading">
+              Tìm thấy <span class="sc-counter-highlight">{{ total_types }}</span> hạng phòng cao cấp
+            </h5>
+            <span class="sc-pill-badge sc-pill-green"><i class="fas fa-check-circle me-1"></i>{{ total_rooms }} phòng trống sẵn sàng</span>
+            {% if n_fragmented %}
+              <span class="sc-pill-badge sc-pill-amber"><i class="fas fa-moon me-1"></i>{{ n_fragmented }} đêm lẻ</span>
+            {% endif %}
+          </div>
+        </div>
 
-          {# Tên + thông tin phòng #}
+        {# Thanh sắp xếp chuẩn OTA #}
+        <div class="sc-sort-bar d-flex align-items-center gap-2">
+          <span class="text-muted small fw-semibold me-1"><i class="fas fa-sort-amount-down me-1"></i>Sắp xếp:</span>
+          <div class="sc-pills-wrap">
+            <a href="?{{ request.query_string.decode() | replace('sort_by=price_asc','') | replace('sort_by=price_desc','') | replace('sort_by=rating_desc','') }}&sort_by=price_asc"
+               class="sc-sort-item {% if params.sort_by == 'price_asc' or not params.sort_by %}active{% endif %}">
+              Giá thấp nhất
+            </a>
+            <a href="?{{ request.query_string.decode() | replace('sort_by=price_asc','') | replace('sort_by=price_desc','') | replace('sort_by=rating_desc','') }}&sort_by=price_desc"
+               class="sc-sort-item {% if params.sort_by == 'price_desc' %}active{% endif %}">
+              Giá cao nhất
+            </a>
+            <a href="?{{ request.query_string.decode() | replace('sort_by=price_asc','') | replace('sort_by=price_desc','') | replace('sort_by=rating_desc','') }}&sort_by=rating_desc"
+               class="sc-sort-item {% if params.sort_by == 'rating_desc' %}active{% endif %}">
+              Đánh giá cao
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {# ── DANH SÁCH THẺ PHÒNG NGHỈ DƯỠNG (3 KHỐI BẤT BIẾN KHÔNG GÃY BỐ CỤC) ── #}
+      <div class="sc-cards-col d-flex flex-column gap-4">
+      {% for room in display_list %}
+      <article class="sc-card {% if room.availability_type == 'fragmented' %}sc-frag-border{% endif %}">
+        
+        {# ── KHỐI 1: HÌNH ẢNH PHÒNG & CAROUSEL CHUYỂN ẢNH CHUẨN AGODA (280px FIXED) ── #}
+        <div class="sc-media-pane">
+          {% set img_list = room.images if (room.images and room.images is iterable and room.images|length > 0) else ([room.main_image] if room.main_image else []) %}
+
+          {% if img_list|length > 0 %}
+            {# Vùng slider chứa nhiều ảnh phòng thực tế #}
+            <div class="sc-carousel-box" data-idx="0" data-total="{{ img_list|length }}">
+              {% for img_path in img_list %}
+                <img src="{{ img_path }}" alt="{{ room.room_name }}"
+                     class="sc-photo {% if loop.first %}active{% endif %}"
+                     loading="lazy" data-img-index="{{ loop.index0 }}">
+              {% endfor %}
+
+              {# Nút chuyển ảnh Trái / Phải chuẩn Agoda #}
+              {% if img_list|length > 1 %}
+              <button type="button" class="sc-nav-btn sc-nav-prev" onclick="changeCardSlide(this, -1, event)" aria-label="Ảnh trước">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button type="button" class="sc-nav-btn sc-nav-next" onclick="changeCardSlide(this, 1, event)" aria-label="Ảnh tiếp theo">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+
+              {# Bộ đếm ảnh góc dưới trái chuẩn Agoda: 1/N #}
+              <div class="sc-agoda-counter">
+                <span class="sc-cur-count">1</span>/<span class="sc-tot-count">{{ img_list|length }}</span>
+              </div>
+              {% endif %}
+            </div>
+          {% elif room.availability_type == 'continuous' %}
+            <div class="sc-photo-fallback sc-bg-ocean">
+              <i class="fas fa-door-open fa-3x"></i>
+              <span class="mt-2 small opacity-75">Sài Gòn Côn Đảo Resort</span>
+            </div>
+          {% else %}
+            <div class="sc-photo-fallback sc-bg-sunset">
+              <i class="fas fa-moon fa-3x"></i>
+              <span class="mt-2 small opacity-75">Ưu đãi đêm lẻ</span>
+            </div>
+          {% endif %}
+
+          {# Badge tình trạng phòng (Góc trên trái) #}
+          <div class="sc-float-badge {% if room.availability_type == 'fragmented' %}sc-badge-orange{% elif room.total_available is defined and room.total_available <= 5 %}sc-badge-urgent{% else %}sc-badge-green{% endif %}">
+            {% if room.availability_type == 'fragmented' %}
+              <i class="fas fa-sparkles me-1"></i>ƯU ĐÃI ĐÊM LẺ
+            {% elif room.total_available is defined and room.total_available <= 5 %}
+              <i class="fas fa-fire me-1"></i>CHỈ CÒN {{ room.total_available }} PHÒNG!
+            {% elif room.total_available is defined %}
+              <i class="fas fa-check-circle me-1"></i>CÒN {{ room.total_available }} PHÒNG TRỐNG
+            {% else %}
+              <i class="fas fa-check-circle me-1"></i>PHÒNG TRỐNG
+            {% endif %}
+          </div>
+
+          {# Nút lưu phòng yêu thích (Góc trên phải) #}
+          <button type="button" class="sc-wishlist-btn" onclick="toggleWishlist(this, '{{ room.physical_room_id }}')" title="Lưu phòng yêu thích" aria-label="Lưu phòng yêu thích">
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+
+        {# ── KHỐI 2: THÔNG TIN CHI TIẾT PHÒNG (FLUID AUTO CO-DÃN) ── #}
+        <div class="sc-body-pane">
           <div>
-            <h5 class="result-card__name mb-1">{{ room.hotel_name }}</h5>
-            <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
-              {# Sao khách sạn #}
-              <span>
-                {% for i in range(room.star_rating | default(3)) %}
-                  <i class="fas fa-star" style="color:#f59e0b;font-size:11px"></i>
+            {# Khách sạn & Tiêu chuẩn sao #}
+            <div class="sc-meta-line mb-1">
+              <span class="sc-hotel-label">{{ room.hotel_name }}</span>
+              <span class="sc-star-row ms-2">
+                {% for i in range(room.star_rating | default(4)) %}
+                  <i class="fas fa-star"></i>
                 {% endfor %}
               </span>
-              <span class="badge-room-type">{{ room.room_type_code }}</span>
-              <span class="text-muted small">Phòng {{ room.room_name }}</span>
-              <span class="badge-hotel-type">{{ room.hotel_type | default('City Hotel') }}</span>
+              {% if room.hotel_type and room.hotel_type != room.hotel_name %}
+                <span class="sc-dot">·</span>
+                <span class="sc-type-tag">{{ room.hotel_type }}</span>
+              {% endif %}
             </div>
 
-            {# Mô tả ngắn #}
-            {% if room.description %}
-            <p class="result-card__desc text-muted small mb-2">{{ room.description[:120] }}{% if room.description|length > 120 %}...{% endif %}</p>
+            {# Tiêu đề phòng cao cấp & Mã số phòng nhẹ nhàng #}
+            <div class="sc-title-group mb-1">
+              <h4 class="sc-name-heading mb-0">
+                {{ code_display_names.get(room.room_type_code, room.description or room.room_type_code) }}
+              </h4>
+              {% if room.physical_rooms is not defined %}
+              <span class="sc-room-no-badge">
+                Phòng {{ room.room_name.split('_')[-1] if '_' in room.room_name else room.room_name }}
+              </span>
+              {% endif %}
+            </div>
+
+            {# Thông số vật lý phòng nghỉ dưỡng (Diện tích · Giường · Hướng nhìn) #}
+            <div class="sc-specs-feature mb-2">
+              <i class="fas fa-compass text-primary me-1"></i>
+              <span class="sc-feature-txt">{{ room_specs.get(room.room_type_code, '35 m² · Tiêu chuẩn nghỉ dưỡng') }}</span>
+            </div>
+
+            {# Mô tả vắn tắt (chỉ hiển thị nếu là miêu tả thực sự) #}
+            {% if room.description and not room.description.lower().startswith('hạng phòng') and room.description|length > 25 %}
+            <p class="sc-brief mb-2">
+              {{ room.description[:100] }}{% if room.description|length > 100 %}...{% endif %}
+            </p>
             {% endif %}
 
-            {# Tiện nghi (amenities) #}
+            {# Danh sách tiện ích phòng dạng chip (vừa khít 1 dòng không rớt) #}
             {% if room.amenities %}
-            <div class="d-flex flex-wrap gap-1 mb-2 mt-1">
-              {% for am in room.amenities.split(',')[:5] %}
-              <span class="huyhieu-tienich"><i class="fas fa-check text-success me-1" style="font-size:10px"></i>{{ am.strip() }}</span>
+            <div class="sc-amenity-wrap d-flex align-items-center gap-2 mb-3">
+              {% for am in room.amenities.split(',')[:4] %}
+                {% set am_trim = am.strip() %}
+                <span class="sc-chip">
+                  {% if 'wifi' in am_trim|lower %}<i class="fas fa-wifi"></i>
+                  {% elif 'tv' in am_trim|lower %}<i class="fas fa-tv"></i>
+                  {% elif 'điều hòa' in am_trim|lower or 'lạnh' in am_trim|lower %}<i class="fas fa-snowflake"></i>
+                  {% elif 'minibar' in am_trim|lower or 'tủ lạnh' in am_trim|lower %}<i class="fas fa-wine-glass-alt"></i>
+                  {% elif 'két' in am_trim|lower %}<i class="fas fa-shield-alt"></i>
+                  {% elif 'bồn' in am_trim|lower or 'tắm' in am_trim|lower %}<i class="fas fa-bath"></i>
+                  {% elif 'ban công' in am_trim|lower or 'hướng' in am_trim|lower %}<i class="fas fa-umbrella-beach"></i>
+                  {% else %}<i class="fas fa-check"></i>
+                  {% endif %}
+                  {{ am_trim }}
+                </span>
               {% endfor %}
-              {% if room.amenities.split(',')|length > 5 %}
-                <span class="huyhieu-tienich fw-bold">+{{ room.amenities.split(',')|length - 5 }}</span>
+              {% if room.amenities.split(',')|length > 4 %}
+                <span class="sc-chip sc-chip-extra">+{{ room.amenities.split(',')|length - 4 }} tiện ích</span>
               {% endif %}
             </div>
             {% endif %}
 
-            {# Sức chứa #}
-            <div class="d-flex gap-3 text-muted" style="font-size:12px">
-              <span><i class="fas fa-user me-1"></i>{{ room.max_adults }} người lớn</span>
-              <span><i class="fas fa-child me-1"></i>{{ room.max_children }} trẻ em</span>
+            {# Lời dẫn cảm quan nghỉ dưỡng Côn Đảo #}
+            <p class="sc-story-line mb-3">
+              {{ room_narratives.get(room.room_type_code, 'Không gian nghỉ dưỡng thanh bình, chan hòa cùng làn gió biển nguyên sơ Côn Đảo.') }}
+            </p>
+          </div>
+
+          <div>
+            {# Sức chứa & Giường phụ #}
+            <div class="sc-specs-bar d-flex align-items-center gap-3">
+              <span><i class="fas fa-user-friends me-1 text-muted"></i>{{ room.max_adults }} người lớn</span>
+              <span><i class="fas fa-child me-1 text-muted"></i>{{ room.max_children }} trẻ em</span>
               {% if room.extra_bed_capacity > 0 %}
-              <span class="text-info"><i class="fas fa-plus-circle me-1"></i>+{{ room.extra_bed_capacity }} giường phụ</span>
+              <span class="sc-bed-badge"><i class="fas fa-plus me-1"></i>{{ room.extra_bed_capacity }} giường phụ</span>
               {% endif %}
             </div>
 
-            {# Đêm trống (fragmented) #}
+            {# Đêm còn trống nếu là fragmented #}
             {% if room.availability_type == 'fragmented' and room.free_nights %}
-            <div class="mt-2">
-              <span class="text-muted small fw-bold">Đêm còn trống: </span>
+            <div class="sc-nights-bar mt-2">
+              <span class="sc-nights-head"><i class="far fa-calendar-alt me-1"></i>Đêm còn trống:</span>
               {% for n in room.free_nights[:4] %}
-              <span class="badge-night">{{ n }}</span>
+                <span class="sc-tag-night">{{ n }}</span>
               {% endfor %}
               {% if room.free_nights|length > 4 %}
-              <span class="text-muted small">+{{ room.free_nights|length - 4 }} đêm nữa</span>
+                <span class="text-muted small ms-1">+{{ room.free_nights|length - 4 }} đêm</span>
               {% endif %}
+            </div>
+            {% endif %}
+
+            {# Bộ chọn số phòng thực tế (Tùy chọn cho khách muốn chọn số phòng cụ thể) #}
+            {% if room.physical_rooms and room.physical_rooms|length > 1 %}
+            <div class="sc-room-picker-box mt-3 p-2 rounded bg-light border">
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <span class="small fw-bold text-dark" style="font-size: 0.8rem;">
+                  <i class="fas fa-door-open text-primary me-1"></i>Chọn số phòng yêu thích:
+                </span>
+                <div class="sc-room-chips d-flex align-items-center gap-1 flex-wrap">
+                  {% for pr in room.physical_rooms[:5] %}
+                  <button type="button" 
+                          class="sc-room-chip {% if loop.first %}active{% endif %}"
+                          onclick="selectRoomChip(this, '{{ room.room_type_id }}', '{{ pr.physical_room_id }}')">
+                    Phòng {{ pr.room_name.split('_')[-1] if '_' in pr.room_name else pr.room_name }}
+                  </button>
+                  {% endfor %}
+                  {% if room.physical_rooms|length > 5 %}
+                  <span class="text-muted small ps-1" style="font-size: 0.75rem;">+{{ room.physical_rooms|length - 5 }} phòng khác</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {# ── KHỐI 3: ĐÁNH GIÁ, GIÁ TIỀN & CTA ĐẶT PHÒNG (220px DOCKED PHẢI) ── #}
+        <div class="sc-action-pane">
+          
+          {# Điểm đánh giá kiểu Boutique OTA #}
+          <div class="sc-score-unit w-100 mb-2">
+            {% if room.avg_rating > 0 %}
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <div class="text-end">
+                <div class="sc-rating-title">
+                  {% if room.avg_rating >= 9 %}Xuất sắc
+                  {% elif room.avg_rating >= 8 %}Rất tốt
+                  {% elif room.avg_rating >= 7 %}Tốt
+                  {% else %}Hài lòng{% endif %}
+                </div>
+                <small class="text-muted sc-reviews-qty">{{ room.review_count }} đánh giá</small>
+              </div>
+              <div class="sc-rating-box-pill">
+                {{ "%.1f"|format(room.avg_rating * 2) }}
+              </div>
+            </div>
+            {% else %}
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <div class="text-end">
+                <div class="sc-rating-title">Phòng mới</div>
+                <small class="text-muted sc-reviews-qty">Được đề xuất</small>
+              </div>
+              <div class="sc-rating-box-pill sc-score-fresh">
+                <i class="fas fa-award"></i>
+              </div>
             </div>
             {% endif %}
           </div>
 
-          {# Giá + nút đặt (cột phải trong thẻ) #}
-          <div class="result-card__price text-end d-flex flex-column align-items-end gap-2" style="min-width:160px">
-            {# Rating box #}
-            {% if room.avg_rating > 0 %}
-            <div class="rating-box">
-              <span class="rating-label">
-                {% if room.avg_rating >= 9 %}Tuyệt vời
-                {% elif room.avg_rating >= 8 %}Rất tốt
-                {% elif room.avg_rating >= 7 %}Tốt
-                {% else %}Khá{% endif %}
-              </span>
-              <span class="rating-score">{{ "%.1f"|format(room.avg_rating * 2) }}</span>
+          {# Cam kết giá trị & Đòn bẩy tâm lý (Conversion Value Cues) #}
+          <div class="sc-perks-box my-auto w-100 text-end">
+            <div class="sc-perk-line sc-perk-green">
+              <i class="fas fa-utensils me-1"></i>Bao gồm bữa sáng
             </div>
-            <div class="text-muted" style="font-size:11px">{{ room.review_count }} đánh giá</div>
+            <div class="sc-perk-line sc-perk-blue">
+              <i class="fas fa-shield-alt me-1"></i>Miễn phí hủy phòng
+            </div>
+            <div class="sc-perk-line sc-perk-subtle">
+              <i class="fas fa-bolt text-warning me-1"></i>Xác nhận tức thì
+            </div>
+          </div>
+
+          {# Khối Giá hiển thị minh bạch #}
+          <div class="sc-price-unit w-100 text-end mt-auto mb-3">
+            {% if room.promo_price_min < room.effective_price_max %}
+            <div class="sc-old-price">
+              {{ room.effective_price_max | vnd }}
+            </div>
             {% endif %}
-
-            {# Giá #}
-            <div class="mt-auto">
-              {% if room.promo_price_min < room.effective_price_max %}
-              <div class="price-original text-muted text-decoration-line-through small">
-                {{ room.effective_price_max | vnd }}
-              </div>
-              {% endif %}
-              <div class="price-final {% if room.availability_type == 'continuous' %}text-primary{% else %}text-warning{% endif %}">
-                {{ room.promo_price_min | vnd }}
-              </div>
-              <div class="text-muted" style="font-size:11px">Giá mỗi đêm</div>
+            <div class="sc-net-price">
+              <span class="sc-net-num">{{ room.promo_price_min | vnd }}</span>
             </div>
+            <div class="sc-tax-note">Giá mỗi đêm · Đã gồm thuế & phí</div>
+          </div>
 
-            {# Nút CTA #}
+          {# Cặp nút CTA: Đặt phòng (Primary) & Xem chi tiết (Secondary) #}
+          <div class="sc-buttons-group d-flex flex-column w-100 gap-2">
             {% if room.availability_type == 'continuous' %}
-            <a href="/room/{{ room.room_type_id }}?checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}"
-               class="btn btn-outline-detail mb-1">
-              <i class="fas fa-eye me-1"></i>Xem chi tiết
-            </a>
-            <a href="/booking?room_type_id={{ room.room_type_id }}&hotel_id={{ room.hotel_id }}&physical_room_id={{ room.physical_room_id }}&checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}"
-               class="btn btn-book">
-              <i class="fas fa-calendar-check me-1"></i>Đặt phòng
+            <a id="btn-book-{{ room.room_type_id }}"
+               href="/booking?room_type_id={{ room.room_type_id }}&hotel_id={{ room.hotel_id }}&physical_room_id={{ room.physical_room_id }}&checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}&adults={{ params.adults|default(2) }}&children={{ params.children|default(0) }}{% if params.promo_code %}&promo_code={{ params.promo_code }}{% endif %}"
+               class="sc-btn-primary-action">
+              <i class="fas fa-calendar-check me-1"></i>Đặt phòng ngay
             </a>
             {% else %}
-            <a href="/room/{{ room.room_type_id }}?checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}"
-               class="btn btn-outline-detail mb-1">
-              <i class="fas fa-eye me-1"></i>Xem chi tiết
-            </a>
-            <a href="/booking?room_type_id={{ room.room_type_id }}&hotel_id={{ room.hotel_id }}&physical_room_id={{ room.physical_room_id }}&checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}"
-               class="btn btn-book btn-book--amber">
+            <a id="btn-book-{{ room.room_type_id }}"
+               href="/booking?room_type_id={{ room.room_type_id }}&hotel_id={{ room.hotel_id }}&physical_room_id={{ room.physical_room_id }}&checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}&adults={{ params.adults|default(2) }}&children={{ params.children|default(0) }}{% if params.promo_code %}&promo_code={{ params.promo_code }}{% endif %}"
+               class="sc-btn-primary-action sc-btn-amber-action">
               <i class="fas fa-moon me-1"></i>Chọn đêm lẻ
             </a>
             {% endif %}
+
+            <a href="/room/{{ room.room_type_id }}?checkin_date={{ params.checkin_date }}&checkout_date={{ params.checkout_date }}&adults={{ params.adults|default(2) }}&children={{ params.children|default(0) }}{% if params.promo_code %}&promo_code={{ params.promo_code }}{% endif %}"
+               class="sc-btn-secondary-link">
+              <span>Xem chi tiết phòng</span>
+              <i class="fas fa-angle-right ms-1"></i>
+            </a>
           </div>
+
         </div>
+
+      </article>
+      {% endfor %}
       </div>
-    </div>
-    {% endfor %}
-    </div>
-    {% endif %}
-  </div>{# end col-right #}
-</div>{# end row #}
+      {% endif %}
 
-{# ── CSS nội tuyến cho trang search ── #}
+    </main>
+  </div>
+</div>
+
+{# ══════════════════════════════════════════════════════════════════
+   3. STYLESHEET RESORT NGHỈ DƯỠNG SÀI GÒN - CÔN ĐẢO (CHẶT CHẼ)
+   ══════════════════════════════════════════════════════════════════ #}
 <style>
-/* --- MODERN SEARCH BAR (Pill Style) --- */
-.modern-search-container {
-    display: flex;
-    justify-content: center;
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sc-ocean: #0A3D62;
+  --sc-ocean-hover: #072a44;
+  --sc-ocean-soft: rgba(10, 61, 98, 0.08);
+  --sc-gold: #C5A880;
+  --sc-sand: #FBF8F3;
+  --sc-dark: #0F172A;
+  --sc-slate: #334155;
+  --sc-muted: #64748B;
+  --sc-border: #E2E8F0;
+  --sc-border-dark: #CBD5E1;
+  --sc-surface: #FFFFFF;
+  --sc-emerald: #059669;
+  --sc-emerald-bg: #ECFDF5;
+  --sc-amber: #D97757;
+  --sc-amber-bg: #FFF7ED;
+
+  /* ══════════════════════════════════════════════════════════════════
+     HỆ THỐNG GÓC BO CHUẨN KIẾN TRÚC RESORT (DETOX HOÀN TOÀN VIÊN THUỐC AI)
+     ══════════════════════════════════════════════════════════════════ */
+  --sc-radius-card: 6px;
+  --sc-radius-search: 8px;
+  --sc-radius-btn: 4px;
+  --sc-radius-badge: 2px;
+  --sc-radius-chip: 3px;
+  --sc-radius-tab: 4px;
+  --sc-radius-input: 4px;
+  --sc-shadow-sm: 0 2px 8px rgba(10, 61, 98, 0.04);
+  --sc-shadow-md: 0 8px 24px rgba(10, 61, 98, 0.07);
+  --sc-shadow-card: 0 4px 16px rgba(10, 61, 98, 0.05);
+  --sc-shadow-hover: 0 12px 28px rgba(10, 61, 98, 0.1);
 }
 
-.modern-search-bar {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    border-radius: 50px;
-    padding: 6px 12px 6px 30px;
-    border: 2px solid var(--mau-xanh-chinh); /* Đổi sang màu xanh đặc trưng và tăng độ dày */
-    max-width: 1000px;
+/* --- 1. ARCHITECTURAL LUXURY SEARCH CONSOLE --- */
+.sc-search-wrap {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 100;
 }
 
-.ms-segment {
-    padding: 10px 15px;
-    cursor: pointer;
-    position: relative;
-    user-select: none;
+.sc-capsule {
+  display: flex;
+  align-items: center;
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-border-dark);
+  border-radius: var(--sc-radius-search);
+  padding: 6px 6px 6px 18px;
+  box-shadow: var(--sc-shadow-md);
+  max-width: 1080px;
+  width: 100%;
+  transition: all 0.25s ease;
 }
 
-.ms-input-date {
-    border: none;
-    outline: none;
-    font-size: 14.5px;
-    font-weight: 700;
-    color: #0f172a;
-    background: transparent;
-    width: 140px;
+.sc-capsule:hover, .sc-capsule:focus-within {
+  box-shadow: 0 12px 32px rgba(10, 61, 98, 0.12);
+  border-color: var(--sc-ocean);
 }
 
-.ms-icon { color: #64748b; font-size: 16px; margin-right: 8px; }
-.ms-icon-user { color: #64748b; font-size: 18px; }
-.ms-separator-dash { color: #cbd5e1; font-weight: 300; }
-.ms-v-divider { width: 1px; height: 36px; background: #e2e8f0; margin: 0 10px; }
-
-/* Responsive Search Bar */
-@media (max-width: 900px) {
-    .modern-search-bar {
-        flex-direction: column;
-        border-radius: 20px;
-        padding: 15px;
-        align-items: stretch;
-        gap: 12px;
-    }
-    
-    .ms-segment {
-        padding: 8px 0;
-        width: 100%;
-        border-bottom: 1px solid #f1f5f9;
-    }
-    
-    .ms-segment:last-of-type {
-        border-bottom: none;
-    }
-
-    .ms-dates .d-flex {
-        flex-direction: column;
-        align-items: stretch !important;
-        gap: 10px !important;
-    }
-    
-    .ms-v-divider, .ms-separator-dash {
-        display: none;
-    }
-    
-    .ms-input-date {
-        width: 100%;
-    }
-    
-    .ms-guest-text span {
-        min-width: unset;
-        width: 100%;
-    }
-    
-    .ms-btn-find {
-        width: 100%;
-        margin-top: 10px;
-        padding: 14px;
-        border-radius: 12px;
-    }
-
-    .ms-dropdown-box {
-        width: 100%;
-        top: 100%;
-        left: 0;
-        position: relative;
-        box-shadow: none;
-        padding: 15px 0;
-        border: none;
-    }
+.sc-capsule-seg {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  transition: background 0.2s ease;
 }
 
-.ms-guest-text span {
-    font-size: 14.5px;
-    font-weight: 700;
-    color: #0f172a;
-    display: block;
-    min-width: 180px;
+.sc-capsule-seg:hover {
+  background: #F8FAFC;
 }
 
-.ms-caret { font-size: 12px; color: #64748b; }
-
-.ms-btn-find {
-    background: #0047AB;
-    color: #fff;
-    border: none;
-    padding: 10px 35px;
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 16px;
-    transition: all 0.2s;
+.sc-seg-hotel {
+  flex: 1.1 1 auto;
 }
 
-.ms-btn-find:hover {
-    background: #003380;
-    transform: scale(1.02);
+.sc-hotel-cell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-/* Guest Dropdown */
-.ms-dropdown-box {
-    position: absolute;
-    top: 65px;
-    left: 0;
-    width: 260px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-    padding: 20px;
-    z-index: 1000;
-    border: 1px solid #f1f5f9;
+.sc-clean-select {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-weight: 700;
+  color: var(--sc-ocean);
+  font-size: 0.92rem;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
 }
 
-.ms-counter {
-    display: flex;
-    align-items: center;
+.sc-seg-dates {
+  flex: 1.25 1 auto;
+}
+
+.sc-seg-guests {
+  flex: 1.05 1 auto;
+}
+
+.sc-badge-urgent {
+  background: linear-gradient(135deg, #DC2626 0%, #EA580C 100%) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+.sc-room-picker-box {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.sc-room-chip {
+  border: 1px solid #CBD5E1;
+  background: #FFF;
+  color: #334155;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sc-room-chip:hover {
+  border-color: var(--sc-ocean);
+  color: var(--sc-ocean);
+  background: #F1F5F9;
+}
+
+.sc-room-chip.active {
+  border-color: var(--sc-ocean);
+  background: var(--sc-ocean);
+  color: #FFF;
+  box-shadow: 0 2px 6px rgba(10, 61, 98, 0.25);
+}
+
+.sc-seg-icon {
+  color: var(--sc-ocean);
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.sc-lbl {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--sc-muted);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.sc-dates-flex {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sc-date-cell {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+}
+
+.sc-date-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-weight: 700;
+  color: var(--sc-dark);
+  font-size: 0.92rem;
+  cursor: pointer;
+  padding: 0;
+  width: 125px;
+  font-family: inherit;
+}
+
+/* Ẩn triệt để 2 icon lịch nhỏ mặc định của trình duyệt, mở rộng vùng click cho toàn ô */
+.sc-date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sc-date-input::-webkit-inner-spin-button,
+.sc-date-input::-webkit-clear-button {
+  display: none;
+}
+
+.sc-arrow {
+  color: #94A3B8;
+  font-size: 0.72rem;
+  align-self: flex-end;
+  margin-bottom: 4px;
+  opacity: 0.7;
+}
+
+.sc-divider {
+  width: 1px;
+  height: 34px;
+  background: var(--sc-border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.sc-guest-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-guest-val {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--sc-dark);
+  white-space: nowrap;
+}
+
+.sc-caret-icon {
+  font-size: 0.75rem;
+  color: var(--sc-muted);
+  margin-left: 4px;
+}
+
+.sc-btn-submit {
+  margin-left: auto;
+  background: linear-gradient(135deg, var(--sc-ocean) 0%, #145374 100%);
+  color: #FFFFFF !important;
+  border: none;
+  height: 48px;
+  padding: 0 26px;
+  border-radius: var(--sc-radius-btn);
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.4px;
+  box-shadow: 0 3px 10px rgba(10, 61, 98, 0.2);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sc-btn-submit:hover {
+  background: linear-gradient(135deg, var(--sc-ocean-hover) 0%, var(--sc-ocean) 100%);
+  box-shadow: 0 5px 14px rgba(10, 61, 98, 0.3);
+}
+
+/* Guest Dropdown Box */
+.sc-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 290px;
+  background: var(--sc-surface);
+  border-radius: 6px;
+  padding: 20px;
+  border: 1px solid var(--sc-border);
+  z-index: 1050;
+  box-shadow: 0 14px 32px rgba(10, 61, 98, 0.12);
+}
+
+.sc-counter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sc-stepper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sc-btn-step {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid var(--sc-border);
+  background: var(--sc-surface);
+  color: var(--sc-ocean);
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.sc-btn-step:hover {
+  background: var(--sc-sand);
+  border-color: var(--sc-gold);
+}
+
+.sc-stepper input {
+  width: 28px;
+  text-align: center;
+  border: none;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--sc-dark);
+  outline: none;
+  background: transparent;
+}
+
+/* --- 2. SIDEBAR MAP & FILTER PANEL --- */
+.sc-map-box {
+  border-radius: var(--sc-radius);
+  overflow: hidden;
+  border: 1px solid var(--sc-border);
+  box-shadow: var(--sc-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sc-map-box:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sc-shadow-md);
+}
+
+.sc-map-inner {
+  position: relative;
+  height: 140px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.sc-map-inner iframe {
+  position: absolute;
+  top: -65px;
+  left: -15px;
+  width: calc(100% + 30px);
+  height: calc(100% + 120px);
+  border: 0;
+  pointer-events: none;
+}
+
+.sc-map-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: var(--sc-radius-badge);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--sc-dark);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.sc-map-action-hint {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(10, 61, 98, 0.88);
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: var(--sc-radius-badge);
+  font-size: 0.7rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+
+.sc-map-box:hover .sc-map-action-hint {
+  background: var(--sc-ocean);
+}
+
+.sc-filter-card {
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-border);
+  border-radius: var(--sc-radius-card);
+  padding: 22px;
+}
+
+.sc-filter-head {
+  border-bottom: 1px solid var(--sc-border);
+  padding-bottom: 14px;
+}
+
+.sc-filter-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--sc-ocean);
+  font-size: 1.05rem;
+  letter-spacing: 0.2px;
+}
+
+.sc-reset-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--sc-muted);
+  transition: color 0.2s;
+}
+
+.sc-reset-link:hover {
+  color: #DC2626 !important;
+}
+
+.sc-filter-sec {
+  border-bottom: 1px solid #F1F5F9;
+  padding: 16px 0;
+}
+
+.sc-sec-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--sc-slate);
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Dual Range Slider (Kiểu OTA chuyên nghiệp) */
+.sc-range-wrap {
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.sc-range-track {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background: #E2E8F0;
+  border-radius: 2px;
+}
+
+.sc-range-fill {
+  position: absolute;
+  height: 100%;
+  background: var(--sc-ocean);
+  border-radius: 2px;
+  left: 0;
+  right: 0;
+}
+
+.sc-range-thumb {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.sc-range-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid var(--sc-ocean);
+  box-shadow: 0 1px 4px rgba(10, 61, 98, 0.25);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.15s ease;
+}
+
+.sc-range-thumb::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.sc-range-thumb::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid var(--sc-ocean);
+  box-shadow: 0 1px 4px rgba(10, 61, 98, 0.25);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.sc-input-box {
+  position: relative;
+}
+
+.sc-clean-input {
+  border-radius: var(--sc-radius-input);
+  border: 1px solid var(--sc-border);
+  padding: 7px 24px 7px 10px;
+  font-weight: 600;
+  color: var(--sc-dark);
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.sc-clean-input:focus {
+  border-color: var(--sc-ocean);
+  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.1);
+  outline: none;
+}
+
+.sc-cur {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--sc-muted);
+  pointer-events: none;
+}
+
+.sc-fine-text {
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.sc-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sc-checkbox {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--sc-ocean);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.sc-stars-view {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.75rem;
+}
+
+.sc-star-count {
+  font-size: 0.75rem;
+  color: var(--sc-muted);
+}
+
+.sc-rtype-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.sc-rtype-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--sc-dark);
+}
+
+.sc-rtype-badge {
+  color: var(--sc-muted);
+  font-size: 0.72rem;
+}
+
+.sc-tag-pill {
+  padding: 6px 12px;
+  border-radius: var(--sc-radius-btn);
+  border: 1.5px solid var(--sc-border);
+  background: var(--sc-surface);
+  color: var(--sc-slate);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sc-tag-pill:hover {
+  border-color: var(--sc-ocean);
+  color: var(--sc-ocean);
+}
+
+.sc-tag-pill.active {
+  background: var(--sc-ocean);
+  color: #FFFFFF;
+  border-color: var(--sc-ocean);
+}
+
+.sc-btn-apply {
+  background: var(--sc-ocean);
+  color: #FFFFFF;
+  border: none;
+  padding: 10px;
+  border-radius: var(--sc-radius-btn);
+  font-weight: 700;
+  font-size: 0.86rem;
+  transition: background 0.2s;
+}
+
+.sc-btn-apply:hover {
+  background: var(--sc-ocean-hover);
+}
+
+/* --- 3. RESULTS HEADER & ARCHITECTURAL TABS --- */
+.sc-result-heading {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--sc-dark);
+}
+
+.sc-counter-highlight {
+  color: var(--sc-ocean);
+  font-weight: 800;
+}
+
+.sc-pill-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--sc-radius-badge);
+}
+
+.sc-pill-green {
+  background: var(--sc-emerald-bg);
+  color: var(--sc-emerald);
+}
+
+.sc-pill-amber {
+  background: var(--sc-amber-bg);
+  color: var(--sc-amber);
+}
+
+.sc-pills-wrap {
+  display: flex;
+  background: #F1F5F9;
+  padding: 3px;
+  border-radius: var(--sc-radius-tab);
+}
+
+.sc-sort-item {
+  padding: 5px 12px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--sc-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.sc-sort-item:hover {
+  color: var(--sc-ocean);
+}
+
+.sc-sort-item.active {
+  background: var(--sc-surface);
+  color: var(--sc-ocean);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   4. LUXURY ARCHITECTURAL ROOM CARDS (TAILORED HOSPITALITY FRAME)
+   ══════════════════════════════════════════════════════════════════ */
+.sc-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-border);
+  border-radius: var(--sc-radius-card);
+  overflow: hidden;
+  box-shadow: var(--sc-shadow-card);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.sc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sc-shadow-hover);
+  border-color: #CBD5E1;
+}
+
+.sc-frag-border {
+  border-left: 4px solid var(--sc-amber);
+}
+
+/* KHỐI 1: HÌNH ẢNH & SLIDER CHUẨN AGODA (280px ĐỐI XỨNG CỐ ĐỊNH, KHÔNG BỊ NHẢY TỶ LỆ) */
+.sc-media-pane {
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+  position: relative;
+  overflow: hidden;
+  background: #0A3D62;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.sc-carousel-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sc-carousel-box .sc-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.sc-carousel-box .sc-photo.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.sc-card:hover .sc-carousel-box .sc-photo.active {
+  transform: scale(1.03);
+}
+
+/* Nút bấm chuyển ảnh tròn chuẩn Agoda (< và >) */
+.sc-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #0F172A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  cursor: pointer;
+  z-index: 6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  padding: 0;
+}
+
+.sc-card:hover .sc-nav-btn {
+  opacity: 0.92;
+}
+
+.sc-nav-btn:hover {
+  background: #FFFFFF;
+  color: var(--sc-ocean);
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 1 !important;
+}
+
+.sc-nav-prev {
+  left: 8px;
+}
+
+.sc-nav-next {
+  right: 8px;
+}
+
+/* Badge số thứ tự ảnh góc dưới trái chuẩn Agoda (1/N) */
+.sc-agoda-counter {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 5;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: var(--sc-radius-badge);
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sc-photo-fallback {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+.sc-bg-ocean {
+  background: linear-gradient(135deg, var(--sc-ocean) 0%, #1e4d73 100%);
+}
+
+.sc-bg-sunset {
+  background: linear-gradient(135deg, #A73A18 0%, #D97757 100%);
+}
+
+.sc-float-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px 8px;
+  border-radius: var(--sc-radius-badge);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.sc-badge-green {
+  background: rgba(5, 150, 105, 0.9);
+  color: #FFFFFF;
+}
+
+.sc-badge-orange {
+  background: rgba(217, 119, 87, 0.92);
+  color: #FFFFFF;
+}
+
+/* Nút lưu yêu thích (Frosted Glass Heart Button) */
+.sc-wishlist-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+  font-size: 0.88rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s ease;
+  padding: 0;
+}
+
+.sc-wishlist-btn:hover {
+  background: #FFFFFF;
+  color: #EF4444;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.sc-wishlist-btn.active {
+  background: #FFFFFF;
+  color: #EF4444;
+}
+
+.sc-wishlist-btn.active i {
+  font-weight: 900;
+}
+
+/* KHỐI 2: THÔNG TIN PHÒNG (FLUID TỰ CO DÃN) */
+.sc-body-pane {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sc-meta-line {
+  display: flex;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.sc-hotel-label {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #B89758;
+}
+
+.sc-star-row {
+  color: #F59E0B;
+  font-size: 0.7rem;
+}
+
+.sc-dot {
+  color: #CBD5E1;
+  margin: 0 8px;
+  font-weight: 800;
+}
+
+.sc-type-tag {
+  color: var(--sc-muted);
+  font-weight: 500;
+}
+
+.sc-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sc-name-heading {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--sc-ocean);
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+}
+
+.sc-room-no-badge {
+  background: #F1F5F9;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--sc-radius-badge);
+  border: 1px solid #E2E8F0;
+  white-space: nowrap;
+}
+
+.sc-specs-feature {
+  font-size: 0.82rem;
+  color: #475569;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.sc-feature-txt {
+  letter-spacing: -0.1px;
+}
+
+.sc-brief {
+  font-size: 0.86rem;
+  color: var(--sc-muted);
+  line-height: 1.45;
+}
+
+.sc-story-line {
+  font-size: 0.81rem;
+  color: #64748B;
+  line-height: 1.5;
+  font-style: italic;
+  margin-top: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  letter-spacing: 0.1px;
+}
+
+.sc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--sc-radius-chip);
+  padding: 3px 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--sc-slate);
+  white-space: nowrap;
+}
+
+.sc-chip i {
+  color: var(--sc-ocean);
+  font-size: 0.75rem;
+}
+
+.sc-chip-extra {
+  background: transparent;
+  border-color: transparent;
+  color: var(--sc-muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.sc-specs-bar {
+  font-size: 0.82rem;
+  color: var(--sc-slate);
+  font-weight: 500;
+}
+
+.sc-bed-badge {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #DBEAFE;
+  padding: 2px 6px;
+  border-radius: var(--sc-radius-badge);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.sc-nights-bar {
+  font-size: 0.82rem;
+}
+
+.sc-nights-head {
+  font-weight: 700;
+  color: var(--sc-amber);
+  margin-right: 6px;
+}
+
+.sc-tag-night {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+  padding: 2px 6px;
+  border-radius: var(--sc-radius-badge);
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+/* KHỐI 3: GIÁ TIỀN & CTA (220px DOCKED PHẢI TUYỆT ĐỐI) */
+.sc-action-pane {
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+  border-left: 1px solid var(--sc-border);
+  background: #FAFBFD;
+  padding: 18px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.sc-rating-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--sc-dark);
+  line-height: 1.2;
+}
+
+.sc-reviews-qty {
+  font-size: 0.72rem;
+}
+
+.sc-rating-box-pill {
+  width: 36px;
+  height: 36px;
+  background: var(--sc-ocean);
+  color: #FFFFFF;
+  border-radius: var(--sc-radius-btn);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(10, 61, 98, 0.15);
+}
+
+.sc-score-fresh {
+  background: #F1F5F9;
+  color: var(--sc-gold);
+}
+
+.sc-perks-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
+  border-top: 1px dashed #E2E8F0;
+  border-bottom: 1px dashed #E2E8F0;
+  margin: 6px 0;
+  width: 100%;
+}
+
+.sc-perk-line {
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.35;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.sc-perk-green {
+  color: #059669;
+}
+
+.sc-perk-blue {
+  color: #0284C7;
+}
+
+.sc-perk-subtle {
+  color: #64748B;
+}
+
+.sc-old-price {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: #94A3B8;
+  text-decoration: line-through;
+  margin-bottom: 2px;
+  font-variant-numeric: lining-nums proportional-nums !important;
+  -moz-font-feature-settings: "lnum" 1 !important;
+  -webkit-font-feature-settings: "lnum" 1 !important;
+  font-feature-settings: "lnum" 1 !important;
+}
+
+.sc-net-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--sc-ocean);
+  letter-spacing: -0.3px;
+  font-variant-numeric: lining-nums proportional-nums !important;
+  -moz-font-feature-settings: "lnum" 1 !important;
+  -webkit-font-feature-settings: "lnum" 1 !important;
+  font-feature-settings: "lnum" 1 !important;
+}
+
+.sc-tax-note {
+  font-size: 0.72rem;
+  color: var(--sc-muted);
+  font-weight: 500;
+}
+
+.sc-btn-outline-action {
+  display: block;
+  text-align: center;
+  background: #FFFFFF;
+  color: var(--sc-slate);
+  border: 1.5px solid var(--sc-border);
+  padding: 8px 16px;
+  border-radius: var(--sc-radius-btn);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.sc-btn-outline-action:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  color: var(--sc-ocean);
+}
+
+.sc-btn-secondary-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  color: var(--sc-slate);
+  border: 1px solid var(--sc-border);
+  padding: 7px 12px;
+  border-radius: var(--sc-radius-btn);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.sc-btn-secondary-link:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: var(--sc-ocean);
+}
+
+.sc-btn-secondary-link i {
+  font-size: 0.72rem;
+  transition: transform 0.2s ease;
+}
+
+.sc-btn-secondary-link:hover i {
+  transform: translateX(3px);
+}
+
+.sc-btn-primary-action {
+  display: block;
+  text-align: center;
+  background: linear-gradient(135deg, var(--sc-ocean) 0%, #145374 100%);
+  color: #FFFFFF !important;
+  border: none;
+  padding: 9px 18px;
+  border-radius: var(--sc-radius-btn);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 10px rgba(10, 61, 98, 0.18);
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+}
+
+.sc-btn-primary-action:hover {
+  background: linear-gradient(135deg, var(--sc-ocean-hover) 0%, var(--sc-ocean) 100%);
+  box-shadow: 0 5px 14px rgba(10, 61, 98, 0.28);
+}
+
+.sc-btn-amber-action {
+  background: linear-gradient(135deg, #D97757 0%, #B45309 100%);
+  box-shadow: 0 3px 10px rgba(217, 119, 87, 0.2);
+}
+
+.sc-btn-amber-action:hover {
+  background: linear-gradient(135deg, #B45309 0%, #92400E 100%);
+  box-shadow: 0 5px 14px rgba(217, 119, 87, 0.3);
+}
+
+/* Empty State Styling */
+.sc-empty-box {
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-border);
+  border-radius: var(--sc-radius-card);
+  padding: 40px 20px;
+  box-shadow: var(--sc-shadow-sm);
+}
+
+.sc-empty-ico {
+  font-size: 3.5rem;
+  color: var(--sc-ocean);
+  opacity: 0.3;
+}
+
+.max-w-500 {
+  max-width: 500px;
+}
+
+.sc-btn-clear {
+  border: 1.5px solid var(--sc-border);
+  padding: 8px 20px;
+  border-radius: var(--sc-radius-btn);
+  font-weight: 700;
+  color: var(--sc-slate);
+}
+
+.sc-btn-pri {
+  background: var(--sc-ocean);
+  color: #fff;
+  border-radius: var(--sc-radius-btn);
+  padding: 8px 20px;
+  font-weight: 700;
+}
+
+/* --- 5. RESPONSIVE BREAKPOINTS --- */
+@media (max-width: 991px) {
+  .sc-card {
+    flex-direction: column;
+  }
+  .sc-media-pane {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 220px;
+    min-height: 220px;
+  }
+  .sc-photo, .sc-photo-fallback {
+    min-height: 220px;
+  }
+  .sc-action-pane {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--sc-border);
+    align-items: stretch !important;
+    padding-top: 18px;
+    background: #FFFFFF;
+  }
+  .sc-price-unit {
+    text-align: left !important;
+  }
+  .sc-buttons-group {
+    flex-direction: row;
+  }
+  .sc-btn-outline-action, .sc-btn-secondary-link, .sc-btn-primary-action {
+    flex: 1;
+  }
+}
+
+@media (max-width: 860px) {
+  .sc-capsule {
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 16px;
     gap: 12px;
-}
-
-.btn-count {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1px solid #0047AB;
-    background: #fff;
-    color: #0047AB;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    transition: all 0.2s;
-}
-
-.btn-count:hover { background: #f0f7ff; }
-
-.ms-counter input {
-    width: 30px;
-    text-align: center;
+  }
+  .sc-capsule-seg {
+    width: 100%;
+    border-bottom: 1px solid #F1F5F9;
+    padding: 10px 4px;
+  }
+  .sc-dates-flex {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .sc-btn-submit {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+  }
+  .sc-dropdown-menu {
+    width: 100%;
+    position: static;
+    box-shadow: none;
     border: none;
-    font-weight: 700;
-    color: #0f172a;
-    outline: none;
-}
-
-/* Sidebar Filter Panel */
-.filter-panel { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; position: sticky; top: 16px; }
-.filter-section { border-top: 1px solid #f1f5f9; padding: 14px 0; }
-.filter-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .5px; }
-.filter-check { margin-bottom: 6px; }
-.filter-check .form-check-label { font-size: 13px; cursor: pointer; }
-.btn-clear-filter { font-size: 12px; text-decoration: none; }
-.btn-clear-filter:hover { color: #dc2626 !important; }
-.btn-hotel-type { padding: 5px 14px; border-radius: 20px; border: 1.5px solid #cbd5e1; background: #fff; font-size: 12px; font-weight: 600; cursor: pointer; color: #374151; transition: all .2s; }
-.btn-hotel-type.active { background: #0047AB; color: #fff; border-color: #0047AB; }
-.btn-apply-filter { background: #1e3a5f; color: #fff; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 13px; }
-.btn-apply-filter:hover { background: #0047AB; color: #fff; }
-
-/* Sort Buttons */
-.sort-btn { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1.5px solid #e2e8f0; background: #fff; color: #64748b; text-decoration: none; font-weight: 600; transition: all .2s; }
-.sort-btn.active, .sort-btn:hover { background: #0047AB; color: #fff; border-color: #0047AB; }
-
-/* Availability Badges */
-.badge-avail { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
-.badge-avail.continuous { background: #dcfce7; color: #166534; }
-.badge-avail.fragmented { background: #fef9c3; color: #854d0e; }
-
-/* Result Card */
-.result-card { 
-    background: #fff; 
-    border: 1px solid #e2e8f0; 
-    border-radius: 18px; 
-    overflow: hidden; 
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-.result-card:hover { 
-    box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12); 
-    transform: translateY(-4px); 
-    border-color: var(--mau-xanh-chinh);
-}
-.result-card--fragmented { border-color: #fbbf24; }
-
-/* Card Image */
-.result-card__img { 
-    width: 320px; /* Tăng rộng theo yêu cầu: Gần bằng 1 ảnh ngang */
-    min-width: 320px; 
-    position: relative;
-    overflow: hidden;
-}
-.img-placeholder { 
-    width: 100%; 
-    height: 100%; 
-    min-height: 220px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 12px; 
-    position: relative; 
-}
-.img-placeholder--blue { background: linear-gradient(135deg, var(--mau-xanh-chinh) 0%, #1e3a5f 100%); }
-.img-placeholder--amber { background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%); }
-.img-badge { 
-    position: absolute; 
-    top: 15px; 
-    left: 15px; 
-    background: rgba(15, 23, 42, 0.8); 
-    backdrop-filter: blur(4px);
-    color: #fff; 
-    font-size: 11px; 
-    font-weight: 700; 
-    padding: 4px 12px; 
-    border-radius: 6px; 
-    letter-spacing: 0.5px; 
-    z-index: 2;
-}
-
-/* Card body */
-.result-card__name { font-size: 19px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
-.result-card__desc { line-height: 1.5; color: #64748b; font-size: 14px; }
-.badge-room-type { font-size: 11px; background: #f0f7ff; color: #0047AB; border: 1px solid #dbeafe; border-radius: 4px; padding: 4px 10px; font-weight: 700; }
-.badge-hotel-type { font-size: 11px; background: #f0fdf4; color: #166534; border: 1px solid #dcfce7; border-radius: 20px; padding: 4px 10px; font-weight: 700; }
-.badge-amenity { font-size: 12px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px 10px; }
-.badge-night { font-size: 11px; background: #fffbeb; color: #92400e; border: 1px solid #fef3c7; border-radius: 6px; padding: 3px 8px; font-weight: 600; }
-
-/* Price block */
-.rating-box { 
-    display: flex; 
-    align-items: center; 
-    gap: 8px; 
-    background: #1e293b; 
-    color: #fff; 
-    border-radius: 10px; 
-    padding: 8px 12px; 
-}
-.rating-label { font-size: 11px; font-weight: 600; text-transform: uppercase; opacity: 0.8; }
-.rating-score { font-size: 19px; font-weight: 800; color: #fbbf24; }
-.price-final { font-size: 26px; font-weight: 900; line-height: 1; color: var(--mau-xanh-chinh); }
-.price-unit { font-size: 13px; color: #64748b; font-weight: 500; }
-
-/* CTA Buttons */
-.btn-book { 
-    background: var(--mau-xanh-chinh); 
-    color: #fff !important; 
-    border: none; 
-    padding: 12px 24px; 
-    border-radius: 10px; 
-    font-size: 14px; 
-    font-weight: 800; 
-    transition: all 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.btn-book:hover { background: #003380; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 71, 171, 0.3); }
-.btn-book--amber { background: var(--mau-vang-chinh); color: var(--mau-xanh-chinh) !important; }
-.btn-book--amber:hover { background: #f1c40f; color: var(--mau-xanh-chinh) !important; }
-
-.btn-outline-detail { 
-    background: transparent; 
-    color: var(--mau-xanh-chinh); 
-    border: 1.5px solid var(--mau-xanh-chinh); 
-    padding: 10px 20px; 
-    border-radius: 10px; 
-    font-size: 13px; 
-    font-weight: 700; 
-    transition: all 0.2s;
-}
-.btn-outline-detail:hover { background: rgba(0, 71, 171, 0.05); color: var(--mau-xanh-chinh); }
-
-/* Empty state */
-.empty-state { background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-
-@media (max-width: 768px) {
-  .result-card { flex-direction: column; }
-  .result-card__img { width: 100%; min-height: 140px; }
-  .result-card__price { align-items: flex-start !important; }
+    padding: 14px 0 0 0;
+  }
 }
 </style>
 
+{# ══════════════════════════════════════════════════════════════════
+   4. JAVASCRIPT TƯƠNG TÁC: DROPDOWN KHÁCH & TOGGLE BỘ LỌC
+   ══════════════════════════════════════════════════════════════════ #}
 <script>
 // --- LOGIC CHO DROPDOWN CHỌN KHÁCH ---
 (function() {
@@ -692,12 +2009,12 @@
     const display = document.getElementById('guestDisplay');
 
     if (trigger && dropdown) {
-        // Đóng mở dropdown khi click vào vùng chọn khách
+        // Mở/Đóng dropdown khi click vào vùng chọn khách
         trigger.addEventListener('click', function(e) {
-            // Không đóng khi bấm vào phân đoạn tăng/giảm bên trong dropdown
-            if (e.target.closest('.ms-counter')) return; 
-            
+            if (e.target.closest('.sc-stepper')) return; 
             dropdown.classList.toggle('d-none');
+            const isExpanded = !dropdown.classList.contains('d-none');
+            trigger.setAttribute('aria-expanded', isExpanded);
             e.stopPropagation();
         });
 
@@ -705,24 +2022,25 @@
         document.addEventListener('click', function(e) {
             if (!dropdown.contains(e.target) && !trigger.contains(e.target)) {
                 dropdown.classList.add('d-none');
+                trigger.setAttribute('aria-expanded', 'false');
             }
         });
     }
 
-    // Hàm global để các nút button onclick có thể gọi được
+    // Hàm cập nhật số lượng khách
     window.updateGuest = function(type, delta) {
         const id = type === 'adults' ? 'inputAdults' : 'inputChildren';
         const input = document.getElementById(id);
         if (!input) return;
         
-        let val = parseInt(input.value);
+        let val = parseInt(input.value) || 0;
         val += delta;
         
-        // Giới hạn số lượng (Người lớn: 1-10, Trẻ em: 0-5)
+        // Ràng buộc số lượng
         if (type === 'adults' && val < 1) val = 1;
         if (type === 'adults' && val > 10) val = 10;
         if (type === 'children' && val < 0) val = 0;
-        if (type === 'children' && val > 5) val = 5;
+        if (type === 'children' && val > 6) val = 6;
         
         input.value = val;
         updateDisplayText();
@@ -737,7 +2055,7 @@
     }
 })();
 
-// Logic cũ cho Sidebar (Bộ lọc loại khách sạn)
+// Logic Toggle loại hình khách sạn (City Hotel / Resort Hotel)
 function toggleHotelType(btn, type) {
   btn.classList.toggle('active');
   const container = document.getElementById('hotel-type-inputs');
@@ -752,6 +2070,188 @@ function toggleHotelType(btn, type) {
     container.appendChild(inp);
   }
 }
+
+// Logic Lưu phòng yêu thích (Wishlist)
+window.toggleWishlist = function(btn, roomId) {
+  btn.classList.toggle('active');
+  const icon = btn.querySelector('i');
+  if (btn.classList.contains('active')) {
+    icon.classList.remove('far');
+    icon.classList.add('fas');
+    try {
+      let saved = JSON.parse(localStorage.getItem('sc_wishlist') || '[]');
+      if (!saved.includes(roomId)) saved.push(roomId);
+      localStorage.setItem('sc_wishlist', JSON.stringify(saved));
+    } catch(e) {}
+  } else {
+    icon.classList.remove('fas');
+    icon.classList.add('far');
+    try {
+      let saved = JSON.parse(localStorage.getItem('sc_wishlist') || '[]');
+      saved = saved.filter(id => id !== roomId);
+      localStorage.setItem('sc_wishlist', JSON.stringify(saved));
+    } catch(e) {}
+  }
+};
+
+// Khôi phục trạng thái Wishlist từ localStorage
+document.addEventListener('DOMContentLoaded', function() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('sc_wishlist') || '[]');
+    saved.forEach(roomId => {
+      const btn = document.querySelector(`.sc-wishlist-btn[onclick*="'${roomId}'"]`);
+      if (btn) {
+        btn.classList.add('active');
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+        }
+      }
+    });
+  } catch(e) {}
+});
+
+// Logic Chuyển ảnh phòng chuẩn Agoda (In-Card Image Carousel)
+window.changeCardSlide = function(btn, direction, e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  const box = btn.closest('.sc-carousel-box');
+  if (!box) return;
+
+  const slides = box.querySelectorAll('.sc-photo');
+  const total = slides.length;
+  if (total <= 1) return;
+
+  let currentIdx = parseInt(box.getAttribute('data-idx')) || 0;
+  let nextIdx = (currentIdx + direction + total) % total;
+
+  slides.forEach((s, idx) => {
+    if (idx === nextIdx) {
+      s.classList.add('active');
+    } else {
+      s.classList.remove('active');
+    }
+  });
+
+  box.setAttribute('data-idx', nextIdx);
+
+  const curCount = box.querySelector('.sc-cur-count');
+  if (curCount) {
+    curCount.innerText = nextIdx + 1;
+  }
+};
+
+// Logic Đồng bộ Thanh trượt kép Giá phòng (Dual Range Slider)
+(function() {
+  const rMin = document.getElementById('rangeMin');
+  const rMax = document.getElementById('rangeMax');
+  const iMin = document.getElementById('inputMinPrice');
+  const iMax = document.getElementById('inputMaxPrice');
+  const fill = document.getElementById('priceRangeFill');
+
+  if (!rMin || !rMax || !fill) return;
+
+  const minLimit = 500000;
+  const maxLimit = 10000000;
+
+  function updateFill() {
+    let vMin = parseInt(rMin.value) || minLimit;
+    let vMax = parseInt(rMax.value) || maxLimit;
+
+    if (vMin > vMax) {
+      let temp = vMin;
+      vMin = vMax;
+      vMax = temp;
+    }
+
+    const pctMin = ((vMin - minLimit) / (maxLimit - minLimit)) * 100;
+    const pctMax = ((vMax - minLimit) / (maxLimit - minLimit)) * 100;
+
+    fill.style.left = `${pctMin}%`;
+    fill.style.right = `${100 - pctMax}%`;
+  }
+
+  rMin.addEventListener('input', function() {
+    let vMin = parseInt(rMin.value);
+    let vMax = parseInt(rMax.value);
+    if (vMin > vMax) {
+      rMin.value = vMax;
+      vMin = vMax;
+    }
+    if (iMin) iMin.value = vMin;
+    updateFill();
+  });
+
+  rMax.addEventListener('input', function() {
+    let vMin = parseInt(rMin.value);
+    let vMax = parseInt(rMax.value);
+    if (vMax < vMin) {
+      rMax.value = vMin;
+      vMax = vMin;
+    }
+    if (iMax) iMax.value = vMax;
+    updateFill();
+  });
+
+  if (iMin) {
+    iMin.addEventListener('input', function() {
+      let v = parseInt(iMin.value) || minLimit;
+      if (v >= minLimit && v <= maxLimit) {
+        rMin.value = v;
+        updateFill();
+      }
+    });
+  }
+
+  if (iMax) {
+    iMax.addEventListener('input', function() {
+      let v = parseInt(iMax.value) || maxLimit;
+      if (v >= minLimit && v <= maxLimit) {
+        rMax.value = v;
+        updateFill();
+      }
+    });
+  }
+
+  updateFill();
+})();
+
+function selectRoomChip(btn, roomTypeId, physicalRoomId) {
+  const box = btn.closest('.sc-room-picker-box');
+  if (box) {
+    box.querySelectorAll('.sc-room-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const bookBtn = document.getElementById('btn-book-' + roomTypeId);
+  if (bookBtn) {
+    const url = new URL(bookBtn.href, window.location.origin);
+    url.searchParams.set('physical_room_id', physicalRoomId);
+    bookBtn.href = url.pathname + url.search;
+  }
+}
+
+// GSAP Micro-interactions
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof gsap !== 'undefined') {
+    gsap.from(".sc-capsule", {
+      opacity: 0,
+      y: -20,
+      duration: 0.6,
+      ease: "power2.out"
+    });
+    gsap.from(".sc-card", {
+      opacity: 0,
+      y: 30,
+      duration: 0.5,
+      stagger: 0.08,
+      ease: "power2.out",
+      delay: 0.15
+    });
+  }
+});
 </script>
 
 {% endblock %}

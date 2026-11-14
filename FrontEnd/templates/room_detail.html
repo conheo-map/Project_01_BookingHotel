@@ -1,291 +1,395 @@
 {% extends "base.html" %}
-{% block title %}{{ room.room_type_code or 'Chi tiết phòng' }} — {{ room.hotel_name or 'Hotel Booking' }}{% endblock %}
+{% block title %}{{ code_display_names.get(room.room_type_code, room.room_type_code) if code_display_names else (room.room_type_code or 'Chi tiết phòng') }} — Sài Gòn Côn Đảo Resort{% endblock %}
+
 {% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/room_detail.css') }}">
 {% endblock %}
 
 {% block content %}
 
-{% set star_count = hotel_info.star_rating | default(3) | int %}
-{% set h_type = hotel_info.hotel_type | default('City Hotel') %}
+{# ══════════════════════════════════════════════════════════════════
+   DỮ LIỆU ĐỊNH VỊ NGHỈ DƯỠNG DI SẢN (EDITORIAL HERITAGE DATA)
+   ══════════════════════════════════════════════════════════════════ #}
+{% set code_display_names = {
+  'RES_VDEL': 'Villa Deluxe Hướng Vườn',
+  'RES_VSUI': 'Villa Suite Hướng Biển',
+  'RES_VSUP': 'Villa Superior Cao Cấp',
+  'CIT_SUP': 'Phòng City Superior Tiêu Chuẩn',
+  'CIT_DEL': 'Phòng City Deluxe Tiện Nghi',
+  'CIT_SUI': 'Phòng City Suite Hạng Sang'
+} %}
 
-{# ── BREADCRUMB ── #}
+{% set room_specs = {
+  'RES_VSUI': {'area': '58 m²', 'bed': '1 Giường King lớn', 'view': 'Ban công riêng hướng biển', 'bath': 'Bồn tắm nằm & Cabin kính'},
+  'RES_VDEL': {'area': '46 m²', 'bed': '1 Giường đôi / 2 Đơn', 'view': 'Ban công vườn nhiệt đới', 'bath': 'Vòi sen nhiệt đới'},
+  'RES_VSUP': {'area': '38 m²', 'bed': '1 Giường đôi Queen', 'view': 'View vườn xanh mát', 'bath': 'Bồn tắm đứng hiện đại'},
+  'CIT_SUI': {'area': '52 m²', 'bed': '1 Giường King cao cấp', 'view': 'Cửa kính panorama phố đảo', 'bath': 'Bồn tắm nằm & Cabin kính'},
+  'CIT_DEL': {'area': '38 m²', 'bed': '1 Giường Queen lớn', 'view': 'Hướng phố đảo thanh tĩnh', 'bath': 'Cabin kính hiện đại'},
+  'CIT_SUP': {'area': '32 m²', 'bed': '1 Giường đôi tiêu chuẩn', 'view': 'Cửa sổ thoáng mát', 'bath': 'Tiện nghi cao cấp'}
+} %}
+
+{% set room_narratives = {
+  'RES_VSUI': 'Biệt thự biệt lập nép mình trước đại dương nguyên sơ. Không gian mở rộng rãi giao hòa trọn vẹn cùng thiên nhiên, bồn tắm nằm ngắm trọn hoàng hôn Bãi Đầm Trầu mang đến kỳ nghỉ dưỡng biệt lập đỉnh cao.',
+  'RES_VDEL': 'Ẩn mình dưới những rặng dừa và bóng bàng di sản trăm tuổi, Villa Deluxe mang dấu ấn kiến trúc thuộc địa Pháp trang nhã kết hợp tiện nghi nhiệt đới, mở ra không gian thanh tịnh tuyệt đối.',
+  'RES_VSUP': 'Không gian ấm cúng với tông màu gỗ trầm sang trọng, cửa lớn nhìn ra khu vườn nhiệt đới xanh mát rợp bóng cây, mang lại sự riêng tư và tĩnh lặng trọn vẹn cho du khách.',
+  'CIT_SUI': 'Tầm nhìn panorama thu trọn vẻ đẹp yên bình của phố đảo Côn Đảo, kết hợp nội thất phong cách boutique tinh tế. Lựa chọn hoàn hảo cho kỳ nghỉ thảnh thơi và trải nghiệm văn hóa bản địa.',
+  'CIT_DEL': 'Không gian trang nhã ngay trung tâm thị trấn Côn Đảo, thuận tiện bách bộ ra bờ biển và chiêm bái các di tích lịch sử linh thiêng. Phòng được trang bị đầy đủ tiện nghi tiêu chuẩn quốc tế cho chuyến công tác và nghỉ dưỡng.',
+  'CIT_SUP': 'Thiết kế tinh gọn, ngập tràn ánh sáng tự nhiên với đầy đủ tiện nghi chuẩn mực, đáp ứng trọn vẹn nhu cầu nghỉ ngơi sau một ngày khám phá các cung đường ven biển Côn Đảo.'
+} %}
+
+{% set r_code = room.room_type_code | default('CIT_DEL') %}
+{% set display_name = code_display_names.get(r_code, r_code) %}
+{% set spec = room_specs.get(r_code, {'area': '38 m²', 'bed': '1 Giường lớn', 'view': 'Hướng cảnh quan', 'bath': 'Phòng tắm đứng'}) %}
+{% set narrative = room_narratives.get(r_code, room.description or 'Không gian nghỉ dưỡng sang trọng chuẩn 4 sao tại Côn Đảo.') %}
+{% set star_count = hotel_info.star_rating | default(4) | int %}
+{% set base_p = (room.promo_price_min or room.effective_price_max or room.base_price or 1000000) | int %}
+
+{# ── BREADCRUMB BIÊN TẬP ── #}
 <nav class="chitietphong-duongdan mb-3">
   <a href="/">Trang chủ</a>
   <span class="sep">/</span>
   <a href="/search{% if checkin_date %}?checkin_date={{ checkin_date }}&checkout_date={{ checkout_date }}{% endif %}">Tìm phòng</a>
   <span class="sep">/</span>
-  <span class="current">{{ room.room_type_code }}</span>
+  <span class="current">{{ display_name }}</span>
 </nav>
 
-{# ── HOTEL HEADER ── #}
-<div class="rd-header d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+{# ── TIÊU ĐỀ DI SẢN (EDITORIAL ROOM HEADER) ── #}
+<div class="editorial-room-header d-flex justify-content-between align-items-end flex-wrap gap-3">
   <div>
-    <h1 class="chitietphong-khachsan-ten">
-      {{ room.hotel_name or 'Khách sạn' }}
-      <span class="chitietphong-sao ms-2">
+    <div class="heritage-kicker mb-2">
+      <span>KHU NGHỈ DƯỠNG SÀI GÒN - CÔN ĐẢO</span>
+      <span>·</span>
+      <span>DI SẢN TỪ NĂM 1920</span>
+    </div>
+    <h1 class="chitietphong-khachsan-ten m-0">
+      {{ display_name }}
+    </h1>
+    <div class="editorial-header-meta mt-2">
+      <span><i class="fas fa-map-marker-alt text-danger"></i>Đặc khu Côn Đảo</span>
+      <span class="meta-dot"></span>
+      <span><i class="fas fa-vector-square text-primary"></i>{{ spec.area }}</span>
+      <span class="meta-dot"></span>
+      <span><i class="fas fa-bed text-success"></i>{{ spec.bed }}</span>
+      <span class="meta-dot"></span>
+      <span><i class="fas fa-compass text-warning"></i>{{ spec.view }}</span>
+      <span class="meta-dot"></span>
+      <span class="text-warning">
         {% for i in range(star_count) %}<i class="fas fa-star"></i>{% endfor %}
       </span>
-    </h1>
-    <div class="chitietphong-khachsan-thongtin text-muted">
-      <span class="me-3"><i class="fas fa-map-marker-alt me-1 text-danger"></i>{{ h_type }}</span>
-      <span class="me-3"><i class="fas fa-door-open me-1"></i>Hạng: <strong>{{ room.room_type_code }}</strong></span>
-      {% if room.description %}
-      <span><i class="fas fa-info-circle me-1"></i>{{ room.description[:80] }}{% if room.description|length > 80 %}...{% endif %}</span>
-      {% endif %}
     </div>
   </div>
-    <a href="/search{% if checkin_date %}?checkin_date={{ checkin_date }}&checkout_date={{ checkout_date }}{% endif %}"
-       class="btn btn-outline-secondary btn-sm">
-      <i class="fas fa-arrow-left me-1"></i>Quay lại
-    </a>
+  <a href="/search{% if checkin_date %}?checkin_date={{ checkin_date }}&checkout_date={{ checkout_date }}{% endif %}"
+     class="btn-back-editorial">
+    <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
+  </a>
 </div>
 
-{# ── MAIN CONTENT ── #}
+{# ── THÂN BÀI (MAIN EDITORIAL CONTENT) ── #}
 <div class="row g-4">
 
-  {# ═══ CỘT TRÁI: GALLERY + INFO ═══ #}
+  {# ═══ CỘT TRÁI: NỘI DUNG BIÊN TẬP MỞ (OPEN CANVAS) ═══ #}
   <div class="col-lg-8">
     
-    {# ── DYNAMIC MODERN GALLERY ── #}
+    {# ── 1. THƯ VIỆN ẢNH KIẾN TRÚC ── #}
     {% set img_count = room.images|length if room.images else 0 %}
-    <div class="chitietphong-thuvien-khung mb-4">
-      <div class="chitietphong-thuvien-luoi-moi {{ 'grid-single' if img_count == 1 else ('grid-double' if img_count == 2 else '') }}">
+    <div class="chitietphong-thuvien-khung">
+      <div class="chitietphong-thuvien-luoi-moi {{ 'grid-single' if img_count == 1 else '' }}">
         {% if img_count > 0 %}
-          {# Main image (Left) #}
           <div class="chitietphong-anh-chinh-khung">
-            <img src="{{ room.images[0] }}" alt="{{ room.room_type_code }}" class="chitietphong-anh-moi">
-            <button class="btn chitietphong-nut-xem-tat-ca" data-bs-toggle="modal" data-bs-target="#galleryModal">
-              <i class="fas fa-camera me-2"></i>Xem mọi bức ảnh
+            <img src="{{ room.images[0] }}" alt="{{ display_name }}" class="chitietphong-anh-moi">
+            <button class="btn gallery-editorial-btn" data-bs-toggle="modal" data-bs-target="#galleryModal">
+              <i class="fas fa-expand me-2"></i>Xem bộ sưu tập {{ img_count }} ảnh
             </button>
-            <div class="chitietphong-gia-huyhieu">
-              {{ "{:,.0f}".format(room.base_price or 0) }}đ / đêm
-            </div>
           </div>
           
-          {# Secondary images #}
           {% if img_count > 1 %}
-          <div class="chitietphong-anh-phu-khung {{ 'single-side' if img_count == 2 else '' }}">
-            {% if img_count == 2 %}
-              <div class="chitietphong-anh-phu-o full-height">
-                <img src="{{ room.images[1] }}" alt="Ảnh 2" class="chitietphong-anh-moi">
+          <div class="chitietphong-anh-phu-khung">
+            {% for i in range(1, 3) %}
+              {% if loop.index0 < img_count %}
+              <div class="chitietphong-anh-phu-o">
+                <img src="{{ room.images[i] if i < img_count else room.images[0] }}" alt="Góc chụp {{ i+1 }}" class="chitietphong-anh-moi">
               </div>
-            {% else %}
-              {% for i in range(1, 3) %}
-                <div class="chitietphong-anh-phu-o">
-                  <img src="{{ room.images[i] }}" alt="Ảnh {{ i+1 }}" class="chitietphong-anh-moi">
-                </div>
-              {% endfor %}
-            {% endif %}
-          </div>
-          {% endif %}
-        {% else %}
-          <div class="chitietphong-anh-trong-full">
-            <i class="fas fa-hotel fa-4x text-white opacity-20"></i>
-            <p class="mt-2 text-white opacity-50">Chưa có hình ảnh</p>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-
-    {# ── Thông tin phòng ── #}
-    <div class="chitietphong-phan">
-      <h4 class="chitietphong-phan-tieude"><i class="fas fa-info-circle me-2"></i>Thông tin phòng</h4>
-
-      <div class="row g-3 mb-4">
-        <div class="col-sm-3">
-          <div class="chitietphong-thongke-hop">
-            <i class="fas fa-user fa-lg text-primary"></i>
-            <div class="chitietphong-thongke-giatri">{{ room.max_adults or 2 }}</div>
-            <div class="chitietphong-thongke-nhan">Người lớn tối đa</div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="chitietphong-thongke-hop">
-            <i class="fas fa-child fa-lg text-info"></i>
-            <div class="chitietphong-thongke-giatri">{{ room.max_children or 1 }}</div>
-            <div class="chitietphong-thongke-nhan">Trẻ em tối đa</div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="chitietphong-thongke-hop">
-            <i class="fas fa-bed fa-lg text-success"></i>
-            <div class="chitietphong-thongke-giatri">{{ room.extra_bed_capacity or 0 }}</div>
-            <div class="chitietphong-thongke-nhan">Giường phụ</div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="chitietphong-thongke-hop">
-            <i class="fas fa-expand-arrows-alt fa-lg text-warning"></i>
-            <div class="chitietphong-thongke-giatri">{{ room.base_price | default(0) | int }}đ</div>
-            <div class="chitietphong-thongke-nhan">Giá cơ bản/đêm</div>
-          </div>
-        </div>
-      </div>
-
-      {% if room.description %}
-      <div class="chitietphong-mota mb-3">
-        <h6 class="fw-bold mb-2">Mô tả</h6>
-        <p>{{ room.description }}</p>
-      </div>
-      {% endif %}
-
-      {% if room.amenities %}
-      <div class="chitietphong-tiennghi mb-4">
-        <h6 class="fw-bold mb-2">Tiện nghi phòng</h6>
-        <div class="d-flex flex-wrap gap-2 mt-2">
-          {% for amenity in room.amenities.split(',') %}
-            {% if amenity.strip() %}
-            <span class="badge bg-light text-dark border px-3 py-2" style="font-weight: 500; font-size: 13px;">
-              <i class="fas fa-check text-success me-2"></i>{{ amenity.strip() }}
-            </span>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
-
-      {% if room.extra_adult_fee and room.extra_adult_fee > 0 %}
-      <div class="chitietphong-phuthi-thongtin">
-        <i class="fas fa-info-circle text-primary me-2"></i>
-        Phụ phí thêm người lớn: <strong>{{ room.extra_adult_fee|vnd }}/đêm</strong>
-        {% if room.child_breakfast_fee and room.child_breakfast_fee > 0 %}
-        · Trẻ em ăn sáng: <strong>{{ room.child_breakfast_fee|vnd }}</strong>
-        {% endif %}
-      </div>
-      {% endif %}
-    </div>
-
-    {# ── Tiện nghi phòng ── #}
-    {% if room.amenities %}
-    <div class="chitietphong-phan">
-      <h4 class="chitietphong-phan-tieude"><i class="fas fa-concierge-bell me-2"></i>Tiện nghi phòng</h4>
-      <div class="chitietphong-tienich-luoi">
-        {% set amenity_icons = {
-          'WiFi': 'fas fa-wifi',
-          'TV': 'fas fa-tv',
-          'Điều hòa': 'fas fa-snowflake',
-          'Minibar': 'fas fa-glass-martini-alt',
-          'Két sắt': 'fas fa-lock',
-          'Bồn tắm': 'fas fa-bath',
-          'Ban công': 'fas fa-door-open',
-          'Bể bơi': 'fas fa-swimming-pool',
-          'Phòng gym': 'fas fa-dumbbell',
-          'Bữa sáng': 'fas fa-coffee',
-          'Spa': 'fas fa-spa',
-          'Đỗ xe': 'fas fa-car'
-        } %}
-        {% for am in room.amenities.split(',') %}
-        {% set am_clean = am.strip() %}
-        {% if am_clean %}
-        <div class="chitietphong-tienich-muc">
-          <i class="{{ amenity_icons.get(am_clean, 'fas fa-check-circle') }} text-primary"></i>
-          <span>{{ am_clean }}</span>
-        </div>
-        {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-
-    {# ── Tình trạng phòng trống ── #}
-    {% if checkin_date and checkout_date %}
-    <div class="chitietphong-phan">
-      <h4 class="chitietphong-phan-tieude"><i class="fas fa-calendar-check me-2"></i>Phòng trống ({{ checkin_date }} → {{ checkout_date }})</h4>
-
-      {% if continuous_rooms %}
-      <div class="chitietphong-cophong-bang chitietphong-cophong-bang-xanh mb-3">
-        <i class="fas fa-check-circle me-2"></i>
-        <strong>{{ continuous_rooms|length }} phòng</strong> sẵn sàng toàn bộ thời gian đã chọn
-      </div>
-      <div class="chitietphong-danhsachphong">
-        {% for phys in continuous_rooms %}
-        <div class="chitietphong-danhsachphong-muc d-flex justify-content-between align-items-center">
-          <div>
-            <span class="fw-bold">{{ phys.room_name }}</span>
-            <span class="huyhieu-cophong-tag ms-2">Toàn thời gian</span>
-          </div>
-          {% if auth.is_logged_in and auth.account_type == 'customer' %}
-          <a href="/booking?room_type_id={{ room.room_type_id }}&hotel_id={{ room.hotel_id }}&physical_room_id={{ phys.physical_room_id }}&checkin_date={{ checkin_date }}&checkout_date={{ checkout_date }}"
-             class="btn btn-sm nut-datngay">
-            <i class="fas fa-calendar-plus me-1"></i>Đặt phòng này
-          </a>
-          {% endif %}
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-
-      {% if fragmented_rooms %}
-      <div class="chitietphong-cophong-bang chitietphong-cophong-bang-vang mb-3 {% if continuous_rooms %}mt-4{% endif %}">
-        <i class="fas fa-calendar-week me-2"></i>
-        <strong>{{ fragmented_rooms|length }} phòng</strong> trống một phần — có thể đặt đêm lẻ
-      </div>
-      <div class="chitietphong-danhsachphong">
-        {% for phys in fragmented_rooms %}
-        <div class="chitietphong-danhsachphong-muc">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-              <span class="fw-bold">{{ phys.room_name }}</span>
-              <span class="huyhieu-cophong-tag huyhieu-cophong-tag--amber ms-2">Đêm lẻ</span>
-            </div>
-            {% if auth.is_logged_in and auth.account_type == 'customer' %}
-            <a href="/booking?room_type_id={{ room.room_type_id }}&hotel_id={{ room.hotel_id }}&physical_room_id={{ phys.physical_room_id }}&checkin_date={{ checkin_date }}&checkout_date={{ checkout_date }}"
-               class="btn btn-sm btn-book-amber">
-              <i class="fas fa-moon me-1"></i>Chọn đêm lẻ
-            </a>
-            {% endif %}
-          </div>
-          {% if phys.free_nights %}
-          <div class="d-flex flex-wrap gap-1">
-            {% for n in phys.free_nights %}
-            <span class="huyhieu-dem-nho">{{ n }}</span>
+              {% endif %}
             {% endfor %}
           </div>
           {% endif %}
-        </div>
-        {% endfor %}
+        {% else %}
+          <div class="d-flex align-items-center justify-content-center h-100 bg-light text-muted">
+            <p class="m-0">Đang cập nhật hình ảnh khu nghỉ dưỡng</p>
+          </div>
+        {% endif %}
       </div>
-      {% endif %}
-
-      {% if not continuous_rooms and not fragmented_rooms %}
-      <div class="chitietphong-cophong-bang chitietphong-cophong-bang-do">
-        <i class="fas fa-times-circle me-2"></i>
-        Không còn phòng trống cho khoảng thời gian này.
-      </div>
-      {% endif %}
     </div>
-    {% endif %}
 
-    {# ── Đánh giá khách hàng ── #}
+    {# ── 2. DẢI THÔNG SỐ BIÊN TẬP (EDITORIAL METRICS STRIP - BỎ HOÀN TOÀN ICON PASTEL AI) ── #}
+    <div class="editorial-specs-ribbon">
+      <div class="row g-0 align-items-center">
+        <div class="col-6 col-md-3 spec-column">
+          <div class="spec-eyebrow">DIỆN TÍCH PHÒNG</div>
+          <div class="spec-headline">{{ spec.area }}</div>
+          <div class="spec-subline">Không gian thoáng đãng</div>
+        </div>
+        <div class="col-6 col-md-3 spec-column">
+          <div class="spec-eyebrow">SỨC CHỨA TIÊU CHUẨN</div>
+          <div class="spec-headline">{{ room.max_adults or 2 }} Lớn · {{ room.max_children or 1 }} Trẻ</div>
+          <div class="spec-subline">Phù hợp cặp đôi & gia đình</div>
+        </div>
+        <div class="col-6 col-md-3 spec-column">
+          <div class="spec-eyebrow">QUY CÁCH GIƯỜNG</div>
+          <div class="spec-headline">{{ spec.bed }}</div>
+          <div class="spec-subline">Đệm lò xo túi êm ái</div>
+        </div>
+        <div class="col-6 col-md-3 spec-column">
+          <div class="spec-eyebrow">TẦM NHÌN CẢNH QUAN</div>
+          <div class="spec-headline">{{ spec.view }}</div>
+          <div class="spec-subline">Gió đại dương thanh mát</div>
+        </div>
+      </div>
+    </div>
+
+    {# ── 3. KHÔNG GIAN & CẢM QUAN NGHỈ DƯỠNG ── #}
+    <div class="editorial-section">
+      <h3 class="editorial-section-title">
+        <i class="fas fa-feather-alt"></i>Không Gian & Cảm Quan Nghỉ Dưỡng
+      </h3>
+      <div class="editorial-narrative-quote">
+        "{{ narrative }}"
+      </div>
+    </div>
+
+    {# ── 4. BẢNG GÓI LƯU TRÚ CAO CẤP (RATE PLANS TABLE - THAY THẾ HOÀN TOÀN 22 NÚT RẠP CHIẾU PHIM) ── #}
+    <div class="editorial-section">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h3 class="editorial-section-title m-0">
+          <i class="fas fa-layer-group"></i>Lựa Chọn Gói Dịch Vụ Lưu Trú
+        </h3>
+        {% if continuous_rooms %}
+        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 fw-bold">
+          <i class="fas fa-check-circle me-1"></i>Sẵn sàng {{ continuous_rooms|length }} phòng trống
+        </span>
+        {% endif %}
+      </div>
+      <p class="text-secondary small mb-4">
+        Khách hàng đặt phòng trực tiếp tại hệ thống Sài Gòn - Côn Đảo được đảm bảo giá tốt nhất, ưu tiên chọn hướng phòng đẹp và tích lũy điểm thành viên Saigontourist.
+      </p>
+
+      {% set booking_base_url = "/booking?room_type_id=" ~ room.room_type_id ~ "&hotel_id=" ~ room.hotel_id ~ (("&checkin_date=" ~ checkin_date ~ "&checkout_date=" ~ checkout_date) if checkin_date else "") ~ "&adults=" ~ adults|default(2) ~ "&children=" ~ children|default(0) ~ (("&promo_code=" ~ promo_code) if promo_code else "") %}
+
+      <div class="rate-plans-container">
+
+        {# Gói 1: Linh hoạt tiêu chuẩn #}
+        <div class="rate-plan-card active-plan" id="plan-card-room_only" onclick="selectPlan('room_only', '{{ base_p | vnd }}', 'Gói linh hoạt (Room Only)', '{{ booking_base_url }}&package_type=room_only')">
+          <div class="row align-items-center g-3">
+            <div class="col-md-7">
+              <div class="plan-title d-flex align-items-center gap-2">
+                <input type="radio" name="selected_plan" id="radio-plan-room_only" checked class="form-check-input mt-0 me-1">
+                <span>Gói Nghỉ Dưỡng Linh Hoạt (Room Only)</span>
+              </div>
+              <ul class="plan-perks-list">
+                <li><i class="fas fa-check"></i>Nghỉ đêm tại hạng {{ display_name }} tiêu chuẩn 4 sao</li>
+                <li><i class="fas fa-check"></i>Miễn phí Wifi cáp quang tốc độ cao & 2 chai nước khoáng mỗi ngày</li>
+                <li><i class="fas fa-check"></i>Miễn phí hủy phòng trước 07 ngày trước ngày nhận phòng</li>
+              </ul>
+            </div>
+            <div class="col-md-5 text-md-end">
+              <div class="plan-price-num">{{ base_p | vnd }}</div>
+              <div class="plan-price-unit mb-2">Giá mỗi đêm · Đã bao gồm thuế GTGT 10%</div>
+              {% if auth.is_logged_in and auth.account_type == 'customer' %}
+              <a href="{{ booking_base_url }}&package_type=room_only" class="btn btn-select-plan">
+                Chọn gói này
+              </a>
+              {% else %}
+              <a href="/login?next={{ (booking_base_url ~ '&package_type=room_only') | urlencode }}" class="btn btn-select-plan">
+                <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập để chọn
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {# Gói 2: Bữa sáng & Đón tiễn sân bay (Khuyên dùng - Featured) #}
+        <div class="rate-plan-card featured-plan" id="plan-card-full_board" onclick="selectPlan('full_board', '{{ ((base_p * 1.15) | int) | vnd }}', 'Gói Trọn Vẹn (Kèm Bữa Sáng & Xe Sân Bay)', '{{ booking_base_url }}&package_type=full_board')">
+          <span class="featured-plan-badge">
+            <i class="fas fa-crown me-1"></i>Lựa chọn hoàn hảo tại Côn Đảo
+          </span>
+          <div class="row align-items-center g-3 mt-1">
+            <div class="col-md-7">
+              <div class="plan-title text-primary d-flex align-items-center gap-2">
+                <input type="radio" name="selected_plan" id="radio-plan-full_board" class="form-check-input mt-0 me-1">
+                <span>Gói Nghỉ Dưỡng Trọn Vẹn (Kèm Bữa Sáng & Xe Sân Bay)</span>
+              </div>
+              <ul class="plan-perks-list">
+                <li><i class="fas fa-check text-warning"></i><strong>Bao gồm Buffet sáng hải sản hàng ngày</strong> dành cho 2 khách</li>
+                <li><i class="fas fa-check text-warning"></i><strong>Xe đưa đón 2 chiều sân bay Cỏ Ống</strong> (tiết kiệm 400.000đ)</li>
+                <li><i class="fas fa-check"></i>Tặng kèm đồ uống chào đón (Welcome Drink) & giỏ trái cây tươi khi nhận phòng</li>
+                <li><i class="fas fa-check"></i>Hỗ trợ ưu tiên nhận phòng sớm / trả phòng trễ đến 14:00 (tùy tình trạng phòng)</li>
+              </ul>
+            </div>
+            <div class="col-md-5 text-md-end">
+              <div class="plan-price-num text-primary">{{ ((base_p * 1.15) | int) | vnd }}</div>
+              <div class="plan-price-unit mb-2">Giá mỗi đêm · Đã bao gồm thuế & dịch vụ trọn gói</div>
+              {% if auth.is_logged_in and auth.account_type == 'customer' %}
+              <a href="{{ booking_base_url }}&package_type=full_board" class="btn btn-select-plan btn-featured">
+                <i class="fas fa-calendar-check me-1"></i>Chọn gói ưu đãi
+              </a>
+              {% else %}
+              <a href="/login?next={{ (booking_base_url ~ '&package_type=full_board') | urlencode }}" class="btn btn-select-plan btn-featured">
+                <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập để chọn
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {# Gói 3: Trải nghiệm di sản trọn gói #}
+        <div class="rate-plan-card" id="plan-card-heritage" onclick="selectPlan('heritage', '{{ ((base_p * 1.35) | int) | vnd }}', 'Gói Di Sản Sài Gòn - Côn Đảo', '{{ booking_base_url }}&package_type=heritage')">
+          <div class="row align-items-center g-3">
+            <div class="col-md-7">
+              <div class="plan-title d-flex align-items-center gap-2">
+                <input type="radio" name="selected_plan" id="radio-plan-heritage" class="form-check-input mt-0 me-1">
+                <span>Gói Di Sản Sài Gòn - Côn Đảo (Heritage Experience Package)</span>
+              </div>
+              <ul class="plan-perks-list">
+                <li><i class="fas fa-check"></i>Toàn bộ quyền lợi gói Bữa Sáng & Xe đón tiễn sân bay 2 chiều</li>
+                <li><i class="fas fa-check"></i>Tặng vé tham quan Cụm Di tích Lịch sử Nhà tù Côn Đảo & Nghĩa trang Hàng Dương</li>
+                <li><i class="fas fa-check"></i>Giảm 15% thực đơn ẩm thực tại Nhà hàng Côn Sơn ven biển</li>
+              </ul>
+            </div>
+            <div class="col-md-5 text-md-end">
+              <div class="plan-price-num">{{ ((base_p * 1.35) | int) | vnd }}</div>
+              <div class="plan-price-unit mb-2">Giá mỗi đêm · Gói trải nghiệm văn hóa trọn gói</div>
+              {% if auth.is_logged_in and auth.account_type == 'customer' %}
+              <a href="{{ booking_base_url }}&package_type=heritage" class="btn btn-select-plan">
+                Chọn gói trải nghiệm
+              </a>
+              {% else %}
+              <a href="/login?next={{ (booking_base_url ~ '&package_type=heritage') | urlencode }}" class="btn btn-select-plan">
+                <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập để chọn
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {# ── 5. ĐẶC QUYỀN & TIỆN NGHI KIẾN TRÚC (ARCHITECTURAL AMENITIES) ── #}
+    <div class="editorial-section">
+      <h3 class="editorial-section-title">
+        <i class="fas fa-concierge-bell"></i>Đặc Quyền & Tiện Nghi Phòng Nghỉ
+      </h3>
+      <div class="amenities-grid-editorial">
+        <div class="amenity-block">
+          <div class="amenity-block-title">01. CÔNG NGHỆ & KẾT NỐI</div>
+          <ul class="amenity-block-list">
+            <li><i class="fas fa-wifi"></i>Wifi cáp quang riêng biệt tốc độ cao miễn phí</li>
+            <li><i class="fas fa-tv"></i>Smart TV truyền hình vệ tinh độ nét cao</li>
+            <li><i class="fas fa-plug"></i>Bàn làm việc trang nhã & ổ cắm đa năng quốc tế</li>
+          </ul>
+        </div>
+        <div class="amenity-block">
+          <div class="amenity-block-title">02. TIỆN NGHI KHÔNG GIAN</div>
+          <ul class="amenity-block-list">
+            <li><i class="fas fa-snowflake"></i>Điều hòa nhiệt độ 2 chiều kiểm soát thông minh</li>
+            <li><i class="fas fa-glass-martini-alt"></i>Tủ lạnh Minibar với thức uống chọn lọc</li>
+            <li><i class="fas fa-shield-alt"></i>Két sắt an toàn điện tử tiêu chuẩn</li>
+          </ul>
+        </div>
+        <div class="amenity-block">
+          <div class="amenity-block-title">03. PHÒNG TẮM THIẾT KẾ</div>
+          <ul class="amenity-block-list">
+            <li><i class="fas fa-bath"></i>{{ spec.bath }} với hệ thống nước nóng lạnh 24/7</li>
+            <li><i class="fas fa-tshirt"></i>Khăn tắm sợi bông tự nhiên & Áo choàng tắm cao cấp</li>
+            <li><i class="fas fa-pump-soap"></i>Bộ đồ vệ sinh cá nhân chiết xuất thảo mộc</li>
+          </ul>
+        </div>
+        <div class="amenity-block">
+          <div class="amenity-block-title">04. DỊCH VỤ NGHỈ DƯỠNG</div>
+          <ul class="amenity-block-list">
+            <li><i class="fas fa-coffee"></i>Trà, cà phê & 2 chai nước khoáng miễn phí hàng ngày</li>
+            <li><i class="fas fa-broom"></i>Dịch vụ dọn buồng phòng & thay khăn tiêu chuẩn mỗi ngày</li>
+            <li><i class="fas fa-headset"></i>Dịch vụ hỗ trợ khách hàng & Lễ tân 24/7</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {# ── 6. QUY ĐỊNH & CHÍNH SÁCH LƯU TRÚ (RESORT POLICIES) ── #}
+    <div class="editorial-section">
+      <h3 class="editorial-section-title">
+        <i class="fas fa-clipboard-list"></i>Quy Định & Chính Sách Lưu Trú
+      </h3>
+      <div class="policy-grid-editorial">
+        <div class="policy-card-editorial">
+          <div class="policy-title"><i class="far fa-clock me-2 text-primary"></i>Thời gian nhận & trả phòng</div>
+          <div class="policy-desc">Nhận phòng từ <strong>14:00</strong> | Trả phòng trước <strong>12:00</strong>. Hỗ trợ nhận phòng sớm nếu buồng phòng có sẵn.</div>
+        </div>
+        <div class="policy-card-editorial">
+          <div class="policy-title"><i class="fas fa-baby me-2 text-info"></i>Chính sách trẻ em & gia đình</div>
+          <div class="policy-desc">Miễn phí tiền phòng cho 1 trẻ em dưới 6 tuổi ngủ cùng bố mẹ. Trẻ từ 6-11 tuổi áp dụng phụ thu ăn sáng.</div>
+        </div>
+        <div class="policy-card-editorial">
+          <div class="policy-title"><i class="fas fa-undo-alt me-2 text-success"></i>Chính sách hủy & đổi ngày</div>
+          <div class="policy-desc">Hủy miễn phí trước 07 ngày trước ngày nhận phòng đối với các gói tiêu chuẩn linh hoạt.</div>
+        </div>
+        <div class="policy-card-editorial">
+          <div class="policy-title"><i class="fas fa-shuttle-van me-2 text-warning"></i>Đưa đón sân bay Cỏ Ống</div>
+          <div class="policy-desc">Hỗ trợ xe đưa đón sân bay 2 chiều. Quý khách vui lòng thông báo lịch trình bay trước 24 giờ.</div>
+        </div>
+      </div>
+    </div>
+
+    {# ── 7. ĐÁNH GIÁ TỪ DU KHÁCH THỰC TẾ ── #}
     {% if reviews %}
-    <div class="chitietphong-phan">
-      <h4 class="chitietphong-phan-tieude"><i class="fas fa-comments me-2"></i>Đánh giá từ khách hàng</h4>
-      <div class="chitietphong-danhgia-danhsach">
-        {% for r in reviews[:6] %}
-        <div class="chitietphong-danhgia-muc {% if not loop.last %}mb-3{% endif %}">
+    <div class="editorial-section">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <h3 class="editorial-section-title m-0">
+          <i class="fas fa-comments"></i>Đánh Giá Từ Du Khách Thực Tế
+        </h3>
+        <div class="d-flex align-items-center gap-3">
+          <span class="review-score-hero">{{ "%.1f" | format((avg_rating or 0) * 2) }}</span>
+          <div>
+            <div class="fw-bold text-dark small" style="font-size: 13px;">Tuyệt vời · Đánh giá xác thực</div>
+            <div class="text-muted" style="font-size: 11px;">Tổng hợp từ {{ review_count }} kỳ nghỉ lưu trú</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-list-editorial">
+        {% for r in reviews[:4] %}
+        <div class="review-item-editorial">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center gap-2">
-              <div class="chitietphong-danhgia-anh">{{ (r.reviewer_name or r.customer_name or 'K')[0] | upper }}</div>
+              <div class="review-author-initial">
+                {{ (r.reviewer_name or r.customer_name or 'K')[0] | upper }}
+              </div>
               <div>
-                <div class="fw-bold small">{{ r.reviewer_name or r.customer_name or 'Khách hàng' }}</div>
-                <div class="text-muted" style="font-size:11px">{{ r.review_date or '' }}</div>
+                <span class="fw-bold text-dark small">{{ r.reviewer_name or r.customer_name or 'Du khách Sài Gòn - Côn Đảo' }}</span>
+                <span class="badge bg-success-subtle text-success small ms-2" style="font-size: 10px; font-weight: 600;"><i class="fas fa-check-circle me-1"></i>Đã lưu trú xác thực</span>
+                <span class="text-muted mx-2">·</span>
+                <span class="text-muted small" style="font-size: 11px;">{{ r.review_date or 'Lưu trú gần đây' }}</span>
               </div>
             </div>
-            <div class="chitietphong-danhgia-sao">
+            <div class="text-warning small" style="font-size: 11px;">
               {% for i in range(r.rating|int) %}<i class="fas fa-star"></i>{% endfor %}
-              {% for i in range(5 - r.rating|int) %}<i class="far fa-star"></i>{% endfor %}
             </div>
           </div>
           {% if r.comment %}
-          <p class="small text-muted mb-0" style="line-height:1.6">{{ r.comment }}</p>
+          <div class="review-quote-text ps-4">
+            "{{ r.comment }}"
+          </div>
           {% endif %}
         </div>
         {% endfor %}
       </div>
+
       <div class="text-center mt-3">
-        <a href="/reviews?hotel_id={{ room.hotel_id }}" class="btn btn-outline-secondary btn-sm px-4">
-          Xem tất cả đánh giá
+        <a href="/reviews?hotel_id={{ room.hotel_id }}" class="btn-back-editorial">
+          Xem tất cả {{ review_count }} đánh giá du khách
         </a>
       </div>
     </div>
@@ -293,139 +397,87 @@
 
   </div>
 
-  {# ═══ CỘT PHẢI: SIDEBAR BOOKING ═══ #}
+  {# ═══ CỘT PHẢI: FLOATING BOOKING CONSOLE (ĐẲNG CẤP & SẮC NÉT) ═══ #}
   <div class="col-lg-4">
+    <div class="chitietphong-sidebar-sticky">
+      <div class="editorial-booking-console">
 
-    {# ── Rating Box kiểu Booking.com ── #}
-    <div class="chitietphong-danhgia-the mb-3">
-      <div class="chitietphong-danhgia-the-diem">
-        <span class="chitietphong-danhgia-so">{{ "%.1f" | format((avg_rating or 0) * 2) }}</span>
-        <div>
-          <div class="chitietphong-danhgia-chu fw-bold">
-            {% if avg_rating >= 4.5 %}Tuyệt vời
-            {% elif avg_rating >= 4 %}Rất tốt
-            {% elif avg_rating >= 3.5 %}Tốt
-            {% elif avg_rating >= 3 %}Khá
-            {% else %}Trung bình{% endif %}
+        <div class="console-hotel-name">SAIGON-CONDAO RESORT</div>
+        <div class="console-price-block">
+          <div class="d-flex align-items-baseline gap-1">
+            <div class="console-price-amount" id="console-display-price">{{ base_p | vnd }}</div>
+            <div class="text-secondary small">/ đêm</div>
           </div>
-          <div class="text-muted" style="font-size:12px">{{ review_count }} đánh giá</div>
-        </div>
-      </div>
-      {% if reviews %}
-      <div class="chitietphong-danhgia-the-xemtruoc">
-        <p class="small text-muted mb-1 fst-italic">"{{ (reviews[0].comment or '')[:100] }}{% if (reviews[0].comment or '')|length > 100 %}...{% endif %}"</p>
-        <div class="d-flex align-items-center gap-2" style="font-size:12px">
-          <div class="chitietphong-danhgia-anh chitietphong-danhgia-anh-nho">{{ (reviews[0].reviewer_name or reviews[0].customer_name or 'K')[0] | upper }}</div>
-          <span class="fw-bold">{{ reviews[0].reviewer_name or reviews[0].customer_name or 'Khách hàng' }}</span>
-          <span class="text-muted">{{ reviews[0].review_date or '' }}</span>
-        </div>
-      </div>
-      <a href="/reviews?hotel_id={{ room.hotel_id }}" class="chitietphong-danhgia-the-lienket">Xem tất cả đánh giá →</a>
-      {% endif %}
-    </div>
-
-    {# ── Booking Sidebar ── #}
-    <div class="chitietphong-datphong-the">
-      {% if continuous_rooms %}
-      <div class="chitietphong-hot-huyhieu mb-3">
-        <i class="fas fa-fire me-2"></i>
-        Đang bán chạy · {{ continuous_rooms|length }} phòng trống
-      </div>
-      {% endif %}
-
-      <div class="chitietphong-datphong-the-gia">
-        <div class="chitietphong-gia-chinh">
-          {{ "{:,.0f}".format(room.base_price or 0) }}<span class="chitietphong-gia-donvi">đ</span>
-        </div>
-        <div class="chitietphong-gia-ghichu">Giá mỗi đêm · Đã bao gồm thuế 10%</div>
-      </div>
-
-      <div class="chitietphong-chon-ngay-moi mb-4">
-        <div class="d-flex w-100 position-relative">
-          <div class="chitietphong-ngay-cot-moi w-50 position-relative">
-            <i class="far fa-calendar-alt chitietphong-ngay-icon-moi"></i>
-            <div>
-              <div class="chitietphong-ngay-giatri-moi" id="display-checkin">{{ checkin_date or 'Chọn ngày' }}</div>
-              <div class="chitietphong-ngay-thu-moi" id="display-checkin-day">Nhận phòng</div>
-            </div>
-            <div class="chitietphong-vach-ngan"></div>
+          <div class="console-price-note">
+            <i class="fas fa-check-circle text-success me-1"></i>Đã bao gồm thuế GTGT & phí dịch vụ
           </div>
-          <div class="chitietphong-ngay-cot-moi w-50" style="padding-left: 20px;">
-            <i class="far fa-calendar-check chitietphong-ngay-icon-moi"></i>
-            <div>
-              <div class="chitietphong-ngay-giatri-moi" id="display-checkout">{{ checkout_date or 'Chọn ngày' }}</div>
-              <div class="chitietphong-ngay-thu-moi" id="display-checkout-day">Trả phòng</div>
-            </div>
+          <div class="small fw-semibold text-primary mt-1" id="console-plan-note" style="font-size: 11.5px;">
+            <i class="fas fa-tag me-1"></i>Gói linh hoạt (Room Only)
           </div>
         </div>
-      </div>
 
-      <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          function formatVietnameseDate(dateStr, targetDateId, targetDayId) {
-              if (!dateStr || dateStr === 'Chọn ngày') return;
-              const d = new Date(dateStr);
-              if (isNaN(d.getTime())) return;
-              
-              const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-              const dayName = days[d.getDay()];
-              const formattedDate = d.getDate() + ' tháng ' + (d.getMonth() + 1) + ' ' + d.getFullYear();
-              
-              document.getElementById(targetDateId).textContent = formattedDate;
-              document.getElementById(targetDayId).textContent = dayName;
-          }
-          
-          const checkin = "{{ checkin_date }}";
-          const checkout = "{{ checkout_date }}";
-          
-          if (checkin) formatVietnameseDate(checkin, 'display-checkin', 'display-checkin-day');
-          if (checkout) formatVietnameseDate(checkout, 'display-checkout', 'display-checkout-day');
-      });
-      </script>
+        {# Khoảng ngày lưu trú (Bấm để đổi ngày ngay trên console) #}
+        <div class="console-dates-box" style="cursor: pointer; position: relative;" title="Bấm để chọn lại ngày lưu trú">
+          <div class="date-slot" onclick="triggerDatePicker('checkin')">
+            <span class="date-slot-label"><i class="far fa-calendar-alt me-1"></i>NHẬN PHÒNG</span>
+            <span class="date-slot-val" id="display-checkin">{{ checkin_date or 'Chọn ngày' }}</span>
+            <span class="text-muted" style="font-size: 11px;" id="display-checkin-day">Từ 14:00</span>
+            <input type="date" id="picker-ci" value="{{ checkin_date }}" style="position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;" onchange="onDatePicked()">
+          </div>
+          <div class="date-slot" onclick="triggerDatePicker('checkout')">
+            <span class="date-slot-label"><i class="far fa-calendar-alt me-1"></i>TRẢ PHÒNG</span>
+            <span class="date-slot-val" id="display-checkout">{{ checkout_date or 'Chọn ngày' }}</span>
+            <span class="text-muted" style="font-size: 11px;" id="display-checkout-day">Trước 12:00</span>
+            <input type="date" id="picker-co" value="{{ checkout_date }}" style="position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;" onchange="onDatePicked()">
+          </div>
+        </div>
 
-      {% if not auth.is_logged_in %}
-      <a href="/login" class="btn nut-datngay w-100 py-3 fw-bold mb-3">
-        <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập để đặt phòng
-      </a>
-      {% else %}
-      <a href="/booking?room_type_id={{ room.room_type_id }}&hotel_id={{ room.hotel_id }}{% if checkin_date %}&checkin_date={{ checkin_date }}&checkout_date={{ checkout_date }}{% endif %}"
-         class="btn nut-datngay w-100 py-3 fw-bold mb-3">
-        <i class="fas fa-calendar-check me-2"></i>Đặt phòng ngay
-      </a>
-      {% endif %}
+        {# Primary Booking CTA #}
+        {% if not auth.is_logged_in %}
+        <a href="/login?next={{ (booking_base_url ~ '&package_type=room_only') | urlencode }}" class="btn-cta-luxury" id="btn-primary-booking">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Đăng nhập để đặt phòng</span>
+        </a>
+        {% else %}
+        <a href="{{ booking_base_url }}&package_type=room_only" class="btn-cta-luxury" id="btn-primary-booking">
+          <i class="fas fa-calendar-check"></i>
+          <span>Tiến hành đặt phòng ngay</span>
+        </a>
+        {% endif %}
 
-      {# Ưu đãi #}
-      <div class="chitietphong-loiich">
-        <div class="chitietphong-loiich-tieude">Ưu đãi khi đặt phòng</div>
-        <div class="chitietphong-loiich-muc">
-          <i class="fas fa-award text-warning"></i>
-          <span>Tích 10 điểm loyalty mỗi đêm lưu trú</span>
+        {# Trust & Benefits #}
+        <div class="console-trust-perks">
+          <div class="trust-perk-item">
+            <i class="fas fa-award"></i>
+            <span>Tích 10 điểm loyalty Saigontourist mỗi đêm</span>
+          </div>
+          <div class="trust-perk-item">
+            <i class="fas fa-crown"></i>
+            <span>Thành viên Gold giảm thêm 5% giá phòng</span>
+          </div>
+          <div class="trust-perk-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Hủy miễn phí theo chính sách khu nghỉ dưỡng</span>
+          </div>
+          <div class="trust-perk-item">
+            <i class="fas fa-phone-alt"></i>
+            <span>Hotline hỗ trợ 24/7: <strong>(0254) 3830 111</strong></span>
+          </div>
         </div>
-        <div class="chitietphong-loiich-muc">
-          <i class="fas fa-crown text-warning"></i>
-          <span>Thành viên Gold giảm thêm 5%</span>
-        </div>
-        <div class="chitietphong-loiich-muc">
-          <i class="fas fa-shield-alt text-success"></i>
-          <span>Hủy miễn phí theo chính sách hoàn tiền</span>
-        </div>
-        <div class="chitietphong-loiich-muc">
-          <i class="fas fa-headset text-primary"></i>
-          <span>Hỗ trợ 24/7 qua hotline</span>
-        </div>
+
       </div>
     </div>
-
   </div>
+
 </div>
 
-{# ── GALLERY MODAL ── #}
+{# ── MODAL GALLERY ── #}
 <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content border-0 bg-transparent">
       <div class="modal-header border-0 p-0 mb-3">
-        <button type="button" class="btn btn-light rounded-circle ms-auto" data-bs-dismiss="modal" aria-label="Close"
-                style="width: 40px; height: 40px; background: rgba(255,255,255,0.9); border:none;">
+        <button type="button" class="btn btn-light ms-auto" data-bs-dismiss="modal" aria-label="Close"
+                style="width: 36px; height: 36px; border-radius: 4px; border:none;">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -434,7 +486,7 @@
           {% if room.images %}
             {% for img in room.images %}
               <div class="chitietphong-gallery-modal-item">
-                <img src="{{ img }}" alt="Ảnh {{ loop.index }}" class="img-fluid rounded-4 shadow-sm" loading="lazy">
+                <img src="{{ img }}" alt="Ảnh {{ loop.index }}" loading="lazy">
               </div>
             {% endfor %}
           {% endif %}
@@ -443,5 +495,86 @@
     </div>
   </div>
 </div>
+
+<script>
+const IS_LOGGED_IN = {{ 'true' if (auth.is_logged_in and auth.account_type == 'customer') else 'false' }};
+
+function formatVNDate(dateStr, targetDateId, targetDayId) {
+    if (!dateStr || dateStr === 'Chọn ngày') return;
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return;
+    
+    const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+    const dayName = days[d.getDay()];
+    const formattedDate = d.getDate() + ' thg ' + (d.getMonth() + 1) + ', ' + d.getFullYear();
+    
+    const dateEl = document.getElementById(targetDateId);
+    const dayEl = document.getElementById(targetDayId);
+    if (dateEl) dateEl.textContent = formattedDate;
+    if (dayEl) dayEl.textContent = dayName;
+}
+
+function selectPlan(planKey, priceStr, planName, bookingUrl) {
+    // 1. Update UI cards active state
+    document.querySelectorAll('.rate-plan-card').forEach(card => card.classList.remove('active-plan'));
+    const selectedCard = document.getElementById('plan-card-' + planKey);
+    if (selectedCard) selectedCard.classList.add('active-plan');
+
+    // 2. Check radio
+    const radio = document.getElementById('radio-plan-' + planKey);
+    if (radio) radio.checked = true;
+
+    // 3. Update Sticky Console
+    const consolePrice = document.getElementById('console-display-price');
+    if (consolePrice) consolePrice.textContent = priceStr;
+
+    const consolePlanNote = document.getElementById('console-plan-note');
+    if (consolePlanNote) consolePlanNote.innerHTML = '<i class="fas fa-tag me-1"></i>' + planName;
+
+    // 4. Update Primary CTA button href
+    const ctaBtn = document.getElementById('btn-primary-booking');
+    if (ctaBtn) {
+        if (IS_LOGGED_IN) {
+            ctaBtn.href = bookingUrl;
+        } else {
+            ctaBtn.href = '/login?next=' + encodeURIComponent(bookingUrl);
+        }
+    }
+}
+
+function triggerDatePicker(which) {
+    const el = document.getElementById(which === 'checkin' ? 'picker-ci' : 'picker-co');
+    if (el) {
+        if (el.showPicker) {
+            el.showPicker();
+        } else {
+            el.focus();
+        }
+    }
+}
+
+function onDatePicked() {
+    const ci = document.getElementById('picker-ci').value;
+    const co = document.getElementById('picker-co').value;
+    if (ci && co) {
+        if (new Date(co) <= new Date(ci)) {
+            alert('Ngày trả phòng phải sau ngày nhận phòng ít nhất 1 đêm.');
+            return;
+        }
+        const url = new URL(window.location.href);
+        url.searchParams.set('checkin_date', ci);
+        url.searchParams.set('checkout_date', co);
+        window.location.href = url.toString();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const checkin = "{{ checkin_date }}";
+    const checkout = "{{ checkout_date }}";
+    
+    if (checkin) formatVNDate(checkin, 'display-checkin', 'display-checkin-day');
+    if (checkout) formatVNDate(checkout, 'display-checkout', 'display-checkout-day');
+});
+</script>
 
 {% endblock %}

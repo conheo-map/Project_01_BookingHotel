@@ -17,6 +17,9 @@ def _role_home(role):
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if session.get('token'):
+        next_url = request.args.get('next') or request.form.get('next')
+        if next_url and next_url.startswith('/'):
+            return redirect(next_url)
         return _role_home(session.get('role', 'Guest'))
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
@@ -31,9 +34,12 @@ def login():
             session['account_type'] = result['account_type']
             session['token'] = result['token']
             flash(f"Chào mừng, {result.get('full_name') or result['username']}!", 'success')
+            next_url = request.args.get('next') or request.form.get('next')
+            if next_url and next_url.startswith('/'):
+                return redirect(next_url)
             return _role_home(result['role'])
         flash(result.get('message', 'Sai thông tin đăng nhập'), 'error')
-    return render_template('auth.html', form_mode='login')
+    return render_template('auth.html', form_mode='login', next=request.args.get('next', ''))
 
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -79,7 +85,11 @@ def profile():
         payload = {'customer_name': request.form.get('customer_name', '').strip()}
         old_pw = request.form.get('old_password', '').strip()
         new_pw = request.form.get('new_password', '').strip()
+        confirm_pw = request.form.get('confirm_password', '').strip()
         if new_pw:
+            if new_pw != confirm_pw:
+                flash('Mật khẩu mới và xác nhận mật khẩu không trùng khớp.', 'error')
+                return redirect(url_for('auth.profile'))
             payload['old_password'] = old_pw
             payload['new_password'] = new_pw
         result = api_put('/api/profile/update', payload)

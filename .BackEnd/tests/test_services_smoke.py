@@ -95,10 +95,10 @@ class TestServicesSmoke(unittest.TestCase):
         try:
             cursor = conn.cursor()
             for b_id in cls.created_booking_ids:
+                cursor.execute("DELETE FROM Payments WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Invoices WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Booking_Attributions WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Cancellation_Records WHERE booking_id = ?", (b_id,))
-                cursor.execute("DELETE FROM Payments WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Extra_Services WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Booking_Nights WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Booking_Master WHERE booking_id = ?", (b_id,))

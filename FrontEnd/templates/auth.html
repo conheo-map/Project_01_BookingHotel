@@ -73,7 +73,10 @@
 
     <!-- form Đăng Nhập (Bên phải) -->
     <div class="auth-form-container sign-in-container">
-      <form method="POST" action="/login" autocomplete="on">
+      <form method="POST" action="/login{% if next %}?next={{ next | urlencode }}{% elif request.args.get('next') %}?next={{ request.args.get('next') | urlencode }}{% endif %}" autocomplete="on">
+        {% if next or request.args.get('next') %}
+        <input type="hidden" name="next" value="{{ next or request.args.get('next', '') }}">
+        {% endif %}
         <div class="d-flex justify-content-center mb-2">
           <i class="fas fa-water fa-2x" style="color: #E1B12C;"></i>
         </div>

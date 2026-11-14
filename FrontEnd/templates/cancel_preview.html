@@ -1,82 +1,136 @@
 {% extends "base.html" %}
-{% block title %}Hủy đặt phòng - Hotel Booking{% endblock %}
+{% block title %}Xác Nhận Hủy Đặt Phòng #{{ preview.booking_id }} - Resort Sài Gòn - Côn Đảo{% endblock %}
 {% block content %}
 
-<div class="xacthuc-baoboc">
-    <div class="xacthuc-chon">
-        <div class="text-center mb-4">
-            <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle mb-3 shadow-sm">
-                <i class="fas fa-exclamation-triangle fa-2x"></i>
+<div class="container py-4" style="max-width: 800px;">
+    <!-- Breadcrumb & Back -->
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill" 
+             style="background: #FFF5F5; border: 1px solid #FECDD3; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #E11D48; text-transform: uppercase;">
+            <i class="fas fa-exclamation-triangle"></i> Yêu Cầu Hủy Đặt Phòng & Hoàn Tiền
+        </div>
+        <a href="/history" class="btn btn-sm btn-outline-secondary px-3 py-1 fw-bold rounded-pill">
+            <i class="fas fa-arrow-left me-1"></i> Quay Lại Lịch Sử
+        </a>
+    </div>
+
+    <!-- Main Cancellation Card -->
+    <div class="card border-0 shadow rounded-3 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+        <div class="px-4 py-3" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-calendar-times text-danger fs-5"></i>
+                <h5 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif;">
+                    Xác Nhận Hủy Đặt Phòng #{{ preview.booking_id }}
+                </h5>
             </div>
-            <h2 class="fw-bold text-dark">Xác nhận hủy đặt phòng</h2>
-            <p class="text-muted small">Vui lòng kiểm tra kỹ chính sách hoàn tiền trước khi tiếp tục.</p>
+            <p class="text-white-50 small mb-0 mt-1">
+                Vui lòng kiểm tra chi tiết biểu phí khấu trừ và tỷ lệ hoàn tiền theo chính sách trước khi xác nhận.
+            </p>
         </div>
 
-        <div class="row g-4 mb-4">
-            <!-- BREAKDOWN -->
-            <div class="col-md-6">
-                <div class="the-chinh p-3 h-100 bg-light border-0">
-                    <h6 class="kichthuoc-nho-hon fw-bold text-muted text-uppercase khoangcach-chu-1 mb-3">Thông tin đơn hàng #{{ preview.booking_id }}</h6>
-                    <div class="mb-2">
-                        <div class="small text-muted">Khách hàng</div>
-                        <div class="fw-bold">{{ preview.customer_name }}</div>
+        <div class="p-4 p-md-5">
+            <div class="row g-4 mb-4">
+                <!-- Booking Summary Card -->
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 h-100" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                        <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Thông Tin Đơn Hàng</span>
+                        <h6 class="fw-bold text-dark mt-2 mb-3">Mã đơn #{{ preview.booking_id }}</h6>
+                        
+                        <div class="mb-2 small">
+                            <span class="text-muted">Khách hàng:</span>
+                            <strong class="text-dark ms-1">{{ preview.customer_name or 'Quý khách' }}</strong>
+                        </div>
+                        <div class="mb-2 small">
+                            <span class="text-muted">Ngày nhận phòng:</span>
+                            <strong class="text-dark ms-1">{{ preview.arrival_date | date_vn }}</strong>
+                        </div>
+                        <div class="mb-2 small">
+                            <span class="text-muted">Tổng giá trị đơn:</span>
+                            <span class="fw-bold sc-net-num text-dark ms-1">{{ (preview.total_price or 0) | vnd }}</span>
+                        </div>
+                        <div class="small">
+                            <span class="text-muted">Đã đặt cọc (Thanh toán):</span>
+                            <span class="fw-bold sc-net-num text-success ms-1">{{ (preview.deposit_paid or 0) | vnd }}</span>
+                        </div>
                     </div>
-                    <div class="mb-2">
-                        <div class="small text-muted">Ngày nhận phòng</div>
-                        <div class="fw-bold">{{ preview.arrival_date }}</div>
-                    </div>
-                    <div>
-                        <div class="small text-muted">Đã thanh toán (Cọc)</div>
-                        <div class="fw-bold text-primary">{{ (preview.deposit_paid or 0)|vnd }}</div>
+                </div>
+
+                <!-- Refund Policy Outcome Card -->
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3 h-100" style="background: #FFFDF8; border: 1px solid #DFB76C;">
+                        <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Dự Tính Hoàn Tiền Thực Nhận</span>
+                        
+                        <div class="mt-2 mb-2">
+                            <div class="small text-muted">Tỷ lệ hoàn tiền áp dụng:</div>
+                            <span class="badge fs-6 px-3 py-1 fw-bold mt-1" 
+                                  style="background: {% if preview.refund_percent > 0 %}#10B981{% else %}#E11D48{% endif %}; color: #FFFFFF;">
+                                {{ preview.refund_percent }}% Hoàn Cọc
+                            </span>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="small text-muted">Số tiền hoàn lại cho Quý khách:</div>
+                            <div class="fw-bold fs-4 sc-net-num" style="color: {% if preview.refund_amount > 0 %}#10B981{% else %}#64748B{% endif %};">
+                                {{ (preview.refund_amount or 0) | vnd }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="small text-muted">Phí khấu trừ hủy phòng:</div>
+                            <div class="fw-bold sc-net-num text-danger">
+                                {{ (preview.penalty_amount or 0) | vnd }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- REFUND POLICY -->
-            <div class="col-md-6">
-                <div class="the-chinh p-3 h-100 bg-white border-2 border-primary border-opacity-10">
-                    <h6 class="kichthuoc-nho-hon fw-bold text-primary text-uppercase khoangcach-chu-1 mb-3">Số dư hoàn trả dự kiến</h6>
-                    <div class="mb-3">
-                        <div class="small text-muted">Tỷ lệ hoàn tiền áp dụng</div>
-                        <div class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">{{ preview.refund_percent }}%</div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="small text-muted">Số tiền hoàn lại</div>
-                        <div class="fs-4 fw-bold text-success">{{ (preview.refund_amount or 0)|vnd }}</div>
-                    </div>
-                    <div>
-                        <div class="small text-muted">Phí hủy phòng (Khấu trừ)</div>
-                        <div class="fw-bold text-danger">{{ (preview.penalty_amount or 0)|vnd }}</div>
-                    </div>
+            <!-- 4-Tier Ladder Timeline Reminder -->
+            <div class="p-3 rounded-3 mb-4" style="background: #F1F5F9; border: 1px solid #CBD5E1; font-size: 0.75rem;">
+                <div class="fw-bold text-dark mb-1">
+                    <i class="fas fa-info-circle text-primary me-1"></i> Chính Sách Hủy Phòng Bậc Thang (Refund Policy Ladder):
+                </div>
+                <div class="text-muted">
+                    • <strong>Trước &ge; 30 ngày:</strong> Hoàn 100% tiền cọc | 
+                    • <strong>Từ 14 &minus; 29 ngày:</strong> Hoàn 70% tiền cọc | 
+                    • <strong>Từ 7 &minus; 13 ngày:</strong> Hoàn 50% tiền cọc | 
+                    • <strong>Dưới 7 ngày:</strong> Phạt 100% (Không hoàn cọc).
                 </div>
             </div>
-        </div>
 
-        <!-- CANCELLATION FORM -->
-        <form action="/cancel/{{ preview.booking_id }}" method="POST">
-            <div class="mb-4">
-                <label class="bieumau-nhan-sach">Lý do hủy phòng <span class="text-danger">*</span></label>
-                <textarea name="cancel_reason" class="form-control bieumau-dieukhien-sach" rows="3" required placeholder="Ví dụ: Thay đổi lịch trình công tác, có việc đột xuất..."></textarea>
-                <p class="kichthuoc-nho-hon text-muted mt-2 italic">Thông tin này giúp chúng tôi cải thiện dịch vụ tốt hơn.</p>
-            </div>
+            <!-- Cancellation Reason Form -->
+            <form action="/cancel/{{ preview.booking_id }}" method="POST">
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-dark">
+                        Lý Do Hủy Đặt Phòng <span class="text-danger">*</span>
+                    </label>
+                    <textarea name="cancel_reason" class="form-control" rows="3" required 
+                              placeholder="Quý khách vui lòng chia sẻ lý do (VD: Bận công tác đột xuất, thay đổi kế hoạch nghỉ mát...)"
+                              style="border-radius: 6px;"></textarea>
+                    <div class="text-muted small mt-1" style="font-size: 0.75rem;">
+                        Ý kiến của Quý khách sẽ giúp chúng tôi không ngừng cải tiến chất lượng phục vụ.
+                    </div>
+                </div>
 
-            <div class="the-chinh p-3 bg-danger bg-opacity-10 border-0 mb-4 bo-goc-8 small text-danger">
-                <i class="fas fa-info-circle me-2"></i> <strong>Lưu ý:</strong> Hành động này không thể hoàn tác. Phòng của bạn sẽ được mở lại ngay lập tức cho khách hàng khác.
-            </div>
+                <div class="alert alert-danger small py-2 d-flex align-items-center gap-2 mb-4" style="font-size: 0.8rem;">
+                    <i class="fas fa-exclamation-circle fs-5"></i>
+                    <div>
+                        <strong>Lưu ý quan trọng:</strong> Hành động hủy phòng không thể hoàn tác. Phòng sẽ được mở bán ngay cho khách hàng khác trên hệ thống.
+                    </div>
+                </div>
 
-            <div class="row g-2">
-                <div class="col-8">
-                    <button type="submit" class="btn btn-danger w-100 py-3 fw-bold rounded-4 shadow-sm">
-                        XÁC NHẬN HỦY VÀ HOÀN TIỀN
+                <div class="d-flex gap-3">
+                    <button type="submit" class="btn btn-danger px-4 py-2 fw-bold shadow-sm"
+                            style="border-radius: 8px;"
+                            onclick="return confirm('Quý khách có chắc chắn muốn xác nhận hủy đơn đặt phòng #{{ preview.booking_id }}?')">
+                        <i class="fas fa-times-circle me-1"></i> Xác Nhận Hủy & Hoàn Tiền
                     </button>
-                </div>
-                <div class="col-4">
-                    <a href="/history" class="btn btn-outline-secondary w-100 h-100 d-flex align-items-center justify-content-center rounded-4 border-0 small">
-                        Quay lại
+                    <a href="/history" class="btn btn-outline-secondary px-4 py-2 fw-bold" style="border-radius: 8px;">
+                        Quay Lại Lịch Sử
                     </a>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 

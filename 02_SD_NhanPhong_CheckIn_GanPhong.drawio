@@ -1,305 +1,395 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" modified="2026-11-01T02:25:00.000Z" agent="Antigravity-OOAD-Architect" version="24.0.0" type="device">
-  <diagram id="SD02_CheckIn_Allocation" name="SD-02_NhanPhong_CheckIn">
-    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1650" pageHeight="1200" background="#FFFFFF" math="0" shadow="0">
+<mxfile host="app.diagrams.net" modified="2026-11-05T02:40:00.000Z" agent="Mozilla/5.0" version="24.0.0" type="device">
+  <diagram id="sd02_checkin_allocation_golden_balance" name="SD-02 Nhan Phong Va Gan Phong">
+    <mxGraphModel dx="1800" dy="1300" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1360" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <!-- TIÊU ĐỀ BIỂU ĐỒ (ĐẶT Ở TRÊN CÙNG Y: 20, KHÔNG DÍNH ACTOR) -->
-        <mxCell id="sd_title" value="&lt;b&gt;HỆ THỐNG QUẢN LÝ VÀ ĐẶT PHÒNG KHÁCH SẠN SÀI GÒN - CÔN ĐẢO&lt;/b&gt;&#xa;&lt;font style=&quot;font-size: 13px;&quot;&gt;SD-02: BIỂU ĐỒ TRÌNH TỰ LÀM THỦ TỤC NHẬN PHÒNG (CHECK-IN &amp; ROOM ALLOCATION - BCE PATTERN)&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontFamily=Arial;fontSize=15;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="50" y="20" width="850" height="45" as="geometry" />
+        <!-- ================= HEADER CHUẨN ================= -->
+        <mxCell id="cell_title" value="&lt;b&gt;HỆ THỐNG QUẢN LÝ VÀ ĐẶT PHÒNG KHÁCH SẠN SÀI GÒN - CÔN ĐẢO&lt;/b&gt;&#xa;SD-02: BIỂU ĐỒ TRÌNH TỰ LÀM THỦ TỤC NHẬN PHÒNG (CHECK-IN &amp;amp; ROOM ALLOCATION - BCE PATTERN)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;fontColor=#000000;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+          <mxGeometry x="50" y="20" width="1300" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="cell_subtitle" value="Ca sử dụng: Lễ tân tra cứu PNR, Quét CCCD khách lưu trú, Thuật toán gợi ý phòng sạch, Gán phòng theo từng đêm lưu trú &amp;amp; Đồng bộ Sơ đồ Gantt" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#333333;fontFamily=Arial,Helvetica,sans-serif;" vertex="1" parent="1">
+          <mxGeometry x="50" y="75" width="1300" height="20" as="geometry" />
         </mxCell>
 
-        <!-- ==================== CÁC ĐỐI TƯỢNG THAM GIA (DỜI XUỐNG Y: 115 ĐỂ CÁCH TIÊU ĐỀ 50PX) ==================== -->
-
-        <!-- 1. ACTOR: NHÂN VIÊN LỄ TÂN (X: 90 ĐỂ CÓ KHOẢNG ĐỆM TRÁI RỘNG RÃI) -->
-        <mxCell id="p_receptionist" value="Nhân viên Lễ tân&#xa;(Receptionist)" style="shape=umlActor;verticalLabelPosition=top;verticalAlign=bottom;html=1;outlineConnect=0;fillColor=none;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="90" y="115" width="35" height="65" as="geometry" />
+        <!-- ================= 9 LIFELINES & HEADERS ================= -->
+        <!-- 1. Actor: Nhân viên Lễ tân (X=80) -->
+        <mxCell id="actor_rec" value="Nhân viên Lễ tân&#xa;(Receptionist)" style="shape=umlActor;verticalLabelPosition=top;verticalAlign=bottom;html=1;outlineConnect=0;fillColor=none;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="62" y="125" width="36" height="65" as="geometry" />
         </mxCell>
-        <mxCell id="ll_receptionist" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="102" y="185" width="10" height="880" as="geometry" />
-        </mxCell>
-
-        <!-- 2. BOUNDARY: SƠ ĐỒ PHÒNG GANTT (:FrontDeskGanttUI) (X: 240) -->
-        <mxCell id="p_gantt_ui" value="&lt;&lt;Boundary&gt;&gt;&#xa;:FrontDeskGanttUI" style="shape=umlBoundary;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="215" y="120" width="85" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="ll_gantt_ui" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="252" y="185" width="10" height="880" as="geometry" />
+        <mxCell id="line_rec" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="195" as="sourcePoint" />
+            <mxPoint x="80" y="1300" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
 
-        <!-- 3. BOUNDARY: BIỂU MẪU CHECK-IN (:CheckInModal) (X: 400) -->
-        <mxCell id="p_checkin_modal" value="&lt;&lt;Boundary&gt;&gt;&#xa;:CheckInModal" style="shape=umlBoundary;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="375" y="120" width="85" height="60" as="geometry" />
+        <!-- 2. Boundary: FrontDeskGanttUI (X=270) -->
+        <mxCell id="b_gantt_ui" value=":FrontDeskGanttUI" style="shape=umlBoundary;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="248" y="130" width="45" height="45" as="geometry" />
         </mxCell>
-        <mxCell id="ll_checkin_modal" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="412" y="185" width="10" height="880" as="geometry" />
-        </mxCell>
-
-        <!-- 4. CONTROL: BỘ ĐIỀU KHIỂN CHECK-IN (:CheckInController) (X: 560) -->
-        <mxCell id="p_checkin_ctrl" value="&lt;&lt;Control&gt;&gt;&#xa;:CheckInController" style="shape=umlControl;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="535" y="120" width="65" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="ll_checkin_ctrl" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="562" y="185" width="10" height="880" as="geometry" />
+        <mxCell id="line_b_gantt_ui" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="175" as="sourcePoint" />
+            <mxPoint x="270" y="1300" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
 
-        <!-- 5. ENTITY: HỒ SƠ ĐẶT PHÒNG (:Booking_Master) (X: 720) -->
-        <mxCell id="p_bkm" value="&lt;&lt;Entity&gt;&gt;&#xa;:Booking_Master" style="shape=umlEntity;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="695" y="120" width="65" height="60" as="geometry" />
+        <!-- 3. Boundary: CheckInModal (X=470) -->
+        <mxCell id="b_checkin_modal" value=":CheckInModal" style="shape=umlBoundary;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="448" y="130" width="45" height="45" as="geometry" />
         </mxCell>
-        <mxCell id="ll_bkm" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="722" y="185" width="10" height="880" as="geometry" />
-        </mxCell>
-
-        <!-- 6. ENTITY: HỒ SƠ KHÁCH LƯU TRÚ (:Guest_Profiles) (X: 880) -->
-        <mxCell id="p_guests" value="&lt;&lt;Entity&gt;&gt;&#xa;:Guest_Profiles" style="shape=umlEntity;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="855" y="120" width="65" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="ll_guests" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="882" y="185" width="10" height="880" as="geometry" />
+        <mxCell id="line_b_checkin_modal" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="470" y="175" as="sourcePoint" />
+            <mxPoint x="470" y="1300" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
 
-        <!-- 7. CONTROL: DỊCH VỤ PHÂN BỔ PHÒNG (:RoomAllocationService) (X: 1040) -->
-        <mxCell id="p_alloc_svc" value="&lt;&lt;Control&gt;&gt;&#xa;:RoomAllocationService" style="shape=umlControl;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="1015" y="120" width="65" height="60" as="geometry" />
+        <!-- 4. Control: CheckInController (X=670) -->
+        <mxCell id="c_checkin_ctrl" value=":CheckInController" style="shape=umlControl;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="648" y="130" width="45" height="45" as="geometry" />
         </mxCell>
-        <mxCell id="ll_alloc_svc" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="1042" y="185" width="10" height="880" as="geometry" />
-        </mxCell>
-
-        <!-- 8. ENTITY: PHÒNG VẬT LÝ THỰC TẾ (:Physical_Rooms) (X: 1220) -->
-        <mxCell id="p_rooms" value="&lt;&lt;Entity&gt;&gt;&#xa;:Physical_Rooms" style="shape=umlEntity;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="1195" y="120" width="65" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="ll_rooms" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;direction=south;" vertex="1" parent="1">
-          <mxGeometry x="1222" y="185" width="10" height="880" as="geometry" />
+        <mxCell id="line_c_checkin_ctrl" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="175" as="sourcePoint" />
+            <mxPoint x="670" y="1300" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
 
+        <!-- 5. Entity: CustomerProfile (X=870 - Đã chuẩn hóa danh từ số ít) -->
+        <mxCell id="e_profile" value=":CustomerProfile" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="848" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_profile" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="870" y="175" as="sourcePoint" />
+            <mxPoint x="870" y="1300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
 
-        <!-- ==================== HỘP KÍCH HOẠT (ACTIVATION BARS) ==================== -->
-        <!-- Lễ tân bar -->
+        <!-- 6. Control/Service: RoomAllocationService (X=1070) -->
+        <mxCell id="s_alloc_srv" value=":RoomAllocationService" style="shape=umlControl;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1048" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_s_alloc_srv" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1070" y="175" as="sourcePoint" />
+            <mxPoint x="1070" y="1300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 7. Entity: Booking (X=1270 - Đã chuẩn hóa danh từ số ít) -->
+        <mxCell id="e_booking" value=":Booking" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1248" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_booking" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1270" y="175" as="sourcePoint" />
+            <mxPoint x="1270" y="1300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 8. Entity: BookingNight (X=1480 - BỔ SUNG MỚI CHUẨN KIẾN TRÚC 3NF) -->
+        <mxCell id="e_nights" value=":BookingNight" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1458" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_nights" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1480" y="175" as="sourcePoint" />
+            <mxPoint x="1480" y="1300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 9. Entity: PhysicalRoom (X=1700 - Đã chuẩn hóa danh từ số ít) -->
+        <mxCell id="e_room" value=":PhysicalRoom" style="shape=umlEntity;whiteSpace=wrap;html=1;verticalLabelPosition=top;verticalAlign=bottom;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=11;fontFamily=Arial,Helvetica,sans-serif;fontColor=#000000;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1678" y="130" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="line_e_room" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=1.2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1700" y="175" as="sourcePoint" />
+            <mxPoint x="1700" y="1300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= ACTIVATION BARS ================= -->
+        <!-- Lễ tân Act (Toàn phiên làm việc) -->
         <mxCell id="act_rec" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
-          <mxGeometry x="102" y="200" width="10" height="830" as="geometry" />
+          <mxGeometry x="74" y="215" width="12" height="1030" as="geometry" />
         </mxCell>
 
-        <!-- GanttUI bar 1 -->
+        <!-- GanttUI Act 1 (Tra cứu PNR) -->
         <mxCell id="act_gui_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
-          <mxGeometry x="252" y="205" width="10" height="80" as="geometry" />
+          <mxGeometry x="264" y="215" width="12" height="50" as="geometry" />
         </mxCell>
 
-        <!-- CheckInController bar -->
-        <mxCell id="act_ctrl_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
-          <mxGeometry x="562" y="215" width="10" height="780" as="geometry" />
+        <!-- CheckInController Act (Điều phối toàn phiên) -->
+        <mxCell id="act_ctrl" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="664" y="240" width="12" height="740" as="geometry" />
         </mxCell>
 
-
-        <!-- ==================== GIAI ĐOẠN 1: TRA CỨU ĐƠN ĐẶT PHÒNG ==================== -->
-
-        <!-- 1: Lễ tân -> GanttUI: Tra cứu PNR hoặc SĐT -->
-        <mxCell id="msg_1" value="1: Tra cứu mã đặt phòng PNR&#xa;hoặc SĐT của khách lưu trú" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="112" y="205" as="sourcePoint" />
-            <mxPoint x="252" y="205" as="targetPoint" />
-          </mxGeometry>
+        <!-- Booking Act 1 (Lấy thông tin) -->
+        <mxCell id="act_bm_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1264" y="260" width="12" height="35" as="geometry" />
         </mxCell>
 
-        <!-- 2: GanttUI -> CheckInController: Yêu cầu mở hồ sơ -->
-        <mxCell id="msg_2" value="2: Yêu cầu truy xuất hồ sơ đặt phòng(Mã PNR)" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="262" y="218" as="sourcePoint" />
-            <mxPoint x="562" y="218" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-
-        <!-- 3: CheckInController -> Booking_Master: Tìm thông tin -->
-        <mxCell id="msg_3" value="3: Truy vấn thông tin đơn đặt phòng theo mã PNR" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="572" y="230" as="sourcePoint" />
-            <mxPoint x="722" y="230" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-
-        <!-- 3.1: Booking_Master -> CheckInController: Trả về thông tin -->
-        <mxCell id="msg_3_1" value="3.1: - - - - ▶ Trả về thông tin chi tiết(Hạng phòng, Ngày đến/đi, Tiền cọc đã thanh toán)" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="722" y="255" as="sourcePoint" />
-            <mxPoint x="572" y="255" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-
-        <!-- 3.2: CheckInController -> CheckInModal: Mở modal -->
-        <mxCell id="msg_3_2" value="3.2: - - - - ▶ Mở biểu mẫu Check-in &amp; Điền sẵn thông tin đặt phòng" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="562" y="275" as="sourcePoint" />
-            <mxPoint x="422" y="275" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-
-
-        <!-- ==================== GIAI ĐOẠN 2: QUÉT CCCD & YÊU CẦU GÁN PHÒNG ==================== -->
-
-        <!-- Activation bar cho CheckInModal -->
+        <!-- CheckInModal Act (Mở modal nhập liệu & kết thúc khi hoàn tất) -->
         <mxCell id="act_modal" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
-          <mxGeometry x="412" y="300" width="10" height="710" as="geometry" />
+          <mxGeometry x="464" y="320" width="12" height="730" as="geometry" />
         </mxCell>
 
-        <!-- 4: Lễ tân -> CheckInModal: Quét CCCD & Bấm Nhận phòng -->
-        <mxCell id="msg_4" value="4: Quét thẻ CCCD/Hộ chiếu khách lưu trú&#xa;&amp; Bấm &quot;Xác nhận nhận phòng&quot;" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Profile Act (Lưu hồ sơ CCCD) -->
+        <mxCell id="act_profile" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="864" y="380" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- AllocSrv Act (Tìm phòng sạch) -->
+        <mxCell id="act_alloc" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1064" y="440" width="12" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- PhysicalRoom Act 1 (Kiểm tra phòng CLEAN) -->
+        <mxCell id="act_room_1" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1694" y="465" width="12" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- ================= GIAI ĐOẠN 1: TRA CỨU ĐƠN & QUÉT CCCD KHÁCH LƯU TRÚ ================= -->
+        <!-- Msg 1 -->
+        <mxCell id="msg_1" value="1: Tra cứu mã đặt phòng PNR hoặc SĐT khách" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="112" y="310" as="sourcePoint" />
-            <mxPoint x="412" y="310" as="targetPoint" />
+            <mxPoint x="86" y="215" as="sourcePoint" />
+            <mxPoint x="264" y="215" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 5: CheckInModal -> CheckInController: Gửi thông tin Check-in -->
-        <mxCell id="msg_5" value="5: Gửi thông tin CCCD &amp; Yêu cầu tiến hành thủ tục Check-in" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 2 -->
+        <mxCell id="msg_2" value="2: Yêu cầu mở hồ sơ đặt phòng(pnrCode)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="422" y="325" as="sourcePoint" />
-            <mxPoint x="562" y="325" as="targetPoint" />
+            <mxPoint x="276" y="240" as="sourcePoint" />
+            <mxPoint x="664" y="240" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 6: CheckInController -> Guest_Profiles: Lưu hồ sơ CCCD -->
-        <mxCell id="msg_6" value="6: Lưu thông tin định danh CCCD và hồ sơ khách lưu trú" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 3: Controller gọi Booking -->
+        <mxCell id="msg_3" value="3: getBookingDetails(pnrCode)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="572" y="345" as="sourcePoint" />
-            <mxPoint x="882" y="345" as="targetPoint" />
+            <mxPoint x="676" y="260" as="sourcePoint" />
+            <mxPoint x="1264" y="260" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 6.1: Guest_Profiles -> CheckInController: Xác nhận lưu -->
-        <mxCell id="msg_6_1" value="6.1: - - - - ▶ Xác nhận đã lưu hồ sơ khách lưu trú thành công" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 3.1 -->
+        <mxCell id="msg_3_1" value="3.1: - - - - ▶ Trả về thông tin chi tiết(Hạng phòng, Ngày đến/đi, Tiền cọc)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="882" y="370" as="sourcePoint" />
-            <mxPoint x="572" y="370" as="targetPoint" />
+            <mxPoint x="1264" y="285" as="sourcePoint" />
+            <mxPoint x="676" y="285" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 7: CheckInController -> RoomAllocationService: Yêu cầu gán phòng -->
-        <mxCell id="msg_7" value="7: Yêu cầu tìm và gợi ý phòng vật lý khả dụng(Mã hạng phòng)" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 3.2: Controller mở Modal -->
+        <mxCell id="msg_3_2" value="3.2: - - - - ▶ Mở biểu mẫu Check-in &amp;amp; Điền sẵn thông tin đặt phòng" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="572" y="395" as="sourcePoint" />
-            <mxPoint x="1042" y="395" as="targetPoint" />
+            <mxPoint x="664" y="320" as="sourcePoint" />
+            <mxPoint x="476" y="320" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 8: RoomAllocationService -> Physical_Rooms: Kiểm tra phòng Clean -->
-        <mxCell id="msg_8" value="8: Kiểm tra danh sách phòng vật lý(Hạng phòng, Trạng thái &quot;CLEAN &amp; TRỐNG&quot;)" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 4: Lễ tân quét CCCD -->
+        <mxCell id="msg_4" value="4: Quét thẻ CCCD/Hộ chiếu khách lưu trú &amp;amp; Bấm &quot;Xác nhận nhận phòng&quot;" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1052" y="415" as="sourcePoint" />
-            <mxPoint x="1222" y="415" as="targetPoint" />
+            <mxPoint x="86" y="350" as="sourcePoint" />
+            <mxPoint x="464" y="350" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 8.1: Physical_Rooms -> RoomAllocationService: Trả về danh sách -->
-        <mxCell id="msg_8_1" value="8.1: - - - - ▶ Trả về danh sách các phòng trống và trạng thái vệ sinh" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 5: Modal gửi Controller -->
+        <mxCell id="msg_5" value="5: Gửi thông tin CCCD &amp;amp; Yêu cầu tiến hành thủ tục Check-in" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1222" y="445" as="sourcePoint" />
-            <mxPoint x="1052" y="445" as="targetPoint" />
+            <mxPoint x="476" y="365" as="sourcePoint" />
+            <mxPoint x="664" y="365" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-
-        <!-- ==================== KHỐI ALT: KIỂM TRA PHÒNG SẠCH SẴN SÀNG (CHUẨN LOGIC 100%) ==================== -->
-        <mxCell id="alt_box_checkin" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1.5;fontFamily=Arial;fontStyle=1;fontSize=11;fontColor=#000000;width=45;height=22;" vertex="1" parent="1">
-          <mxGeometry x="70" y="465" width="1200" height="520" as="geometry" />
-        </mxCell>
-
-        <!-- Nhãn nhánh 1: Có phòng vật lý CLEAN sẵn sàng -->
-        <mxCell id="alt_lbl_clean" value="[Có phòng vật lý thuộc hạng phòng ở trạng thái CLEAN &amp; Trống]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontFamily=Arial;fontStyle=1;fontSize=10;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="120" y="468" width="450" height="20" as="geometry" />
-        </mxCell>
-
-        <!-- 8.2: RoomAllocationService -> CheckInController: Gợi ý số phòng sạch -->
-        <mxCell id="msg_8_2" value="8.2: - - - - ▶ Đề xuất số phòng vật lý sẵn sàng đón khách(Số phòng: &quot;302&quot;)" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 6: Controller lưu hồ sơ CCCD -->
+        <mxCell id="msg_6" value="6: saveIdentityProfile(guestData)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1042" y="495" as="sourcePoint" />
-            <mxPoint x="572" y="495" as="targetPoint" />
+            <mxPoint x="676" y="380" as="sourcePoint" />
+            <mxPoint x="864" y="380" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 9: CheckInController -> Booking_Master: Gán phòng & Cập nhật CHECKED_IN -->
-        <mxCell id="msg_9" value="9: Gán số phòng vật lý vào đơn đặt phòng &amp; Cập nhật trạng thái &quot;ĐÃ CHECK-IN&quot;" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 6.1 -->
+        <mxCell id="msg_6_1" value="6.1: - - - - ▶ Xác nhận đã lưu hồ sơ khách lưu trú thành công" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="572" y="530" as="sourcePoint" />
-            <mxPoint x="722" y="530" as="targetPoint" />
+            <mxPoint x="864" y="405" as="sourcePoint" />
+            <mxPoint x="676" y="405" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 9.1: Booking_Master -> CheckInController: Xác nhận cập nhật -->
-        <mxCell id="msg_9_1" value="9.1: - - - - ▶ Xác nhận đã cập nhật hồ sơ đặt phòng thành công" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 7: Controller gọi thuật toán tìm phòng -->
+        <mxCell id="msg_7" value="7: findAvailableCleanRoom(roomTypeId)" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="722" y="560" as="sourcePoint" />
-            <mxPoint x="572" y="560" as="targetPoint" />
+            <mxPoint x="676" y="440" as="sourcePoint" />
+            <mxPoint x="1064" y="440" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 10: CheckInController -> Physical_Rooms: Đổi trạng thái sang OCCUPIED -->
-        <mxCell id="msg_10" value="10: Cập nhật trạng thái phòng vật lý sang &quot;ĐANG LƯU TRÚ&quot; (OCCUPIED)" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 7.1: Service kiểm tra phòng Clean -->
+        <mxCell id="msg_7_1" value="7.1: checkCleanRooms(roomTypeId, status='CLEAN')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="572" y="595" as="sourcePoint" />
-            <mxPoint x="1222" y="595" as="targetPoint" />
+            <mxPoint x="1076" y="465" as="sourcePoint" />
+            <mxPoint x="1694" y="465" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 10.1: Physical_Rooms -> CheckInController: Xác nhận đổi trạng thái -->
-        <mxCell id="msg_10_1" value="10.1: - - - - ▶ Xác nhận trạng thái phòng vật lý đã chuyển sang OCCUPIED" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 7.2 -->
+        <mxCell id="msg_7_2" value="7.2: - - - - ▶ Trả về danh sách phòng trống và trạng thái vệ sinh" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1222" y="630" as="sourcePoint" />
-            <mxPoint x="572" y="630" as="targetPoint" />
+            <mxPoint x="1694" y="495" as="sourcePoint" />
+            <mxPoint x="1076" y="495" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 11: CheckInController -> CheckInModal: Kích hoạt thẻ từ & Hoàn tất -->
-        <mxCell id="msg_11" value="11: - - - - ▶ Trả về kết quả: Kích hoạt thẻ từ mở phòng thành công &amp; Hoàn tất thủ tục" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- ================= COMBINED FRAGMENT: ALT FRAME ================= -->
+        <mxCell id="alt_box" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;strokeWidth=1.5;fontStyle=1;fontSize=12;fontFamily=Arial;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="50" y="525" width="1820" height="690" as="geometry" />
+        </mxCell>
+
+        <!-- ================= NHÁNH 1: CÓ PHÒNG SẠCH SẴN SÀNG (GÁN PHÒNG THEO ĐÊM) ================= -->
+        <mxCell id="guard_clean" value="[Có phòng vật lý thuộc hạng phòng ở trạng thái CLEAN &amp;amp; Trống]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="110" y="530" width="550" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Booking Act 2 -->
+        <mxCell id="act_bm_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1264" y="590" width="12" height="35" as="geometry" />
+        </mxCell>
+        <!-- BookingNight Act (GÁN PHÒNG THEO ĐÊM) -->
+        <mxCell id="act_nights" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1474" y="650" width="12" height="35" as="geometry" />
+        </mxCell>
+        <!-- PhysicalRoom Act 2 -->
+        <mxCell id="act_room_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="1694" y="715" width="12" height="35" as="geometry" />
+        </mxCell>
+        <!-- GanttUI Act 2 (ĐỒNG BỘ ĐỔI MÀU GANTT) -->
+        <mxCell id="act_gui_2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;" vertex="1" parent="1">
+          <mxGeometry x="264" y="810" width="12" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Msg 7.3: Service đề xuất phòng sạch cho Controller -->
+        <mxCell id="msg_7_3" value="7.3: - - - - ▶ Đề xuất số phòng vật lý sẵn sàng đón khách (cleanRoomId)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="562" y="665" as="sourcePoint" />
-            <mxPoint x="422" y="665" as="targetPoint" />
+            <mxPoint x="1064" y="555" as="sourcePoint" />
+            <mxPoint x="676" y="555" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 12: CheckInModal -> Lễ tân: In phiếu & Bàn giao chìa khóa (BẺ DÒNG GỌN GÀNG GIỮA 2 LIFELINE) -->
-        <mxCell id="msg_12" value="12: - - - - ▶ In phiếu nhận phòng, giao chìa khóa&#xa;&amp; Cập nhật màu phòng trên Sơ đồ Gantt" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 8: Controller cập nhật Booking -->
+        <mxCell id="msg_8" value="8: updateStatus('CHECKED_IN')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="412" y="700" as="sourcePoint" />
-            <mxPoint x="112" y="700" as="targetPoint" />
+            <mxPoint x="676" y="590" as="sourcePoint" />
+            <mxPoint x="1264" y="590" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-
-        <!-- ĐƯỜNG PHÂN CÁCH NHÁNH ELSE CỦA KHỐI ALT (ĐỦ 1200PX, KHÔNG ĐÈ CHỮ) -->
-        <mxCell id="alt_line_checkin" value="" style="line;strokeWidth=1.2;dashed=1;strokeColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="70" y="740" width="1200" height="10" as="geometry" />
-        </mxCell>
-
-        <!-- Nhãn nhánh else: Hết phòng sạch / Phòng đang chờ dọn (DIRTY) -->
-        <mxCell id="alt_lbl_dirty" value="[else: Chưa có phòng sạch (Các phòng trống đang ở trạng thái DIRTY hoặc Bảo trì)]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontFamily=Arial;fontStyle=1;fontSize=10;fontColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="120" y="755" width="550" height="20" as="geometry" />
-        </mxCell>
-
-        <!-- 13: RoomAllocationService -> CheckInController: Báo chưa có phòng sạch -->
-        <mxCell id="msg_13" value="13: - - - - ▶ Thông báo: Chưa có phòng vật lý đạt chuẩn vệ sinh để đón khách" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 8.1 -->
+        <mxCell id="msg_8_1" value="8.1: - - - - ▶ Xác nhận cập nhật trạng thái đơn đặt phòng thành công" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1042" y="785" as="sourcePoint" />
-            <mxPoint x="572" y="785" as="targetPoint" />
+            <mxPoint x="1264" y="615" as="sourcePoint" />
+            <mxPoint x="676" y="615" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 14: CheckInController -> CheckInModal: Đề xuất phương án -->
-        <mxCell id="msg_14" value="14: - - - - ▶ Đề xuất phương án: Yêu cầu Buồng phòng dọn gấp hoặc Thực hiện Đổi hạng phòng" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 9: GÁN PHÒNG VẬT LÝ VÀO BOOKINGNIGHT (FIX TỬ HUYỆT BỎ QUÊN BOOKINGNIGHT) -->
+        <mxCell id="msg_9" value="9: assignPhysicalRoom(cleanRoomId) [Gán phòng cho các đêm lưu trú]" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="562" y="825" as="sourcePoint" />
-            <mxPoint x="422" y="825" as="targetPoint" />
+            <mxPoint x="676" y="650" as="sourcePoint" />
+            <mxPoint x="1474" y="650" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 
-        <!-- 15: CheckInModal -> Lễ tân: Cảnh báo & Điều phối (BẺ DÒNG GỌN GÀNG, KHÔNG THÒ SANG TRÁI) -->
-        <mxCell id="msg_15" value="15: - - - - ▶ Cảnh báo: Phòng chưa sẵn sàng đón khách&#xa;Thông báo Lễ tân liên hệ Buồng phòng dọn gấp" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;strokeColor=#000000;strokeWidth=1.2;fontFamily=Arial;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;" edge="1" parent="1">
+        <!-- Msg 9.1 -->
+        <mxCell id="msg_9_1" value="9.1: - - - - ▶ Xác nhận đã phân bổ phòng vật lý vào các đêm lưu trú" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="412" y="875" as="sourcePoint" />
-            <mxPoint x="112" y="875" as="targetPoint" />
+            <mxPoint x="1474" y="675" as="sourcePoint" />
+            <mxPoint x="676" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 10: Đổi trạng thái PhysicalRoom sang OCCUPIED -->
+        <mxCell id="msg_10" value="10: updateStatus(cleanRoomId, 'OCCUPIED') [Đổi sang Đang lưu trú]" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="676" y="715" as="sourcePoint" />
+            <mxPoint x="1694" y="715" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 10.1 -->
+        <mxCell id="msg_10_1" value="10.1: - - - - ▶ Xác nhận phòng vật lý đã chuyển sang trạng thái OCCUPIED" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1694" y="740" as="sourcePoint" />
+            <mxPoint x="676" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 11: Controller báo Modal thành công -->
+        <mxCell id="msg_11" value="11: - - - - ▶ Kích hoạt thẻ từ mở phòng &amp;amp; Báo hoàn tất Check-in thành công" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="664" y="775" as="sourcePoint" />
+            <mxPoint x="476" y="775" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 12: Modal đóng & Đồng bộ Gantt UI (FIX LỖI THIẾU SỰ KIỆN ĐỒNG BỘ GANTT) -->
+        <mxCell id="msg_12" value="12: closeModalAndRefreshGantt(cleanRoomId, 'OCCUPIED')" style="endArrow=block;endFill=1;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="464" y="810" as="sourcePoint" />
+            <mxPoint x="276" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 13: Gantt UI đổi màu & Báo Lễ tân -->
+        <mxCell id="msg_13" value="13: In phiếu nhận phòng, giao chìa khóa &amp;amp; Đổi màu ô phòng sang Đỏ (OCCUPIED)" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="264" y="845" as="sourcePoint" />
+            <mxPoint x="86" y="845" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= ALT DIVIDER ================= -->
+        <mxCell id="alt_divider" value="" style="line;strokeWidth=1.2;dashed=1;labelBackgroundColor=none;fillColor=none;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="50" y="890" width="1820" height="10" as="geometry" />
+        </mxCell>
+
+        <!-- ================= NHÁNH 2: HẾT PHÒNG SẠCH (DIRTY HOẶC BẢO TRÌ) ================= -->
+        <mxCell id="guard_dirty" value="[else: Chưa có phòng sạch (Các phòng trống đang ở trạng thái DIRTY hoặc Bảo trì)]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="110" y="900" width="550" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Msg 14: Service báo chưa có phòng sạch -->
+        <mxCell id="msg_14" value="14: - - - - ▶ Thông báo: Chưa có phòng vật lý đạt chuẩn vệ sinh để đón khách" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1064" y="930" as="sourcePoint" />
+            <mxPoint x="676" y="930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 15: Controller báo Modal (FIX LỖI NHẢY CÓC QUA GANTT UI) -->
+        <mxCell id="msg_15" value="15: - - - - ▶ Cảnh báo: Phòng chưa sẵn sàng đón khách &amp;amp; Đề xuất phương án" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="664" y="970" as="sourcePoint" />
+            <mxPoint x="476" y="970" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Msg 16: Modal cảnh báo Lễ tân điều phối -->
+        <mxCell id="msg_16" value="16: Hiển thị cảnh báo &amp;amp; Đề xuất: Yêu cầu Buồng phòng dọn gấp hoặc Đổi hạng phòng" style="endArrow=open;dashed=1;endFill=0;html=1;strokeColor=#000000;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;fillColor=none;align=center;fontColor=#000000;fontSize=10;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="464" y="1030" as="sourcePoint" />
+            <mxPoint x="86" y="1030" as="targetPoint" />
           </mxGeometry>
         </mxCell>
 

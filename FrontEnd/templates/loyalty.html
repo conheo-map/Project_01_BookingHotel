@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Đặc Quyền Hội Viên - Saigon-Condao Resort{% endblock %}
+{% block title %}Đặc Quyền Hội Viên - Sài Gòn - Côn Đảo Resort{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/profile.css') }}">
@@ -10,87 +10,124 @@
 <div class="loyalty-hero"></div>
 
 <div class="container profile-content mb-5">
-    <div class="profile-header">
-        <h1 class="fw-bold mb-2">Hành Trình Gắn Kết</h1>
+    <div class="profile-header text-center text-md-start">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); border: 1px solid rgba(223, 183, 108, 0.4); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #DFB76C; text-transform: uppercase;">
+            <i class="fas fa-crown"></i> Câu Lạc Bộ Khách Hàng Thân Thiết (VIP Privilege Club)
+        </div>
+        <h1 class="fw-bold mb-2" style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.3rem;">
+            Hành Trình Gắn Kết
+        </h1>
         <p class="opacity-75 fs-5">Nâng tầm trải nghiệm với những đặc quyền độc bản dành riêng cho quý khách</p>
     </div>
 
-    <div class="row g-5">
-        <!-- VIP Card & Status Summary -->
+    <div class="row g-4">
+        <!-- VIP Physical Card & Status Summary -->
         <div class="col-lg-5">
             {% set tier = loyalty.tier or 'Newbie' %}
             {% set points = loyalty.points or 0 %}
             
-            <div class="loyalty-the-vip vip-bg-{{ tier|lower }} shadow-lg">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="vip-tier-name">{{ tier }}</div>
-                        <div class="small opacity-75">Resort Luxury Member</div>
-                    </div>
-                    <i class="fas fa-crown fa-2x"></i>
+            <!-- Physical Luxury Card -->
+            <div class="physical-vip-card vip-tier-{{ tier|lower }} shadow-lg mb-4">
+                <div class="card-glare-overlay"></div>
+                <div class="card-wave-watermark text-end pe-2 pb-2">
+                    <i class="fas fa-water fa-6x opacity-25"></i>
                 </div>
-                
-                <div class="vip-chip"></div>
 
-                <div class="d-flex justify-content-between align-items-end">
+                <!-- Top Card Header -->
+                <div class="d-flex justify-content-between align-items-start position-relative" style="z-index: 2;">
                     <div>
-                        <div class="vip-member-name">Member ID: #{{ session.user_id }}</div>
-                        <div class="small mt-1 opacity-75">Saigon-Condao Rewards</div>
+                        <div class="card-brand-title">SÀI GÒN - CÔN ĐẢO</div>
+                        <div class="card-brand-sub">RESORT & LUXURY HOTEL</div>
+                    </div>
+                    <span class="card-tier-pill fw-bold text-uppercase px-3 py-1 rounded-pill">
+                        <i class="fas fa-crown me-1 text-warning"></i>{{ tier }} MEMBER
+                    </span>
+                </div>
+
+                <!-- EMV Chip & Contactless -->
+                <div class="my-3 position-relative d-flex align-items-center gap-3" style="z-index: 2;">
+                    <div class="rounded-2 p-2 shadow-sm" style="width: 48px; height: 36px; background: linear-gradient(135deg, #FFE259 0%, #FFA751 100%); border: 1px solid rgba(0,0,0,0.15);">
+                        <div style="width: 100%; height: 100%; border-top: 1px solid rgba(0,0,0,0.2); border-bottom: 1px solid rgba(0,0,0,0.2);"></div>
+                    </div>
+                    <i class="fas fa-wifi text-muted opacity-50 fa-rotate-90"></i>
+                </div>
+
+                <!-- Card Number -->
+                <div class="card-embossed-num font-monospace fw-bold fs-5 mb-2 position-relative" style="z-index: 2; letter-spacing: 3px;">
+                    8420 • 9001 • 1132 • {{ "%04d" | format(session.user_id or 1) }}
+                </div>
+
+                <!-- Bottom Holder & Points -->
+                <div class="d-flex justify-content-between align-items-end position-relative" style="z-index: 2;">
+                    <div>
+                        <div class="card-micro-label text-uppercase fw-bold" style="font-size: 0.65rem; opacity: 0.75;">CHỦ THẺ HỘI VIÊN</div>
+                        <div class="card-holder-name fw-bold text-uppercase fs-6">{{ loyalty.full_name or 'TRẦN THU HÀ' }}</div>
                     </div>
                     <div class="text-end">
-                        <div class="small opacity-75">Tích lũy</div>
-                        <div class="fw-bold fs-4">{{ points }} Pts</div>
+                        <div class="card-micro-label text-uppercase fw-bold" style="font-size: 0.65rem; opacity: 0.75;">ĐIỂM TÍCH LŨY</div>
+                        <div class="card-points-val fw-bold fs-4 sc-net-num">{{ points }} Pts</div>
                     </div>
                 </div>
             </div>
 
-            <div class="profile-glass-card">
-                <h5 class="fw-bold mb-4">Lộ trình thăng hạng</h5>
+            <!-- Tier Progression Timeline -->
+            <div class="card border-0 shadow-sm rounded-3 p-4" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+                <h5 class="fw-bold mb-4" style="font-family: 'Playfair Display', serif; color: #072A44;">
+                    Lộ Trình Thăng Hạng Hội Viên
+                </h5>
                 <div class="tier-timeline">
                     <!-- Newbie -->
-                    <div class="tier-step {% if tier == 'Newbie' %}active{% endif %}">
-                        <div class="tier-indicator">
-                            <i class="fas fa-seedling"></i>
+                    <div class="tier-step {% if tier == 'Newbie' %}active{% endif %} mb-4 pb-3 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px; background: {% if tier == 'Newbie' %}#072A44{% else %}#F1F5F9{% endif %}; color: {% if tier == 'Newbie' %}#FFFFFF{% else %}#64748B{% endif %};">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">Hạng Newbie (0 Pts)</div>
+                                <div class="small text-muted">Bắt đầu hành trình lưu trú cùng resort</div>
+                            </div>
+                            {% if tier == 'Newbie' %}
+                                <span class="badge bg-primary rounded-pill ms-auto">Hạng hiện tại</span>
+                            {% endif %}
                         </div>
-                        <div class="fw-bold">Hạng Newbie</div>
-                        <div class="small text-muted">Bắt đầu hành trình với 0 điểm</div>
-                        {% if tier == 'Newbie' %}<span class="badge bg-primary rounded-pill mt-1">Hạng hiện tại</span>{% endif %}
                     </div>
 
                     <!-- Silver -->
-                    <div class="tier-step {% if tier == 'Silver' %}active{% endif %}">
-                        <div class="tier-indicator">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="fw-bold">Hạng Silver (50 Pts)</div>
-                        <div class="small text-muted">Mở khóa ưu đãi Promo độc quyền</div>
-                        {% if tier == 'Newbie' %}
-                        <div class="mt-2">
-                            <div class="progress-vip">
-                                <div class="progress-vip-bar" style="width:{{ [points * 2, 100]|min }}%"></div>
+                    <div class="tier-step {% if tier == 'Silver' %}active{% endif %} mb-4 pb-3 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px; background: {% if tier == 'Silver' %}#072A44{% else %}#F1F5F9{% endif %}; color: {% if tier == 'Silver' %}#FFFFFF{% else %}#64748B{% endif %};">
+                                <i class="fas fa-star"></i>
                             </div>
-                            <div class="small text-muted">Còn {{ [50 - points, 0]|max }} điểm nữa tới Silver</div>
+                            <div>
+                                <div class="fw-bold text-dark">Hạng Silver (50 Pts)</div>
+                                <div class="small text-muted">Mở khóa ưu đãi Promotion độc quyền</div>
+                            </div>
+                            {% if tier == 'Silver' %}
+                                <span class="badge bg-secondary rounded-pill ms-auto">Hạng hiện tại</span>
+                            {% endif %}
                         </div>
-                        {% endif %}
-                        {% if tier == 'Silver' %}<span class="badge bg-secondary rounded-pill mt-1">Hạng hiện tại</span>{% endif %}
                     </div>
 
                     <!-- Gold -->
                     <div class="tier-step {% if tier == 'Gold' %}active{% endif %}">
-                        <div class="tier-indicator">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <div class="fw-bold">Hạng Gold (210 Pts)</div>
-                        <div class="small text-muted">Giảm 5% mọi đặt phòng & Đặc quyền VIP</div>
-                        {% if tier == 'Silver' %}
-                        <div class="mt-2">
-                            <div class="progress-vip">
-                                <div class="progress-vip-bar" style="width:{{ [(points - 50) * 100 // 160, 100]|min }}%"></div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px; background: #DFB76C; color: #072A44;">
+                                <i class="fas fa-crown"></i>
                             </div>
-                            <div class="small text-muted">Còn {{ [210 - points, 0]|max }} điểm nữa tới Gold</div>
+                            <div>
+                                <div class="fw-bold text-dark">Hạng Gold (210 Pts)</div>
+                                <div class="small text-muted">Giảm 5% giá phòng & Đặc quyền VIP toàn diện</div>
+                            </div>
+                            {% if tier == 'Gold' %}
+                                <span class="badge px-3 py-1 rounded-pill ms-auto fw-bold" style="background: #DFB76C; color: #072A44;">
+                                    Hạng hiện tại
+                                </span>
+                            {% endif %}
                         </div>
-                        {% endif %}
-                        {% if tier == 'Gold' %}<span class="badge bg-warning text-dark rounded-pill mt-1">Hạng hiện tại</span>{% endif %}
                     </div>
                 </div>
             </div>
@@ -98,73 +135,94 @@
 
         <!-- Benefits & Ways to Earn -->
         <div class="col-lg-7">
-            <div class="profile-glass-card mb-4">
-                <h4 class="fw-bold mb-4">Cách tích lũy điểm thưởng</h4>
-                <div class="row g-4">
+            <!-- How to Earn -->
+            <div class="card border-0 shadow-sm rounded-3 p-4 mb-4" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+                <h5 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: #072A44;">
+                    Cách Tích Lũy Điểm Thưởng
+                </h5>
+                <div class="row g-3">
                     <div class="col-md-6">
-                        <div class="benefit-card">
-                            <div class="benefit-icon">
-                                <i class="fas fa-bed"></i>
+                        <div class="p-3 rounded-3 h-100" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white" style="width: 38px; height: 38px;">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0 text-dark">Đặt Phòng Trực Tuyến</h6>
                             </div>
-                            <h6 class="fw-bold">Đặt phòng trực tuyến</h6>
-                            <p class="small text-muted flex-grow-1">Nhận ngay <strong>10 điểm</strong> cho mỗi đêm lưu trú thành công tại hệ thống Saigon-Condao.</p>
+                            <p class="small text-muted mb-0">
+                                Nhận ngay <strong>10 điểm</strong> cho mỗi đêm lưu trú thành công tại hệ thống Sài Gòn - Côn Đảo.
+                            </p>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="benefit-card">
-                            <div class="benefit-icon">
-                                <i class="fas fa-pen-fancy"></i>
+                        <div class="p-3 rounded-3 h-100" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 38px; height: 38px; background: #DFB76C;">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <h6 class="fw-bold mb-0 text-dark">Đóng Góp Đánh Giá</h6>
                             </div>
-                            <h6 class="fw-bold">Đóng góp đánh giá</h6>
-                            <p class="small text-muted flex-grow-1">Viết cảm nhận về kỳ nghỉ của bạn để lan tỏa cảm hứng và nhận thêm điểm thưởng tích lũy.</p>
+                            <p class="small text-muted mb-0">
+                                Viết cảm nhận sau kỳ nghỉ để lan tỏa trải nghiệm và nhận thêm <strong>20 điểm</strong> thưởng.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="profile-glass-card">
-                <h4 class="fw-bold mb-4">Ưu đãi hạng hội viên</h4>
-                <div class="row g-4">
+            <!-- Member Privileges -->
+            <div class="card border-0 shadow-sm rounded-3 p-4 mb-4" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+                <h5 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: #072A44;">
+                    Đặc Quyền Dành Cho Hội Viên VIP
+                </h5>
+                <div class="row g-3">
                     <div class="col-md-4">
-                        <div class="text-center">
-                            <div class="p-3 bg-light rounded-4 mb-3">
-                                <i class="fas fa-percent fa-2x text-primary"></i>
+                        <div class="text-center p-3 rounded-3 h-100" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 48px; height: 48px; background: rgba(59, 130, 246, 0.1); color: #3B82F6;">
+                                <i class="fas fa-percent fs-5"></i>
                             </div>
-                            <h6 class="fw-bold">Giảm giá trực tiếp</h6>
-                            <p class="small text-muted px-2">Giảm 5% giá phòng cho hạng Gold trên mọi đơn phòng.</p>
+                            <h6 class="fw-bold text-dark mb-1">Giảm Giá Trực Tiếp</h6>
+                            <p class="small text-muted mb-0" style="font-size: 0.75rem;">
+                                Giảm 5% giá phòng cho hội viên Gold trên mọi hành trình.
+                            </p>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="text-center">
-                            <div class="p-3 bg-light rounded-4 mb-3">
-                                <i class="fas fa-utensils fa-2x text-warning"></i>
+                        <div class="text-center p-3 rounded-3 h-100" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 48px; height: 48px; background: rgba(223, 183, 108, 0.15); color: #8C733E;">
+                                <i class="fas fa-utensils fs-5"></i>
                             </div>
-                            <h6 class="fw-bold">Ẩm thực tinh hoa</h6>
-                            <p class="small text-muted px-2">Ưu đãi Buffet sáng và Welcome Drink khi nhận phòng.</p>
+                            <h6 class="fw-bold text-dark mb-1">Ẩm Thực Tinh Hoa</h6>
+                            <p class="small text-muted mb-0" style="font-size: 0.75rem;">
+                                Ưu đãi buffet sáng hải sản và Welcome Drink cao cấp.
+                            </p>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="text-center">
-                            <div class="p-3 bg-light rounded-4 mb-3">
-                                <i class="fas fa-shuttle-van fa-2x text-success"></i>
+                        <div class="text-center p-3 rounded-3 h-100" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 48px; height: 48px; background: rgba(16, 185, 129, 0.1); color: #10B981;">
+                                <i class="fas fa-shuttle-van fs-5"></i>
                             </div>
-                            <h6 class="fw-bold">Đưa đón sân bay</h6>
-                            <p class="small text-muted px-2">Miễn phí dịch vụ đưa đón tại Côn Đảo cho hội viên VIP.</p>
+                            <h6 class="fw-bold text-dark mb-1">Đưa Đón Sân Bay</h6>
+                            <p class="small text-muted mb-0" style="font-size: 0.75rem;">
+                                Miễn phí dịch vụ đưa đón tại Côn Đảo cho hội viên VIP.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-5 text-center">
-                <a href="/search" class="btn nut-xanh-datphong btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg me-3">
-                    <i class="fas fa-plus-circle me-2"></i>Đặt phòng tích điểm ngay
+            <!-- Action buttons -->
+            <div class="d-flex gap-3 justify-content-center justify-content-md-start">
+                <a href="/search" class="btn px-4 py-2 fw-bold rounded-pill text-dark shadow-sm"
+                   style="background: linear-gradient(135deg, #DFB76C 0%, #C99B42 100%); border: none;">
+                    <i class="fas fa-plus-circle me-1"></i> Đặt Phòng Tích Điểm Ngay
                 </a>
-                <a href="/history" class="btn btn-outline-dark btn-lg px-4 py-3 fw-bold rounded-pill">
-                    <i class="fas fa-list me-2"></i>Lịch sử hành trình
+                <a href="/history" class="btn btn-outline-dark px-4 py-2 fw-bold rounded-pill">
+                    <i class="fas fa-list me-1"></i> Xem Lịch Sử Hành Trình
                 </a>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
-

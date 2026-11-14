@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Lịch Sử Hành Trình - Saigon-Condao Resort{% endblock %}
+{% block title %}Hành Trình Trải Nghiệm - Sài Gòn - Côn Đảo Resort{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/profile.css') }}">
@@ -10,109 +10,187 @@
 <div class="profile-hero"></div>
 
 <div class="container profile-content mb-5">
-    <div class="profile-header">
-        <h1 class="fw-bold mb-2">Hành Trình Trải Nghiệm</h1>
-        <p class="opacity-75 fs-5">Lưu giữ những khoảnh khắc tuyệt vời trong từng kỳ lưu trú của bạn</p>
+    <div class="profile-header text-center text-md-start">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); border: 1px solid rgba(223, 183, 108, 0.4); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #DFB76C; text-transform: uppercase;">
+            <i class="fas fa-compass"></i> Sổ Tay Hành Trình & Lịch Sử Lưu Trú
+        </div>
+        <h1 class="fw-bold mb-2" style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.3rem;">
+            Hành Trình Trải Nghiệm
+        </h1>
+        <p class="opacity-75 fs-5">Lưu giữ những khoảnh khắc tuyệt mỹ trong từng kỳ nghỉ dưỡng của bạn</p>
+    </div>
+
+    <!-- Travel Stats Strip -->
+    <div class="row g-3 mb-4">
+        <div class="col-sm-4">
+            <div class="card border-0 shadow-sm rounded-3 p-3 text-center" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-left: 4px solid #DFB76C !important;">
+                <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem;">Tổng Số Chuyến Đi</span>
+                <h3 class="fw-bold mb-0 mt-1 sc-net-num" style="color: #072A44;">{{ bookings|length }} <span style="font-size: 0.9rem; font-weight: 500; color: #64748B;">Hành trình</span></h3>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card border-0 shadow-sm rounded-3 p-3 text-center" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-left: 4px solid #10B981 !important;">
+                <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem;">Cơ Sở Nghỉ Dưỡng</span>
+                <h3 class="fw-bold mb-0 mt-1" style="color: #072A44; font-size: 1.4rem;">Côn Đảo & City</h3>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card border-0 shadow-sm rounded-3 p-3 text-center" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-left: 4px solid #072A44 !important;">
+                <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem;">Đặc Quyền Hội Viên</span>
+                <h3 class="fw-bold mb-0 mt-1" style="color: #DFB76C; font-size: 1.4rem;">
+                    <a href="/loyalty" class="text-decoration-none" style="color: #8C733E;"><i class="fas fa-crown text-warning me-1"></i>Xem Hạng Điểm</a>
+                </h3>
+            </div>
+        </div>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-12">
             <div class="d-flex justify-content-between align-items-center mb-4 text-white">
-                <h4 class="fw-bold mb-0">Danh sách đơn đặt phòng</h4>
-                <a href="/search" class="btn btn-sm btn-outline-light rounded-pill px-3">
-                    <i class="fas fa-plus me-1"></i> Đặt kỳ nghỉ mới
+                <h4 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif;">Danh Sách Kỳ Lưu Trú</h4>
+                <a href="/search" class="btn btn-sm px-4 py-2 fw-bold rounded-pill shadow-sm"
+                   style="background: linear-gradient(135deg, #DFB76C 0%, #C99B42 100%); color: #072A44; border: none;">
+                    <i class="fas fa-plus me-1"></i> Đặt Kỳ Nghỉ Mới
                 </a>
             </div>
 
             {% if bookings %}
                 {% for b in bookings %}
-                <div class="journey-card" style = "margin-top: 200px">
+                {% set comm_name = room_type_name_map.get(b.room_type_code, b.room_type_code) %}
+                {% set room_num = b.physical_room_name or '—' %}
+                {% if room_num.startswith('RES_') %}
+                    {% set display_room = room_num | replace('RES_VDEL_', 'Villa ') | replace('RES_VSUI_', 'Villa ') | replace('RES_VSUP_', 'Villa ') %}
+                {% elif room_num.startswith('CIT_') %}
+                    {% set display_room = room_num | replace('CIT_SUI_', 'P.') | replace('CIT_DEL_', 'P.') | replace('CIT_SUP_', 'P.') %}
+                {% else %}
+                    {% set display_room = room_num %}
+                {% endif %}
+
+                {% if b.room_type_code == 'RES_VSUI' %}
+                    {% set img_url = 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80' %}
+                {% elif b.room_type_code == 'RES_VDEL' %}
+                    {% set img_url = 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80' %}
+                {% elif b.room_type_code == 'RES_VSUP' %}
+                    {% set img_url = 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80' %}
+                {% elif b.room_type_code == 'CIT_SUI' %}
+                    {% set img_url = 'https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80' %}
+                {% elif b.room_type_code == 'CIT_DEL' %}
+                    {% set img_url = 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80' %}
+                {% else %}
+                    {% set img_url = 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80' %}
+                {% endif %}
+
+                <div class="journey-card card border-0 shadow-sm rounded-3 mb-4 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
                     <div class="row g-0">
-                        <div class="col-md-4">
-                            <div class="journey-img-container">
-                                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" class="journey-img" alt="Room preview">
-                                <div class="journey-status-float">
-                                    {% if b.is_canceled %}
-                                        <div class="status-vip-badge status-canceled">Đã Hủy</div>
+                        <div class="col-md-4 position-relative">
+                            <div class="journey-img-container h-100" style="min-height: 220px;">
+                                <img src="{{ img_url }}" class="journey-img w-100 h-100" style="object-fit: cover;" alt="{{ comm_name }}">
+                                <div class="position-absolute top-0 start-0 m-3">
+                                    {% if b.is_canceled or b.status_detail == 'Canceled' %}
+                                        <span class="badge bg-danger text-white px-3 py-2 shadow-sm rounded-pill fw-bold">Đã Hủy</span>
                                     {% elif b.status_detail == 'Checked-Out' %}
-                                        <div class="status-vip-badge status-completed">Hoàn tất</div>
-                                    {% elif b.status_detail == 'Checked-In' %}
-                                        <div class="status-vip-badge status-staying">Đang ở</div>
+                                        <span class="badge bg-secondary text-white px-3 py-2 shadow-sm rounded-pill fw-bold">Hoàn Tất</span>
+                                    {% elif b.status_detail in ('Checked-In', 'In-House') %}
+                                        <span class="badge px-3 py-2 shadow-sm rounded-pill fw-bold" style="background: #072A44; color: #DFB76C; border: 1px solid #DFB76C;">
+                                            <i class="fas fa-bed me-1"></i>Đang Lưu Trú
+                                        </span>
                                     {% else %}
-                                        <div class="status-vip-badge status-confirmed">{{ b.status_detail }}</div>
+                                        <span class="badge bg-success text-white px-3 py-2 shadow-sm rounded-pill fw-bold">
+                                            <i class="fas fa-check-circle me-1"></i>{{ b.status_detail or 'Đã Xác Nhận' }}
+                                        </span>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="journey-body">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div>
-                                        <div class="journey-id">Booking ID: #{{ b.booking_id }}</div>
-                                        <h3 class="journey-hotel">{{ b.hotel_name }}</h3>
-                                        <div class="journey-room">
-                                            <i class="fas fa-door-open me-2"></i>{{ b.room_type_code }} / {{ b.physical_room_name }}
-                                            <span class="ms-2 badge bg-light text-muted border fw-normal">
-                                                {{ 'Liên tục' if b.booking_type == 'continuous' else 'Ngắt quãng' }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="journey-actions">
-                                        {% if not b.is_canceled and b.status_detail in ('Confirmed', 'Pending') %}
-                                            <a href="/cancel-preview/{{ b.booking_id }}" class="btn btn-outline-danger btn-sm">Hủy phòng</a>
-                                        {% elif b.status_detail == 'Checked-Out' %}
-                                            <a href="/booking/review/{{ b.booking_id }}" class="btn nut-xanh-datphong btn-sm">Gửi đánh giá</a>
-                                        {% endif %}
-                                    </div>
-                                </div>
 
-                                <div class="journey-info-grid">
-                                    <div class="info-item">
-                                        <i class="far fa-calendar-check"></i>
+                        <div class="col-md-8">
+                            <div class="p-4 d-flex flex-column h-100 justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
                                         <div>
-                                            <div class="small text-muted">Check-in</div>
-                                            <div class="fw-bold fs-6">{{ b.arrival_date }}</div>
+                                            <div class="text-muted small font-monospace fw-bold" style="font-size: 0.75rem;">
+                                                MÃ ĐẶT PHÒNG #{{ b.booking_id }}
+                                            </div>
+                                            <h4 class="fw-bold mb-1" style="font-family: 'Playfair Display', serif; color: #072A44;">
+                                                {{ comm_name }}
+                                            </h4>
+                                            <div class="small text-muted d-flex align-items-center gap-2">
+                                                <span><i class="fas fa-hotel text-primary me-1"></i>{{ b.hotel_name or 'Resort Hotel' }}</span>
+                                                <span>•</span>
+                                                <span class="badge bg-light text-dark border px-2 py-1 fw-bold">
+                                                    {{ display_room }}
+                                                </span>
+                                                <span class="badge bg-light text-muted border font-monospace">
+                                                    {{ b.room_type_code }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-end">
+                                            {% if not b.is_canceled and b.status_detail in ('Confirmed', 'Pending') %}
+                                                <a href="/cancel-preview/{{ b.booking_id }}" 
+                                                   class="btn btn-sm btn-outline-danger px-3 py-2 rounded-pill fw-bold"
+                                                   title="Xem chính sách và hủy phòng">
+                                                    <i class="fas fa-times me-1"></i> Hủy Phòng
+                                                </a>
+                                            {% elif b.status_detail == 'Checked-Out' %}
+                                                <a href="/booking/review/{{ b.booking_id }}" 
+                                                   class="btn btn-sm btn-outline-primary px-3 py-2 rounded-pill fw-bold">
+                                                    <i class="fas fa-star text-warning me-1"></i> Đánh Giá Kỳ Nghỉ
+                                                </a>
+                                            {% endif %}
                                         </div>
                                     </div>
-                                    <div class="info-item">
-                                        <i class="far fa-calendar-times"></i>
-                                        <div>
-                                            <div class="small text-muted">Check-out</div>
-                                            <div class="fw-bold fs-6">{{ b.departure_date if b.booking_type == 'continuous' else 'Linh hoạt' }}</div>
+
+                                    <!-- Stay Schedule Grid -->
+                                    <div class="row g-2 my-3 p-3 rounded-3" style="background: #F8FAFC; border: 1px solid #E2E8F0; font-size: 0.85rem;">
+                                        <div class="col-4">
+                                            <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.68rem;">Nhận Phòng (Check-in)</div>
+                                            <div class="fw-bold text-dark mt-1">
+                                                <i class="far fa-calendar-alt text-primary me-1"></i>{{ b.arrival_date | date_vn }}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="info-item">
-                                        <i class="fas fa-moon"></i>
-                                        <div>
-                                            <div class="small text-muted">Lưu trú</div>
-                                            <div class="fw-bold fs-6">
-                                                {% if b.booking_type == 'continuous' %}
-                                                    Liên tục
-                                                {% else %}
-                                                    {{ b.selected_nights }} đêm
-                                                {% endif %}
+                                        <div class="col-4">
+                                            <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.68rem;">Trả Phòng (Check-out)</div>
+                                            <div class="fw-bold text-dark mt-1">
+                                                <i class="far fa-calendar-check text-success me-1"></i>{{ b.departure_date | date_vn }}
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="text-muted small text-uppercase fw-bold" style="font-size: 0.68rem;">Thời Gian Lưu Trú</div>
+                                            <div class="fw-bold text-dark mt-1">
+                                                <i class="fas fa-moon text-info me-1"></i>{{ b.nights or b.selected_nights or 1 }} đêm
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="journey-price-area">
+                                <!-- Financial summary -->
+                                <div class="pt-3 border-top d-flex justify-content-between align-items-center">
                                     <div class="d-flex gap-4">
                                         <div>
-                                            <div class="price-label">Đã thanh toán</div>
-                                            <div class="price-deposit">{{ (b.deposit_paid or 0)|vnd }}</div>
+                                            <div class="text-muted small" style="font-size: 0.72rem;">Đã thanh toán (Cọc)</div>
+                                            <div class="fw-bold text-success sc-net-num" style="font-size: 0.95rem;">
+                                                {{ (b.deposit_paid or 0) | vnd }}
+                                            </div>
                                         </div>
-                                        {% set balance = (b.total_price or 0) - (b.deposit_paid or 0) %}
-                                        {% if balance > 0 %}
+                                        {% set bal = (b.total_price or 0) - (b.deposit_paid or 0) %}
+                                        {% if bal > 0 %}
                                         <div>
-                                            <div class="price-label">Còn lại</div>
-                                            <div class="price-balance">{{ balance|vnd }}</div>
+                                            <div class="text-muted small" style="font-size: 0.72rem;">Còn lại tại quầy</div>
+                                            <div class="fw-bold text-danger sc-net-num" style="font-size: 0.95rem;">
+                                                {{ bal | vnd }}
+                                            </div>
                                         </div>
                                         {% endif %}
                                     </div>
-                                    <div class="price-box">
-                                        <div class="price-label">Tổng giá trị đơn</div>
-                                        <div class="price-value">{{ (b.total_price or 0)|vnd }}</div>
+
+                                    <div class="text-end">
+                                        <div class="text-muted small" style="font-size: 0.72rem;">Tổng giá trị đặt phòng</div>
+                                        <div class="fw-bold fs-5 sc-net-num" style="color: #072A44;">
+                                            {{ (b.total_price or 0) | vnd }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -121,14 +199,17 @@
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="profile-glass-card text-center py-5">
-                    <div class="mb-4">
-                        <i class="fas fa- suitcase-rolling fa-4x text-muted opacity-25"></i>
+                <div class="card border-0 shadow-sm rounded-3 text-center py-5 p-4" style="background: #FFFFFF;">
+                    <div class="mb-3">
+                        <i class="fas fa-suitcase-rolling fa-3x text-muted opacity-50"></i>
                     </div>
-                    <h4 class="fw-bold">Chưa có hành trình nào</h4>
-                    <p class="text-muted mb-4 px-5">Bạn chưa có bất kỳ đặt phòng nào tại Saigon-Condao Resort. Hãy để chúng tôi đồng hành cùng kỳ nghỉ mơ ước của bạn.</p>
-                    <a href="/search" class="btn nut-xanh-datphong px-5 py-3 fw-bold rounded-pill">
-                        Khám phá các hạng phòng ngay
+                    <h4 class="fw-bold text-dark" style="font-family: 'Playfair Display', serif;">Chưa Có Hành Trình Nào</h4>
+                    <p class="text-muted mb-4 mx-auto" style="max-width: 500px;">
+                        Bạn chưa có đơn đặt phòng nào. Hãy để Sài Gòn - Côn Đảo Resort cùng kiến tạo nên kỳ nghỉ mơ ước của bạn và gia đình.
+                    </p>
+                    <a href="/search" class="btn px-4 py-2 fw-bold rounded-pill text-dark"
+                       style="background: linear-gradient(135deg, #DFB76C 0%, #C99B42 100%); border: none;">
+                        Khám Phá Các Hạng Phòng Ngay
                     </a>
                 </div>
             {% endif %}
@@ -136,4 +217,3 @@
     </div>
 </div>
 {% endblock %}
-

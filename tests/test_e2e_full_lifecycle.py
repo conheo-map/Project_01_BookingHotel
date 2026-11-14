@@ -161,9 +161,9 @@ class TestE2EFullLifecycle(unittest.TestCase):
         rt_id = self.test_room['room_type_id']
         session_cust1 = "sess_e2e_cust1_flow1"
         session_cust2 = "sess_e2e_cust2_flow1"
-        checkin_date = "2026-11-10"
-        checkout_date = "2026-11-12"
-        nights = ["2026-11-10", "2026-11-11"]
+        checkin_date = (date.today() + timedelta(days=2)).strftime('%Y-%m-%d')
+        checkout_date = (date.today() + timedelta(days=4)).strftime('%Y-%m-%d')
+        nights = [(date.today() + timedelta(days=2)).strftime('%Y-%m-%d'), (date.today() + timedelta(days=3)).strftime('%Y-%m-%d')]
 
         # 1. Tìm phòng
         search_resp = self.client.get(
@@ -333,24 +333,42 @@ class TestE2EFullLifecycle(unittest.TestCase):
         4. Tự động chuyển trạng thái phòng: Physical_Room.housekeeping_status tự động thành 'Dirty'.
         5. Nhân viên buồng phòng (Housekeeper) dọn xong, gọi API chuyển trạng thái phòng về 'Clean'.
         """
-        pid = self.test_room['physical_room_id']
-        rt_id = self.test_room['room_type_id']
-
-        # Đảm bảo phòng sạch trước khi check-in
-        conn = get_db_connection()
-        conn.execute("UPDATE Physical_Room SET housekeeping_status = 'Clean' WHERE physical_room_id = ?", (pid,))
-        conn.commit()
-        conn.close()
-
-        # Tạo đơn nhận phòng hôm nay (đủ điều kiện nghiệp vụ Check-in)
         today = date.today()
         checkin_date_str = today.strftime('%Y-%m-%d')
         checkout_date_str = (today + timedelta(days=2)).strftime('%Y-%m-%d')
         night_1 = checkin_date_str
         night_2 = (today + timedelta(days=1)).strftime('%Y-%m-%d')
 
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT pr.physical_room_id, pr.room_type_id, drt.hotel_id
+            FROM Physical_Room pr
+            JOIN Dim_RoomType drt ON pr.room_type_id = drt.room_type_id
+            WHERE pr.is_active = 1
+              AND pr.physical_room_id NOT IN (
+                  SELECT physical_room_id FROM Booking_Nights
+                  WHERE night_date IN (?, ?)
+              )
+            LIMIT 1
+        """, (night_1, night_2))
+        avail = cursor.fetchone()
+        if avail:
+            pid = avail['physical_room_id']
+            rt_id = avail['room_type_id']
+            hotel_id = avail['hotel_id']
+        else:
+            pid = self.test_room['physical_room_id']
+            rt_id = self.test_room['room_type_id']
+            hotel_id = self.test_room['hotel_id']
+
+        # Đảm bảo phòng sạch trước khi check-in
+        conn.execute("UPDATE Physical_Room SET housekeeping_status = 'Clean' WHERE physical_room_id = ?", (pid,))
+        conn.commit()
+        conn.close()
+
         b_payload = {
-            "hotel_id": self.test_room['hotel_id'],
+            "hotel_id": hotel_id,
             "room_type_id": rt_id,
             "physical_room_id": pid,
             "checkin_date": checkin_date_str,

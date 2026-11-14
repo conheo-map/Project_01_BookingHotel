@@ -1,168 +1,412 @@
 {% extends "base.html" %}
-{% block title %}Check-out #{{ booking_id }} - Hotel Booking{% endblock %}
+{% block title %}Quyết Toán Check-out #{{ booking.booking_id or booking_id }} - Lễ Tân Resort 5 Sao{% endblock %}
 {% block content %}
 
+{% set comm_name = room_type_name_map.get(booking.room_type_code, booking.room_type_code) %}
+{% set guest_name = booking.customer_name or booking.customer_full_name or booking.guest_name or 'Khách vãng lai' %}
+{% set checkin = booking.checkin_date or booking.arrival_date or '—' %}
+{% set checkout = booking.checkout_date or booking.departure_date or '—' %}
+{% set room_num = booking.room_name or booking.physical_room_name or '—' %}
+{% if room_num.startswith('RES_') %}
+    {% set display_room = room_num | replace('RES_VDEL_', 'Villa ') | replace('RES_VSUI_', 'Villa ') | replace('RES_VSUP_', 'Villa ') %}
+{% elif room_num.startswith('CIT_') %}
+    {% set display_room = room_num | replace('CIT_SUI_', 'P.') | replace('CIT_DEL_', 'P.') | replace('CIT_SUP_', 'P.') %}
+{% else %}
+    {% set display_room = room_num %}
+{% endif %}
+
+{% if statement and statement.remaining_balance is defined %}
+    {% set remaining = statement.remaining_balance %}
+{% elif booking.total_price %}
+    {% set remaining = (booking.total_price + (extra_grand_total or 0) - (booking.deposit_paid or 0)) %}
+{% else %}
+    {% set remaining = 0 %}
+{% endif %}
+
+<!-- Header & Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Check-out — Đặt phòng #{{ booking.booking_id or booking_id }}</h2>
-        <p class="text-muted small mb-0">Xem xét và hoàn tất trả phòng.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-cash-register"></i> Quyết Toán Trả Phòng & Thu Ngân (Folio Settlement)
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Quyết Toán Check-out — Đặt Phòng #{{ booking.booking_id or booking_id }}
+        </h2>
+        <p class="text-muted small mb-0">Kiểm tra bảng kê chi phí lưu trú, phụ thu tiêu dùng minibar và hoàn tất thủ tục bàn giao phòng.</p>
     </div>
-    <div class="col-auto">
-        <a href="/receptionist/invoice/{{ booking_id }}" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-receipt me-1"></i>Xem hóa đơn
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex justify-content-md-end gap-2">
+        <a href="/receptionist/invoice/{{ booking.booking_id or booking_id }}" 
+           class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-dark shadow-sm"
+           style="background: linear-gradient(135deg, #DFB76C 0%, #C99B42 100%); border: none; border-radius: 8px;">
+            <i class="fas fa-file-invoice-dollar"></i> Xem Hóa Đơn VAT
+        </a>
+        <a href="/receptionist" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-arrow-left"></i> Quay Lại Quầy Lễ Tân
         </a>
     </div>
 </div>
 
-<div class="row g-4">
-    <!-- Left: Info + Add service -->
-    <div class="col-lg-7">
-        <div class="the-chinh p-4 mb-4">
-            <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-bed me-2 chu-datphong"></i>Thông tin đặt phòng</h6>
-            <div class="row g-2">
-                <div class="col-6">
-                    <div class="small text-muted">Khách hàng</div>
-                    <div class="fw-bold">{{ booking.customer_name or '—' }}</div>
-                </div>
-                <div class="col-6">
-                    <div class="small text-muted">Phòng</div>
-                    <div class="fw-bold">{{ booking.room_type_code or '—' }} — {{ booking.room_name or '' }}</div>
-                </div>
-                <div class="col-6 mt-2">
-                    <div class="small text-muted">Nhận phòng</div>
-                    <div class="fw-bold">{{ booking.checkin_date or '—' }}</div>
-                </div>
-                <div class="col-6 mt-2">
-                    <div class="small text-muted">Trả phòng</div>
-                    <div class="fw-bold">{{ booking.checkout_date or '—' }}</div>
-                </div>
+<!-- Top Folio Summary Strip -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" style="background: #FFFFFF; border-left: 4px solid #072A44 !important;">
+            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Tiền Phòng Lưu Trú</span>
+            <h3 class="fw-bold mb-0 mt-1 sc-net-num" style="color: #072A44; font-size: 1.5rem;">
+                {{ booking.total_price | vnd }}
+            </h3>
+            <div class="small text-muted mt-1" style="font-size: 0.75rem;">
+                Thời gian: <span class="fw-bold">{{ booking.nights or 1 }} đêm</span>
             </div>
         </div>
-
-        <!-- Extra services added -->
-        {% if extra_services %}
-        <div class="the-chinh p-4 mb-4">
-            <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-concierge-bell me-2 text-warning"></i>Dịch vụ đã dùng</h6>
-            <table class="bang-sach">
-                <thead><tr><th>Dịch vụ</th><th>SL</th><th>Đơn giá</th><th>Tiền</th></tr></thead>
-                <tbody>
-                    {% for s in extra_services %}
-                    <tr>
-                        <td>{{ s.service_name }}</td>
-                        <td>{{ s.quantity }}</td>
-                        <td>{{ s.unit_price|vnd }}</td>
-                        <td class="fw-bold">{{ (s.quantity * s.unit_price)|vnd }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="fw-bold text-end">Tổng dịch vụ:</td>
-                        <td class="fw-bold text-warning">{{ extra_grand_total|vnd }}</td>
-                    </tr>
-                </tfoot>
-            </table>
+    </div>
+    
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" style="background: #FFFFFF; border-left: 4px solid #F59E0B !important;">
+            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Phụ Thu Dịch Vụ</span>
+            <h3 class="fw-bold mb-0 mt-1 sc-net-num text-warning" style="font-size: 1.5rem;">
+                {{ extra_grand_total | vnd }}
+            </h3>
+            <div class="small text-muted mt-1" style="font-size: 0.75rem;">
+                Minibar, Nhà hàng, Giặt là
+            </div>
         </div>
-        {% endif %}
-
-        <!-- Add service -->
-        {% if catalog %}
-        <div class="the-chinh p-4">
-            <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-plus-circle me-2 text-success"></i>Thêm dịch vụ</h6>
-            <form method="POST" action="/receptionist/add-service/{{ booking_id }}" class="row g-2 align-items-end">
-                <div class="col-md-5">
-                    <label class="bieumau-nhan-sach">Dịch vụ từ danh mục</label>
-                    <select name="catalog_id" class="form-select bieumau-dieukhien-sach" id="catalogSelect">
-                        <option value="">-- Chọn dịch vụ --</option>
-                        {% for c in catalog %}
-                        <option value="{{ c.catalog_id }}"
-                                data-name="{{ c.service_name }}"
-                                data-price="{{ c.unit_price }}">
-                            {{ c.service_name }} ({{ c.unit_price|vnd }})
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="bieumau-nhan-sach">Tên dịch vụ (tùy chỉnh)</label>
-                    <input type="text" name="service_name" class="form-control bieumau-dieukhien-sach"
-                           id="svcName" placeholder="Hoặc nhập tên...">
-                </div>
-                <div class="col-md-2">
-                    <label class="bieumau-nhan-sach">Số lượng</label>
-                    <input type="number" name="quantity" class="form-control bieumau-dieukhien-sach"
-                           min="1" value="1">
-                </div>
-                <div class="col-md-2">
-                    <label class="bieumau-nhan-sach">Đơn giá</label>
-                    <input type="number" name="unit_price" class="form-control bieumau-dieukhien-sach"
-                           id="svcPrice" min="0" step="1000" value="0">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-outline-success px-4 py-2">
-                        <i class="fas fa-plus me-1"></i>Thêm dịch vụ
-                    </button>
-                </div>
-            </form>
-        </div>
-        {% endif %}
     </div>
 
-    <!-- Right: Summary + Confirm checkout -->
-    <div class="col-lg-5">
-        <div class="the-chinh p-4 mb-4">
-            <h6 class="fw-bold mb-3"><i class="fas fa-calculator me-2 chu-datphong"></i>Tổng kết</h6>
-            <div class="d-flex justify-content-between mb-2 small">
-                <span class="text-muted">Tiền phòng</span>
-                <span class="fw-bold">{{ booking.total_price|vnd if booking.total_price else '—' }}</span>
-            </div>
-            {% if extra_grand_total and extra_grand_total > 0 %}
-            <div class="d-flex justify-content-between mb-2 small">
-                <span class="text-muted">Dịch vụ thêm</span>
-                <span class="fw-bold text-warning">{{ extra_grand_total|vnd }}</span>
-            </div>
-            {% endif %}
-            {% if booking.deposit_paid and booking.deposit_paid > 0 %}
-            <div class="d-flex justify-content-between mb-2 small text-success">
-                <span>Đã thanh toán trước</span>
-                <span>-{{ booking.deposit_paid|vnd }}</span>
-            </div>
-            {% endif %}
-            <div class="border-top pt-3 mt-2 d-flex justify-content-between">
-                <span class="fw-bold">Số tiền còn thiếu cần thu:</span>
-                <span class="fw-bold fs-5 text-danger">
-                    {% if statement and statement.remaining_balance is defined %}
-                        {{ statement.remaining_balance | format_vnd }}
-                    {% elif booking.total_price %}
-                        {{ (booking.total_price + (extra_grand_total or 0) - (booking.deposit_paid or 0)) | format_vnd }}
-                    {% else %}0 ₫{% endif %}
-                </span>
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" style="background: #FFFFFF; border-left: 4px solid #10B981 !important;">
+            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Đã Đặt Cọc Trước</span>
+            <h3 class="fw-bold mb-0 mt-1 sc-net-num text-success" style="font-size: 1.5rem;">
+                {{ booking.deposit_paid | vnd }}
+            </h3>
+            <div class="small text-muted mt-1" style="font-size: 0.75rem;">
+                Ghi nhận qua cổng thanh toán
             </div>
         </div>
+    </div>
 
-        <div class="the-chinh p-4">
-            <h6 class="fw-bold mb-3"><i class="fas fa-sign-out-alt me-2 text-success"></i>Xác nhận trả phòng</h6>
-            <p class="small text-muted mb-3">Xác nhận rằng khách hàng đã thanh toán đầy đủ số tiền còn thiếu và bàn giao phòng.</p>
-            <form method="POST" action="/receptionist/checkout/{{ booking_id }}">
-                <div class="mb-3">
-                    <label class="bieumau-nhan-sach small">Phương thức thu tiền còn lại:</label>
-                    <select name="payment_method" class="form-select form-select-sm">
-                        <option value="cash" selected>Tiền mặt</option>
-                        <option value="credit_card">Thẻ tín dụng (POS)</option>
-                        <option value="bank_transfer">Chuyển khoản</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-success w-100 py-2 fw-bold"
-                        onclick="return confirm('Xác nhận hoàn tất check-out đặt phòng #{{ booking_id }}?')">
-                    <i class="fas fa-check me-2"></i>Hoàn tất Check-out (Chuyển phòng sang Dirty)
-                </button>
-            </form>
-            <div class="mt-2">
-                <a href="/receptionist" class="btn btn-outline-secondary w-100 py-2">Hủy bỏ</a>
+    <div class="col-6 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100 p-3" 
+             style="background: {% if remaining > 0 %}#FFF5F5{% else %}#F0FDF4{% endif %}; border-left: 4px solid {% if remaining > 0 %}#E11D48{% else %}#10B981{% endif %} !important;">
+            <span class="small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em; color: {% if remaining > 0 %}#E11D48{% else %}#10B981{% endif %};">
+                {% if remaining > 0 %}Số Tiền Cần Thu Còn Thiếu{% else %}Trạng Thái Thanh Toán{% endif %}
+            </span>
+            <h3 class="fw-bold mb-0 mt-1 sc-net-num" style="color: {% if remaining > 0 %}#E11D48{% else %}#10B981{% endif %}; font-size: 1.5rem;">
+                {% if remaining > 0 %}
+                    {{ remaining | vnd }}
+                {% else %}
+                    0 đ <span class="badge bg-success ms-1" style="font-size: 0.65rem;">ĐÃ TẤT TOÁN</span>
+                {% endif %}
+            </h3>
+            <div class="small text-muted mt-1" style="font-size: 0.75rem;">
+                {% if remaining > 0 %}Quyết toán tại quầy lễ tân{% else %}Đủ điều kiện trả phòng{% endif %}
             </div>
         </div>
     </div>
 </div>
 
-<script src="{{ url_for('static', filename='js/pages/receptionist_checkout_detail.js') }}"></script>
+<div class="row g-4">
+    <!-- Left Column: Guest Info & Extra Services -->
+    <div class="col-lg-7">
+        <!-- Guest Profile & Room Allocation Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3 d-flex align-items-center justify-content-between" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-user-check text-warning"></i>
+                    <h6 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif; font-size: 1rem;">
+                        Thông Tin Khách Hàng & Buồng Phòng Lưu Trú
+                    </h6>
+                </div>
+                <span class="badge px-3 py-1 rounded-pill" style="background: rgba(223, 183, 108, 0.2); color: #DFB76C; border: 1px solid rgba(223, 183, 108, 0.4); font-size: 0.75rem;">
+                    {{ booking.status or 'In-House' }}
+                </span>
+            </div>
+            <div class="p-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.7rem;">Khách Hàng Lưu Trú</div>
+                            <div class="fw-bold text-dark fs-6">{{ guest_name }}</div>
+                            <div class="small text-muted mt-1">
+                                <i class="fas fa-phone-alt me-1 text-primary"></i> {{ booking.customer_phone or booking.guest_phone or '—' }}
+                            </div>
+                            <div class="small text-muted">
+                                <i class="fas fa-envelope me-1 text-secondary"></i> {{ booking.customer_email or '—' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3" style="background: #F8FAFC; border: 1px solid #E2E8F0;">
+                            <div class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.7rem;">Phòng Vật Lý Phân Bổ</div>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge px-2 py-1 fw-bold fs-6" style="background: #072A44; color: #DFB76C;">
+                                    {{ display_room }}
+                                </span>
+                                <span class="fw-bold text-dark">{{ comm_name }}</span>
+                            </div>
+                            <div class="small text-muted mt-1">
+                                <i class="fas fa-hotel me-1 text-info"></i> {{ booking.hotel_name or 'Resort Hotel' }}
+                            </div>
+                            <div class="small text-muted">
+                                Mã hạng: <code>{{ booking.room_type_code }}</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="small text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Ngày Nhận Phòng (Check-in)</div>
+                        <div class="fw-bold text-dark mt-1">
+                            <i class="far fa-calendar-alt text-primary me-1"></i> {{ checkin }} (Từ 14:00)
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="small text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Ngày Trả Phòng (Check-out)</div>
+                        <div class="fw-bold text-dark mt-1">
+                            <i class="far fa-calendar-check text-success me-1"></i> {{ checkout }} (Trước 12:00)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consumed Extra Services -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3 d-flex align-items-center justify-content-between" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-concierge-bell text-warning"></i>
+                    <h6 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif; font-size: 1rem;">
+                        Danh Sách Dịch Vụ Tiêu Dùng Đã Ghi Nhận
+                    </h6>
+                </div>
+                <span class="badge bg-light text-dark fw-bold sc-net-num">{{ extra_services|length }} Mục</span>
+            </div>
+            
+            {% if extra_services %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+                    <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; color: #64748B;">
+                        <tr>
+                            <th class="ps-4">Tên Dịch Vụ Tiêu Dùng</th>
+                            <th class="text-center">Số Lượng</th>
+                            <th class="text-end">Đơn Giá</th>
+                            <th class="text-end pe-4">Thành Tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in extra_services %}
+                        <tr style="border-bottom: 1px solid #F1F5F9;">
+                            <td class="ps-4">
+                                <span class="fw-bold text-dark">{{ s.service_name }}</span>
+                                {% if s.added_at %}
+                                    <div class="small text-muted" style="font-size: 0.7rem;">Ghi nhận: {{ s.added_at }}</div>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-light text-dark border px-2 py-1 sc-net-num fw-bold">{{ s.quantity }}</span>
+                            </td>
+                            <td class="text-end sc-net-num">{{ s.unit_price | vnd }}</td>
+                            <td class="text-end pe-4 sc-net-num fw-bold text-warning">
+                                {{ (s.quantity * s.unit_price) | vnd }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot style="background: #F8FAFC; border-top: 2px solid #E2E8F0;">
+                        <tr>
+                            <td colspan="3" class="fw-bold text-end text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Tổng Phụ Thu Dịch Vụ:</td>
+                            <td class="text-end pe-4 fw-bold sc-net-num text-warning fs-6">
+                                {{ extra_grand_total | vnd }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-4 text-center text-muted">
+                <i class="fas fa-glass-cheers fa-2x mb-2 text-muted opacity-50"></i>
+                <p class="small mb-0">Chưa phát sinh phụ thu dịch vụ (Minibar, giặt là, nhà hàng) cho phòng này.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Add Service Form -->
+        {% if catalog %}
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-plus-circle text-success"></i>
+                    <h6 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif; font-size: 1rem;">
+                        Thêm Dịch Vụ Tiêu Dùng / Minibar Vào Hóa Đơn
+                    </h6>
+                </div>
+            </div>
+            <div class="p-4">
+                <form method="POST" action="/receptionist/add-service/{{ booking.booking_id or booking_id }}" class="row g-3 align-items-end">
+                    <div class="col-md-5">
+                        <label class="form-label small fw-bold text-dark">Chọn Từ Danh Mục Chuẩn</label>
+                        <select name="catalog_id" class="form-select form-select-sm" id="catalogSelect" style="border-radius: 6px;">
+                            <option value="">-- Chọn dịch vụ niêm yết --</option>
+                            {% for c in catalog %}
+                            <option value="{{ c.catalog_id }}"
+                                    data-name="{{ c.service_name }}"
+                                    data-price="{{ c.unit_price }}">
+                                {{ c.service_name }} ({{ c.unit_price | vnd }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold text-dark">Tên Dịch Vụ Tùy Chỉnh</label>
+                        <input type="text" name="service_name" class="form-control form-control-sm"
+                               id="svcName" placeholder="Tên dịch vụ..." style="border-radius: 6px;">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold text-dark">Số Lượng</label>
+                        <input type="number" name="quantity" class="form-control form-control-sm"
+                               min="1" value="1" style="border-radius: 6px;">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold text-dark">Đơn Giá (VNĐ)</label>
+                        <input type="number" name="unit_price" class="form-control form-control-sm sc-net-num fw-bold"
+                               id="svcPrice" min="0" step="5000" value="0" style="border-radius: 6px;">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button type="submit" class="btn btn-sm fw-bold px-3 py-2 text-dark" 
+                                style="background: linear-gradient(135deg, #DFB76C 0%, #C99B42 100%); border: none; border-radius: 6px;">
+                            <i class="fas fa-plus me-1"></i> Ghi Nhận Dịch Vụ Vào Bảng Kê
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Right Column: Financial Statement & Checkout Action -->
+    <div class="col-lg-5">
+        <!-- Folio Breakdown -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-calculator text-warning"></i>
+                    <h6 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif; font-size: 1rem;">
+                        Bảng Kê Chi Tiết Quyết Toán (Folio Statement)
+                    </h6>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="d-flex justify-content-between mb-2 small">
+                    <span class="text-muted">Tiền phòng ({{ booking.nights or 1 }} đêm)</span>
+                    <span class="fw-bold sc-net-num text-dark">{{ booking.total_price | vnd }}</span>
+                </div>
+                {% if extra_grand_total and extra_grand_total > 0 %}
+                <div class="d-flex justify-content-between mb-2 small">
+                    <span class="text-muted">Phụ thu dịch vụ & minibar</span>
+                    <span class="fw-bold sc-net-num text-warning">+{{ extra_grand_total | vnd }}</span>
+                </div>
+                {% endif %}
+                {% if booking.discount_amount and booking.discount_amount > 0 %}
+                <div class="d-flex justify-content-between mb-2 small text-danger">
+                    <span>Ưu đãi khuyến mãi đã áp dụng</span>
+                    <span class="sc-net-num">-{{ booking.discount_amount | vnd }}</span>
+                </div>
+                {% endif %}
+                <div class="d-flex justify-content-between mb-2 small text-muted">
+                    <span>Thuế VAT & Phí dịch vụ</span>
+                    <span>Đã bao gồm</span>
+                </div>
+                <div class="border-top pt-2 mt-2 d-flex justify-content-between small fw-bold">
+                    <span>Tổng cộng chi phí kỳ nghỉ:</span>
+                    <span class="sc-net-num text-dark">
+                        {{ ((booking.total_price or 0) + (extra_grand_total or 0)) | vnd }}
+                    </span>
+                </div>
+                {% if booking.deposit_paid and booking.deposit_paid > 0 %}
+                <div class="d-flex justify-content-between mt-2 small text-success fw-bold">
+                    <span>Đã đặt cọc / thanh toán trước:</span>
+                    <span class="sc-net-num">-{{ booking.deposit_paid | vnd }}</span>
+                </div>
+                {% endif %}
+
+                <div class="p-3 rounded-3 mt-3 d-flex justify-content-between align-items-center"
+                     style="background: {% if remaining > 0 %}#FFF5F5{% else %}#F0FDF4{% endif %}; border: 1px solid {% if remaining > 0 %}#FECDD3{% else %}#BBF7D0{% endif %};">
+                    <div>
+                        <div class="small fw-bold text-uppercase" style="font-size: 0.7rem; color: {% if remaining > 0 %}#E11D48{% else %}#10B981{% endif %};">
+                            {% if remaining > 0 %}Số Tiền Cần Thu Còn Lại{% else %}Trạng Thái Thanh Toán{% endif %}
+                        </div>
+                        <div class="small text-muted" style="font-size: 0.7rem;">
+                            {% if remaining > 0 %}Khách thanh toán trước khi rời quầy{% else %}Đã thanh toán đủ 100%{% endif %}
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold fs-5 sc-net-num" style="color: {% if remaining > 0 %}#E11D48{% else %}#10B981{% endif %};">
+                            {{ remaining | vnd }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Action Card -->
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden" style="background: #FFFFFF; border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3" style="background: #072A44; color: #FFFFFF; border-bottom: 2px solid #DFB76C;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-sign-out-alt text-success"></i>
+                    <h6 class="fw-bold mb-0" style="font-family: 'Playfair Display', serif; font-size: 1rem;">
+                        Xác Nhận Trả Phòng & Bàn Giao
+                    </h6>
+                </div>
+            </div>
+            <div class="p-4">
+                <p class="small text-muted mb-3" style="font-size: 0.8rem;">
+                    Xác nhận rằng khách hàng đã thanh toán đầy đủ các khoản chi phí phát sinh và đã nhận lại đầy đủ giấy tờ / chìa khóa phòng.
+                </p>
+                <form method="POST" action="/receptionist/checkout/{{ booking.booking_id or booking_id }}">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Phương Thức Thu Tiền Số Dư Còn Lại:</label>
+                        <select name="payment_method" class="form-select form-select-sm" style="border-radius: 6px;">
+                            <option value="cash" selected>💵 Tiền mặt (Cash at Front Desk)</option>
+                            <option value="credit_card">💳 Quẹt thẻ POS / Thẻ tín dụng</option>
+                            <option value="bank_transfer">📱 Chuyển khoản ngân hàng (VietQR)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-bold shadow-sm"
+                            style="border-radius: 8px; font-size: 0.95rem;"
+                            onclick="return confirm('Xác nhận hoàn tất thủ tục check-out cho đơn đặt phòng #{{ booking.booking_id or booking_id }}?')">
+                        <i class="fas fa-check-circle me-2"></i> Hoàn Tất Check-out (Chuyển Phòng Sang Dirty)
+                    </button>
+                </form>
+                <div class="mt-2 text-center">
+                    <a href="/receptionist" class="btn btn-sm btn-link text-muted text-decoration-none">
+                        <i class="fas fa-times me-1"></i> Hủy bỏ thao tác
+                    </a>
+                </div>
+            </div>
+            <div class="p-3 bg-light border-top small text-muted" style="font-size: 0.75rem;">
+                <i class="fas fa-info-circle text-primary me-1"></i> Sau khi bấm xác nhận, hệ thống sẽ tự động cập nhật trạng thái buồng phòng sang <code>Dirty</code> để điều phối nhân sự buồng phòng dọn dẹp kịp thời.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sel = document.getElementById('catalogSelect');
+    const nameInput = document.getElementById('svcName');
+    const priceInput = document.getElementById('svcPrice');
+    if (sel && nameInput && priceInput) {
+        sel.addEventListener('change', function() {
+            const opt = sel.options[sel.selectedIndex];
+            if (opt && opt.value) {
+                nameInput.value = opt.dataset.name || '';
+                priceInput.value = opt.dataset.price || 0;
+            }
+        });
+    }
+});
+</script>
+
 {% endblock %}

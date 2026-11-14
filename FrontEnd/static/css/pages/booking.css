@@ -1,0 +1,815 @@
+/* ==========================================================================
+   SAIGON - CONDAO RESORT: EDITORIAL COASTAL HERITAGE LUXURY BOOKING STYLESHEET
+   Page: /booking (Xác nhận & Khóa giữ phòng)
+   Author: Lead Architect & UI/UX Director
+   ========================================================================== */
+
+:root {
+  --resort-navy-dark: #072A44;
+  --resort-navy-medium: #0A3D62;
+  --resort-gold-primary: #C5A880;
+  --resort-gold-accent: #E5C287;
+  --resort-gold-light: #F9F5EE;
+  --resort-silk-bg: #FAF8F5;
+  --resort-border-hairline: #E8DFC8;
+  --resort-border-subtle: #E2E8F0;
+  --resort-text-heading: #0F172A;
+  --resort-text-body: #334155;
+  --resort-text-muted: #64748B;
+  --resort-radius-sharp: 6px;
+  --resort-radius-sm: 4px;
+  --resort-shadow-subtle: 0 4px 20px rgba(7, 42, 68, 0.05);
+  --resort-shadow-hover: 0 8px 30px rgba(7, 42, 68, 0.09);
+}
+
+.luxury-booking-wrapper {
+  background-color: #F8F9FA;
+  min-height: calc(100vh - 76px);
+  padding: 32px 0 80px 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--resort-text-body);
+}
+
+/* ── PROGRESS & STEP HEADER ────────────────────────────────────────── */
+.booking-header-section {
+  margin-bottom: 28px;
+}
+
+.booking-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--resort-text-muted);
+  margin-bottom: 12px;
+}
+
+.booking-breadcrumb a {
+  color: var(--resort-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.booking-breadcrumb a:hover {
+  color: var(--resort-navy-dark);
+}
+
+.booking-breadcrumb .sep {
+  color: var(--resort-gold-primary);
+  font-size: 0.75rem;
+}
+
+.booking-progress-tracker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 8px 12px;
+  background: #FFFFFF;
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sharp);
+  width: fit-content;
+}
+
+.tracker-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--resort-radius-sm);
+}
+
+.tracker-step.active {
+  background: var(--resort-navy-dark);
+  color: #FFFFFF;
+}
+
+.tracker-step.active .step-num {
+  background: var(--resort-gold-primary);
+  color: var(--resort-navy-dark);
+}
+
+.tracker-step.pending {
+  color: var(--resort-text-muted);
+  background: transparent;
+}
+
+.tracker-step .step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  background: #E2E8F0;
+  color: #475569;
+}
+
+.tracker-arrow {
+  color: var(--resort-gold-primary);
+  font-size: 0.75rem;
+}
+
+.booking-hero-headline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--resort-navy-dark);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.booking-hero-subline {
+  font-size: 0.9375rem;
+  color: var(--resort-text-muted);
+}
+
+/* ── MAIN 2-COLUMN GRID ────────────────────────────────────────────── */
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 410px;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 991px) {
+  .booking-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ── EDITORIAL CARDS (LEFT COLUMN) ─────────────────────────────────── */
+.editorial-card {
+  background: #FFFFFF;
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sharp);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--resort-shadow-subtle);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.editorial-card:hover {
+  border-color: #D8CEB6;
+  box-shadow: var(--resort-shadow-hover);
+}
+
+.editorial-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #F0ECE4;
+}
+
+.card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-title-group i {
+  color: var(--resort-gold-primary);
+  font-size: 1.125rem;
+}
+
+.card-title-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--resort-navy-dark);
+  margin: 0;
+}
+
+/* ── SELECTED ROOM SHOWCASE CARD ──────────────────────────────────── */
+.selected-room-banner {
+  background: linear-gradient(135deg, #072A44 0%, #0A3D62 100%);
+  color: #FFFFFF;
+  border-radius: var(--resort-radius-sm);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  border-left: 4px solid var(--resort-gold-primary);
+}
+
+.selected-room-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(197, 168, 128, 0.2);
+  color: #E5C287;
+  padding: 4px 10px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(197, 168, 128, 0.35);
+}
+
+.selected-room-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+}
+
+.selected-room-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.selected-room-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.selected-room-meta i {
+  color: var(--resort-gold-accent);
+}
+
+/* ── ROOM SPECS & HERITAGE HIGHLIGHTS RIBBON ───────────────────────── */
+.room-specs-ribbon {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  background: var(--resort-silk-bg);
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sm);
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+
+@media (max-width: 576px) {
+  .room-specs-ribbon {
+    grid-template-columns: 1fr;
+  }
+}
+
+.room-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spec-icon-box {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: var(--resort-radius-sm);
+  background: #FFFFFF;
+  border: 1px solid var(--resort-border-hairline);
+  color: var(--resort-gold-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+}
+
+.spec-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--resort-text-muted);
+  font-weight: 700;
+}
+
+.spec-val {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--resort-navy-dark);
+}
+
+.btn-change-room-toggle {
+  background: transparent;
+  border: none;
+  color: var(--resort-navy-medium);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.btn-change-room-toggle:hover {
+  color: var(--resort-gold-primary);
+}
+
+/* ── FORM ELEMENTS & INPUTS ────────────────────────────────────────── */
+.form-group-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--resort-text-heading);
+  margin-bottom: 8px;
+}
+
+.form-group-label .req {
+  color: #DC2626;
+  margin-left: 2px;
+}
+
+.editorial-input,
+.editorial-select {
+  width: 100%;
+  height: 48px;
+  padding: 10px 14px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--resort-navy-dark);
+  background-color: #FFFFFF;
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sm);
+  transition: all 0.15s ease-in-out;
+}
+
+.editorial-input:focus,
+.editorial-select:focus {
+  outline: none;
+  border-color: var(--resort-navy-medium);
+  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.1);
+  background-color: #FFFFFF;
+}
+
+.editorial-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.875rem;
+  color: var(--resort-navy-dark);
+  background-color: #FFFFFF;
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sm);
+  transition: all 0.15s ease;
+  resize: vertical;
+}
+
+.editorial-textarea:focus {
+  outline: none;
+  border-color: var(--resort-navy-medium);
+  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.1);
+}
+
+.date-nights-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--resort-gold-light);
+  border: 1px solid var(--resort-border-hairline);
+  color: var(--resort-navy-dark);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--resort-radius-sm);
+}
+
+/* ── GUEST REPRESENTER & PREFERENCES ───────────────────────────────── */
+.info-callout-box {
+  background: var(--resort-silk-bg);
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sm);
+  padding: 14px 18px;
+  margin-top: 14px;
+  font-size: 0.8125rem;
+  color: var(--resort-text-muted);
+}
+
+.info-callout-box i {
+  color: var(--resort-gold-primary);
+}
+
+/* ── AIRPORT TRANSFER CHECKBOX ─────────────────────────────────────── */
+.transfer-option-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #FAF8F5;
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sm);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.transfer-option-card:hover {
+  border-color: var(--resort-gold-primary);
+  background: #F6F1E8;
+}
+
+.transfer-option-card input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--resort-navy-dark);
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.transfer-title {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--resort-navy-dark);
+  margin-bottom: 2px;
+}
+
+.transfer-subtext {
+  font-size: 0.8125rem;
+  color: var(--resort-text-muted);
+  line-height: 1.4;
+}
+
+/* ── PROMO CODE BAR ────────────────────────────────────────────────── */
+.promo-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-apply-promo {
+  background: var(--resort-navy-dark);
+  color: #FFFFFF;
+  border: 1px solid var(--resort-navy-dark);
+  border-radius: var(--resort-radius-sm);
+  padding: 0 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-apply-promo:hover {
+  background: var(--resort-navy-medium);
+  border-color: var(--resort-navy-medium);
+  color: #FFFFFF;
+}
+
+.promo-hint {
+  font-size: 0.75rem;
+  color: var(--resort-text-muted);
+  margin-top: 6px;
+}
+
+/* ── TRUST & HERITAGE GUARANTEES STRIP (UNIFIED HERITAGE GOLD) ────── */
+.trust-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--resort-border-hairline);
+}
+
+@media (max-width: 576px) {
+  .trust-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+.trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.trust-icon-box {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: var(--resort-radius-sm);
+  background: var(--resort-silk-bg);
+  border: 1px solid var(--resort-border-hairline);
+  color: var(--resort-gold-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9375rem;
+}
+
+.trust-title {
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: var(--resort-navy-dark);
+  margin-bottom: 2px;
+}
+
+.trust-desc {
+  font-size: 0.75rem;
+  color: var(--resort-text-muted);
+  line-height: 1.35;
+}
+
+/* ── RIGHT COLUMN: STICKY FLOATING SUMMARY CONSOLE ─────────────────── */
+.booking-console-sticky {
+  position: sticky;
+  top: 96px;
+  background: #FFFFFF;
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sharp);
+  box-shadow: 0 10px 30px rgba(7, 42, 68, 0.08);
+  overflow: hidden;
+}
+
+.console-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 185px;
+  overflow: hidden;
+  background: #072A44;
+}
+
+.console-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.console-image-wrapper:hover .console-image {
+  transform: scale(1.03);
+}
+
+.console-badge-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(7, 42, 68, 0.85);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--resort-radius-sm);
+  border: 1px solid rgba(197, 168, 128, 0.6);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.console-body {
+  padding: 24px;
+}
+
+.console-room-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--resort-navy-dark);
+  margin-bottom: 4px;
+}
+
+.console-hotel-name {
+  font-size: 0.8125rem;
+  color: var(--resort-text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.console-hotel-name i {
+  color: var(--resort-gold-primary);
+}
+
+/* ── SCHEDULE SUMMARY ROW ─────────────────────────────────────────── */
+.console-schedule-box {
+  background: var(--resort-silk-bg);
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.schedule-col-item {
+  text-align: left;
+}
+
+.schedule-col-item.right {
+  text-align: right;
+}
+
+.schedule-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  color: var(--resort-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.schedule-date {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--resort-navy-dark);
+}
+
+.schedule-arrow {
+  color: var(--resort-gold-primary);
+  font-size: 0.75rem;
+}
+
+/* ── LIVE PRICE BREAKDOWN ─────────────────────────────────────────── */
+.price-breakdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px 0;
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--resort-text-body);
+  margin-bottom: 10px;
+}
+
+.breakdown-item .label {
+  color: var(--resort-text-muted);
+}
+
+.breakdown-item .val {
+  font-weight: 600;
+  color: var(--resort-navy-dark);
+}
+
+.breakdown-divider {
+  height: 1px;
+  background: var(--resort-border-hairline);
+  margin: 14px 0;
+}
+
+.grand-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.grand-total-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--resort-navy-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.grand-total-price {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--resort-navy-dark);
+  font-variant-numeric: lining-nums proportional-nums !important;
+  -webkit-font-feature-settings: "lnum" 1 !important;
+  font-feature-settings: "lnum" 1 !important;
+}
+
+.grand-total-note {
+  font-size: 0.75rem;
+  color: var(--resort-text-muted);
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+/* ── PRIMARY CTA BUTTON ───────────────────────────────────────────── */
+.btn-luxury-lock-room {
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(135deg, #072A44 0%, #0A3D62 100%);
+  color: #FFFFFF;
+  border: 1px solid var(--resort-gold-primary);
+  border-radius: var(--resort-radius-sm);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(7, 42, 68, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-luxury-lock-room:hover {
+  background: linear-gradient(135deg, #0A3D62 0%, #0D4E7C 100%);
+  border-color: #E5C287;
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(7, 42, 68, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-luxury-lock-room:active {
+  transform: translateY(1px);
+}
+
+.lock-timer-subtext {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--resort-text-muted);
+  margin-top: 10px;
+  text-align: center;
+}
+
+.lock-timer-subtext i {
+  color: var(--resort-gold-primary);
+}
+
+.cancel-back-link {
+  display: block;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--resort-text-muted);
+  text-decoration: none;
+  margin-top: 14px;
+  transition: color 0.15s ease;
+}
+
+.cancel-back-link:hover {
+  color: var(--resort-navy-dark);
+  text-decoration: underline;
+}
+
+/* ── LUXURY CONCIERGE & POLICY REASSURANCE (RIGHT COLUMN EXTENSION) ── */
+.console-policy-section {
+  border-top: 1px solid var(--resort-border-hairline);
+  background: var(--resort-silk-bg);
+  padding: 18px 20px;
+  margin-top: 18px;
+}
+
+.policy-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--resort-navy-dark);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.policy-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px 0;
+}
+
+.policy-items-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.78125rem;
+  color: var(--resort-text-body);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.policy-items-list li i {
+  color: var(--resort-gold-primary);
+  font-size: 0.8125rem;
+  margin-top: 2px;
+}
+
+.ssl-guarantee-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #FFFFFF;
+  border: 1px solid var(--resort-border-hairline);
+  border-radius: var(--resort-radius-sm);
+  padding: 8px 12px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--resort-text-muted);
+  text-align: center;
+}

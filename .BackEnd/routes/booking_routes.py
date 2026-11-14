@@ -31,13 +31,16 @@ def api_get_bookings():
     err = require_token()
     if err: return err
     role = get_user_role_from_db(g.api_user_id, g.api_account_type or 'customer') or 'Guest'
-    bookings = get_bookings_list(
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 20, type=int)
+    bookings, total = get_bookings_list(
         g.api_user_id, role,
         status_filter=request.args.get('status', ''),
-        page=request.args.get('page', 1, type=int),
-        per_page=request.args.get('per_page', 20, type=int)
+        page=page,
+        per_page=per_page,
+        return_total=True
     )
-    return jsonify({'success': True, 'bookings': bookings}), 200
+    return jsonify({'success': True, 'bookings': bookings, 'total': total, 'page': page, 'per_page': per_page}), 200
 
 @booking_bp.route('/api/bookings/<int:booking_id>', methods=['GET'])
 def api_get_booking_by_id(booking_id):
@@ -71,6 +74,8 @@ def api_create_walkin():
     data = request.get_json() or {}
     try:
         ok, res, msg = create_walkin_booking(data, staff_account_id=staff_id, raise_on_error=True)
+        if not ok:
+            return jsonify({'success': False, 'message': msg}), 400
         return jsonify({'success': True, 'message': msg, **res}), 201
     except (RoomNotAvailableError, ValueError) as e:
         return jsonify({'success': False, 'message': str(e)}), 400
@@ -162,7 +167,7 @@ def api_invoice(booking_id):
 @booking_bp.route('/api/bookings/cancel-preview/<int:booking_id>', methods=['GET'])
 def api_cancel_prev(booking_id):
     ok, data, msg = get_cancel_preview(booking_id)
-    return jsonify({'success': ok, 'message': msg, **(data if ok else {})}), 200 if ok else 400
+    return jsonify({'success': ok, 'message': msg, 'preview': (data if ok else {}), **(data if ok else {})}), 200 if ok else 400
 
 @booking_bp.route('/api/bookings/<int:booking_id>/checkin', methods=['PUT'])
 def api_checkin_booking(booking_id):

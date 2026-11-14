@@ -1,163 +1,509 @@
 {% extends "base.html" %}
-{% block title %}Lễ tân - Hotel Booking{% endblock %}
+{% block title %}Bàn Điều Khiển Lễ Tân - Saigon - Condao Resort{% endblock %}
 {% block content %}
 
-<div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Bảng điều khiển Lễ tân</h2>
-        <p class="text-muted small mb-0">Quản lý đặt phòng, check-in/out và dịch vụ khách hàng.</p>
+{# ── HEADER TIẾP ĐÓN LỄ TÂN 5 SAO ── #}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+    <div>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2"
+             style="background: rgba(184, 151, 88, 0.12); border: 1px solid rgba(184, 151, 88, 0.35); font-size: 0.75rem; font-weight: 700; color: #8C6221; text-transform: uppercase; letter-spacing: 1px;">
+            <i class="fas fa-concierge-bell text-gold"></i> BÀN ĐIỀU HÀNH LỄ TÂN & TIẾP ĐÓN
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: var(--font-display, 'Playfair Display', serif); color: var(--sc-ocean, #072A44); font-size: 1.85rem;">
+            Bàn Điều Khiển Lễ Tân
+        </h2>
+        <p class="text-secondary small mb-0" style="font-weight: 400;">
+            Quản trị luồng khách lưu trú, thủ tục Check-in/Check-out, số phòng vật lý và quyết toán dịch vụ theo thời gian thực.
+        </p>
     </div>
-    <div class="col-auto d-flex gap-2">
-        <a href="/receptionist/walkin" class="btn nut-xanh-datphong px-3 py-2 fw-bold">
-            <i class="fas fa-user-plus me-1"></i>Walk-in
+    <div class="d-flex flex-wrap gap-2 w-100 w-md-auto">
+        <a href="/receptionist/walkin" class="btn btn-heritage-gold px-4 py-25 fw-bold shadow-sm d-inline-flex align-items-center"
+           style="background: linear-gradient(135deg, #DFB76C 0%, #C59B47 100%); color: #072A44; border: none; border-radius: 12px; font-size: 0.92rem;">
+            <i class="fas fa-user-plus me-2"></i>Đặt phòng Walk-in
         </a>
-        <a href="/receptionist/room-plan" class="btn btn-outline-secondary px-3 py-2">
-            <i class="fas fa-th me-1"></i>Sơ đồ phòng
+        <a href="/receptionist/room-plan" class="btn px-4 py-25 fw-bold shadow-sm d-inline-flex align-items-center"
+           style="background: #FFFFFF; color: #072A44; border: 1.5px solid rgba(7, 42, 68, 0.2); border-radius: 12px; font-size: 0.92rem; transition: all 0.2s;">
+            <i class="fas fa-th me-2 text-gold"></i>Sơ đồ phòng Matrix
         </a>
     </div>
 </div>
 
-<!-- Ops stats -->
+{# ── KPI VẬN HÀNH TRONG NGÀY (CLICKABLE DRILL-DOWN) ── #}
 {% if ops %}
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold chu-datphong">{{ ops.dirty_rooms or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Phòng cần dọn</div>
-        </div>
+        <a href="/housekeeping" class="text-decoration-none">
+            <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-stat-card"
+                 style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #F59E0B !important; transition: transform 0.2s, box-shadow 0.2s;">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="badge rounded-pill px-2 py-1" style="background: rgba(245, 158, 11, 0.12); color: #B45309; font-size: 0.7rem; font-weight: 700;">
+                        BUỒNG PHÒNG
+                    </span>
+                    <i class="fas fa-broom text-warning opacity-75"></i>
+                </div>
+                <div class="fs-2 fw-bold text-dark" style="font-family: var(--font-display); font-variant-numeric: lining-nums;">
+                    {{ ops.dirty_rooms or 0 }}
+                </div>
+                <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                    Phòng cần vệ sinh <i class="fas fa-arrow-right ms-1 text-gold" style="font-size: 0.65rem;"></i>
+                </div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold text-success">{{ ops.checkins_due or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Nhận phòng hôm nay</div>
-        </div>
+        <a href="/receptionist?status=today_arrivals" class="text-decoration-none">
+            <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-stat-card"
+                 style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #10B981 !important; transition: transform 0.2s, box-shadow 0.2s;">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="badge rounded-pill px-2 py-1" style="background: rgba(16, 185, 129, 0.12); color: #047857; font-size: 0.7rem; font-weight: 700;">
+                        HÔM NAY
+                    </span>
+                    <i class="fas fa-sign-in-alt text-success opacity-75"></i>
+                </div>
+                <div class="fs-2 fw-bold text-success" style="font-family: var(--font-display); font-variant-numeric: lining-nums;">
+                    {{ ops.checkins_due or 0 }}
+                </div>
+                <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                    Nhận phòng dự kiến <i class="fas fa-arrow-right ms-1 text-success" style="font-size: 0.65rem;"></i>
+                </div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold text-warning">{{ ops.checkouts_due or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Trả phòng hôm nay</div>
-        </div>
+        <a href="/receptionist?status=today_departures" class="text-decoration-none">
+            <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-stat-card"
+                 style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #072A44 !important; transition: transform 0.2s, box-shadow 0.2s;">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="badge rounded-pill px-2 py-1" style="background: rgba(7, 42, 68, 0.08); color: #072A44; font-size: 0.7rem; font-weight: 700;">
+                        QUYẾT TOÁN
+                    </span>
+                    <i class="fas fa-sign-out-alt text-primary opacity-75"></i>
+                </div>
+                <div class="fs-2 fw-bold text-dark" style="font-family: var(--font-display); font-variant-numeric: lining-nums; color: #072A44 !important;">
+                    {{ ops.checkouts_due or 0 }}
+                </div>
+                <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                    Trả phòng hôm nay <i class="fas fa-arrow-right ms-1 text-primary" style="font-size: 0.65rem;"></i>
+                </div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold text-danger">{{ ops.maintenance_rooms or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Bảo trì</div>
-        </div>
+        <a href="/receptionist/room-plan" class="text-decoration-none">
+            <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-stat-card"
+                 style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #64748B !important; transition: transform 0.2s, box-shadow 0.2s;">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="badge rounded-pill px-2 py-1" style="background: rgba(100, 116, 139, 0.12); color: #475569; font-size: 0.7rem; font-weight: 700;">
+                        KỸ THUẬT
+                    </span>
+                    <i class="fas fa-tools text-secondary opacity-75"></i>
+                </div>
+                <div class="fs-2 fw-bold text-secondary" style="font-family: var(--font-display); font-variant-numeric: lining-nums;">
+                    {{ ops.maintenance_rooms or 0 }}
+                </div>
+                <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                    Phòng đang bảo trì <i class="fas fa-arrow-right ms-1 text-secondary" style="font-size: 0.65rem;"></i>
+                </div>
+            </div>
+        </a>
     </div>
 </div>
 {% endif %}
 
-<!-- Search & Filter -->
-<div class="the-chinh p-3 mb-4">
-    <form action="/receptionist" method="GET" class="row g-2 align-items-end">
-        <div class="col-md-5">
-            <label class="bieumau-nhan-sach">Tìm kiếm</label>
-            <input type="text" name="q" class="form-control bieumau-dieukhien-sach"
-                   value="{{ q }}" placeholder="Tên, mã đặt phòng, số điện thoại...">
+{# ── BỘ LỌC NHANH 1-CHẠM & TÌM KIẾM HỒ SƠ ── #}
+<div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 16px; background: #FFFFFF; border: 1px solid rgba(184, 151, 88, 0.22) !important;">
+    {# Quick Filter Tabs 1-Chạm #}
+    <div class="d-flex flex-wrap gap-2 pb-3 mb-3 border-bottom">
+        <a href="/receptionist" class="btn btn-sm rounded-pill px-3 py-1 fw-bold {% if not status and not q %}btn-heritage-gold{% else %}btn-outline-secondary{% endif %}"
+           style="font-size: 0.82rem;">
+            <i class="fas fa-list me-1"></i> Tất cả hồ sơ
+        </a>
+        <a href="/receptionist?status=today_arrivals" class="btn btn-sm rounded-pill px-3 py-1 fw-bold {% if status == 'today_arrivals' %}btn-success text-white{% else %}btn-outline-success{% endif %}"
+           style="font-size: 0.82rem;">
+            <i class="fas fa-sign-in-alt me-1"></i> Đến hôm nay
+        </a>
+        <a href="/receptionist?status=Checked-In" class="btn btn-sm rounded-pill px-3 py-1 fw-bold {% if status == 'Checked-In' %}btn-dark text-white{% else %}btn-outline-dark{% endif %}"
+           style="font-size: 0.82rem;">
+            <i class="fas fa-bed me-1 text-gold"></i> Đang lưu trú (In-House)
+        </a>
+        <a href="/receptionist?status=today_departures" class="btn btn-sm rounded-pill px-3 py-1 fw-bold {% if status == 'today_departures' %}btn-primary text-white{% else %}btn-outline-primary{% endif %}"
+           style="font-size: 0.82rem;">
+            <i class="fas fa-sign-out-alt me-1"></i> Trả phòng hôm nay
+        </a>
+        <a href="/receptionist?status=overdue" class="btn btn-sm rounded-pill px-3 py-1 fw-bold {% if status == 'overdue' %}btn-danger text-white{% else %}btn-outline-danger{% endif %}"
+           style="font-size: 0.82rem;">
+            <i class="fas fa-exclamation-triangle me-1"></i> Quá hạn đến
+        </a>
+        <a href="/receptionist?status=Confirmed" class="btn btn-sm rounded-pill px-3 py-1 fw-bold {% if status == 'Confirmed' %}btn-warning text-dark{% else %}btn-outline-secondary{% endif %}"
+           style="font-size: 0.82rem;">
+            <i class="far fa-calendar-check me-1"></i> Chờ nhận phòng
+        </a>
+        <a href="/receptionist?status=Canceled" class="btn btn-sm rounded-pill px-3 py-1 fw-bold {% if status == 'Canceled' %}btn-secondary text-white{% else %}btn-outline-secondary{% endif %}"
+           style="font-size: 0.82rem;">
+            <i class="fas fa-times me-1"></i> Đã hủy
+        </a>
+    </div>
+
+    {# Search Bar #}
+    <form action="/receptionist" method="GET" class="row g-3 align-items-end">
+        <div class="col-lg-6 col-md-6">
+            <label class="form-label text-uppercase fw-bold small text-secondary" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                <i class="fas fa-search me-1 text-gold"></i> Tìm kiếm theo Tên khách, Mã Booking (#ID), Email, SĐT...
+            </label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0" style="border-radius: 10px 0 0 10px;">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" name="q" class="form-control border-start-0"
+                       style="border-radius: 0 10px 10px 0; font-size: 0.92rem;"
+                       value="{{ q }}" placeholder="Nhập tên khách hàng, mã booking (#ID), SĐT...">
+            </div>
         </div>
-        <div class="col-md-3">
-            <label class="bieumau-nhan-sach">Trạng thái</label>
-            <select name="status" class="form-select bieumau-dieukhien-sach">
-                <option value="">Tất cả</option>
-                <option value="Confirmed" {% if status == 'Confirmed' %}selected{% endif %}>Đã xác nhận</option>
-                <option value="Checked-In" {% if status == 'Checked-In' %}selected{% endif %}>Đang ở</option>
-                <option value="Checked-Out" {% if status == 'Checked-Out' %}selected{% endif %}>Đã trả phòng</option>
-                <option value="Canceled" {% if status == 'Canceled' %}selected{% endif %}>Đã hủy</option>
-                <option value="No-Show" {% if status == 'No-Show' %}selected{% endif %}>No-Show</option>
+        <div class="col-lg-4 col-md-4">
+            <label class="form-label text-uppercase fw-bold small text-secondary" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                <i class="fas fa-filter me-1 text-gold"></i> Lọc trạng thái lưu trú
+            </label>
+            <select name="status" class="form-select fw-semibold" style="border-radius: 10px; font-size: 0.92rem;">
+                <option value="">— Tất cả trạng thái —</option>
+                <option value="today_arrivals" {% if status == 'today_arrivals' %}selected{% endif %}>⚡ Đến hôm nay</option>
+                <option value="Checked-In" {% if status == 'Checked-In' %}selected{% endif %}>★ Đang lưu trú (In-House)</option>
+                <option value="today_departures" {% if status == 'today_departures' %}selected{% endif %}>🚪 Trả phòng hôm nay</option>
+                <option value="overdue" {% if status == 'overdue' %}selected{% endif %}>⚠️ Quá hạn đến (Cần báo No-Show)</option>
+                <option value="Confirmed" {% if status == 'Confirmed' %}selected{% endif %}>✓ Đã xác nhận (Chờ Check-in)</option>
+                <option value="Checked-Out" {% if status == 'Checked-Out' %}selected{% endif %}>✓ Đã trả phòng & Quyết toán</option>
+                <option value="Canceled" {% if status == 'Canceled' %}selected{% endif %}>✕ Đã hủy</option>
+                <option value="No-Show" {% if status == 'No-Show' %}selected{% endif %}>! Khách vắng mặt (No-Show)</option>
             </select>
         </div>
-        <div class="col-auto">
-            <button type="submit" class="btn nut-xanh-datphong px-4 py-2 fw-bold">
-                <i class="fas fa-search me-1"></i>Tìm
+        <div class="col-lg-2 col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-heritage-gold px-4 py-2 fw-bold flex-fill shadow-sm"
+                    style="background: linear-gradient(135deg, #DFB76C 0%, #C59B47 100%); color: #072A44; border: none; border-radius: 10px; font-size: 0.92rem;">
+                Tìm kiếm
             </button>
+            {% if q or status %}
+            <a href="/receptionist" class="btn btn-outline-secondary px-3 py-2 fw-semibold" style="border-radius: 10px;" title="Xóa bộ lọc">
+                <i class="fas fa-undo"></i>
+            </a>
+            {% endif %}
         </div>
-        {% if q or status %}
-        <div class="col-auto">
-            <a href="/receptionist" class="btn btn-outline-secondary px-3 py-2">Xóa bộ lọc</a>
-        </div>
-        {% endif %}
     </form>
 </div>
 
-<!-- Bookings table -->
-<div class="the-chinh p-0 overflow-hidden">
-    <div class="the-tieude-sach px-4 py-3">
-        <span class="fw-bold"><i class="fas fa-list me-2"></i>Danh sách đặt phòng</span>
-        <span class="badge bg-secondary ms-2">{{ bookings|length }}</span>
+{# ── BẢNG DANH SÁCH BOOKING ĐẲNG CẤP 5 SAO ── #}
+<div class="card border-0 shadow-sm overflow-hidden mb-4" style="border-radius: 16px; border: 1px solid rgba(7, 42, 68, 0.08) !important;">
+    <div class="px-4 py-3 d-flex justify-content-between align-items-center"
+         style="background: linear-gradient(135deg, #072A44 0%, #031826 100%); color: #FFFFFF; border-bottom: 2px solid rgba(184, 151, 88, 0.35);">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-concierge-bell text-gold"></i>
+            <span class="fw-bold fs-6" style="font-family: var(--font-display, 'Playfair Display', serif); letter-spacing: 0.3px;">
+                Danh Sách Hồ Sơ Đặt Phòng
+            </span>
+            <span class="badge rounded-pill ms-2 px-3 py-1" style="background: rgba(184, 151, 88, 0.25); color: #F3D082; font-size: 0.75rem; border: 1px solid rgba(184, 151, 88, 0.4);">
+                {{ total_bookings or bookings|length }} hồ sơ
+            </span>
+        </div>
+        <span class="text-white-50 small d-none d-md-inline" style="font-size: 0.78rem;">
+            Cập nhật thời gian thực · Côn Đảo
+        </span>
     </div>
+
     {% if bookings %}
     <div class="table-responsive">
-        <table class="bang-sach">
-            <thead>
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
+            <thead class="table-light text-secondary" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 1.5px solid rgba(7, 42, 68, 0.08);">
                 <tr>
-                    <th>#ID</th>
-                    <th>Khách hàng</th>
-                    <th>Phòng</th>
-                    <th>Check-in</th>
-                    <th>Check-out</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
+                    <th class="ps-4 py-3 text-nowrap">Mã #ID</th>
+                    <th class="py-3">Khách hàng & Liên hệ</th>
+                    <th class="py-3 text-nowrap">Hạng phòng & Số phòng</th>
+                    <th class="py-3 text-nowrap">Lưu trú (Check-in / Out)</th>
+                    <th class="py-3 text-end text-nowrap">Tổng tiền & Thanh toán</th>
+                    <th class="py-3 text-center text-nowrap">Trạng thái</th>
+                    <th class="pe-4 py-3 text-end text-nowrap" style="min-width: 220px;">Thao tác nghiệp vụ</th>
                 </tr>
             </thead>
             <tbody>
                 {% for b in bookings %}
                 <tr>
-                    <td class="fw-bold chu-datphong">
-                        <a href="/receptionist/invoice/{{ b.booking_id }}" class="text-decoration-none chu-datphong">
+                    {# Mã Booking #}
+                    <td class="ps-4 py-3">
+                        <a href="/receptionist/invoice/{{ b.booking_id }}"
+                           class="fw-bold text-decoration-none px-2 py-1 rounded d-inline-block"
+                           style="background: rgba(7, 42, 68, 0.08); color: #072A44; font-size: 0.85rem;"
+                           title="Xem & in bảng kê folio chi tiết">
                             #{{ b.booking_id }}
                         </a>
-                    </td>
-                    <td>
-                        <div class="fw-bold small">{{ b.customer_full_name or b.customer_name or '—' }}</div>
-                        {% if b.customer_email %}
-                        <div class="kichthuoc-nho-hon text-muted">{{ b.customer_email }}</div>
+                        {% if b.booking_type == 'walkin' %}
+                        <div class="mt-1">
+                            <span class="badge rounded-pill bg-secondary text-white" style="font-size: 0.68rem; letter-spacing: 0.5px;">
+                                <i class="fas fa-walking me-1"></i>Walk-in
+                            </span>
+                        </div>
+                        {% else %}
+                        <div class="mt-1">
+                            <span class="badge rounded-pill" style="background: rgba(184, 151, 88, 0.15); color: #8C6221; font-size: 0.68rem; border: 1px solid rgba(184, 151, 88, 0.3);">
+                                <i class="fas fa-globe me-1"></i>Online
+                            </span>
+                        </div>
                         {% endif %}
                     </td>
-                    <td>
-                        <div class="small">{{ b.room_type_code or '—' }}</div>
+
+                    {# Khách hàng & Liên hệ #}
+                    <td class="py-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm flex-shrink-0"
+                                 style="width: 36px; height: 36px; font-size: 0.85rem; background: linear-gradient(135deg, #072A44 0%, #031826 100%); border: 1px solid rgba(184, 151, 88, 0.4);">
+                                {{ (b.customer_full_name or b.customer_name or 'K')[:1]|upper }}
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark" style="font-size: 0.92rem;">
+                                    {{ b.customer_full_name or b.customer_name or 'Khách vãng lai' }}
+                                </div>
+                                {% if b.customer_email %}
+                                <div class="text-muted" style="font-size: 0.75rem;">
+                                    <i class="far fa-envelope me-1 text-gold"></i>{{ b.customer_email }}
+                                </div>
+                                {% endif %}
+                                {% if b.customer_phone %}
+                                <div class="text-secondary fw-semibold" style="font-size: 0.75rem;">
+                                    <i class="fas fa-phone-alt me-1 text-success"></i>{{ b.customer_phone }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+
+                    {# Hạng phòng & Số phòng gán #}
+                    <td class="py-3">
+                        <div class="fw-bold text-dark" style="font-size: 0.88rem;">
+                            {{ room_type_name_map.get(b.room_type_code, b.room_type_code or 'Resort Suite') }}
+                        </div>
                         {% if b.hotel_name %}
-                        <div class="kichthuoc-nho-hon text-muted">{{ b.hotel_name }}</div>
+                        <div class="text-muted small" style="font-size: 0.75rem;">
+                            <i class="fas fa-map-marker-alt text-gold me-1"></i>{{ b.hotel_name }}
+                        </div>
+                        {% endif %}
+
+                        {# Số phòng vật lý cụ thể & Tình trạng buồng phòng #}
+                        {% if b.physical_room_name %}
+                        <div class="d-flex align-items-center gap-1 mt-1">
+                            <span class="badge bg-light text-dark border px-2 py-1 fw-bold" style="font-size: 0.75rem;" title="Số phòng được gán trên PMS">
+                                <i class="fas fa-door-closed text-primary me-1"></i>{{ b.physical_room_name.replace('CIT_SUI_', 'P.').replace('CIT_DEL_', 'P.').replace('CIT_SUP_', 'P.').replace('RES_VDEL_', 'Villa ').replace('RES_VSUI_', 'Villa ') }}
+                            </span>
+                            {% if b.housekeeping_status == 'Clean' %}
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size: 0.7rem;" title="Phòng đã được dọn sạch, sẵn sàng bàn giao">
+                                <i class="fas fa-check-circle me-1"></i>Sạch
+                            </span>
+                            {% elif b.housekeeping_status == 'Dirty' %}
+                            <span class="badge bg-warning bg-opacity-10 text-warning-emphasis border border-warning border-opacity-25" style="font-size: 0.7rem;" title="Phòng dơ, cần dọn trước khi bàn giao">
+                                <i class="fas fa-broom me-1"></i>Cần dọn
+                            </span>
+                            {% elif b.housekeeping_status == 'Maintenance' %}
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25" style="font-size: 0.7rem;">
+                                <i class="fas fa-tools me-1"></i>Bảo trì
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="mt-1">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25" style="font-size: 0.72rem;">
+                                <i class="fas fa-hourglass-start me-1"></i>Chưa gán phòng
+                            </span>
+                        </div>
                         {% endif %}
                     </td>
-                    <td class="small">{{ b.arrival_date or '—' }}</td>
-                    <td class="small">{{ b.departure_date or '—' }}</td>
-                    <td class="fw-bold small">{{ "{:,.0f}".format(b.total_price or 0) }}đ</td>
-                    <td>
-                        <span class="huyhieu-sach status-{{ (b.status_detail or 'unknown')|lower|replace('-','') }}">
-                            {{ b.status_detail or '—' }}
-                        </span>
+
+                    {# Ngày nhận & trả phòng #}
+                    <td class="py-3 text-nowrap">
+                        <div class="fw-semibold text-dark text-nowrap" style="font-size: 0.85rem; font-variant-numeric: lining-nums;">
+                            <i class="far fa-calendar-check text-success me-1"></i>{{ b.arrival_date or '—' }}
+                        </div>
+                        <div class="text-muted small text-nowrap mt-05" style="font-size: 0.75rem; font-variant-numeric: lining-nums;">
+                            <i class="far fa-calendar-times text-warning me-1"></i>{{ b.departure_date or '—' }}
+                            {% if b.nights %}<span class="badge bg-light text-secondary border ms-1">{{ b.nights }} đêm</span>{% endif %}
+                        </div>
                     </td>
-                    <td>
-                        <div class="d-flex gap-1 flex-wrap">
+
+                    {# Tổng tiền & Tình trạng thanh toán #}
+                    <td class="py-3 text-end text-nowrap">
+                        <div class="fw-bold text-dark text-nowrap sc-net-num" style="font-size: 0.95rem; font-variant-numeric: lining-nums; color: #072A44 !important;">
+                            {{ "{:,.0f}".format(b.total_price or 0) }} ₫
+                        </div>
+                        {# Bóc tách tình trạng thanh toán / đặt cọc #}
+                        {% if b.total_price and b.deposit_paid and b.deposit_paid >= b.total_price %}
+                        <div class="mt-1">
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size: 0.72rem; font-weight: 600;">
+                                <i class="fas fa-check-circle me-1"></i>Đã trả 100%
+                            </span>
+                        </div>
+                        {% elif b.deposit_paid and b.deposit_paid > 0 %}
+                        {% set remaining = (b.total_price or 0) - b.deposit_paid %}
+                        <div class="mt-1">
+                            <span class="badge bg-warning bg-opacity-10 text-warning-emphasis border border-warning border-opacity-25"
+                                  style="font-size: 0.72rem; font-weight: 600;"
+                                  title="Đã cọc: {{ '{:,.0f}'.format(b.deposit_paid) }} ₫">
+                                <i class="fas fa-coins me-1"></i>Cọc · Thiếu: {{ "{:,.0f}".format(remaining) }} ₫
+                            </span>
+                        </div>
+                        {% else %}
+                        <div class="mt-1">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25" style="font-size: 0.72rem; font-weight: 600;">
+                                <i class="fas fa-money-bill-wave me-1"></i>Thu tại quầy
+                            </span>
+                        </div>
+                        {% endif %}
+                    </td>
+
+                    {# Trạng thái #}
+                    <td class="py-3 text-center text-nowrap">
+                        {% if b.status_detail == 'Checked-In' %}
+                        <span class="badge rounded-pill px-3 py-2 text-white text-nowrap shadow-sm"
+                              style="background: linear-gradient(135deg, #072A44 0%, #031826 100%); border: 1px solid rgba(184, 151, 88, 0.5); font-size: 0.75rem; font-weight: 700;">
+                            <i class="fas fa-bed text-gold me-1"></i> Đang ở (In-House)
+                        </span>
+                        {% elif b.status_detail == 'Confirmed' %}
+                            {% if b.arrival_date and b.arrival_date > today %}
+                                <span class="badge rounded-pill px-3 py-2 text-nowrap"
+                                      style="background: rgba(184, 151, 88, 0.15); color: #8C733E !important; border: 1px solid rgba(184, 151, 88, 0.4); font-size: 0.75rem; font-weight: 700;">
+                                    <i class="far fa-calendar-alt me-1"></i> Đặt trước ({{ b.arrival_date }})
+                                </span>
+                            {% elif b.departure_date and today > b.departure_date %}
+                                <span class="badge rounded-pill px-3 py-2 text-danger bg-danger bg-opacity-10 border border-danger border-opacity-25 text-nowrap fw-bold"
+                                      style="font-size: 0.75rem;">
+                                    <i class="fas fa-exclamation-triangle me-1"></i> Quá hạn đến
+                                </span>
+                            {% elif b.arrival_date == today %}
+                                <span class="badge rounded-pill px-3 py-2 text-dark text-nowrap shadow-sm"
+                                      style="background: rgba(16, 185, 129, 0.15); color: #065F46 !important; border: 1.5px solid #10B981; font-size: 0.75rem; font-weight: 700;">
+                                    <i class="fas fa-bell text-success me-1"></i> Đến hôm nay
+                                </span>
+                            {% else %}
+                                <span class="badge rounded-pill px-3 py-2 text-nowrap"
+                                      style="background: rgba(245, 158, 11, 0.15); color: #B45309 !important; border: 1px solid #F59E0B; font-size: 0.75rem; font-weight: 700;">
+                                    <i class="fas fa-clock me-1"></i> Đến trễ
+                                </span>
+                            {% endif %}
+                        {% elif b.status_detail == 'Checked-Out' %}
+                        <span class="badge rounded-pill px-3 py-2 text-secondary bg-light border text-nowrap" style="font-size: 0.75rem; font-weight: 600;">
+                            <i class="fas fa-history me-1"></i> Đã trả phòng
+                        </span>
+                        {% elif b.status_detail == 'Canceled' %}
+                        <span class="badge rounded-pill px-3 py-2 text-danger bg-danger bg-opacity-10 border border-danger border-opacity-25 text-nowrap" style="font-size: 0.75rem; font-weight: 600;">
+                            <i class="fas fa-times me-1"></i> Đã hủy
+                        </span>
+                        {% else %}
+                        <span class="badge rounded-pill px-3 py-2 text-secondary bg-light border text-nowrap" style="font-size: 0.75rem; font-weight: 600;">
+                            {{ b.status_detail or 'Chờ duyệt' }}
+                        </span>
+                        {% endif %}
+                    </td>
+
+                    {# Hành động nghiệp vụ #}
+                    <td class="pe-4 py-3 text-end text-nowrap" style="min-width: 220px;">
+                        <div class="d-inline-flex gap-1 justify-content-end align-items-center text-nowrap">
+                            {# Nút Hóa đơn Folio luôn khả dụng để tra cứu #}
                             <a href="/receptionist/invoice/{{ b.booking_id }}"
-                               class="btn btn-sm btn-outline-secondary px-2" title="Hóa đơn">
-                                <i class="fas fa-receipt"></i>
+                               class="btn btn-sm btn-outline-secondary px-2 py-1 rounded-2 text-nowrap"
+                               style="font-size: 0.8rem;" title="Xem & In Bảng kê Hóa Đơn Folio">
+                                <i class="fas fa-receipt text-gold me-1"></i>Folio
                             </a>
+
                             {% if b.status_detail == 'Confirmed' %}
-                            <form method="POST" action="/receptionist/checkin/{{ b.booking_id }}" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-success px-2" title="Check-in"
-                                        onclick="return confirm('Xác nhận check-in #{{ b.booking_id }}?')">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </button>
-                            </form>
-                            <a href="/receptionist/cancel/{{ b.booking_id }}"
-                               class="btn btn-sm btn-outline-danger px-2" title="Hủy">
-                                <i class="fas fa-times"></i>
-                            </a>
-                            <a href="/receptionist/noshow/{{ b.booking_id }}"
-                               class="btn btn-sm btn-outline-secondary px-2" title="No-Show">
-                                <i class="fas fa-user-slash"></i>
-                            </a>
+                                {% if b.arrival_date and b.arrival_date > today %}
+                                    {# ── TRƯỜNG HỢP 1: CHƯA ĐẾN NGÀY NHẬN PHÒNG (TƯƠNG LAI) ── #}
+                                    <span class="badge rounded-pill px-25 py-1 text-muted bg-light border text-nowrap"
+                                          style="font-size: 0.78rem; font-weight: 600;"
+                                          title="Chưa đến ngày nhận phòng. Giờ nhận phòng bắt đầu từ 14:00 ngày {{ b.arrival_date }}">
+                                        <i class="far fa-calendar-alt text-secondary me-1"></i> Chờ: {{ b.arrival_date }}
+                                    </span>
+                                    {# Nút Hủy #}
+                                    <a href="/receptionist/cancel/{{ b.booking_id }}"
+                                       class="btn btn-sm btn-outline-danger px-2 py-1 rounded-2 text-nowrap"
+                                       style="font-size: 0.8rem;" title="Hủy đặt phòng này">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+
+                                 {% elif b.departure_date and today > b.departure_date %}
+                                    {# ── TRƯỜNG HỢP 2: ĐÃ QUÁ HẠN LƯU TRÚ (QUÁ NGÀY TRẢ PHÒNG) ── #}
+                                    <a href="/receptionist/noshow/{{ b.booking_id }}"
+                                       class="btn btn-sm btn-outline-danger px-2 py-1 rounded-2 text-nowrap fw-bold"
+                                       style="font-size: 0.8rem;" title="Báo khách vắng mặt (No-Show) do đã quá hạn lưu trú">
+                                        <i class="fas fa-user-slash me-1"></i> Báo No-Show
+                                    </a>
+
+                                {% elif b.arrival_date == today %}
+                                    {# ── TRƯỜNG HỢP 3: ĐÚNG NGÀY HÔM NAY ── #}
+                                    {% if now_time and now_time < '14:00' %}
+                                        {# Chưa đến 14:00: Check-in sớm (Early Check-in) #}
+                                        <form method="POST" action="/receptionist/checkin/{{ b.booking_id }}" class="d-inline">
+                                            <button type="submit" class="btn btn-sm text-dark px-25 py-1 rounded-2 shadow-sm fw-bold text-nowrap"
+                                                    style="background: linear-gradient(135deg, #FEF08A 0%, #FBBF24 100%); font-size: 0.8rem; border: 1px solid #D97706; white-space: nowrap;"
+                                                    title="Giờ nhận phòng tiêu chuẩn là 14:00 (Hiện tại: {{ now_time }}). Nhận phòng sớm chỉ thực hiện khi phòng đã Sạch."
+                                                    onclick="return confirm('LƯU Ý NGHIỆP VỤ EARLY CHECK-IN:\nGiờ nhận phòng chuẩn là 14:00 (Hiện tại: {{ now_time }}).\nBạn có chắc chắn muốn làm thủ tục nhận phòng sớm cho hồ sơ #{{ b.booking_id }}?')">
+                                                <i class="far fa-clock text-dark me-1"></i> Check-in sớm
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        {# Từ 14:00 trở đi: Check-in đúng giờ tiêu chuẩn #}
+                                        <form method="POST" action="/receptionist/checkin/{{ b.booking_id }}" class="d-inline">
+                                            <button type="submit" class="btn btn-sm text-white px-3 py-1 rounded-2 shadow-sm fw-bold text-nowrap"
+                                                    style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); font-size: 0.8rem; border: none; white-space: nowrap;"
+                                                    title="Làm thủ tục Check-in đón khách"
+                                                    onclick="return confirm('Xác nhận hoàn tất thủ tục Check-in đón khách cho mã đặt phòng #{{ b.booking_id }}?')">
+                                                <i class="fas fa-sign-in-alt me-1"></i> Check-in
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    {# Nút Hủy #}
+                                    <a href="/receptionist/cancel/{{ b.booking_id }}"
+                                       class="btn btn-sm btn-outline-danger px-2 py-1 rounded-2 text-nowrap"
+                                       style="font-size: 0.8rem;" title="Hủy đặt phòng này">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                    {# Nút No-show #}
+                                    <a href="/receptionist/noshow/{{ b.booking_id }}"
+                                       class="btn btn-sm btn-outline-secondary px-2 py-1 rounded-2 text-nowrap"
+                                       style="font-size: 0.8rem;" title="Báo khách vắng mặt (No-Show)">
+                                        <i class="fas fa-user-slash"></i>
+                                    </a>
+
+                                {% else %}
+                                    {# ── TRƯỜNG HỢP 4: KHÁCH ĐẾN TRỄ HƠN NGÀY ĐẶT (NHƯNG CHƯA QUÁ DEPARTURE) ── #}
+                                    <form method="POST" action="/receptionist/checkin/{{ b.booking_id }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm text-white px-25 py-1 rounded-2 shadow-sm fw-bold text-nowrap"
+                                                style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); font-size: 0.8rem; border: none; white-space: nowrap;"
+                                                title="Khách đến trễ hơn ngày đặt (Dự kiến: {{ b.arrival_date }})"
+                                                onclick="return confirm('Khách đến trễ hơn ngày dự kiến ({{ b.arrival_date }}). Xác nhận thực hiện Check-in đón khách cho hồ sơ #{{ b.booking_id }}?')">
+                                            <i class="fas fa-sign-in-alt me-1"></i> Check-in (Trễ)
+                                        </button>
+                                    </form>
+                                    {# Nút Hủy #}
+                                    <a href="/receptionist/cancel/{{ b.booking_id }}"
+                                       class="btn btn-sm btn-outline-danger px-2 py-1 rounded-2 text-nowrap"
+                                       style="font-size: 0.8rem;" title="Hủy đặt phòng này">
+                                        <i class="fas fa-times"></i>
+                                    </a>
+                                    {# Nút No-show #}
+                                    <a href="/receptionist/noshow/{{ b.booking_id }}"
+                                       class="btn btn-sm btn-outline-secondary px-2 py-1 rounded-2 text-nowrap"
+                                       style="font-size: 0.8rem;" title="Báo khách vắng mặt (No-Show)">
+                                        <i class="fas fa-user-slash"></i>
+                                    </a>
+                                {% endif %}
+
                             {% elif b.status_detail == 'Checked-In' %}
-                            <a href="/receptionist/checkout/{{ b.booking_id }}"
-                               class="btn btn-sm btn-warning px-2 text-dark" title="Check-out">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </a>
-                            <a href="/receptionist/move-room/{{ b.booking_id }}"
-                               class="btn btn-sm btn-outline-info px-2" title="Chuyển phòng">
-                                <i class="fas fa-exchange-alt"></i>
-                            </a>
+                                {# Nút Check-out #}
+                                <a href="/receptionist/checkout/{{ b.booking_id }}"
+                                   class="btn btn-sm text-dark px-3 py-1 rounded-2 shadow-sm fw-bold text-nowrap"
+                                   style="background: linear-gradient(135deg, #DFB76C 0%, #C59B47 100%); font-size: 0.8rem; border: none; white-space: nowrap;"
+                                   title="Quyết toán dịch vụ & Trả phòng">
+                                    <i class="fas fa-sign-out-alt me-1"></i> Check-out
+                                </a>
+                                {# Nút Chuyển phòng #}
+                                <a href="/receptionist/move-room/{{ b.booking_id }}"
+                                   class="btn btn-sm btn-outline-primary px-2 py-1 rounded-2 text-nowrap"
+                                   style="font-size: 0.8rem;" title="Chuyển buồng phòng">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </a>
                             {% endif %}
                         </div>
                     </td>
@@ -166,11 +512,65 @@
             </tbody>
         </table>
     </div>
+
+    {# ── PHÂN TRANG (PAGINATION CONTROLS) ── #}
+    {% if total_pages and total_pages > 1 %}
+    <div class="px-4 py-3 bg-light border-top d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div class="text-secondary small">
+            Hiển thị <strong>{{ bookings|length }}</strong> / <strong>{{ total_bookings }}</strong> hồ sơ (Trang {{ page }} / {{ total_pages }})
+        </div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                    <a class="page-link" href="/receptionist?page={{ page - 1 }}{% if status %}&status={{ status }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                        <i class="fas fa-chevron-left me-1"></i>Trước
+                    </a>
+                </li>
+                {% for p in range(1, total_pages + 1) %}
+                    {% if p == page or (p >= page - 2 and p <= page + 2) or p == 1 or p == total_pages %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a class="page-link" href="/receptionist?page={{ p }}{% if status %}&status={{ status }}{% endif %}{% if q %}&q={{ q }}{% endif %}"
+                           {% if p == page %}style="background: #072A44; border-color: #072A44;"{% endif %}>
+                            {{ p }}
+                        </a>
+                    </li>
+                    {% elif p == page - 3 or p == page + 3 %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="/receptionist?page={{ page + 1 }}{% if status %}&status={{ status }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                        Tiếp<i class="fas fa-chevron-right ms-1"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+
     {% else %}
     <div class="p-5 text-center text-muted">
-        <i class="fas fa-inbox fa-3x opacity-25 mb-3 d-block"></i>
-        <p class="mb-0">Không tìm thấy đặt phòng nào.</p>
+        <i class="fas fa-inbox fa-3x opacity-25 mb-3 d-block text-gold"></i>
+        <h6 class="fw-bold text-dark">Không có hồ sơ đặt phòng nào phù hợp</h6>
+        <p class="small text-secondary mb-0">Thử thay đổi tab trạng thái hoặc từ khóa tìm kiếm trên thanh công cụ.</p>
     </div>
     {% endif %}
 </div>
+
+<style>
+.kpi-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(7, 42, 68, 0.12) !important;
+}
+.btn-heritage-gold {
+    background: linear-gradient(135deg, #DFB76C 0%, #C59B47 100%);
+    color: #072A44;
+    border: none;
+}
+.btn-heritage-gold:hover {
+    background: linear-gradient(135deg, #E6C47E 0%, #D4AA55 100%);
+    color: #072A44;
+}
+</style>
+
 {% endblock %}

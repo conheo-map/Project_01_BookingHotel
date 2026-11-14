@@ -1,175 +1,338 @@
 {% extends "base.html" %}
-{% block title %}Thanh toán & Xác nhận - Hotel Booking{% endblock %}
+{% block title %}Thanh toán & Xác nhận Giữ phòng - Sài Gòn Côn Đảo Resort{% endblock %}
+
+{% block extra_head %}
+<!-- Google Fonts: Playfair Display + Plus Jakarta Sans with full Vietnamese support -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/checkout.css') }}">
+{% endblock %}
+
 {% block content %}
 
-<div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Thanh toán & Xác nhận</h2>
-        <p class="text-muted d-none d-md-block">Vui lòng kiểm tra kỹ thông tin và hoàn tất thủ tục thanh toán để xác nhận đặt phòng.</p>
+<!-- BREADCRUMB NAVIGATION -->
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb" style="font-size: 0.82rem;">
+    <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Trang chủ</a></li>
+    <li class="breadcrumb-item"><a href="/search" class="text-decoration-none text-muted">Tìm phòng</a></li>
+    <li class="breadcrumb-item"><a href="/booking" class="text-decoration-none text-muted">Khóa giữ phòng</a></li>
+    <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">Dịch vụ &amp; Thanh toán</li>
+  </ol>
+</nav>
+
+<!-- PAGE TITLE -->
+<div class="checkout-header-area">
+    <h1 class="checkout-page-title">Xác nhận Lưu trú &amp; Thanh toán</h1>
+    <p class="checkout-page-subtitle">Sài Gòn - Côn Đảo Resort • Di sản Pháp giao thoa cùng biển xanh thanh bình</p>
+</div>
+
+<!-- LUXURY HOLD LOCK BANNER (SYNCHRONIZED WITH SD-01: HOLD LOCK 15 PHÚT) -->
+<div class="luxury-hold-banner mb-4">
+    <div class="hold-banner-header">
+        <div class="hold-badge-group">
+            <span class="badge-exclusive"><i class="fas fa-certificate text-gold me-1"></i> BẢO LƯU ĐỘC QUYỀN 15 PHÚT (HOLD LOCK)</span>
+            {% if temp_ref %}
+            <span class="badge-ref"><i class="fas fa-barcode me-1"></i> Mã giữ chỗ: <strong>{{ temp_ref }}</strong></span>
+            {% else %}
+            <span class="badge-ref"><i class="fas fa-barcode me-1"></i> Mã giữ chỗ: <strong>HOLD-SCD-{{ physical_room_id or '01' }}</strong></span>
+            {% endif %}
+        </div>
+        <div class="hold-status-live">
+            <span class="live-dot"></span> ĐANG BẢO VỆ PHÒNG KHÔNG BỊ TRANH CHỖ
+        </div>
+    </div>
+    
+    <div class="hold-banner-body">
+        <div class="hold-timer-wrapper">
+            <div class="timer-circle">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <div class="timer-content">
+                <div class="timer-title">Thời gian giữ phòng còn lại</div>
+                <div class="timer-display" id="live-countdown-clock">15:00</div>
+            </div>
+        </div>
+        
+        <div class="hold-desc-wrapper">
+            <p class="hold-desc-text">
+                Phòng <strong>{{ room_type.room_title or 'Villa Deluxe Hướng Vườn' }}</strong> đã được khóa tạm thời trên hệ thống PMS riêng cho kỳ nghỉ của bạn. Vui lòng hoàn tất xác nhận thanh toán trước khi thời gian kết thúc để nhận ngay xác nhận điện tử.
+            </p>
+            <div class="hold-guarantees">
+                <span><i class="fas fa-shield-alt text-gold me-1"></i> Bảo mật SSL 256-bit</span>
+                <span><i class="fas fa-bolt text-gold me-1"></i> Giữ phòng tức thời PMS</span>
+                <span><i class="fas fa-phone-alt text-gold me-1"></i> Hotline 24/7: (0254) 3830 111</span>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="bangdieukhien-luoi">
-    <!-- MAIN COLUMN -->
-    <main>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              {% if 'giữ chỗ' in message.lower() or '409' in message or category == 'warning' %}
-              <div class="alert alert-warning border-warning bg-warning bg-opacity-10 text-dark py-3 px-4 rounded-3 mb-4 shadow-sm" role="alert">
-                  <div class="d-flex align-items-center">
-                      <i class="fas fa-exclamation-triangle fs-4 text-warning me-3"></i>
-                      <div>
-                          <h6 class="fw-bold mb-1 text-warning-emphasis">Phòng đã có người giữ chỗ!</h6>
-                          <p class="mb-0 small">{{ message }}</p>
-                      </div>
-                  </div>
+<!-- FLASH MESSAGES -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if 'giữ chỗ' in message.lower() or '409' in message or category == 'warning' %}
+      <div class="alert alert-warning border-warning bg-warning bg-opacity-10 text-dark py-3 px-4 rounded-3 mb-4 shadow-sm" role="alert">
+          <div class="d-flex align-items-center">
+              <i class="fas fa-exclamation-triangle fs-4 text-warning me-3"></i>
+              <div>
+                  <h6 class="fw-bold mb-1 text-warning-emphasis">Phòng đã có người giữ chỗ!</h6>
+                  <p class="mb-0 small">{{ message }}</p>
               </div>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+          </div>
+      </div>
+      {% elif category == 'error' %}
+      <div class="alert alert-danger py-3 px-4 rounded-3 mb-4 shadow-sm" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i> {{ message }}
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
-        {% if locked_until %}
-        <div class="alert alert-danger border-0 shadow-sm small py-2 bo-goc-8 mb-4">
-            <i class="fas fa-clock me-2"></i> <strong>Thời gian giữ phòng có hạn:</strong> Phòng của bạn sẽ được giải phóng lúc <strong>{{ locked_until }}</strong> nếu không thanh toán.
-        </div>
-        {% endif %}
-
-        <form action="/booking/checkout" method="POST">
-            <!-- EXTRA SERVICES -->
-            <div class="the-chinh p-4 mb-4">
-                <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="fas fa-concierge-bell me-2 text-primary"></i>Dịch vụ gia tăng (Tùy chọn)</h6>
+<div class="row g-4">
+    <!-- MAIN COLUMN (65%) -->
+    <div class="col-lg-8">
+        <form action="/booking/checkout" method="POST" id="checkout-form">
+            <!-- 1. EXTRA SERVICES SECTION -->
+            <div class="checkout-card">
+                <div class="checkout-card-title">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Dịch vụ gia tăng &amp; Đặc quyền kỳ nghỉ (Tùy chọn)</span>
+                </div>
                 <div class="row g-3">
                     {% for item in catalog %}
                     <div class="col-md-6">
-                        <label class="d-flex align-items-center p-3 border bo-goc-8 contro-chuot di-chuot-sangs hieuung-coban h-100">
-                            <input type="checkbox" name="extra_services" value="{{ item.catalog_id }}" class="me-3">
+                        <label class="service-item-box d-flex align-items-center">
+                            <input type="checkbox" name="extra_services" value="{{ item.catalog_id }}"
+                                   data-id="{{ item.catalog_id }}"
+                                   data-name="{{ item.item_name }}"
+                                   data-price="{{ item.default_price }}"
+                                   class="form-check-input me-3 extra-service-checkbox" style="width: 1.25rem; height: 1.25rem;">
                             <div>
-                                <div class="fw-bold small">{{ item.item_name }}</div>
-                                <div class="text-success fw-bold small">+{{ item.default_price }} EUR</div>
+                                <div class="service-item-name">{{ item.item_name }}</div>
+                                <div class="service-item-price">+{{ item.default_price|format_vnd }}</div>
                             </div>
                         </label>
+                    </div>
+                    {% else %}
+                    <div class="col-12">
+                        <div class="p-3 bg-light rounded text-muted small">
+                            <i class="fas fa-info-circle me-1"></i> Các dịch vụ gia tăng đang được cập nhật theo mùa lưu trú. Quý khách có thể yêu cầu trực tiếp tại Quầy lễ tân khi nhận phòng.
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
 
-            <!-- SPECIAL REQUESTS -->
-            <div class="the-chinh p-4 mb-4">
-                <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="fas fa-comment-alt me-2 text-primary"></i>Yêu cầu đặc biệt</h6>
-                <textarea name="special_requests" class="form-control bieumau-dieukhien-sach" rows="3" placeholder="Ví dụ: Phòng không hút thuốc, Nhận phòng sớm..."></textarea>
-                <p class="kichthuoc-nho-hon text-muted mt-2 italic">*Yêu cầu đặc biệt không được đảm bảo nhưng chúng tôi sẽ cố gắng hỗ trợ.</p>
-            </div>
-
-            <!-- PROMO & PAYMENT -->
-            <div class="the-chinh p-4 mb-4">
-                <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="fas fa-credit-card me-2 text-primary"></i>Thông tin thanh toán</h6>
-                
-                <div class="bieumau-phan-sach">
-                    <label class="bieumau-nhan-sach">Mã khuyến mãi (Nếu có)</label>
-                    <div class="d-flex gap-2 max-w-400">
-                        <input type="text" name="promo_code" value="{{ promo_code }}" class="form-control bieumau-dieukhien-sach" placeholder="Nhập mã ưu đãi">
-                        <button type="button" class="btn btn-outline-primary px-3">Kiểm tra</button>
-                    </div>
+            <!-- 2. SPECIAL REQUESTS -->
+            <div class="checkout-card">
+                <div class="checkout-card-title">
+                    <i class="fas fa-feather-alt"></i>
+                    <span>Yêu cầu đặc biệt cho kỳ nghỉ (Special Requests)</span>
                 </div>
-
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="bieumau-nhan-sach d-block mb-3">Phương thức thanh toán</label>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment_method" value="credit_card" id="pay_cc" checked>
-                            <label class="form-check-label small" for="pay_cc">Thẻ tín dụng (Visa, Master, JCB)</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment_method" value="bank_transfer" id="pay_bank">
-                            <label class="form-check-label small" for="pay_bank">Chuyển khoản / VNPAY</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method" value="cash" id="pay_cash">
-                            <label class="form-check-label small" for="pay_cash">Tiền mặt (Tại quầy)</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="bieumau-nhan-sach d-block mb-3">Hình thức lựa chọn</label>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment_type" value="full" id="type_full" checked>
-                            <label class="form-check-label small" for="type_full">Trả toàn bộ 100%</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_type" value="deposit" id="type_dep">
-                            <label class="form-check-label small" for="type_dep">Đặt cọc giữ chỗ (50%)</label>
-                        </div>
-                    </div>
+                <textarea name="special_requests" class="form-control" rows="3" placeholder="Ví dụ: Cần chuẩn bị giường đôi King, phòng tầng cao yên tĩnh, chuẩn bị set hoa chúc mừng kỷ niệm ngày cưới..."></textarea>
+                <div class="mt-2 text-muted" style="font-size: 0.8rem; font-style: italic;">
+                    * Sài Gòn - Côn Đảo Resort sẽ nỗ lực tối đa để đáp ứng nguyện vọng của Quý khách theo tình trạng buồng phòng thực tế.
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center">
-                <button type="button" class="btn btn-link text-muted text-decoration-none small"
-                        onclick="document.getElementById('release-form').submit()">
-                    <i class="fas fa-times me-1"></i> Hủy đặt phòng này
+            <!-- 3. PROMO CODE & PAYMENT SELECTION -->
+            <div class="checkout-card">
+                <div class="checkout-card-title">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Phương thức &amp; Hình thức thanh toán</span>
+                </div>
+
+                <!-- Promo Code Box -->
+                <div class="mb-4 p-3 bg-light rounded-3 border">
+                    <label class="form-label fw-bold text-dark small mb-2"><i class="fas fa-tag text-gold me-1"></i> Mã ưu đãi hội viên (Promo Code)</label>
+                    <div class="input-group" style="max-width: 420px;">
+                        <input type="text" name="promo_code" id="checkout_promo_code" value="{{ promo_code }}" class="form-control text-uppercase" placeholder="VD: SUMMER26, HERITAGE2026">
+                        <button type="button" id="btn_checkout_promo" class="btn btn-outline-secondary px-3 fw-bold" style="font-size: 0.85rem;">Kiểm tra</button>
+                    </div>
+                    <div id="checkout_promo_feedback" class="mt-2 small">
+                      {% if discount_percent > 0 %}
+                      <span class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i>Đã áp dụng ưu đãi {{ promo_code }} (-{{ discount_percent }}%)</span>
+                      {% endif %}
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark small mb-2">Chọn phương thức thanh toán:</label>
+                        
+                        <!-- VNPAY QR Option (Preferred) -->
+                        <div class="payment-method-card active" onclick="document.getElementById('pay_bank').checked = true; updatePaymentCardStyle();">
+                            <div class="payment-method-header">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" type="radio" name="payment_method" value="bank_transfer" id="pay_bank" checked>
+                                    <label class="form-check-label fw-bold text-dark ms-2" for="pay_bank">
+                                        <i class="fas fa-qrcode text-primary me-1"></i> Chuyển khoản VietQR / Cổng VNPAY-QR
+                                    </label>
+                                </div>
+                                <span class="payment-badge-popular">Khuyên dùng • Tức thì</span>
+                            </div>
+                            <div class="text-muted small mt-2 ps-4">
+                                Quét mã QR tiện lợi qua mọi ứng dụng Ngân hàng (VCB, BIDV, MB, Techcombank...) hoặc ví điện tử.
+                            </div>
+                        </div>
+
+                        <!-- Credit Card Option -->
+                        <div class="payment-method-card" onclick="document.getElementById('pay_cc').checked = true; updatePaymentCardStyle();">
+                            <div class="payment-method-header">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" type="radio" name="payment_method" value="credit_card" id="pay_cc">
+                                    <label class="form-check-label fw-bold text-dark ms-2" for="pay_cc">
+                                        <i class="fas fa-credit-card text-success me-1"></i> Thẻ tín dụng quốc tế (Visa, MasterCard, JCB)
+                                    </label>
+                                </div>
+                                <span class="badge bg-light text-dark border">Miễn phí giao dịch</span>
+                            </div>
+                            <div class="text-muted small mt-2 ps-4">
+                                Bảo mật chuẩn quốc tế 3D Secure với hệ thống xử lý giao dịch an toàn.
+                            </div>
+                        </div>
+
+                        <!-- Cash at Reception Option -->
+                        <div class="payment-method-card" onclick="document.getElementById('pay_cash').checked = true; updatePaymentCardStyle();">
+                            <div class="payment-method-header">
+                                <div class="form-check m-0">
+                                    <input class="form-check-input" type="radio" name="payment_method" value="cash" id="pay_cash">
+                                    <label class="form-check-label fw-bold text-dark ms-2" for="pay_cash">
+                                        <i class="fas fa-money-bill-wave text-warning me-1"></i> Thanh toán tiền mặt tại Quầy lễ tân
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="text-muted small mt-2 ps-4">
+                                Xác nhận đặt trước và thanh toán trực tiếp khi làm thủ tục Check-in tại quầy Lễ tân resort.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Type Option -->
+                    <div class="col-12 mt-3 pt-3 border-top">
+                        <label class="form-label fw-bold text-dark small mb-2">Hình thức đặt cọc / thanh toán:</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            <label class="form-check border rounded p-3 flex-fill bg-white contro-chuot">
+                                <input class="form-check-input" type="radio" name="payment_type" value="full" id="type_full" checked>
+                                <span class="form-check-label fw-bold text-dark ms-2">
+                                    Thanh toán 100% (Toàn bộ kỳ nghỉ)
+                                </span>
+                                <div class="text-muted small ps-4 mt-1">Đảm bảo nhận phòng nhanh chóng không cần làm thêm thủ tục cọc.</div>
+                            </label>
+                            <label class="form-check border rounded p-3 flex-fill bg-white contro-chuot">
+                                <input class="form-check-input" type="radio" name="payment_type" value="deposit" id="type_dep">
+                                <span class="form-check-label fw-bold text-dark ms-2">
+                                    Đặt cọc giữ chỗ 50%
+                                </span>
+                                <div class="text-muted small ps-4 mt-1">Thanh toán 50% trước, số tiền còn lại quyết toán khi Check-out.</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUTTONS AND SUBMIT -->
+            <div class="d-flex justify-content-between align-items-center pt-2">
+                <button type="button" class="btn btn-cancel-hold" onclick="document.getElementById('release-form').submit()">
+                    <i class="fas fa-times-circle me-1"></i> Hủy phiên giữ phòng và quay lại
                 </button>
-                <button type="submit" id="confirm-btn" class="btn nut-xanh-datphong px-5 py-3 fw-bold rounded-4">XÁC NHẬN & THANH TOÁN</button>
+                <button type="submit" id="confirm-btn" class="btn btn-luxury-confirm">
+                    <i class="fas fa-shield-check me-2"></i> TIẾP TỤC ĐẾN BƯỚC THANH TOÁN
+                </button>
             </div>
             <div id="checkout-error" class="alert alert-danger py-2 mt-3 d-none small"></div>
         </form>
 
-        <!-- Form hủy phòng tách biệt, nằm ngoài form thanh toán -->
+        <!-- Hidden release form -->
         <form id="release-form" action="/booking/release" method="POST" class="d-none"></form>
-    </main>
+    </div>
 
-    <!-- SIDEBAR: SUMMARY -->
-    <aside>
-        <div class="the-tomtat shadow-sm border-2 border-primary border-opacity-25">
-            <h5 class="fw-bold mb-4">Chi tiết chuyến đi</h5>
-            
-            <div class="mb-4">
-                <div class="fw-bold text-primary fs-5">{{ room_type.room_type_code }}</div>
-                <div class="small text-muted"><i class="fas fa-hotel me-1"></i> Hệ thống khách sạn đối tác</div>
+    <!-- SIDEBAR: SUMMARY (35%) -->
+    <div class="col-lg-4">
+        <div class="trip-summary-card">
+            <div class="summary-img-header">
+                <img src="{{ main_image or url_for('static', filename='uploads/rooms/15_d3d6ca89_landscape.jpg') }}" alt="{{ room_type.room_title }}" class="summary-room-img" style="width:100%; height:180px; object-fit:cover;">
+                <div class="summary-img-overlay">
+                    <span class="summary-hotel-badge"><i class="fas fa-star text-gold me-1"></i> Sài Gòn - Côn Đảo Resort 4 Sao</span>
+                    <h3 class="summary-room-title">{{ room_type.room_title or 'Villa Deluxe Hướng Vườn' }}</h3>
+                </div>
             </div>
 
-            <div class="border-top pt-3 mb-4">
-                <div class="row g-2">
-                    <div class="col-6">
-                        <label class="kichthuoc-nho-hon fw-bold text-muted uppercase">Nhận phòng</label>
-                        <div class="fw-bold small">{{ checkin_date }}</div>
-                        <div class="kichthuoc-nho-hon text-muted">Từ 14:00</div>
+            <div class="summary-content">
+                <!-- Package badge in summary -->
+                <div class="mb-3 pb-2 border-bottom">
+                  <span class="badge {{ package_info.badge_class }} py-1 px-2" style="font-size: 0.75rem; font-weight: 600;">
+                    <i class="{{ package_info.icon }} me-1"></i> {{ package_info.title }}
+                  </span>
+                </div>
+
+                <div class="summary-detail-row">
+                    <span class="summary-detail-label">Nhận phòng (Check-in)</span>
+                    <span class="summary-detail-val">{{ checkin_date }} (Từ 14:00)</span>
+                </div>
+                <div class="summary-detail-row">
+                    <span class="summary-detail-label">Trả phòng (Check-out)</span>
+                    <span class="summary-detail-val">{{ checkout_date }} (Trước 12:00)</span>
+                </div>
+                <div class="summary-detail-row">
+                    <span class="summary-detail-label">Thời gian lưu trú</span>
+                    <span class="summary-detail-val" id="stay-duration-summary">2 đêm lưu trú</span>
+                </div>
+                <div class="summary-detail-row">
+                    <span class="summary-detail-label">Số lượng khách</span>
+                    <span class="summary-detail-val">{{ adults }} người lớn, {{ children }} trẻ em</span>
+                </div>
+                <div class="summary-detail-row">
+                    <span class="summary-detail-label">Đón tiễn sân bay Cỏ Ống</span>
+                    <span class="summary-detail-val text-success"><i class="fas fa-check-circle me-1"></i> Đã bao gồm (Miễn phí)</span>
+                </div>
+
+                <!-- BÓC TÁCH CHI TIẾT TÀI CHÍNH MINH BẠCH (ITEMIZED BREAKDOWN) -->
+                <div class="summary-price-breakdown mt-3 pt-3 border-top">
+                    <div class="d-flex justify-content-between mb-1 small">
+                        <span class="text-secondary">Tiền phòng (<span id="recap-nights-count">2</span> đêm):</span>
+                        <span class="fw-bold text-dark" id="recap-room-cost">0 đ</span>
                     </div>
-                    <div class="col-6">
-                        <label class="kichthuoc-nho-hon fw-bold text-muted uppercase">Trả phòng</label>
-                        <div class="fw-bold small">{{ checkout_date }}</div>
-                        <div class="kichthuoc-nho-hon text-muted">Trước 12:00</div>
+                    <div id="recap-services-block" style="display: none;">
+                        <div class="d-flex justify-content-between mb-1 small text-primary">
+                            <span><i class="fas fa-plus-circle me-1"></i> Dịch vụ gia tăng:</span>
+                            <span class="fw-bold" id="recap-services-cost">+0 đ</span>
+                        </div>
+                        <div id="recap-services-list" class="small text-muted ps-2 mb-2" style="font-size: 0.75rem; line-height: 1.4;"></div>
+                    </div>
+                    <div id="recap-promo-block" style="display: none;">
+                        <div class="d-flex justify-content-between mb-1 small text-success">
+                            <span><i class="fas fa-tag me-1"></i> Ưu đãi (<span id="recap-promo-code-label"></span>):</span>
+                            <span class="fw-bold" id="recap-promo-cost">-0 đ</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1 small">
+                        <span class="text-secondary">Thuế GTGT &amp; Phí phục vụ (10%):</span>
+                        <span class="fw-bold text-dark" id="recap-tax-cost">0 đ</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-4">
-                <label class="kichthuoc-nho-hon fw-bold text-muted uppercase d-block mb-1">Thời gian lưu trú</label>
-                <div class="small fw-bold">
-                    {% if booking_type == 'continuous' %}
-                        Xuyên suốt từ {{ checkin_date }}
-                    {% else %}
-                        Từng đêm đặc biệt
-                    {% endif %}
+                <!-- Price Breakdown Area -->
+                <div class="summary-total-area mt-2 pt-2 border-top">
+                    <div class="d-flex justify-content-between align-items-baseline mb-1">
+                        <span class="summary-total-label fw-bold" id="total-price-label">Tổng cộng thanh toán (100%):</span>
+                        <span class="summary-total-val text-primary fw-bold" id="total-price-display" style="font-size: 1.35rem;">Đang tính...</span>
+                    </div>
+                    <div id="deposit-remaining-note" style="display: none;" class="text-danger small text-end fw-semibold mt-1"></div>
+                    <div class="text-muted" style="font-size: 0.78rem; text-align: right;">
+                        * Đã bao gồm thuế GTGT &amp; phí dịch vụ resort
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-4">
-                <label class="kichthuoc-nho-hon fw-bold text-muted uppercase d-block mb-1">Số lượng khách</label>
-                <div class="small fw-bold">{{ adults }} người lớn, {{ children }} trẻ em</div>
-            </div>
-
-            <div class="price-breakdown mt-4 pt-4 border-top">
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted" id="total-price-label">Giá tạm tính</span>
-                    <span class="fw-bold text-primary fs-5" id="total-price-display">Hệ thống xử lý...</span>
-                </div>
-                <div class="status-badge mt-3 text-center p-2 bg-success bg-opacity-10 text-success rounded small border border-success border-opacity-25">
-                    <i class="fas fa-check-circle me-1"></i> Giá tốt nhất hiện có
+                <div class="mt-4 p-3 bg-light rounded text-center border" style="font-size: 0.82rem;">
+                    <i class="fas fa-lock text-gold me-1"></i> Giao dịch bảo mật qua cổng trực tuyến
                 </div>
             </div>
         </div>
-    </aside>
+    </div>
 </div>
 
 <script type="application/json" id="checkout-data">
@@ -177,7 +340,10 @@
     "checkinDate": "{{ checkin_date }}",
     "checkoutDate": "{{ checkout_date }}",
     "basePrice": {{ room_type.base_price or 0 }},
-    "selectedNights": "{{ selected_nights|default('') }}"
+    "selectedNights": "{{ selected_nights|default('') }}",
+    "lockedUntil": "{{ locked_until }}",
+    "discountPercent": {{ discount_percent | default(0) }},
+    "promoCode": "{{ promo_code or '' }}"
 }
 </script>
 <script src="{{ url_for('static', filename='js/pages/checkout.js') }}"></script>

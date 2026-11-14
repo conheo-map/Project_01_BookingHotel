@@ -1,119 +1,267 @@
 {% extends "base.html" %}
-{% block title %}Manager Dashboard - Hotel Booking{% endblock %}
+{% block title %}Bàn Điều Hành Quản Lý - Quản Trị Resort 5 Sao{% endblock %}
 {% block content %}
 
+<!-- Header & Quick Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Bảng điều khiển Quản lý</h2>
-        <p class="text-muted small mb-0">Tổng quan hoạt động kinh doanh và vận hành.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-crown text-warning"></i> Tổng Quan Điều Hành & Kinh Doanh Resort
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Bàn Điều Hành Quản Lý
+        </h2>
+        <p class="text-muted small mb-0">Theo dõi thời gian thực các chỉ số tài chính, tình trạng 92 buồng phòng và luồng khách lưu trú.</p>
     </div>
-    <div class="col-auto d-flex gap-2">
-        <a href="/analytics" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-chart-bar me-1"></i>Analytics
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-md-end align-items-center">
+        <button type="button" onclick="window.print()" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-print text-muted"></i> In Báo Cáo
+        </button>
+        <a href="/analytics" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-chart-line text-primary"></i> Phân Tích Analytics
         </a>
-        <a href="/manager/reports" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-file-alt me-1"></i>Báo cáo
+        <a href="/manager/reports" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #072A44; color: #DFB76C; border: 1px solid #072A44; border-radius: 8px;">
+            <i class="fas fa-file-invoice-dollar"></i> Báo Cáo Tổng Hợp
         </a>
     </div>
 </div>
 
-<!-- KPI stats -->
-<!-- <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-2 fw-bold chu-datphong">{{ summary.total_bookings or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Tổng đặt phòng</div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-2 fw-bold text-success">{{ summary.total_revenue|vnd if summary.total_revenue else '0đ' }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Doanh thu</div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-2 fw-bold text-warning">
-                {{ "%.0f"|format((summary.avg_occupancy_rate or 0) * 100) }}%
+<!-- Primary Executive KPI Row -->
+<div class="row g-3 mb-4">
+    <!-- Total Revenue -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #10B981;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Doanh Thu Thực Thu</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(16, 185, 129, 0.12); color: #10B981;">
+                    <i class="fas fa-wallet"></i>
+                </span>
             </div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Công suất phòng</div>
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #065F46; font-family: 'Playfair Display', serif;">
+                {{ (summary.total_revenue or 0)|vnd }}
+            </div>
+            <div class="d-flex align-items-center small text-muted" style="font-size: 0.75rem;">
+                <i class="fas fa-check-circle text-success me-1"></i> Đã khấu trừ 100% đơn hủy
+            </div>
         </div>
     </div>
-    <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-2 fw-bold text-info">{{ summary.total_nights or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase khoangcach-chu-1">Đêm lưu trú</div>
-        </div>
-    </div>
-</div> -->
 
-<!-- Ops row -->
+    <!-- Total Bookings -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #072A44;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Tổng Đặt Phòng</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(7, 42, 68, 0.08); color: #072A44;">
+                    <i class="fas fa-calendar-check"></i>
+                </span>
+            </div>
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #072A44; font-family: 'Playfair Display', serif;">
+                {{ "{:,.0f}".format(summary.total_bookings or 0).replace(',', '.') }} <span class="fs-6 fw-normal text-muted">hồ sơ</span>
+            </div>
+            <div class="d-flex align-items-center small text-muted" style="font-size: 0.75rem;">
+                <span class="text-danger fw-semibold me-1"><i class="fas fa-ban me-1"></i>Hủy: {{ "%.1f"|format(summary.cancel_rate or 0) }}%</span>
+                <span>({{ "{:,.0f}".format(summary.total_canceled or 0).replace(',', '.') }} đơn)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Occupancy Rate -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #B89758;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Công Suất Bình Quân</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(184, 151, 88, 0.15); color: #8C733E;">
+                    <i class="fas fa-chart-pie"></i>
+                </span>
+            </div>
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #8C733E; font-family: 'Playfair Display', serif;">
+                {{ "%.1f"|format((summary.avg_occupancy_rate or 0) * 100) }}%
+            </div>
+            <div class="d-flex align-items-center small text-muted" style="font-size: 0.75rem;">
+                <i class="fas fa-bed me-1 text-primary"></i> Trên tổng số 92 buồng phòng
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Nights & ADR -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #3B82F6;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Đêm Lưu Trú & Giá TB</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(59, 130, 246, 0.12); color: #2563EB;">
+                    <i class="fas fa-moon"></i>
+                </span>
+            </div>
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #1E3A8A; font-family: 'Playfair Display', serif;">
+                {{ "{:,.0f}".format(summary.total_nights or 0).replace(',', '.') }} <span class="fs-6 fw-normal text-muted">đêm</span>
+            </div>
+            <div class="d-flex align-items-center small text-muted" style="font-size: 0.75rem;">
+                <span class="fw-semibold text-dark">ADR:</span> {{ (summary.avg_daily_rate or 0)|round(0)|int|vnd if summary.avg_daily_rate else '0 đ' }}/đêm
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Operations Strip (Realtime Operations) -->
 {% if ops %}
 <div class="row g-3 mb-4">
-    <div class="col-4 col-md-2">
-        <div class="thongke-hop text-center">
-            <div class="fs-4 fw-bold text-success">{{ ops.checkins_due or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted">Nhận phòng hôm nay</div>
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white rounded-3 shadow-sm d-flex align-items-center gap-3" style="border: 1px solid #E2E8F0; border-left: 3px solid #10B981;">
+            <div class="p-3 rounded-circle d-flex align-items-center justify-content-center" style="background: rgba(16, 185, 129, 0.12); color: #10B981; width: 44px; height: 44px;">
+                <i class="fas fa-sign-in-alt fa-lg"></i>
+            </div>
+            <div>
+                <div class="fs-4 fw-bold sc-net-num text-dark mb-0 lh-1">{{ ops.checkins_due or 0 }}</div>
+                <div class="text-muted text-uppercase fw-semibold" style="font-size: 0.68rem; letter-spacing: 0.04em;">Nhận phòng hôm nay</div>
+            </div>
         </div>
     </div>
-    <div class="col-4 col-md-2">
-        <div class="thongke-hop text-center">
-            <div class="fs-4 fw-bold text-warning">{{ ops.checkouts_due or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted">Trả phòng hôm nay</div>
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white rounded-3 shadow-sm d-flex align-items-center gap-3" style="border: 1px solid #E2E8F0; border-left: 3px solid #2563EB;">
+            <div class="p-3 rounded-circle d-flex align-items-center justify-content-center" style="background: rgba(59, 130, 246, 0.12); color: #2563EB; width: 44px; height: 44px;">
+                <i class="fas fa-sign-out-alt fa-lg"></i>
+            </div>
+            <div>
+                <div class="fs-4 fw-bold sc-net-num text-dark mb-0 lh-1">{{ ops.checkouts_due or 0 }}</div>
+                <div class="text-muted text-uppercase fw-semibold" style="font-size: 0.68rem; letter-spacing: 0.04em;">Trả phòng hôm nay</div>
+            </div>
         </div>
     </div>
-    <div class="col-4 col-md-2">
-        <div class="thongke-hop text-center">
-            <div class="fs-4 fw-bold text-danger">{{ ops.dirty_rooms or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted">Phòng bẩn</div>
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white rounded-3 shadow-sm d-flex align-items-center gap-3" style="border: 1px solid #E2E8F0; border-left: 3px solid #D97706;">
+            <div class="p-3 rounded-circle d-flex align-items-center justify-content-center" style="background: rgba(245, 158, 11, 0.15); color: #D97706; width: 44px; height: 44px;">
+                <i class="fas fa-broom fa-lg"></i>
+            </div>
+            <div>
+                <div class="fs-4 fw-bold sc-net-num text-dark mb-0 lh-1">{{ ops.dirty_rooms or 0 }}</div>
+                <div class="text-muted text-uppercase fw-semibold" style="font-size: 0.68rem; letter-spacing: 0.04em;">Phòng cần dọn dẹp</div>
+            </div>
         </div>
     </div>
-    <div class="col-4 col-md-2">
-        <div class="thongke-hop text-center">
-            <div class="fs-4 fw-bold text-secondary">{{ ops.maintenance_rooms or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted">Bảo trì</div>
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white rounded-3 shadow-sm d-flex align-items-center gap-3" style="border: 1px solid #E2E8F0; border-left: 3px solid #64748B;">
+            <div class="p-3 rounded-circle d-flex align-items-center justify-content-center" style="background: rgba(100, 116, 139, 0.12); color: #475569; width: 44px; height: 44px;">
+                <i class="fas fa-tools fa-lg"></i>
+            </div>
+            <div>
+                <div class="fs-4 fw-bold sc-net-num text-dark mb-0 lh-1">{{ ops.maintenance_rooms or 0 }}</div>
+                <div class="text-muted text-uppercase fw-semibold" style="font-size: 0.68rem; letter-spacing: 0.04em;">Phòng bảo trì kỹ thuật</div>
+            </div>
         </div>
     </div>
 </div>
 {% endif %}
 
 <div class="row g-4">
-    <!-- Recent bookings -->
+    <!-- Recent Bookings Table -->
     <div class="col-lg-8">
-        <div class="the-chinh p-0 overflow-hidden">
-            <div class="the-tieude-sach px-4 py-3 d-flex justify-content-between align-items-center">
-                <span class="fw-bold"><i class="fas fa-clock me-2"></i>Đặt phòng gần đây</span>
-                <a href="/receptionist" class="btn btn-outline-secondary btn-sm">Xem tất cả</a>
+        <div class="bg-white rounded-3 shadow-sm overflow-hidden" style="border: 1px solid #E2E8F0;">
+            <div class="px-4 py-3 d-flex justify-content-between align-items-center" 
+                 style="background: #072A44; border-bottom: 2px solid #DFB76C; color: #FFFFFF;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-history" style="color: #DFB76C;"></i>
+                    <span class="fw-bold" style="font-family: 'Playfair Display', serif; font-size: 1.08rem; letter-spacing: 0.02em;">
+                        Đặt Phòng Mới Ghi Nhận
+                    </span>
+                    <span class="badge rounded-pill bg-white text-dark ms-2 px-2 py-1" style="font-size: 0.72rem;">Top 10 mới nhất</span>
+                </div>
+                <a href="/receptionist" class="btn btn-sm btn-outline-light px-3 py-1" style="font-size: 0.8rem; border-radius: 6px;">
+                    Xem toàn bộ sổ đặt phòng <i class="fas fa-arrow-right ms-1"></i>
+                </a>
             </div>
+
             {% if bookings %}
             <div class="table-responsive">
-                <table class="bang-sach">
-                    <thead>
+                <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+                    <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; color: #64748B;">
                         <tr>
-                            <th>#ID</th>
+                            <th class="ps-4 py-3">Mã #ID</th>
                             <th>Khách hàng</th>
-                            <th>Phòng</th>
-                            <th>Ngày</th>
-                            <th>Doanh thu</th>
+                            <th>Hạng phòng</th>
+                            <th>Ngày đến</th>
+                            <th>Tổng tiền</th>
                             <th>Trạng thái</th>
+                            <th class="text-end pe-4">Chi tiết</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for b in bookings %}
-                        <tr>
-                            <td>
-                                <a href="/receptionist/invoice/{{ b.booking_id }}" class="text-decoration-none fw-bold chu-datphong">
-                                    #{{ b.booking_id }}
-                                </a>
+                        {% set cust_name = b.customer_full_name or b.customer_name or 'Khách vãng lai' %}
+                        {% set arr_date = b.arrival_date or b.checkin_date or '' %}
+                        <tr style="border-bottom: 1px solid #F1F5F9;">
+                            <td class="ps-4">
+                                <span class="badge bg-light text-dark border px-2 py-1 sc-net-num fw-bold">#{{ b.booking_id }}</span>
                             </td>
-                            <td class="small">{{ b.customer_name or '—' }}</td>
-                            <td class="small">{{ b.room_type_code or '—' }}</td>
-                            <td class="small">{{ b.checkin_date or '—' }}</td>
-                            <td class="fw-bold small">{{ b.total_price|vnd if b.total_price else '—' }}</td>
                             <td>
-                                <span class="huyhieu-sach status-{{ (b.status or 'unknown')|lower|replace('-','') }} kichthuoc-nho-hon">
-                                    {{ b.status or '—' }}
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm"
+                                         style="width: 28px; height: 28px; font-size: 0.75rem; background: linear-gradient(135deg, #072A44 0%, #1E3A8A 100%);">
+                                        {{ (cust_name or 'G')[0]|upper }}
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold text-dark">{{ cust_name }}</div>
+                                        {% if b.customer_phone %}
+                                        <div class="text-muted small" style="font-size: 0.72rem;">{{ b.customer_phone }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-secondary border font-monospace px-2 py-1 fw-bold">{{ b.room_type_code or '—' }}</span>
+                                {% if b.hotel_name %}
+                                <div class="text-muted small" style="font-size: 0.7rem;">{{ b.hotel_name }}</div>
+                                {% endif %}
+                            </td>
+                            <td class="small text-muted sc-net-num">
+                                {% if arr_date %}
+                                <i class="far fa-calendar-alt me-1 text-primary"></i>
+                                <span class="fw-bold text-dark">{{ arr_date[8:10] }}/{{ arr_date[5:7] }}/{{ arr_date[0:4] }}</span>
+                                {% if b.nights %}<span class="text-muted ms-1">({{ b.nights }}đ)</span>{% endif %}
+                                {% else %}
+                                <span class="text-muted">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="fw-bold sc-net-num" style="color: #065F46;">
+                                    {{ b.total_price|vnd if b.total_price else '—' }}
                                 </span>
+                            </td>
+                            <td>
+                                {% set st = (b.status or '')|lower %}
+                                {% if 'confirm' in st or 'xác nhận' in st %}
+                                    <span class="badge px-2 py-1" style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25);">
+                                        <i class="fas fa-check-circle me-1"></i>Đã xác nhận
+                                    </span>
+                                {% elif 'cancel' in st or 'hủy' in st %}
+                                    <span class="badge px-2 py-1" style="background: rgba(239, 68, 68, 0.1); color: #DC2626; border: 1px solid rgba(239, 68, 68, 0.25);">
+                                        <i class="fas fa-times-circle me-1"></i>Đã hủy
+                                    </span>
+                                {% elif 'check-in' in st or 'checked-in' in st %}
+                                    <span class="badge px-2 py-1" style="background: rgba(59, 130, 246, 0.12); color: #2563EB; border: 1px solid rgba(59, 130, 246, 0.25);">
+                                        <i class="fas fa-key me-1"></i>Đang lưu trú
+                                    </span>
+                                {% elif 'checkout' in st or 'checked-out' in st %}
+                                    <span class="badge px-2 py-1" style="background: rgba(100, 116, 139, 0.12); color: #475569; border: 1px solid rgba(100, 116, 139, 0.25);">
+                                        <i class="fas fa-check-double me-1"></i>Đã trả phòng
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-light text-muted border px-2 py-1">{{ b.status or '—' }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                <a href="/receptionist/invoice/{{ b.booking_id }}" 
+                                   class="btn btn-sm btn-outline-secondary px-2 py-1 shadow-sm" 
+                                   title="Xem phiếu chi tiết hóa đơn">
+                                    <i class="fas fa-file-invoice text-primary"></i>
+                                </a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -121,50 +269,128 @@
                 </table>
             </div>
             {% else %}
-            <div class="p-4 text-center text-muted small">Chưa có đặt phòng nào.</div>
+            <div class="p-5 text-center text-muted">
+                <i class="fas fa-calendar-times fa-3x opacity-25 mb-3 d-block"></i>
+                Chưa có dữ liệu đặt phòng nào được ghi nhận.
+            </div>
             {% endif %}
         </div>
     </div>
 
-    <!-- By hotel + Quick links -->
+    <!-- Hotel Revenue Breakdown & Quick Actions -->
     <div class="col-lg-4">
+        <!-- By Hotel Card -->
         {% if by_hotel %}
-        <div class="the-chinh p-4 mb-4">
-            <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-hotel me-2 chu-datphong"></i>Theo khách sạn</h6>
+        <div class="bg-white rounded-3 shadow-sm p-4 mb-4" style="border: 1px solid #E2E8F0;">
+            <div class="d-flex align-items-center justify-content-between pb-3 mb-3" style="border-bottom: 2px solid #DFB76C;">
+                <h6 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', serif; font-size: 1.08rem;">
+                    <i class="fas fa-hotel me-2" style="color: #DFB76C;"></i>Doanh Thu Theo Chi Nhánh
+                </h6>
+                <span class="badge rounded-pill bg-light text-muted border">{{ by_hotel|length }} cơ sở</span>
+            </div>
             {% for h in by_hotel %}
-            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 {% if not loop.last %}border-bottom{% endif %}">
-                <div>
-                    <div class="small fw-bold">{{ h.hotel_name or '—' }}</div>
-                    <div class="kichthuoc-nho-hon text-muted">{{ h.total_bookings or 0 }} đặt phòng</div>
+            <div class="p-3 rounded-3 mb-2 {% if not loop.last %}mb-3{% endif %}" style="background: #FDFBF7; border: 1px solid #EFEAE2;">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold text-dark" style="font-size: 0.95rem;">
+                        <i class="fas {{ 'fa-umbrella-beach text-warning' if 'Resort' in (h.hotel_name or '') else 'fa-city text-primary' }} me-1"></i>
+                        {{ h.hotel_name or 'Resort Hotel' }}
+                    </span>
+                    <span class="badge bg-white text-dark border px-2 py-1 sc-net-num fw-bold" style="font-size: 0.75rem;">
+                        {{ "{:,.0f}".format(h.total_bookings or 0).replace(',', '.') }} hồ sơ
+                    </span>
                 </div>
-                <div class="text-end">
-                    <div class="small fw-bold chu-datphong">{{ h.total_revenue|vnd if h.total_revenue else '0đ' }}</div>
+                <div class="d-flex justify-content-between align-items-baseline mb-2">
+                    <span class="text-muted small" style="font-size: 0.78rem;">
+                        ADR: <span class="fw-semibold text-dark">{{ (h.avg_adr or 0)|round(0)|int|vnd if h.avg_adr else '—' }}</span>/đêm
+                    </span>
+                    <span class="fw-bold sc-net-num" style="color: #065F46; font-size: 1.1rem;">
+                        {{ (h.total_revenue or 0)|vnd }}
+                    </span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between text-muted" style="font-size: 0.72rem;">
+                    <span>{{ "{:,.0f}".format(h.total_nights or 0).replace(',', '.') }} đêm lưu trú</span>
+                    <span class="fw-bold text-success">{{ "%.1f"|format((h.avg_occupancy_rate or 0) * 100) }}% công suất</span>
+                </div>
+                <div class="progress mt-1" style="height: 5px; border-radius: 3px; background: #EEF2F6;">
+                    <div class="progress-bar bg-success" style="width: {{ "%.0f"|format((h.avg_occupancy_rate or 0) * 100) }}%; border-radius: 3px;"></div>
                 </div>
             </div>
             {% endfor %}
         </div>
         {% endif %}
 
-        <div class="the-chinh p-4">
-            <h6 class="fw-bold mb-3"><i class="fas fa-tools me-2 text-muted"></i>Quản lý nhanh</h6>
-            <a href="/manager/inventory-pricing" class="d-block p-2 bo-goc-8 di-chuot-sangs hieuung-coban text-decoration-none text-dark mb-2">
-                <i class="fas fa-tag me-2 chu-datphong"></i>Quản lý giá phòng
-            </a>
-            <a href="/manager/promotions" class="d-block p-2 bo-goc-8 di-chuot-sangs hieuung-coban text-decoration-none text-dark mb-2">
-                <i class="fas fa-percentage me-2 text-success"></i>Khuyến mãi
-            </a>
-            <a href="/manager/physical-rooms" class="d-block p-2 bo-goc-8 di-chuot-sangs hieuung-coban text-decoration-none text-dark mb-2">
-                <i class="fas fa-door-open me-2 text-info"></i>Quản lý phòng vật lý
-            </a>
-            <a href="/manager/room-catalog" class="d-block p-2 bo-goc-8 di-chuot-sangs hieuung-coban text-decoration-none text-dark mb-2">
-                <i class="fas fa-list me-2 text-warning"></i>Danh mục loại phòng
-            </a>
-            <a href="/manager/refund-policy" class="d-block p-2 bo-goc-8 di-chuot-sangs hieuung-coban text-decoration-none text-dark mb-2">
-                <i class="fas fa-undo me-2 text-danger"></i>Chính sách hoàn tiền
-            </a>
-            <a href="/manager/reports" class="d-block p-2 bo-goc-8 di-chuot-sangs hieuung-coban text-decoration-none text-dark">
-                <i class="fas fa-chart-bar me-2 text-secondary"></i>Báo cáo tổng hợp
-            </a>
+        <!-- Quick Manager Shortcuts -->
+        <div class="bg-white rounded-3 shadow-sm p-4" style="border: 1px solid #E2E8F0;">
+            <div class="pb-3 mb-3" style="border-bottom: 2px solid #F1F5F9;">
+                <h6 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', serif; font-size: 1.08rem;">
+                    <i class="fas fa-compass me-2" style="color: #DFB76C;"></i>Điều Hướng Quản Trị
+                </h6>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <a href="/manager/inventory-pricing" class="p-3 rounded-3 text-decoration-none d-flex align-items-center justify-content-between"
+                   style="background: #F8FAFC; border: 1px solid #E2E8F0; color: #1E293B; transition: all 0.2s;"
+                   onmouseover="this.style.borderColor='#DFB76C'; this.style.background='#FFFFFF';"
+                   onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC';">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(184, 151, 88, 0.15); color: #8C733E;">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size: 0.88rem;">Kho Phòng & Thiết Lập Giá</div>
+                            <div class="text-muted small" style="font-size: 0.72rem;">Điều chỉnh giá động và phòng trống</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted small"></i>
+                </a>
+
+                <a href="/manager/room-catalog" class="p-3 rounded-3 text-decoration-none d-flex align-items-center justify-content-between"
+                   style="background: #F8FAFC; border: 1px solid #E2E8F0; color: #1E293B; transition: all 0.2s;"
+                   onmouseover="this.style.borderColor='#DFB76C'; this.style.background='#FFFFFF';"
+                   onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC';">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(59, 130, 246, 0.12); color: #2563EB;">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size: 0.88rem;">Danh Mục Hạng Phòng</div>
+                            <div class="text-muted small" style="font-size: 0.72rem;">Cấu hình sức chứa và tiện nghi</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted small"></i>
+                </a>
+
+                <a href="/manager/physical-rooms" class="p-3 rounded-3 text-decoration-none d-flex align-items-center justify-content-between"
+                   style="background: #F8FAFC; border: 1px solid #E2E8F0; color: #1E293B; transition: all 0.2s;"
+                   onmouseover="this.style.borderColor='#DFB76C'; this.style.background='#FFFFFF';"
+                   onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC';">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(16, 185, 129, 0.12); color: #10B981;">
+                            <i class="fas fa-door-open"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size: 0.88rem;">Quản Lý Phòng Vật Lý</div>
+                            <div class="text-muted small" style="font-size: 0.72rem;">Danh sách 92 phòng và hiện trạng</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted small"></i>
+                </a>
+
+                <a href="/manager/promotions" class="p-3 rounded-3 text-decoration-none d-flex align-items-center justify-content-between"
+                   style="background: #F8FAFC; border: 1px solid #E2E8F0; color: #1E293B; transition: all 0.2s;"
+                   onmouseover="this.style.borderColor='#DFB76C'; this.style.background='#FFFFFF';"
+                   onmouseout="this.style.borderColor='#E2E8F0'; this.style.background='#F8FAFC';">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(239, 68, 68, 0.1); color: #DC2626;">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold" style="font-size: 0.88rem;">Khuyến Mãi & Voucher</div>
+                            <div class="text-muted small" style="font-size: 0.72rem;">Mã giảm giá và chính sách ưu đãi</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted small"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>

@@ -1,92 +1,117 @@
 {% extends "base.html" %}
-{% block title %}Sơ đồ phòng - Hotel Booking{% endblock %}
+{% block title %}Sơ đồ buồng phòng Matrix - Saigon - Condao Resort{% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/receptionist_room_plan.css') }}">
 {% endblock %}
 
 {% block content %}
 
-{# ── HEADER ── #}
-<div class="sodophong-tieude d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+{# ── HEADER TIẾP ĐÓN SƠ ĐỒ PHÒNG 5 SAO ── #}
+<div class="sodophong-tieude d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-2 border-bottom">
   <div>
-    <h4 class="fw-bold mb-0"><i class="fas fa-th me-2 text-primary"></i>Sơ đồ phòng</h4>
-    <div class="text-muted small">Tổng quan tình trạng tất cả phòng theo thời gian thực</div>
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2"
+         style="background: rgba(184, 151, 88, 0.12); border: 1px solid rgba(184, 151, 88, 0.35); font-size: 0.75rem; font-weight: 700; color: #8C6221; text-transform: uppercase; letter-spacing: 1px;">
+        <i class="fas fa-th text-gold"></i> SƠ ĐỒ BUỒNG PHÒNG MATRIX THỜI GIAN THỰC
+    </div>
+    <h2 class="fw-bold mb-1" style="font-family: var(--font-display, 'Playfair Display', serif); color: var(--sc-ocean, #072A44); font-size: 1.85rem;">
+        Sơ Đồ Buồng Phòng Trực Quan
+    </h2>
+    <div class="text-secondary small">Tổng quan tình trạng buồng phòng thời gian thực, điều phối tiếp đón và phân buồng nhanh chóng.</div>
   </div>
-  <div class="d-flex flex-wrap gap-2 w-100 w-md-auto">
-    <a href="/receptionist/walkin" class="btn sodophong-nut-khachtructiep flex-grow-1 flex-md-grow-0">
-      <i class="fas fa-plus me-1"></i>Đặt phòng vãng lai
+  <div class="d-flex flex-wrap gap-2 w-100 w-md-auto align-items-center">
+    <a href="/receptionist/walkin" class="btn sodophong-nut-khachtructiep flex-grow-1 flex-md-grow-0 d-inline-flex align-items-center shadow-sm">
+      <i class="fas fa-user-plus me-2"></i>Đặt phòng vãng lai
     </a>
-    <a href="/receptionist" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center">
-      <i class="fas fa-arrow-left me-1"></i>Quay lại
+    <a href="/receptionist" class="btn btn-outline-secondary px-3 py-2 d-inline-flex align-items-center justify-content-center fw-semibold shadow-sm" style="border-radius: 10px; font-size: 0.88rem;">
+      <i class="fas fa-arrow-left me-2"></i>Bàn Lễ tân
     </a>
   </div>
 </div>
 
-{# ── FILTER BAR ── #}
-<div class="sodophong-loc-thanh mb-3">
-  <button class="sodophong-loc-cuc active" onclick="filterRooms('all', this)">
-    <i class="fas fa-border-all me-1"></i>Tất cả
-  </button>
-  <button class="sodophong-loc-cuc" onclick="filterRooms('available', this)">
-    <i class="fas fa-door-open me-1"></i>Phòng trống
-  </button>
-  <button class="sodophong-loc-cuc" onclick="filterRooms('occupied', this)">
-    <i class="fas fa-user me-1"></i>Đang sử dụng
-  </button>
-  <button class="sodophong-loc-cuc" onclick="filterRooms('dirty', this)">
-    <i class="fas fa-broom me-1"></i>Cần dọn
-  </button>
-  <button class="sodophong-loc-cuc" onclick="filterRooms('maintenance', this)">
-    <i class="fas fa-wrench me-1"></i>Bảo trì
-  </button>
-  <button class="sodophong-loc-cuc" onclick="filterRooms('confirmed', this)">
-    <i class="fas fa-calendar-check me-1"></i>Xác nhận (chưa checkin)
-  </button>
+{# ── BỘ LỌC PHÂN KHU & TRẠNG THÁI BUỒNG PHÒNG MATRIX ── #}
+<div class="sodophong-loc-thanh mb-3 flex-column align-items-stretch">
+  {# Hàng 1: Bộ lọc Phân khu Khách sạn (Hotel Wing Tabs) #}
+  <div class="d-flex flex-wrap gap-2 pb-2 mb-2 border-bottom align-items-center">
+    <span class="text-uppercase fw-bold text-secondary me-2" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+      <i class="fas fa-map-marked-alt text-gold me-1"></i> Phân khu:
+    </span>
+    <button class="btn btn-sm rounded-pill px-3 py-1 fw-bold wing-filter-btn active btn-heritage-gold" data-wing="all" onclick="filterWing('all', this)" style="font-size: 0.82rem;">
+      <i class="fas fa-building me-1"></i> Tất cả phân khu (78 phòng)
+    </button>
+    <button class="btn btn-sm rounded-pill px-3 py-1 fw-bold wing-filter-btn btn-outline-secondary" data-wing="2" onclick="filterWing('2', this)" style="font-size: 0.82rem;">
+      <i class="fas fa-city me-1 text-primary"></i> Khu City Hotel (56 phòng)
+    </button>
+    <button class="btn btn-sm rounded-pill px-3 py-1 fw-bold wing-filter-btn btn-outline-secondary" data-wing="1" onclick="filterWing('1', this)" style="font-size: 0.82rem;">
+      <i class="fas fa-umbrella-beach me-1 text-gold"></i> Khu Biệt Thự Biển (22 villa)
+    </button>
+  </div>
 
-  <div class="ms-md-auto d-flex align-items-center gap-2 mt-2 mt-md-0">
-    <span class="text-muted small d-none d-sm-inline">Sắp xếp:</span>
-    <select id="grid-cols" class="form-select form-select-sm" style="width:100px" onchange="changeGridCols(this.value)">
-      <option value="4" class="d-sm-none">4 cột</option>
-      <option value="6">6 cột</option>
-      <option value="8" selected>8 cột</option>
-      <option value="10">10 cột</option>
-      <option value="12">12 cột</option>
-    </select>
+  {# Hàng 2: Bộ lọc Trạng thái buồng phòng & Sắp xếp cột #}
+  <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <span class="text-uppercase fw-bold text-secondary me-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+        <i class="fas fa-filter text-gold me-1"></i> Trạng thái:
+      </span>
+      <button class="sodophong-loc-cuc active" onclick="filterRooms('all', this)">
+        <i class="fas fa-border-all me-1"></i>Tất cả
+      </button>
+      <button class="sodophong-loc-cuc" onclick="filterRooms('available', this)">
+        <i class="fas fa-door-open me-1 text-success"></i>Trống & Sạch
+      </button>
+      <button class="sodophong-loc-cuc" onclick="filterRooms('occupied', this)">
+        <i class="fas fa-user-check me-1 text-primary"></i>Đang sử dụng
+      </button>
+      <button class="sodophong-loc-cuc" onclick="filterRooms('dirty', this)">
+        <i class="fas fa-broom me-1 text-warning"></i>Cần dọn
+      </button>
+      <button class="sodophong-loc-cuc" onclick="filterRooms('maintenance', this)">
+        <i class="fas fa-wrench me-1 text-secondary"></i>Bảo trì
+      </button>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+      <span class="text-muted small d-none d-sm-inline">Hiển thị:</span>
+      <select id="grid-cols" class="form-select form-select-sm fw-semibold" style="width:110px; border-radius: 8px;" onchange="changeGridCols(this.value)">
+        <option value="6">6 cột</option>
+        <option value="8" selected>8 cột</option>
+        <option value="10">10 cột</option>
+        <option value="12">12 cột</option>
+      </select>
+    </div>
   </div>
 </div>
 
-{# ── LEGEND ── #}
+{# ── CHÚ GIẢI MÃ MÀU CHUẨN QUỐC TẾ ── #}
 <div class="sodophong-chugiai mb-3">
   <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-xanh"></span>Trống & Sạch</span>
-  <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-cam"></span>Đang sử dụng</span>
-  <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-do"></span>Bẩn / Cần dọn</span>
-  <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-xam"></span>Bảo trì</span>
-  <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-xanhbien"></span>Xác nhận</span>
+  <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-cam"></span>Đang sử dụng (In-House)</span>
+  <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-do"></span>Cần dọn vệ sinh</span>
+  <span class="sodophong-chugiai-muc"><span class="sodophong-chugiai-cham sodophong-chugiai-cham-xam"></span>Đang bảo trì</span>
 </div>
 
-{# ── QUICK STATS ── #}
+{# ── THỐNG KÊ VẬN HÀNH NHANH (QUICK STATS) ── #}
 {% if ops %}
 <div class="sodophong-thongke-hang mb-4">
-  <div class="sodophong-thongke-the sodophong-thongke-the-xanh">
+  <a href="/receptionist?status=today_arrivals" class="sodophong-thongke-the sodophong-thongke-the-xanh text-decoration-none">
     <div class="sodophong-thongke-the-giatri">{{ ops.checkins_due or 0 }}</div>
-    <div class="sodophong-thongke-the-nhan">Check-in hôm nay</div>
-  </div>
-  <div class="sodophong-thongke-the sodophong-thongke-the-vang">
+    <div class="sodophong-thongke-the-nhan">Check-in hôm nay <i class="fas fa-arrow-right ms-1"></i></div>
+  </a>
+  <a href="/receptionist?status=today_departures" class="sodophong-thongke-the sodophong-thongke-the-vang text-decoration-none">
     <div class="sodophong-thongke-the-giatri">{{ ops.checkouts_due or 0 }}</div>
-    <div class="sodophong-thongke-the-nhan">Check-out hôm nay</div>
-  </div>
-  <div class="sodophong-thongke-the sodophong-thongke-the-do">
+    <div class="sodophong-thongke-the-nhan">Check-out hôm nay <i class="fas fa-arrow-right ms-1"></i></div>
+  </a>
+  <a href="/housekeeping" class="sodophong-thongke-the sodophong-thongke-the-do text-decoration-none">
     <div class="sodophong-thongke-the-giatri">{{ ops.dirty_rooms or 0 }}</div>
-    <div class="sodophong-thongke-the-nhan">Cần dọn</div>
-  </div>
+    <div class="sodophong-thongke-the-nhan">Cần dọn vệ sinh <i class="fas fa-arrow-right ms-1"></i></div>
+  </a>
   <div class="sodophong-thongke-the sodophong-thongke-the-xam">
     <div class="sodophong-thongke-the-giatri">{{ ops.maintenance_rooms or 0 }}</div>
-    <div class="sodophong-thongke-the-nhan">Bảo trì</div>
+    <div class="sodophong-thongke-the-nhan">Đang bảo trì</div>
   </div>
 </div>
 {% endif %}
 
-{# ── ROOM GRID BY ROOM TYPE ── #}
+{# ── MA TRẬN PHÒNG THEO HẠNG PHÒNG ── #}
 {% if room_types %}
 {% for rt in room_types %}
 {% set ns = namespace(avail=0) %}
@@ -95,30 +120,30 @@
     {% set ns.avail = ns.avail + 1 %}
   {% endif %}
 {% endfor %}
-<div class="sodophong-loai-phan mb-4">
-  {# Header hạng phòng #}
+<div class="sodophong-loai-phan mb-4 shadow-sm" data-hotel-id="{{ rt.hotel_id }}" style="border-radius: 14px; overflow: hidden;">
+  {# Header hạng phòng sang trọng #}
   <div class="sodophong-loai-tieude">
     <div class="sodophong-loai-tieude__left">
-      <span class="sodophong-loai-tieude-ten">{{ rt.room_type_code }}</span>
+      <span class="sodophong-loai-tieude-ten">{{ room_type_name_map.get(rt.room_type_code, rt.room_type_code) }}</span>
       {% if rt.hotel_name %}
       <span class="sodophong-loai-tieude-khachsan">— {{ rt.hotel_name }}</span>
       {% endif %}
     </div>
     <div class="sodophong-loai-tieude-trai">
       <span class="sodophong-loai-tieude-thongtin">
-        <i class="fas fa-user me-1"></i>{{ rt.max_adults }}
-        <i class="fas fa-child ms-2 me-1"></i>{{ rt.max_children }}
+        <i class="fas fa-user me-1 text-gold"></i>{{ rt.max_adults }} Lớn
+        <i class="fas fa-child ms-2 me-1 text-gold"></i>{{ rt.max_children }} Trẻ
       </span>
       <span class="sodophong-loai-tieude-gia">
-        <i class="fas fa-tag me-1"></i>{{ "{:,.0f}".format(rt.base_price or 0) }}đ/đêm
+        <i class="fas fa-tag me-1 text-gold"></i>{{ "{:,.0f}".format(rt.base_price or 0) }} ₫/đêm
       </span>
       <span class="sodophong-loai-tieude-cophong">
-        {{ ns.avail }}/{{ rt.physical_rooms | length }} trống
+        {{ ns.avail }}/{{ rt.physical_rooms | length }} phòng trống
       </span>
     </div>
   </div>
 
-  {# Grid phòng #}
+  {# Grid ô phòng Matrix #}
   <div class="sodophong-phong-luoi" id="grid-{{ rt.room_type_id }}">
     {% if rt.physical_rooms %}
     {% for pr in rt.physical_rooms %}
@@ -135,43 +160,62 @@
       {% set status_class = 'available' %}
     {% endif %}
 
+    {% set clean_room_name = pr.room_name.replace('CIT_SUI_', 'P.').replace('CIT_DEL_', 'P.').replace('CIT_SUP_', 'P.').replace('RES_VDEL_', 'Villa ').replace('RES_VSUI_', 'Villa ') %}
+
     <div class="sodophong-phong-the sodophong-phong-the--{{ status_class }}" data-status="{{ status_class }}"
-         {% if status_class == 'available' %}onclick="openWalkinModal({{ pr.physical_room_id }}, '{{ pr.room_name }}', {{ rt.room_type_id }}, {{ rt.hotel_id }}, '{{ rt.room_type_code }}', {{ rt.base_price or 0 }})"{% endif %}>
-      <div class="sodophong-phong-the-ten">{{ pr.room_name }}</div>
-      <div class="sodophong-phong-the-loai">{{ rt.room_type_code }}</div>
+         {% if status_class == 'available' %}onclick="openWalkinModal({{ pr.physical_room_id }}, '{{ clean_room_name }}', {{ rt.room_type_id }}, {{ rt.hotel_id }}, '{{ room_type_name_map.get(rt.room_type_code, rt.room_type_code) }}', {{ rt.base_price or 0 }})"{% endif %}>
+      <div class="d-flex justify-content-between align-items-start mb-1">
+        <div class="sodophong-phong-the-ten">{{ clean_room_name }}</div>
+        {% if status_class == 'available' %}
+          <span class="sodophong-hanhdong-nut sodophong-hanhdong-nut-khachtructiep" title="Đặt phòng vãng lai nhanh">
+            <i class="fas fa-plus"></i>
+          </span>
+        {% elif status_class == 'occupied' %}
+          <span class="badge rounded-pill px-2 py-05 text-white" style="background: rgba(184, 151, 88, 0.45); font-size: 0.65rem; border: 1px solid rgba(184, 151, 88, 0.6);">
+            In-House
+          </span>
+        {% endif %}
+      </div>
+      <div class="sodophong-phong-the-loai">
+        {% if 'Villa' in clean_room_name %}<i class="fas fa-umbrella-beach me-1"></i>Biệt Thự Biển{% else %}<i class="fas fa-layer-group me-1"></i>Khu Phố · Tầng {{ clean_room_name[2:3] if clean_room_name|length > 2 and clean_room_name[2:3].isdigit() else '1' }}{% endif %}
+      </div>
 
       {% if occupied %}
-      <div class="sodophong-phong-the-chitiet">
-        <div class="sodophong-phong-the-ngay">
-          {% if pr.current_checkin %}{{ pr.current_checkin[5:] }}{% endif %}
-          {% if pr.current_checkout %} - {{ pr.current_checkout[5:] }}{% endif %}
+      <div class="sodophong-phong-the-chitiet flex-column align-items-start gap-1">
+        <div class="sodophong-phong-the-khach" title="{{ pr.guest_name }}">
+          <i class="fas fa-user-check text-gold me-1"></i>{{ pr.guest_name }}
         </div>
-        <div class="sodophong-phong-the-khach">
-          <i class="fas fa-user"></i> {{ pr.guest_name | default('') }}
+        <div class="sodophong-phong-the-ngay small text-white-50" style="font-size: 0.68rem;">
+          <i class="far fa-calendar-alt me-1"></i>{{ pr.current_checkin[5:] if pr.current_checkin else '' }} → {{ pr.current_checkout[5:] if pr.current_checkout else '' }}
         </div>
       </div>
-      <div class="sodophong-phong-the-hanhdong">
+      <div class="mt-auto pt-1 d-flex justify-content-end">
         <a href="/receptionist/checkout/{{ pr.current_booking_id }}"
-           class="sodophong-hanhdong-nut sodophong-hanhdong-nut-traphong" title="Check-out">
-          <i class="fas fa-sign-out-alt"></i>
+           class="btn btn-sm btn-heritage-gold py-0 px-2 fw-bold text-nowrap"
+           style="font-size: 0.7rem; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.25);"
+           title="Làm thủ tục Check-out trả phòng" onclick="event.stopPropagation();">
+          <i class="fas fa-sign-out-alt me-1"></i>Check-out
         </a>
       </div>
       {% elif hs == 'Dirty' %}
-      <div class="sodophong-phong-the-chitiet">
-        <i class="fas fa-broom"></i> Cần dọn
+      <div class="sodophong-phong-the-chitiet text-warning fw-bold">
+        <i class="fas fa-broom me-1"></i>Cần dọn
+      </div>
+      <div class="mt-auto pt-1 d-flex justify-content-end">
+        <form method="POST" action="/receptionist/quick-clean/{{ pr.physical_room_id }}" onclick="event.stopPropagation();">
+          <button type="submit" class="btn btn-sm btn-outline-success bg-white py-0 px-2 fw-bold shadow-sm"
+                  style="font-size: 0.7rem; border-radius: 6px;" title="Xác nhận buồng phòng đã dọn sạch">
+            <i class="fas fa-check me-1"></i>Báo sạch
+          </button>
+        </form>
       </div>
       {% elif hs == 'Maintenance' %}
-      <div class="sodophong-phong-the-chitiet">
-        <i class="fas fa-wrench"></i> Bảo trì
+      <div class="sodophong-phong-the-chitiet text-secondary">
+        <i class="fas fa-wrench me-1"></i>Bảo trì
       </div>
       {% else %}
       <div class="sodophong-phong-the-chitiet sodophong-phong-the-chitiet-gia">
-        {{ "{:,.0f}".format(rt.base_price or 0) }}đ
-      </div>
-      <div class="sodophong-phong-the-hanhdong">
-        <span class="sodophong-hanhdong-nut sodophong-hanhdong-nut-khachtructiep" title="Đặt phòng vãng lai">
-          <i class="fas fa-plus"></i>
-        </span>
+        <i class="fas fa-tag me-1 text-gold"></i>{{ "{:,.0f}".format(rt.base_price or 0) }} ₫
       </div>
       {% endif %}
     </div>
@@ -184,61 +228,61 @@
 {% endfor %}
 {% else %}
 <div class="sodophong-trong">
-  <i class="fas fa-hotel fa-3x opacity-25 mb-3"></i>
+  <i class="fas fa-hotel fa-3x opacity-25 mb-3 text-gold"></i>
   <p>Chưa có dữ liệu phòng.</p>
 </div>
 {% endif %}
 
-{# ── MODAL ĐẶT PHÒNG VÃNG LAI NHANH ── #}
+{# ── MODAL ĐẶT PHÒNG VÃNG LAI NHANH (QUICK WALK-IN) ── #}
 <div class="sodophong-bang-nen" id="walkin-backdrop" onclick="closeWalkinModal()" style="display:none"></div>
-<div class="sodophong-bang" id="walkin-modal" style="display:none">
-  <div class="sodophong-bang-tieude">
-    <h6 class="fw-bold mb-0"><i class="fas fa-user-plus me-2 text-success"></i>Đặt phòng khách vãng lai</h6>
+<div class="sodophong-bang shadow-lg" id="walkin-modal" style="display:none; border-radius: 16px; border: 1.5px solid rgba(184, 151, 88, 0.4);">
+  <div class="sodophong-bang-tieude d-flex justify-content-between align-items-center pb-2 border-bottom">
+    <h6 class="fw-bold mb-0" style="color: #072A44; font-family: var(--font-display);"><i class="fas fa-user-plus me-2 text-success"></i>Đặt Phòng Khách Vãng Lai (Walk-in)</h6>
     <button class="btn-close btn-close-sm" onclick="closeWalkinModal()"></button>
   </div>
-  <form action="/receptionist/walkin" method="POST" id="walkin-form">
+  <form action="/receptionist/walkin" method="POST" id="walkin-form" class="mt-3">
     <input type="hidden" name="physical_room_id" id="wk-physical-room-id">
     <input type="hidden" name="room_type_id" id="wk-room-type-id">
     <input type="hidden" name="hotel_id" id="wk-hotel-id">
 
-    <div class="sodophong-bang-phong-huyhieu" id="wk-room-badge"></div>
+    <div class="sodophong-bang-phong-huyhieu p-2 rounded mb-3" id="wk-room-badge" style="background: rgba(7, 42, 68, 0.06); border: 1px solid rgba(7, 42, 68, 0.12);"></div>
 
     <div class="row g-2 mb-3">
       <div class="col-6">
-        <label class="sodophong-loc-nhan">Tên khách <span class="text-danger">*</span></label>
-        <input type="text" name="customer_name" class="form-control form-control-sm" placeholder="Họ và tên" required>
+        <label class="sodophong-loc-nhan small fw-bold">Họ và tên khách <span class="text-danger">*</span></label>
+        <input type="text" name="customer_name" class="form-control form-control-sm" placeholder="Nguyễn Văn A" required>
       </div>
       <div class="col-6">
-        <label class="sodophong-loc-nhan">Số điện thoại</label>
-        <input type="text" name="customer_phone" class="form-control form-control-sm" placeholder="0912...">
+        <label class="sodophong-loc-nhan small fw-bold">Số điện thoại liên hệ</label>
+        <input type="text" name="customer_phone" class="form-control form-control-sm" placeholder="0912 345 678">
       </div>
     </div>
 
     <div class="row g-2 mb-3">
       <div class="col-6">
-        <label class="sodophong-loc-nhan">Nhận phòng <span class="text-danger">*</span></label>
+        <label class="sodophong-loc-nhan small fw-bold">Ngày nhận phòng <span class="text-danger">*</span></label>
         <input type="date" name="checkin_date" class="form-control form-control-sm" id="wk-checkin" required>
       </div>
       <div class="col-6">
-        <label class="sodophong-loc-nhan">Trả phòng <span class="text-danger">*</span></label>
+        <label class="sodophong-loc-nhan small fw-bold">Ngày trả phòng <span class="text-danger">*</span></label>
         <input type="date" name="checkout_date" class="form-control form-control-sm" id="wk-checkout" required>
       </div>
     </div>
 
     <div class="row g-2 mb-3">
       <div class="col-4">
-        <label class="sodophong-loc-nhan">Người lớn</label>
-        <input type="number" name="adults" class="form-control form-control-sm" value="1" min="1" max="10">
+        <label class="sodophong-loc-nhan small fw-bold">Người lớn</label>
+        <input type="number" name="adults" class="form-control form-control-sm" value="2" min="1" max="10">
       </div>
       <div class="col-4">
-        <label class="sodophong-loc-nhan">Trẻ em</label>
+        <label class="sodophong-loc-nhan small fw-bold">Trẻ em</label>
         <input type="number" name="children" class="form-control form-control-sm" value="0" min="0" max="5">
       </div>
       <div class="col-4">
-        <label class="sodophong-loc-nhan">Thanh toán</label>
-        <select name="payment_method" class="form-select form-select-sm">
+        <label class="sodophong-loc-nhan small fw-bold">Thanh toán</label>
+        <select name="payment_method" class="form-select form-select-sm fw-semibold">
           <option value="cash">Tiền mặt</option>
-          <option value="credit_card">Thẻ</option>
+          <option value="credit_card">Thẻ tín dụng</option>
           <option value="bank_transfer">Chuyển khoản</option>
         </select>
       </div>
@@ -246,31 +290,28 @@
 
     <div class="row g-2 mb-3">
       <div class="col-6">
-        <label class="sodophong-loc-nhan">Đặt cọc (VND)</label>
+        <label class="sodophong-loc-nhan small fw-bold">Đặt cọc trước (VND)</label>
         <input type="number" name="deposit_paid" class="form-control form-control-sm" value="0" min="0">
       </div>
       <div class="col-6">
-        <label class="sodophong-loc-nhan">Giá phòng/đêm</label>
-        <div class="form-control form-control-sm bg-light fw-bold text-primary" id="wk-price-display">—</div>
+        <label class="sodophong-loc-nhan small fw-bold">Giá phòng tham chiếu</label>
+        <div class="form-control form-control-sm bg-light fw-bold text-success" id="wk-price-display">—</div>
       </div>
     </div>
 
     <div class="mb-3">
-      <label class="sodophong-loc-nhan">Ghi chú</label>
-      <textarea name="special_requests" class="form-control form-control-sm" rows="2" placeholder="Yêu cầu đặc biệt..."></textarea>
+      <label class="sodophong-loc-nhan small fw-bold">Yêu cầu đặc biệt</label>
+      <textarea name="special_requests" class="form-control form-control-sm" rows="2" placeholder="Ưu tiên phòng tầng cao, chuẩn bị giường đôi..."></textarea>
     </div>
 
     <div class="d-flex gap-2">
-      <button type="submit" class="btn sodophong-nut-khachtructiep flex-fill">
+      <button type="submit" class="btn sodophong-nut-khachtructiep flex-fill shadow-sm">
         <i class="fas fa-check me-1"></i>Xác nhận đặt phòng
       </button>
-      <button type="button" class="btn btn-outline-secondary btn-sm" onclick="closeWalkinModal()">Hủy</button>
+      <button type="button" class="btn btn-outline-secondary btn-sm" onclick="closeWalkinModal()">Đóng</button>
     </div>
   </form>
 </div>
-
-{# ── CSS ── #}
-
 
 <script src="{{ url_for('static', filename='js/pages/receptionist_room_plan.js') }}"></script>
 

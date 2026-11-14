@@ -69,7 +69,16 @@ def api_get_hotels():
 def api_get_hotels_dim():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT hotel_id, hotel AS hotel_name FROM Dim_Hotel ORDER BY hotel_id")
+    cursor.execute("""
+        SELECT dh.hotel_id, dh.hotel AS hotel_name, dh.star_rating, dh.hotel_type,
+               COUNT(DISTINCT drt.room_type_id) AS room_types_count,
+               COUNT(DISTINCT pr.physical_room_id) AS physical_rooms_count
+        FROM Dim_Hotel dh
+        LEFT JOIN Dim_RoomType drt ON dh.hotel_id = drt.hotel_id AND drt.is_active = 1
+        LEFT JOIN Physical_Room pr ON drt.room_type_id = pr.room_type_id AND pr.is_active = 1
+        GROUP BY dh.hotel_id
+        ORDER BY dh.hotel_id
+    """)
     hotels_list = [dict(r) for r in cursor.fetchall()]
     conn.close()
     return jsonify({'success': True, 'hotels': hotels_list})
@@ -93,11 +102,14 @@ def api_get_room_types_dim():
                COALESCE(drt.extra_adult_fee, 0.0) AS extra_adult_fee,
                COALESCE(drt.child_breakfast_fee, 0.0) AS child_breakfast_fee,
                drt.main_image, drt.images,
-               dh.hotel as hotel_name
+               dh.hotel as hotel_name,
+               COUNT(pr.physical_room_id) as physical_rooms_count
         FROM Dim_RoomType drt
         LEFT JOIN Dim_Hotel dh ON drt.hotel_id = dh.hotel_id
+        LEFT JOIN Physical_Room pr ON drt.room_type_id = pr.room_type_id AND pr.is_active = 1
         {where_clause}
-        ORDER BY drt.room_type_code
+        GROUP BY drt.room_type_id
+        ORDER BY drt.hotel_id, drt.base_price DESC
     """, params)
     room_types_list = []
     import json
@@ -325,17 +337,46 @@ def api_get_service_catalog():
 
 @system_bp.route('/api/housekeeping/rooms', methods=['GET'])
 def api_housekeeping_rooms():
+    from datetime import datetime
+    status = request.args.get('status')
+    include_all = request.args.get('all', '0') == '1' or request.args.get('include_clean', '0') == '1'
+    today = datetime.now().strftime('%Y-%m-%d')
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("""
+
+    where_clauses = ["pr.is_active = 1"]
+    params = [today]
+    if status:
+        where_clauses.append("pr.housekeeping_status = ?")
+        params.append(status)
+    elif not include_all:
+        where_clauses.append("pr.housekeeping_status != 'Clean'")
+
+    where_str = "WHERE " + " AND ".join(where_clauses)
+    cursor.execute(f"""
         SELECT pr.physical_room_id, pr.room_name, pr.housekeeping_status, 
-               rt.room_type_code, dh.hotel as hotel_name
+               rt.room_type_code, rt.hotel_id, dh.hotel as hotel_name,
+               bm_in.booking_id as inhouse_booking_id,
+               COALESCE(bm_in.guest_name, cp_in.full_name) as inhouse_guest,
+               bm_arr.booking_id as arrival_booking_id,
+               COALESCE(bm_arr.guest_name, cp_arr.full_name) as arrival_guest,
+               bm_arr.arrival_date, bm_arr.departure_date, bm_arr.special_requests
         FROM Physical_Room pr
         JOIN Dim_RoomType rt ON pr.room_type_id = rt.room_type_id
         LEFT JOIN Dim_Hotel dh ON rt.hotel_id = dh.hotel_id
-        WHERE pr.housekeeping_status != 'Clean'
-        ORDER BY dh.hotel, pr.room_name
-    """)
+        LEFT JOIN Booking_Master bm_in ON pr.physical_room_id = bm_in.physical_room_id 
+                                      AND bm_in.booking_status = 'Checked-In'
+        LEFT JOIN Customer_Profiles cp_in ON bm_in.customer_id = cp_in.account_id
+        LEFT JOIN Booking_Master bm_arr ON pr.physical_room_id = bm_arr.physical_room_id 
+                                       AND bm_arr.arrival_date = ?
+                                       AND bm_arr.booking_status = 'Confirmed'
+        LEFT JOIN Customer_Profiles cp_arr ON bm_arr.customer_id = cp_arr.account_id
+        {where_str}
+        ORDER BY 
+            CASE WHEN bm_arr.booking_id IS NOT NULL THEN 0 ELSE 1 END,
+            CASE pr.housekeeping_status WHEN 'Dirty' THEN 0 WHEN 'Maintenance' THEN 1 ELSE 2 END,
+            dh.hotel, pr.room_name
+    """, params)
     rooms = [dict(row) for row in cursor.fetchall()]
     conn.close()
     return jsonify({'success': True, 'rooms': rooms})
@@ -354,6 +395,25 @@ def api_housekeeping_clean(room_id):
     conn.commit()
     conn.close()
     return jsonify({'success': True, 'message': 'Đã cập nhật trạng thái Clean'})
+
+@system_bp.route('/api/housekeeping/rooms/<int:room_id>/status', methods=['POST', 'PUT'])
+def api_housekeeping_update_status(room_id):
+    auth_err = require_token()
+    if auth_err is not None:
+        return auth_err
+    hk_role = get_user_role_from_db(g.api_user_id, g.api_account_type or 'staff')
+    if hk_role not in ('Housekeeper', 'Manager', 'Admin', 'Receptionist'):
+        return jsonify({'success': False, 'message': 'Khong co quyen'}), 403
+    data = request.get_json(silent=True) or request.form or {}
+    new_status = data.get('housekeeping_status') or data.get('status') or 'Clean'
+    if new_status not in ('Clean', 'Dirty', 'Maintenance'):
+        return jsonify({'success': False, 'message': 'Trạng thái không hợp lệ'}), 400
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE Physical_Room SET housekeeping_status = ? WHERE physical_room_id = ?", (new_status, room_id))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True, 'message': f'Đã cập nhật trạng thái {new_status}'})
 
 
 @system_bp.route('/api/cart', methods=['GET'])

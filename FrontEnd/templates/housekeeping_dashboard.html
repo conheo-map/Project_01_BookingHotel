@@ -1,94 +1,385 @@
 {% extends "base.html" %}
-{% block title %}Housekeeping - Hotel Booking{% endblock %}
+{% block title %}Quản Lý Vệ Sinh & Tình Trạng Buồng - Saigon - Condao Resort{% endblock %}
 {% block content %}
 
-<div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Quản lý Housekeeping</h2>
-        <p class="text-muted small mb-0">Danh sách phòng cần vệ sinh và bảo trì.</p>
+{# ── HEADER BỘ PHẬN BUỒNG PHÒNG ── #}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+    <div>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2"
+             style="background: rgba(184, 151, 88, 0.12); border: 1px solid rgba(184, 151, 88, 0.35); font-size: 0.75rem; font-weight: 700; color: #8C6221; text-transform: uppercase; letter-spacing: 1px;">
+            <i class="fas fa-broom text-gold"></i> BỘ PHẬN BUỒNG PHÒNG & VỆ SINH RESORT
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: var(--font-display, 'Playfair Display', serif); color: var(--sc-ocean, #072A44); font-size: 1.85rem;">
+            Quản Lý Vệ Sinh & Tình Trạng Buồng
+        </h2>
+        <p class="text-secondary small mb-0" style="font-weight: 400;">
+            Điều phối vệ sinh buồng phòng, cập nhật tình trạng phòng sạch và sẵn sàng đón khách theo thời gian thực.
+        </p>
     </div>
-    <div class="col-auto">
-        <a href="/receptionist/room-plan" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-th me-1"></i>Sơ đồ phòng
+    <div class="d-flex flex-wrap gap-2 w-100 w-md-auto align-items-center">
+        {# Nút chuyển chế độ xem (View Mode) #}
+        <div class="btn-group p-1 bg-light rounded-3 border" role="group">
+            <button type="button" class="btn btn-sm px-3 fw-bold active" id="btn-view-cards" onclick="setViewMode('cards')">
+                <i class="fas fa-th-large me-1"></i>Dạng Thẻ
+            </button>
+            <button type="button" class="btn btn-sm px-3 fw-bold" id="btn-view-table" onclick="setViewMode('table')">
+                <i class="fas fa-list me-1"></i>Dạng Bảng
+            </button>
+        </div>
+        <a href="/receptionist/room-plan" class="btn btn-outline-secondary px-3 py-2 fw-semibold" style="border-radius: 10px; font-size: 0.88rem;">
+            <i class="fas fa-th me-1 text-gold"></i>Sơ đồ phòng Matrix
         </a>
     </div>
 </div>
 
-<!-- Stats -->
+{# ── KPI BUỒNG PHÒNG DRILL-DOWN (INTERACTIVE CLICKABLE) ── #}
 {% if ops %}
 <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold text-danger">{{ ops.dirty_rooms or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase">Phòng bẩn</div>
+        <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-hover-card"
+             onclick="filterByStatus('Dirty')"
+             style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #EF4444 !important; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="badge rounded-pill px-2 py-1" style="background: rgba(239, 68, 68, 0.12); color: #DC2626; font-size: 0.7rem; font-weight: 700;">
+                    ƯU TIÊN DỌN
+                </span>
+                <i class="fas fa-exclamation-triangle text-danger opacity-75"></i>
+            </div>
+            <div class="fs-2 fw-bold text-danger" style="font-family: var(--font-display); font-variant-numeric: lining-nums;">
+                {{ ops.dirty_rooms or 0 }}
+            </div>
+            <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                Phòng cần dọn dẹp
+            </div>
         </div>
     </div>
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold text-warning">{{ ops.maintenance_rooms or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase">Bảo trì</div>
+        <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-hover-card"
+             onclick="filterByStatus('Maintenance')"
+             style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #F59E0B !important; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="badge rounded-pill px-2 py-1" style="background: rgba(245, 158, 11, 0.12); color: #B45309; font-size: 0.7rem; font-weight: 700;">
+                    BẢO TRÌ
+                </span>
+                <i class="fas fa-wrench text-warning opacity-75"></i>
+            </div>
+            <div class="fs-2 fw-bold text-dark" style="font-family: var(--font-display); font-variant-numeric: lining-nums; color: #D97706 !important;">
+                {{ ops.maintenance_rooms or 0 }}
+            </div>
+            <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                Đang bảo trì kỹ thuật
+            </div>
         </div>
     </div>
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold text-success">{{ ops.checkins_due or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase">Nhận phòng hôm nay</div>
+        <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-hover-card"
+             onclick="filterBySpecial('arrival')"
+             style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #10B981 !important; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="badge rounded-pill px-2 py-1" style="background: rgba(16, 185, 129, 0.12); color: #047857; font-size: 0.7rem; font-weight: 700;">
+                    SẮP ĐÓN KHÁCH
+                </span>
+                <i class="fas fa-user-check text-success opacity-75"></i>
+            </div>
+            <div class="fs-2 fw-bold text-success" style="font-family: var(--font-display); font-variant-numeric: lining-nums;">
+                {{ ops.checkins_due or 0 }}
+            </div>
+            <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                Khách đến hôm nay
+            </div>
         </div>
     </div>
     <div class="col-6 col-md-3">
-        <div class="thongke-hop text-center">
-            <div class="fs-3 fw-bold chu-datphong">{{ ops.checkouts_due or 0 }}</div>
-            <div class="kichthuoc-nho-hon text-muted text-uppercase">Trả phòng hôm nay</div>
+        <div class="card h-100 border-0 shadow-sm p-3 text-center position-relative overflow-hidden kpi-hover-card"
+             onclick="filterBySpecial('checkout')"
+             style="border-radius: 14px; background: #FFFFFF; border-top: 4px solid #072A44 !important; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="badge rounded-pill px-2 py-1" style="background: rgba(7, 42, 68, 0.08); color: #072A44; font-size: 0.7rem; font-weight: 700;">
+                    TRẢ PHÒNG
+                </span>
+                <i class="fas fa-clock text-primary opacity-75"></i>
+            </div>
+            <div class="fs-2 fw-bold text-dark" style="font-family: var(--font-display); font-variant-numeric: lining-nums; color: #072A44 !important;">
+                {{ ops.checkouts_due or 0 }}
+            </div>
+            <div class="small text-muted text-uppercase fw-bold mt-1" style="font-size: 0.72rem; letter-spacing: 0.8px;">
+                Trả phòng hôm nay
+            </div>
         </div>
     </div>
 </div>
 {% endif %}
 
-<!-- Rooms list -->
-{% if rooms %}
-<div class="the-chinh p-0 overflow-hidden">
-    <div class="the-tieude-sach px-4 py-3">
-        <span class="fw-bold"><i class="fas fa-broom me-2"></i>Danh sách phòng cần xử lý</span>
-        <span class="badge bg-danger ms-2">{{ rooms|length }}</span>
+{# ── THANH BỘ LỌC TÁC VỤ 1-CHẠM (QUICK FILTER TABS & PHÂN KHU) ── #}
+<div class="card border-0 shadow-sm p-3 mb-4" style="border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(7, 42, 68, 0.08) !important;">
+    <div class="row g-3 align-items-center">
+        {# Tabs Trạng thái dọn dẹp #}
+        <div class="col-12 col-xl-7">
+            <div class="d-flex flex-wrap gap-2 align-items-center" id="status-filter-pills">
+                <span class="text-secondary small fw-bold me-1"><i class="fas fa-filter text-gold me-1"></i>Trạng thái:</span>
+                <button type="button" class="btn btn-sm btn-dark px-3 rounded-pill fw-bold active" data-status="all" onclick="filterByStatus('all')">
+                    Tất cả ({{ rooms|length }})
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger px-3 rounded-pill fw-bold" data-status="Dirty" onclick="filterByStatus('Dirty')">
+                    🚨 Cần dọn ({{ ops.dirty_rooms or 0 }})
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-success px-3 rounded-pill fw-bold" data-status="arrival" onclick="filterBySpecial('arrival')">
+                    🔥 Sắp đón khách ({{ ops.checkins_due or 0 }})
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-warning px-3 rounded-pill fw-bold" data-status="Maintenance" onclick="filterByStatus('Maintenance')">
+                    🛠️ Bảo trì ({{ ops.maintenance_rooms or 0 }})
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary px-3 rounded-pill fw-bold" data-status="Clean" onclick="filterByStatus('Clean')">
+                    ✓ Đã sạch ({{ (rooms|length) - (ops.dirty_rooms or 0) - (ops.maintenance_rooms or 0) }})
+                </button>
+            </div>
+        </div>
+
+        {# Bộ lọc Phân khu Resort & Ô tìm kiếm #}
+        <div class="col-12 col-xl-5">
+            <div class="d-flex flex-wrap flex-md-nowrap gap-2 justify-content-xl-end align-items-center">
+                <div class="btn-group p-1 bg-light rounded-pill border text-nowrap" role="group" id="wing-filter-pills">
+                    <button type="button" class="btn btn-sm px-2 px-md-3 fw-bold active text-nowrap" data-wing="all" onclick="filterByWing('all')">Toàn khu</button>
+                    <button type="button" class="btn btn-sm px-2 px-md-3 fw-bold text-nowrap" data-wing="2" onclick="filterByWing('2')">🏢 Khu City</button>
+                    <button type="button" class="btn btn-sm px-2 px-md-3 fw-bold text-nowrap" data-wing="1" onclick="filterByWing('1')">🏖️ Biệt Thự Biển</button>
+                </div>
+                <div class="input-group input-group-sm" style="min-width: 150px; max-width: 180px;">
+                    <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                    <input type="text" id="hk-search-input" class="form-control border-start-0 ps-0"
+                           placeholder="Tìm số phòng..." oninput="filterBySearch(this.value)">
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="table-responsive">
-        <table class="bang-sach">
-            <thead>
-                <tr>
-                    <th>Phòng</th>
-                    <th>Loại phòng</th>
-                    <th>Khách sạn</th>
-                    <th>Trạng thái</th>
-                    <th>Ghi chú</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for r in rooms %}
-                <tr>
-                    <td class="fw-bold">{{ r.room_name or '—' }}</td>
-                    <td class="small">{{ r.room_type_code or '—' }}</td>
-                    <td class="small text-muted">{{ r.hotel_name or '—' }}</td>
-                    <td>
-                        <span class="huyhieu-sach kichthuoc-nho-hon
-                            {% if r.housekeeping_status == 'Dirty' %}bg-danger bg-opacity-10 text-danger border-danger
-                            {% elif r.housekeeping_status == 'Maintenance' %}bg-secondary bg-opacity-10 text-secondary
-                            {% else %}bg-warning bg-opacity-10 text-warning border-warning{% endif %} border">
-                            {% if r.housekeeping_status == 'Dirty' %}<i class="fas fa-exclamation-triangle me-1"></i>{% endif %}
-                            {{ r.housekeeping_status or '—' }}
+</div>
+
+{# ── DANH SÁCH BUỒNG PHÒNG ── #}
+{% if rooms %}
+
+{# 1. CHẾ ĐỘ THẺ TO BẢN (CARD VIEW CHO MOBILE / TABLET) #}
+<div id="housekeeping-cards-view" class="mb-5">
+    <div class="d-flex align-items-center justify-content-between mb-3 px-1">
+        <span class="fw-bold fs-6 text-dark" style="font-family: var(--font-display);">
+            <i class="fas fa-clipboard-list text-gold me-2"></i>Danh sách buồng phòng (<span id="visible-cards-count">{{ rooms|length }}</span> phòng)
+        </span>
+        <span class="badge rounded-pill bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-1">
+            <i class="fas fa-bell me-1"></i>Ưu tiên buồng phòng có khách sắp Check-In
+        </span>
+    </div>
+
+    <div class="row g-3" id="rooms-card-container">
+        {% for r in rooms %}
+        {% set clean_name = r.room_name.replace('CIT_SUI_', 'P.').replace('CIT_DEL_', 'P.').replace('CIT_SUP_', 'P.').replace('RES_VDEL_', 'Villa ').replace('RES_VSUI_', 'Villa ').replace('RES_VSUP_', 'Villa ') %}
+        {% set commercial_name = room_type_name_map.get(r.room_type_code, r.room_type_code or 'Phòng nghỉ') %}
+        <div class="col-xl-3 col-lg-4 col-md-6 col-12 room-card-item"
+             data-status="{{ r.housekeeping_status }}"
+             data-wing="{{ r.hotel_id }}"
+             data-room-name="{{ clean_name }}"
+             data-room-full="{{ r.room_name }}"
+             data-has-arrival="{{ '1' if r.arrival_booking_id else '0' }}">
+            
+            <div class="card h-100 border-0 shadow-sm p-3 position-relative d-flex flex-column"
+                 style="border-radius: 16px; background: #FFFFFF; border: 1.5px solid {% if r.arrival_booking_id %}rgba(239, 68, 68, 0.6){% elif r.housekeeping_status == 'Dirty' %}rgba(239, 68, 68, 0.3){% elif r.housekeeping_status == 'Maintenance' %}rgba(245, 158, 11, 0.35){% else %}rgba(16, 185, 129, 0.25){% endif %} !important;">
+
+                {# Header Thẻ: Số phòng đẹp 5 sao & Huy hiệu Trạng thái #}
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <div class="badge rounded-pill px-2 py-1 mb-1" style="background: rgba(7, 42, 68, 0.08); color: #072A44; font-weight: 700; font-size: 0.72rem;">
+                            {% if r.hotel_id == 2 %}🏢 City Hotel{% else %}🏖️ Resort Hotel{% endif %}
+                        </div>
+                        <h4 class="fw-bold mb-0 text-dark" style="font-family: var(--font-display, 'Playfair Display'); font-size: 1.35rem;">
+                            {{ clean_name }}
+                        </h4>
+                        <div class="text-secondary small fw-semibold" style="font-size: 0.78rem;">
+                            {{ commercial_name }}
+                        </div>
+                    </div>
+
+                    <div>
+                        {% if r.housekeeping_status == 'Dirty' %}
+                        <span class="badge rounded-pill px-25 py-1 text-danger bg-danger bg-opacity-10 border border-danger border-opacity-25" style="font-size: 0.75rem;">
+                            <i class="fas fa-exclamation-circle me-1"></i>Cần dọn
                         </span>
-                    </td>
-                    <td class="small text-muted">{{ r.notes or '' }}</td>
-                    <td>
-                        {% if r.housekeeping_status != 'Clean' %}
-                        <form method="POST" action="/housekeeping/clean/{{ r.physical_room_id }}" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-success px-3"
-                                    onclick="return confirm('Đánh dấu phòng {{ r.room_name }} đã dọn sạch?')">
-                                <i class="fas fa-check me-1"></i>Đã dọn
+                        {% elif r.housekeeping_status == 'Maintenance' %}
+                        <span class="badge rounded-pill px-25 py-1 text-warning-emphasis bg-warning bg-opacity-10 border border-warning" style="font-size: 0.75rem;">
+                            <i class="fas fa-tools me-1"></i>Bảo trì
+                        </span>
+                        {% else %}
+                        <span class="badge rounded-pill px-25 py-1 text-success bg-success bg-opacity-10 border border-success border-opacity-25" style="font-size: 0.75rem;">
+                            <i class="fas fa-check-circle me-1"></i>Sạch
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# Ngữ cảnh đặc biệt: Khách sắp đến hôm nay #}
+                {% if r.arrival_booking_id %}
+                <div class="p-2 rounded-3 mb-2" style="background: rgba(239, 68, 68, 0.08); border: 1px dashed rgba(239, 68, 68, 0.4);">
+                    <div class="d-flex align-items-center justify-content-between text-danger fw-bold" style="font-size: 0.75rem;">
+                        <span><i class="fas fa-fire-alt me-1"></i>ĐÓN KHÁCH HÔM NAY</span>
+                        <span class="badge bg-danger text-white py-0 px-1" style="font-size: 0.68rem;">Check-in 14:00</span>
+                    </div>
+                    <div class="text-dark small mt-1 fw-semibold">
+                        Khách: {{ r.arrival_guest or 'Quý khách' }} <span class="text-muted fw-normal">(#{{ r.arrival_booking_id }})</span>
+                    </div>
+                    {% if r.special_requests %}
+                    <div class="text-muted small mt-1 fst-italic" style="font-size: 0.72rem;">
+                        <i class="fas fa-comment-dots me-1 text-gold"></i>{{ r.special_requests }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% elif r.inhouse_booking_id %}
+                <div class="p-2 rounded-3 mb-2" style="background: rgba(7, 42, 68, 0.04); border: 1px solid rgba(7, 42, 68, 0.1);">
+                    <div class="d-flex align-items-center gap-1 text-primary fw-bold" style="font-size: 0.75rem;">
+                        <i class="fas fa-user-check me-1"></i>ĐANG LƯU TRÚ (IN-HOUSE)
+                    </div>
+                    <div class="text-dark small mt-1 fw-semibold">
+                        Khách: {{ r.inhouse_guest or 'Khách đang ở' }} <span class="text-muted fw-normal">(#{{ r.inhouse_booking_id }})</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {# Cụm nút hành động nghiệp vụ buồng phòng #}
+                <div class="mt-auto pt-3 border-top">
+                    {% if r.housekeeping_status != 'Clean' %}
+                    <div class="d-flex gap-2">
+                        <form method="POST" action="/housekeeping/clean/{{ r.physical_room_id }}" class="flex-grow-1">
+                            <button type="submit" class="btn btn-sm w-100 py-2 fw-bold text-white shadow-sm d-flex align-items-center justify-content-center"
+                                    style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); border: none; border-radius: 10px; font-size: 0.88rem;"
+                                    onclick="return confirm('Xác nhận {{ clean_name }} đã được vệ sinh sạch sẽ, thay drap giường và sẵn sàng bàn giao đón khách?')">
+                                <i class="fas fa-check-double me-1"></i>Báo Sạch
                             </button>
                         </form>
+                        {% if r.housekeeping_status != 'Maintenance' %}
+                        <button type="button" class="btn btn-sm btn-outline-warning px-2 fw-bold"
+                                style="border-radius: 10px; font-size: 0.82rem;"
+                                onclick="openMaintenanceModal({{ r.physical_room_id }}, '{{ clean_name }}')">
+                            <i class="fas fa-wrench"></i>
+                        </button>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-success small fw-bold">
+                            <i class="fas fa-check-circle me-1"></i>Sẵn sàng đón khách
+                        </span>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-light border py-1 px-2 text-secondary" type="button" data-bs-toggle="dropdown" style="border-radius: 8px;">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 0.82rem;">
+                                <li>
+                                    <form method="POST" action="/housekeeping/status/{{ r.physical_room_id }}">
+                                        <input type="hidden" name="housekeeping_status" value="Dirty">
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-undo me-2"></i>Báo bẩn / Cần dọn lại
+                                        </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-warning" href="javascript:void(0)"
+                                       onclick="openMaintenanceModal({{ r.physical_room_id }}, '{{ clean_name }}')">
+                                        <i class="fas fa-wrench me-2"></i>Báo bảo trì kỹ thuật
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{# 2. CHẾ ĐỘ BẢNG QUẢN TRỊ (TABLE VIEW CHO PC) #}
+<div id="housekeeping-table-view" class="card border-0 shadow-sm overflow-hidden mb-5 d-none" style="border-radius: 16px; border: 1px solid rgba(7, 42, 68, 0.08) !important;">
+    <div class="px-4 py-3 d-flex justify-content-between align-items-center"
+         style="background: linear-gradient(135deg, #072A44 0%, #031826 100%); color: #FFFFFF;">
+        <span class="fw-bold fs-6"><i class="fas fa-broom text-gold me-2"></i>Bảng Tổng Hợp Vệ Sinh Buồng Phòng Toàn Khu</span>
+        <span class="badge rounded-pill bg-danger px-3 py-1"><span id="visible-table-count">{{ rooms|length }}</span> buồng phòng</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
+            <thead class="table-light text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">
+                <tr>
+                    <th class="ps-4 py-3">Số Buồng</th>
+                    <th class="py-3">Hạng phòng thương mại</th>
+                    <th class="py-3">Phân khu</th>
+                    <th class="py-3">Tình trạng buồng</th>
+                    <th class="py-3">Khách lưu trú / Sắp đến</th>
+                    <th class="pe-4 py-3 text-end">Tác vụ điều phối</th>
+                </tr>
+            </thead>
+            <tbody id="rooms-table-body">
+                {% for r in rooms %}
+                {% set clean_name = r.room_name.replace('CIT_SUI_', 'P.').replace('CIT_DEL_', 'P.').replace('CIT_SUP_', 'P.').replace('RES_VDEL_', 'Villa ').replace('RES_VSUI_', 'Villa ').replace('RES_VSUP_', 'Villa ') %}
+                {% set commercial_name = room_type_name_map.get(r.room_type_code, r.room_type_code or 'Phòng nghỉ') %}
+                <tr class="room-table-row"
+                    data-status="{{ r.housekeeping_status }}"
+                    data-wing="{{ r.hotel_id }}"
+                    data-room-name="{{ clean_name }}"
+                    data-room-full="{{ r.room_name }}"
+                    data-has-arrival="{{ '1' if r.arrival_booking_id else '0' }}">
+                    <td class="ps-4 py-3">
+                        <span class="fw-bold fs-6 text-dark">{{ clean_name }}</span>
+                        <div class="text-muted small" style="font-size: 0.72rem;">{{ r.room_name }}</div>
+                    </td>
+                    <td class="py-3">
+                        <span class="badge bg-light text-dark border">{{ commercial_name }}</span>
+                    </td>
+                    <td class="py-3 text-secondary small">
+                        {% if r.hotel_id == 2 %}🏢 City Hotel{% else %}🏖️ Resort Hotel{% endif %}
+                    </td>
+                    <td class="py-3">
+                        {% if r.housekeeping_status == 'Dirty' %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-25 py-1">
+                            <i class="fas fa-exclamation-triangle me-1"></i>Cần dọn
+                        </span>
+                        {% elif r.housekeeping_status == 'Maintenance' %}
+                        <span class="badge bg-warning bg-opacity-10 text-warning border px-25 py-1">
+                            <i class="fas fa-tools me-1"></i>Bảo trì
+                        </span>
                         {% else %}
-                        <span class="kichthuoc-nho-hon text-success"><i class="fas fa-check-circle me-1"></i>Sạch</span>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success px-25 py-1">
+                            <i class="fas fa-check me-1"></i>Sạch
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td class="py-3">
+                        {% if r.arrival_booking_id %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 py-1">
+                            <i class="fas fa-fire-alt me-1"></i>Đón khách: {{ r.arrival_guest }} (#{{ r.arrival_booking_id }})
+                        </span>
+                        {% elif r.inhouse_booking_id %}
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 py-1">
+                            <i class="fas fa-user me-1"></i>In-house: {{ r.inhouse_guest }}
+                        </span>
+                        {% else %}
+                        <span class="text-muted small">—</span>
+                        {% endif %}
+                    </td>
+                    <td class="pe-4 py-3 text-end">
+                        {% if r.housekeeping_status != 'Clean' %}
+                        <form method="POST" action="/housekeeping/clean/{{ r.physical_room_id }}" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-success px-3 py-1 fw-bold shadow-sm"
+                                    onclick="return confirm('Đánh dấu {{ clean_name }} đã dọn sạch?')">
+                                <i class="fas fa-check me-1"></i>Báo sạch
+                            </button>
+                        </form>
+                        {% if r.housekeeping_status != 'Maintenance' %}
+                        <button type="button" class="btn btn-sm btn-outline-warning px-2 py-1 fw-bold ms-1"
+                                onclick="openMaintenanceModal({{ r.physical_room_id }}, '{{ clean_name }}')">
+                            <i class="fas fa-wrench"></i>
+                        </button>
+                        {% endif %}
+                        {% else %}
+                        <span class="text-success small fw-bold me-2"><i class="fas fa-check-circle me-1"></i>Sạch</span>
+                        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2"
+                                onclick="openMaintenanceModal({{ r.physical_room_id }}, '{{ clean_name }}')" title="Báo bảo trì">
+                            <i class="fas fa-wrench"></i>
+                        </button>
                         {% endif %}
                     </td>
                 </tr>
@@ -97,11 +388,206 @@
         </table>
     </div>
 </div>
+
 {% else %}
-<div class="the-chinh p-5 text-center">
-    <i class="fas fa-check-circle fa-3x text-success opacity-50 mb-3 d-block"></i>
-    <h5 class="fw-bold text-success">Tất cả phòng đã sạch!</h5>
-    <p class="text-muted small">Không có phòng nào cần vệ sinh hoặc bảo trì lúc này.</p>
+<div class="card border-0 shadow-sm p-5 text-center my-4" style="border-radius: 18px;">
+    <div class="mb-3">
+        <i class="fas fa-check-circle fa-4x text-success opacity-75"></i>
+    </div>
+    <h4 class="fw-bold text-success mb-2" style="font-family: var(--font-display);">Toàn bộ buồng phòng đều sạch sẽ!</h4>
+    <p class="text-muted small mb-0">Hiện không có phòng nào cần vệ sinh hay bảo trì. Hệ thống sẵn sàng 100% đón khách lưu trú.</p>
 </div>
 {% endif %}
+
+{# ── MODAL BÁO HỎNG / BẢO TRÌ KỸ THUẬT (MAINTENANCE MODAL) ── #}
+<div class="modal fade" id="maintenanceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow" style="border-radius: 16px;">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #072A44 0%, #031826 100%); border-top-left-radius: 16px; border-top-right-radius: 16px;">
+                <h5 class="modal-title fw-bold" style="font-family: var(--font-display);">
+                    <i class="fas fa-wrench text-warning me-2"></i>Báo Sự Cố & Chuyển Bảo Trì
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" id="maintenanceForm" action="/housekeeping/status/0">
+                <input type="hidden" name="housekeeping_status" value="Maintenance">
+                <div class="modal-body p-4">
+                    <div class="alert alert-warning d-flex align-items-center gap-2 py-2 px-3 small" style="border-radius: 10px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>Phòng sẽ được đánh dấu <strong>Bảo Trì</strong> trên PMS để Lễ tân không cấp phòng này cho khách.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Phòng buồng xử lý:</label>
+                        <input type="text" id="modalRoomDisplay" class="form-control fw-bold fs-6 text-primary" readonly style="border-radius: 10px;">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Phân loại sự cố kỹ thuật:</label>
+                        <select class="form-select" name="issue_type" style="border-radius: 10px;">
+                            <option value="ac">❄️ Máy lạnh / Điều hòa không mát, kêu to</option>
+                            <option value="plumbing">🚿 Vòi sen, bồn rửa rò rỉ nước, nghẹt cống</option>
+                            <option value="electric">💡 Cháy bóng đèn, ổ cắm không có điện</option>
+                            <option value="lock">🔑 Khóa cửa thẻ từ hỏng / kẹt pin</option>
+                            <option value="furniture">🪑 Hư hỏng trang thiết bị nội thất</option>
+                            <option value="other">⚠️ Sự cố kỹ thuật khác</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Mô tả chi tiết sự cố:</label>
+                        <textarea class="form-control" name="notes" rows="2" placeholder="Ví dụ: Nước rỉ ở lavabo phòng tắm, cần thợ xử lý trước 12h..." style="border-radius: 10px;"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-3 pt-0">
+                    <button type="button" class="btn btn-light px-3 fw-semibold" data-bs-dismiss="modal" style="border-radius: 10px;">Đóng</button>
+                    <button type="submit" class="btn btn-warning px-4 fw-bold text-dark shadow-sm" style="border-radius: 10px;">
+                        <i class="fas fa-paper-plane me-1"></i>XÁC NHẬN BẢO TRÌ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{# ── JAVASCRIPT ĐIỀU PHỐI VẬN HÀNH BUỒNG PHÒNG THỜI GIAN THỰC ── #}
+<script>
+let currentStatus = 'all';
+let currentWing = 'all';
+let currentSearch = '';
+
+function setViewMode(mode) {
+    const cards = document.getElementById('housekeeping-cards-view');
+    const table = document.getElementById('housekeeping-table-view');
+    const btnCards = document.getElementById('btn-view-cards');
+    const btnTable = document.getElementById('btn-view-table');
+
+    if (mode === 'cards') {
+        if (cards) cards.classList.remove('d-none');
+        if (table) table.classList.add('d-none');
+        btnCards.classList.add('active', 'bg-white', 'shadow-sm');
+        btnTable.classList.remove('active', 'bg-white', 'shadow-sm');
+    } else {
+        if (cards) cards.classList.add('d-none');
+        if (table) table.classList.remove('d-none');
+        btnTable.classList.add('active', 'bg-white', 'shadow-sm');
+        btnCards.classList.remove('active', 'bg-white', 'shadow-sm');
+    }
+}
+
+function filterByStatus(status) {
+    currentStatus = status;
+    const pills = document.querySelectorAll('#status-filter-pills button');
+    pills.forEach(p => {
+        if (p.dataset.status === status) {
+            p.classList.add('active');
+            if (status === 'all') p.className = 'btn btn-sm btn-dark px-3 rounded-pill fw-bold active';
+            else if (status === 'Dirty') p.className = 'btn btn-sm btn-danger px-3 rounded-pill fw-bold active';
+            else if (status === 'Maintenance') p.className = 'btn btn-sm btn-warning px-3 rounded-pill fw-bold active';
+            else if (status === 'Clean') p.className = 'btn btn-sm btn-success px-3 rounded-pill fw-bold active';
+            else p.className = 'btn btn-sm btn-dark px-3 rounded-pill fw-bold active';
+        } else {
+            p.classList.remove('active');
+            const st = p.dataset.status;
+            if (st === 'all') p.className = 'btn btn-sm btn-outline-dark px-3 rounded-pill fw-bold';
+            else if (st === 'Dirty') p.className = 'btn btn-sm btn-outline-danger px-3 rounded-pill fw-bold';
+            else if (st === 'Maintenance') p.className = 'btn btn-sm btn-outline-warning px-3 rounded-pill fw-bold';
+            else if (st === 'Clean') p.className = 'btn btn-sm btn-outline-secondary px-3 rounded-pill fw-bold';
+            else if (st === 'arrival') p.className = 'btn btn-sm btn-outline-success px-3 rounded-pill fw-bold';
+        }
+    });
+    applyAllFilters();
+}
+
+function filterBySpecial(special) {
+    if (special === 'arrival') {
+        currentStatus = 'arrival';
+        const pills = document.querySelectorAll('#status-filter-pills button');
+        pills.forEach(p => {
+            if (p.dataset.status === 'arrival') {
+                p.className = 'btn btn-sm btn-success px-3 rounded-pill fw-bold active';
+            } else {
+                p.classList.remove('active');
+            }
+        });
+        applyAllFilters();
+    }
+}
+
+function filterByWing(wing) {
+    currentWing = wing;
+    const btns = document.querySelectorAll('#wing-filter-pills button');
+    btns.forEach(b => {
+        if (b.dataset.wing === wing) {
+            b.classList.add('active', 'bg-white', 'shadow-sm');
+        } else {
+            b.classList.remove('active', 'bg-white', 'shadow-sm');
+        }
+    });
+    applyAllFilters();
+}
+
+function filterBySearch(val) {
+    currentSearch = val.toLowerCase().trim();
+    applyAllFilters();
+}
+
+function applyAllFilters() {
+    const cardItems = document.querySelectorAll('.room-card-item');
+    const tableRows = document.querySelectorAll('.room-table-row');
+    let visibleCards = 0;
+    let visibleRows = 0;
+
+    cardItems.forEach(item => {
+        const matchesStatus = (currentStatus === 'all') ||
+                              (currentStatus === 'arrival' && item.dataset.hasArrival === '1') ||
+                              (item.dataset.status === currentStatus);
+        const matchesWing = (currentWing === 'all') || (item.dataset.wing === currentWing);
+        const nameText = (item.dataset.roomName + ' ' + item.dataset.roomFull).toLowerCase();
+        const matchesSearch = !currentSearch || nameText.includes(currentSearch);
+
+        if (matchesStatus && matchesWing && matchesSearch) {
+            item.style.display = '';
+            visibleCards++;
+        } else {
+            item.style.display = 'none';
+        }
+    });
+
+    tableRows.forEach(row => {
+        const matchesStatus = (currentStatus === 'all') ||
+                              (currentStatus === 'arrival' && row.dataset.hasArrival === '1') ||
+                              (row.dataset.status === currentStatus);
+        const matchesWing = (currentWing === 'all') || (row.dataset.wing === currentWing);
+        const nameText = (row.dataset.roomName + ' ' + row.dataset.roomFull).toLowerCase();
+        const matchesSearch = !currentSearch || nameText.includes(currentSearch);
+
+        if (matchesStatus && matchesWing && matchesSearch) {
+            row.style.display = '';
+            visibleRows++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    const vCardElem = document.getElementById('visible-cards-count');
+    const vTableElem = document.getElementById('visible-table-count');
+    if (vCardElem) vCardElem.textContent = visibleCards;
+    if (vTableElem) vTableElem.textContent = visibleRows;
+}
+
+function openMaintenanceModal(roomId, roomName) {
+    const form = document.getElementById('maintenanceForm');
+    const display = document.getElementById('modalRoomDisplay');
+    form.action = '/housekeeping/status/' + roomId;
+    display.value = roomName;
+    const modal = new bootstrap.Modal(document.getElementById('maintenanceModal'));
+    modal.show();
+}
+</script>
+
+<style>
+.kpi-hover-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+}
+</style>
+
 {% endblock %}

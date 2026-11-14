@@ -1,201 +1,458 @@
-/* ─ Hero Banner ─ */
+/* ==================================================================
+   EDITORIAL COASTAL HERITAGE LUXURY - PROFILE & VIP PRIVILEGE CLUB
+   Sài Gòn - Côn Đảo Resort (Est. 1920)
+   ================================================================== */
+
+/* -- 1. HERO BANNER DI SẢN (ARCHITECTURAL HERO) -- */
 .profile-hero {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 480px;
-    background: url('/static/images/condao.png') no-repeat center center;
-    background-size: cover;
-    z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 440px;
+  background: url('/static/images/condao.png') no-repeat center center;
+  background-size: cover;
+  z-index: 0;
 }
 
-.profile-hero::before {
-    content: "";
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    background: linear-gradient(to bottom, rgba(4, 25, 59, 0.6) 0%, rgba(4, 25, 59, 0.9) 100%);
+.profile-hero::before,
+.profile-hero-overlay {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: linear-gradient(180deg, rgba(7, 42, 68, 0.75) 0%, rgba(4, 25, 43, 0.94) 100%);
 }
 
 .profile-header {
-    position: relative;
-    z-index: 10;
-    padding-top: 150px; /* Push down past navbar */
-    color: white;
-    text-align: center;
-    margin-bottom: 50px;
+  position: relative;
+  z-index: 10;
+  padding-top: 130px;
+  color: white;
+  margin-bottom: 35px;
 }
 
-/* ─ Glassmorphism Content Area ─ */
+.profile-header .heritage-kicker {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #E2C799;
+}
+
+.profile-hero-heading {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.profile-hero-heading .highlight-name {
+  color: #F6E27A;
+}
+
+.profile-hero-subtitle {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
 .profile-content {
-    position: relative;
-    z-index: 10;
-    margin-top: -30px;
+  position: relative;
+  z-index: 10;
+  margin-top: -20px;
 }
 
-.profile-glass-card {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    padding: 30px;
+/* -- 2. ATELIER PROFILE CARD (THÔNG TIN ĐỊNH DANH) -- */
+.profile-atelier-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 20px rgba(10, 61, 98, 0.06);
+  padding: 30px;
+  position: relative;
 }
 
-.caidat-nhan {
-    font-size: 13px;
-    font-weight: 700;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
+.atelier-kicker {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #B89758;
+  margin-bottom: 4px;
 }
 
-.caidat-input {
-    border-radius: 12px;
-    padding: 14px 18px;
-    border: 2px solid #e2e8f0;
-    background-color: #f8fafc;
-    transition: all 0.3s;
-    font-size: 15px;
-    font-weight: 500;
+.atelier-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #072A44;
 }
 
-.caidat-input:focus {
-    background-color: #fff;
-    border-color: var(--mau-vang-chinh);
-    box-shadow: 0 0 0 4px rgba(225, 177, 44, 0.2);
+.atelier-subhead {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #072A44;
 }
 
-.caidat-input:disabled {
-    background-color: #e2e8f0;
-    cursor: not-allowed;
-    border-color: #cbd5e1;
-    color: #64748b;
+.badge-account-active {
+  background: #ECFDF5;
+  color: #059669;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #A7F3D0;
 }
 
-/* ─ VIP Loyalty Card ─ */
-.loyalty-the-vip {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1.586; /* Standard credit card ratio */
-    border-radius: 20px;
-    padding: 24px;
-    color: #fff;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 25px;
+.form-label-atelier {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #475569;
+  margin-bottom: 6px;
+  display: block;
 }
 
-.loyalty-the-vip::before {
-    content: '\f219'; /* fa-monument or any subtle geometry */
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    position: absolute;
-    right: -20px;
-    bottom: -30px;
-    font-size: 150px;
-    color: rgba(255, 255, 255, 0.1);
-    transform: rotate(-15deg);
-    pointer-events: none;
+.atelier-readonly-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  padding: 10px 14px;
 }
 
-/* Chip */
-.vip-chip {
-    width: 45px;
-    height: 35px;
-    background: linear-gradient(135deg, #e0b354, #d19f3a, #f7d273, #e0b354);
-    border-radius: 5px;
-    margin-bottom: 15px;
-    position: relative;
-}
-.vip-chip::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 0; width: 100%; height: 1px;
-    background: rgba(0,0,0,0.1);
+.atelier-readonly-box .email-text {
+  font-weight: 600;
+  color: #0F172A;
+  font-size: 0.95rem;
 }
 
-/* Mức thẻ */
-.vip-bg-newbie {
-    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
-    border: 1px solid #4a5c6e;
+.badge-verified {
+  background: #F0FDF4;
+  color: #16A34A;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #BBF7D0;
 }
 
-.vip-bg-silver {
-    background: linear-gradient(135deg, #a5b1c2 0%, #778ca3 100%);
-    color: #2f3542;
-    border: 1px solid #d1d8e0;
-}
-.vip-bg-silver .loyalty-the-vip::before { color: rgba(255,255,255,0.4); }
-
-.vip-bg-gold {
-    background: linear-gradient(135deg, #d4af37 0%, #aa8410 50%, #f6e27a 100%);
-    color: #3b2c00;
-    border: 1px solid #ffeaa7;
-    box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4);
-}
-.vip-bg-gold .loyalty-the-vip::before { color: rgba(255,255,255,0.4); }
-
-.vip-tier-name {
-    font-size: 24px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+.atelier-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.vip-member-name {
-    font-size: 16px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+.input-icon-left {
+  position: absolute;
+  left: 14px;
+  color: #94A3B8;
+  font-size: 0.9rem;
+  pointer-events: none;
 }
 
-/* ─ Tiến trình điểm ─ */
-.progress-vip {
-    height: 10px;
-    border-radius: 10px;
-    background-color: #e2e8f0;
-    overflow: hidden;
-    margin-bottom: 8px;
+.atelier-input {
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  padding: 10px 14px 10px 38px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #0F172A;
+  transition: all 0.2s ease;
+  background-color: #FFFFFF;
 }
 
-.progress-vip-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #aa8410, #f6e27a);
-    border-radius: 10px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+.atelier-input:focus {
+  border-color: #0A3D62;
+  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.12);
+  outline: none;
 }
 
-/* Quick Links hover effects */
-.lienkiet-nhanh {
-    display: flex;
-    align-items: center;
-    padding: 16px 20px;
-    border-radius: 14px;
-    background: #f8fafc;
-    color: var(--mau-xanh-dam);
-    text-decoration: none;
-    font-weight: 600;
-    margin-bottom: 14px;
-    border: 1px solid transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.helper-note {
+  font-size: 0.75rem;
+  color: #64748B;
+  line-height: 1.4;
 }
 
-.lienkiet-nhanh:hover {
-    background: #fff;
-    border-color: var(--mau-vang-chinh);
-    transform: translateX(8px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    color: var(--mau-xanh-dam);
+.border-top-atelier {
+  border-top: 1px solid #F1F5F9;
 }
-.lienkiet-nhanh i {
-    font-size: 20px;
-    width: 32px;
-    text-align: center;
+
+.btn-atelier-submit {
+  background: linear-gradient(135deg, #0A3D62 0%, #072A44 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 11px 24px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 12px rgba(10, 61, 98, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-atelier-submit:hover {
+  background: linear-gradient(135deg, #072A44 0%, #04192B 100%);
+  box-shadow: 0 6px 18px rgba(10, 61, 98, 0.3);
+  transform: translateY(-1px);
+}
+
+/* -- 3. THẺ HỘI VIÊN VẬT LÝ KIM LOẠI (CHAMPAGNE METALLIC CARD) -- */
+.physical-vip-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.586;
+  border-radius: 12px;
+  padding: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 16px 36px rgba(10, 61, 98, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.physical-vip-card.vip-tier-gold {
+  background: linear-gradient(135deg, #F3E4BE 0%, #DEB86F 35%, #BE9544 65%, #EED59B 100%);
+  color: #2D2005;
+}
+
+.physical-vip-card.vip-tier-silver {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 40%, #94A3B8 75%, #CBD5E1 100%);
+  color: #1E293B;
+}
+
+.physical-vip-card.vip-tier-newbie {
+  background: linear-gradient(135deg, #0F3B5F 0%, #072A44 60%, #04192B 100%);
+  color: #FFFFFF;
+}
+
+.card-glare-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(115deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 45%, rgba(255,255,255,0.2) 100%);
+  pointer-events: none;
+}
+
+.card-wave-watermark {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 60%;
+  height: 60%;
+  pointer-events: none;
+}
+
+.card-brand-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  line-height: 1.1;
+}
+
+.card-brand-sub {
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.card-tier-pill {
+  background: rgba(0, 0, 0, 0.8);
+  color: #F6E27A;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.emv-smart-chip {
+  width: 44px;
+  height: 34px;
+  background: linear-gradient(135deg, #D4AF37 0%, #AA8012 50%, #F5DE7A 100%);
+  border-radius: 4px;
+  border: 1px solid #785A09;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.chip-circuit {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(0,0,0,0.25);
+}
+
+.contactless-wave {
+  font-size: 1.25rem;
+  opacity: 0.6;
+}
+
+.card-embossed-num {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.15rem;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.4);
+  display: flex;
+  gap: 12px;
+}
+
+.card-micro-label {
+  font-size: 0.58rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  opacity: 0.75;
+  margin-bottom: 2px;
+}
+
+.card-holder-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.card-points-val {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* -- 4. PRIVILEGE LIST & SHORTCUTS -- */
+.badge-discount-gold {
+  background: #FFFBEB;
+  color: #B45309;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #FDE68A;
+}
+
+.privilege-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.privilege-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.privilege-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #FDF8F0;
+  color: #B89758;
+  border: 1px solid #EEDFCA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.privilege-title {
+  color: #0F172A;
+  font-size: 0.88rem;
+}
+
+.progress-bar-atelier {
+  height: 8px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-atelier .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C5A880 0%, #D4AF37 100%);
+  border-radius: 4px;
+}
+
+.stat-night-badge {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.badge-vip-status {
+  background: #ECFDF5;
+  color: #059669;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+.btn-atelier-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #0F172A;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(10, 61, 98, 0.03);
+}
+
+.btn-atelier-shortcut:hover {
+  border-color: #0A3D62;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(10, 61, 98, 0.08);
+  color: #0A3D62;
+}
+
+.shortcut-icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #EFF6FF;
+  color: #0A3D62;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+.shortcut-icon-gold {
+  background: #FFFBEB;
+  color: #B45309;
+}
+
+.shortcut-title {
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1.2;
+}
+
+.shortcut-sub {
+  font-size: 0.75rem;
+  color: #64748B;
+  margin-top: 2px;
 }
 
 /* ─ Loyalty Specific Styles ─ */
@@ -412,6 +669,9 @@
     font-size: 18px;
     font-weight: 800;
     color: var(--mau-xanh-dam);
+    font-variant-numeric: lining-nums proportional-nums !important;
+    -webkit-font-feature-settings: "lnum" 1 !important;
+    font-feature-settings: "lnum" 1 !important;
 }
 
 .price-deposit { font-size: 13px; color: #059669; }
@@ -524,3 +784,14 @@
 
 
 
+
+.profile-header h1 {
+    font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+    letter-spacing: -0.5px;
+}
+.journey-hotel {
+    font-family: var(--font-display, 'Playfair Display', Georgia, serif) !important;
+}
+.price-value {
+    font-family: var(--font-display, 'Playfair Display', Georgia, serif) !important;
+}

@@ -1,170 +1,269 @@
-/* Layout 2 cột kiểu Stripe - FULL SCREEN */
-.thanhtoan-bocuc {
-  display: flex;
-  min-height: 100vh;
-  margin: 0;
-  width: 100vw;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 9999;
+/* ==========================================================================
+   PAYMENT PAGE STYLES - EDITORIAL COASTAL HERITAGE LUXURY
+   Sài Gòn - Côn Đảo Resort
+   Synchronized with Draw.io Architecture (UC-01 & SD-01 BCE Pattern)
+   ========================================================================== */
+
+:root {
+  --navy-primary: #072A44;
+  --navy-dark: #041B2D;
+  --navy-light: #0B395E;
+  --navy-slate: #0F2D48;
+  --gold-accent: #C5A880;
+  --gold-hover: #B39368;
+  --gold-light: #F4EFEA;
+  --bg-ivory: #FAF8F5;
+  --surface-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-muted: #64748B;
+  --border-light: #E2E8F0;
+  --border-gold: rgba(197, 168, 128, 0.35);
+  --danger-soft: #FDF2F2;
+  --danger-red: #DC2626;
 }
 
-@media (max-width: 900px) {
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-ivory) !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* ── TOP LUXURY NAVIGATION STRIP ── */
+.payment-top-bar {
+  background: var(--navy-dark);
+  color: #FFFFFF;
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(197, 168, 128, 0.3);
+  font-size: 0.85rem;
+}
+
+.payment-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+.payment-brand span {
+  color: var(--gold-accent);
+}
+
+.payment-top-timer {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(197, 168, 128, 0.15);
+  border: 1px solid var(--border-gold);
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+  color: #F8D8B0;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.payment-top-timer strong {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+}
+
+.payment-top-help {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.payment-top-help a {
+  color: var(--gold-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ── 2-COLUMN FULL LAYOUT ── */
+.thanhtoan-bocuc {
+  display: flex;
+  min-height: calc(100vh - 54px);
+}
+
+@media (max-width: 992px) {
   .thanhtoan-bocuc {
     flex-direction: column;
   }
 }
 
-/* CỘT TRÁI: Dark summary */
+/* ── LEFT COLUMN: HERITAGE ORDER SUMMARY (45%) ── */
 .thanhtoan-tomtat {
-  flex: 1;
-  background: var(--mau-xanh-dam);
-  color: #e0e0e0;
-  padding: 60px 40px;
+  flex: 0 0 45%;
+  background: linear-gradient(145deg, #072A44 0%, #041B2D 100%);
+  color: #E2E8F0;
+  padding: 3rem 3.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Center content horizontally */
+  border-right: 1px solid var(--border-gold);
 }
 
 .thanhtoan-tomtat-inner {
   width: 100%;
-  max-width: 440px;
+  max-width: 480px;
 }
 
 .thanhtoan-quaylai {
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  font-size: 13px;
-  display: inline-block;
-  margin-bottom: 24px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 2rem;
+  transition: color 0.2s ease;
 }
 
 .thanhtoan-quaylai:hover {
-  color: #fff;
+  color: var(--gold-accent);
 }
 
 .thanhtoan-tomtat-tieude {
-  font-size: 14px;
-  color: #94a3b8;
-  margin-bottom: 6px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold-accent);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
 }
 
 .thanhtoan-tomtat__amount {
-  font-size: 36px;
-  font-weight: 800;
-  color: #fff;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: #FFFFFF;
   line-height: 1.1;
+  margin-bottom: 0.25rem;
+  font-variant-numeric: lining-nums proportional-nums !important;
+  -webkit-font-feature-settings: "lnum" 1 !important;
+  font-feature-settings: "lnum" 1 !important;
 }
 
 .thanhtoan-tiente {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 1.75rem;
+  color: var(--gold-accent);
+  margin-left: 4px;
 }
 
 .thanhtoan-tomtat-ghichu {
-  font-size: 12px;
-  color: #64748b;
-  margin-bottom: 28px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 1.75rem;
 }
 
-/* Product card */
+/* Room Product Card */
 .thanhtoan-sanpham-the {
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: 12px;
-  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  border-radius: 8px;
+  padding: 1.25rem;
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.thanhtoan-sanpham-the-bieutuong {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--mau-xanh-chinh), var(--mau-phu));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
+.thanhtoan-room-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid var(--border-gold);
   flex-shrink: 0;
 }
 
+.thanhtoan-sanpham-the__info {
+  flex: 1;
+}
+
 .thanhtoan-sanpham-the-ten {
+  font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  color: #fff;
-  font-size: 14px;
+  color: #FFFFFF;
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
 }
 
 .thanhtoan-sanpham-the-mota {
-  font-size: 12px;
-  color: #94a3b8;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .thanhtoan-sanpham-the-thongtin {
-  font-size: 11px;
-  color: #64748b;
-  margin-top: 2px;
+  font-size: 0.75rem;
+  color: var(--gold-accent);
+  margin-top: 0.2rem;
 }
 
-.thanhtoan-sanpham-the-gia {
-  margin-left: auto;
-  font-weight: 700;
-  color: #fff;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
+/* Deposit Badge */
 .thanhtoan-datcoc-huyhieu {
-  background: rgba(245, 158, 11, .15);
-  border: 1px solid rgba(245, 158, 11, .3);
-  color: var(--mau-vang-chinh);
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 12px;
+  background: rgba(197, 168, 128, 0.15);
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  color: #F8D8B0;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
 }
 
-/* Breakdown */
+/* Price Breakdown */
 .thanhtoan-chitiet {
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  padding-top: 16px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-top: 1.25rem;
 }
 
 .thanhtoan-chitiet-hang {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  color: #94a3b8;
-  padding: 6px 0;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.45rem 0;
 }
 
 .thanhtoan-chitiet-hang-phu {
-  color: #64748b;
-  font-style: italic;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .thanhtoan-chitiet-tong {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #fff;
-  padding: 12px 0 0;
-  margin-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, .15);
+  color: #FFFFFF;
+  padding: 1rem 0 0;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* CỘT PHẢI: White form */
+.thanhtoan-chitiet-tong span:last-child {
+  color: #F8D8B0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+}
+
+/* ── RIGHT COLUMN: PAYMENT CONSOLE (55%) ── */
 .thanhtoan-bieumau-trai {
-  flex: 1;
-  background: #fbfbfb;
-  padding: 60px 40px;
-  max-width: none;
+  flex: 0 0 55%;
+  background: #FFFFFF;
+  padding: 3rem 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,133 +271,210 @@
 
 .thanhtoan-bieumau-trai-inner {
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
 }
 
-@media (max-width: 900px) {
-  .thanhtoan-bieumau-trai {
-    padding: 24px;
-    align-items: stretch;
-  }
-
-  .thanhtoan-bieumau-trai-inner {
-    max-width: 100%;
-  }
-}
-
-/* Sections */
 .thanhtoan-phan {
-  margin-bottom: 28px;
+  margin-bottom: 1.75rem;
 }
 
 .thanhtoan-phan-tieude {
-  font-size: 15px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: var(--mau-xanh-dam);
-  margin-bottom: 14px;
+  color: var(--navy-primary);
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border-light);
 }
 
-/* Input styling */
-.thanhtoan-nhap {
-  width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 14px;
-  color: var(--mau-xanh-dam);
-  outline: none;
-  transition: border-color .2s, box-shadow .2s;
-}
-
-.thanhtoan-nhap:focus {
-  border-color: var(--mau-xanh-chinh);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
-}
-
+/* Contact box */
 .thanhtoan-nhap-hop {
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 6px 14px 8px;
-  background: #f9fafb;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  background: #FAFAFA;
 }
 
-.thanhtoan-nhap-hop .thanhtoan-nhap-nhan {
-  font-size: 11px;
-  color: #94a3b8;
-  font-weight: 600;
+.thanhtoan-nhap-nhan {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .thanhtoan-nhap-hop .thanhtoan-nhap {
   border: none;
-  padding: 2px 0;
   background: transparent;
   font-weight: 600;
+  padding: 0.15rem 0;
+  font-size: 0.95rem;
+  color: var(--navy-primary);
+  width: 100%;
+  outline: none;
 }
 
-.thanhtoan-nhap-hop .thanhtoan-nhap:focus {
-  box-shadow: none;
-}
-
-/* Payment method list */
+/* Payment Method Selection Cards */
 .thanhtoan-phuongthuc-danhsach {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  margin-bottom: 20px;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
 }
 
 .thanhtoan-phuongthuc-muc {
+  border: 1.5px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.85rem 1.15rem;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 16px;
-  border: 1px solid #e5e7eb;
   cursor: pointer;
-  font-size: 14px;
-  color: #374151;
-  transition: background .15s;
+  background: #FAFAFA;
+  transition: all 0.2s ease;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--navy-primary);
 }
 
-.thanhtoan-phuongthuc-muc:first-child {
-  border-radius: 10px 10px 0 0;
-}
-
-.thanhtoan-phuongthuc-muc:last-child {
-  border-radius: 0 0 10px 10px;
-}
-
-.thanhtoan-phuongthuc-muc:not(:first-child) {
-  border-top: none;
+.thanhtoan-phuongthuc-muc:hover {
+  border-color: var(--gold-accent);
+  background: #FFFFFF;
 }
 
 .thanhtoan-phuongthuc-muc.active {
-  background: #f0f7ff;
+  border-color: var(--navy-primary);
+  background: rgba(7, 42, 68, 0.03);
+  box-shadow: 0 2px 8px rgba(7, 42, 68, 0.08);
 }
 
 .thanhtoan-phuongthuc-muc input[type="radio"] {
-  accent-color: var(--mau-xanh-chinh);
+  margin-right: 0.75rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--navy-primary);
 }
 
-.thanhtoan-phuongthuc-thuonghieu img {
-  height: 20px;
-  margin-left: 2px;
+/* VietQR Dedicated Box */
+.vietqr-box {
+  background: #F8FAFC;
+  border: 1.5px dashed #CBD5E1;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Card form */
-.thanhtoan-truong-nhan {
-  font-size: 13px;
-  font-weight: 600;
-  color: #374151;
-  display: block;
-  margin-bottom: 6px;
+.vietqr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.vietqr-title {
+  font-weight: 700;
+  color: var(--navy-primary);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vietqr-body {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+@media (max-width: 576px) {
+  .vietqr-body {
+    flex-direction: column;
+  }
+}
+
+.vietqr-img-wrapper {
+  width: 130px;
+  height: 130px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.vietqr-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.vietqr-info {
+  flex: 1;
+  font-size: 0.85rem;
+}
+
+.vietqr-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px dotted #E2E8F0;
+}
+
+.vietqr-label {
+  color: var(--text-muted);
+}
+
+.vietqr-val {
+  font-weight: 700;
+  color: var(--navy-primary);
+  text-align: right;
+}
+
+.vietqr-highlight {
+  color: var(--navy-primary);
+  background: #FEF3C7;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-family: monospace;
+  font-weight: 700;
+}
+
+.thanhtoan-nganhang-luuy {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  color: #166534;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-top: 1rem;
+}
+
+.thanhtoan-nhap {
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  color: var(--navy-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.thanhtoan-nhap:focus {
+  border-color: var(--navy-primary);
+  box-shadow: 0 0 0 3px rgba(7, 42, 68, 0.1);
 }
 
 .thanhtoan-the-hang {
   position: relative;
-}
-
-.thanhtoan-the-hang .thanhtoan-nhap {
-  padding-right: 90px;
+  margin-bottom: 0.5rem;
 }
 
 .thanhtoan-the-thuonghieu {
@@ -307,95 +483,60 @@
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  gap: 4px;
-  font-size: 20px;
-  color: #94a3b8;
+  gap: 0.35rem;
+  font-size: 1.25rem;
+  color: #94A3B8;
 }
 
 .thanhtoan-the-hang-chia {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
+  display: flex;
+  gap: 0.5rem;
 }
 
-.thanhtoan-the-hang-chia .thanhtoan-nhap {
-  border-radius: 0;
-  border-top: none;
-}
-
-.thanhtoan-the-hang-chia .thanhtoan-nhap:first-child {
-  border-radius: 0 0 0 8px;
-  border-right: none;
-}
-
-.thanhtoan-the-hang-chia .thanhtoan-nhap:last-child {
-  border-radius: 0 0 8px 0;
-}
-
-.thanhtoan-the-hang .thanhtoan-nhap-the {
-  border-radius: 8px 8px 0 0;
-}
-
-.thanhtoan-phuongthuc-chitiet {
-  margin-top: 16px;
-}
-
-/* Bank notice */
-.thanhtoan-nganhang-luuy,
-.thanhtoan-tienmat-luuy {
-  background: rgba(129, 236, 236, 0.08);
-  border: 1px solid rgba(129, 236, 236, 0.25);
-  border-radius: 10px;
-  padding: 14px 16px;
-  font-size: 13px;
-  color: var(--mau-xanh-chinh);
-}
-
-.thanhtoan-tienmat-luuy {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
-  color: #166534;
-}
-
-/* Save info */
-.thanhtoan-luu-thongtin input[type="checkbox"] {
-  accent-color: var(--mau-xanh-chinh);
-}
-
-/* Submit */
+/* Submit Button */
 .thanhtoan-xacnhan-nut {
   width: 100%;
-  background: var(--mau-xanh-dam);
-  color: #fff;
-  border: none;
-  padding: 16px;
-  border-radius: 10px;
-  font-size: 15px;
+  background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-dark) 100%);
+  color: #FFFFFF;
+  border: 1px solid var(--gold-accent);
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
   font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  transition: background .2s;
+  box-shadow: 0 4px 15px rgba(7, 42, 68, 0.18);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .thanhtoan-xacnhan-nut:hover {
-  background: var(--mau-xanh-chinh);
+  background: linear-gradient(135deg, var(--gold-hover) 0%, var(--gold-accent) 100%);
+  border-color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(197, 168, 128, 0.35);
 }
 
-/* Trust */
 .thanhtoan-uytin {
-  margin-top: 24px;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-light);
   text-align: center;
 }
 
 .thanhtoan-uytin-huyhieu {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  font-size: 11px;
-  color: #64748b;
-  margin-bottom: 6px;
+  gap: 1.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
 }
 
 .thanhtoan-uytin-chu {
-  font-size: 11px;
-  color: #94a3b8;
+  font-size: 0.72rem;
+  color: #94A3B8;
 }

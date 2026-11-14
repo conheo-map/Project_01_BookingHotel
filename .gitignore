@@ -54,3 +54,27 @@ ENV/
 *~
 .DS_Store
 Thumbs.db
+
+# Temporary audit & scratch development scripts in root
+audit_*.py
+check_*.py
+capture_*.py
+inspect_*.py
+detect_*.py
+test_baseline.py
+dump_diag.py
+count_diag.py
+cross_check_report.py
+deep_audit_aesthetics.py
+execute_ad_refactor.py
+fine_tune_ad03.py
+fix_db_roomtype.py
+make_viewer_html.py
+parse_erd_and_classes.py
+polish_aesthetics.py
+redesign_ad03.py
+route_edges.py
+update_booking_data.py
+verify_full_system_run.py
+anomaly_check.py
+build_perfect_activity_diagrams.py

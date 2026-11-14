@@ -80,12 +80,22 @@ def get_checkout_statement(booking_id: int, raise_on_error: bool = False) -> Dic
     try:
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT bm.booking_id, bm.customer_id, bm.guest_name, bm.guest_phone,
+            SELECT bm.booking_id, bm.customer_id,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS guest_name,
+                   COALESCE(cp.full_name, sp.full_name, bm.guest_name, 'Khách vãng lai') AS customer_name,
+                   COALESCE(cp.phone, bm.guest_phone, '') AS guest_phone,
+                   COALESCE(cp.phone, bm.guest_phone, '') AS customer_phone,
+                   COALESCE(a.email, bm.guest_email, '') AS customer_email,
                    bm.hotel_id, bm.room_type_id, bm.physical_room_id,
-                   bm.arrival_date, bm.departure_date, bm.nights,
+                   bm.arrival_date, bm.departure_date,
+                   bm.arrival_date AS checkin_date, bm.departure_date AS checkout_date,
+                   bm.nights,
                    bm.total_amount, bm.deposit_paid, bm.tax_amount, bm.discount_amount,
                    bm.booking_status, pr.room_name, rt.room_type_code
             FROM Booking_Master bm
+            LEFT JOIN Accounts a ON bm.customer_id = a.account_id
+            LEFT JOIN Customer_Profiles cp ON bm.customer_id = cp.account_id
+            LEFT JOIN Staff_Profiles sp ON bm.customer_id = sp.account_id
             LEFT JOIN Physical_Room pr ON bm.physical_room_id = pr.physical_room_id
             LEFT JOIN Dim_RoomType rt ON bm.room_type_id = rt.room_type_id
             WHERE bm.booking_id = ?
@@ -112,12 +122,17 @@ def get_checkout_statement(booking_id: int, raise_on_error: bool = False) -> Dic
             'booking_id': booking['booking_id'],
             'customer_id': booking['customer_id'],
             'guest_name': booking['guest_name'],
+            'customer_name': booking['customer_name'],
             'guest_phone': booking['guest_phone'],
+            'customer_phone': booking['customer_phone'],
+            'customer_email': booking['customer_email'],
             'room_name': booking['room_name'],
             'physical_room_id': booking['physical_room_id'],
             'room_type_code': booking['room_type_code'],
             'arrival_date': booking['arrival_date'],
             'departure_date': booking['departure_date'],
+            'checkin_date': booking['checkin_date'],
+            'checkout_date': booking['checkout_date'],
             'nights': booking['nights'],
             'booking_status': booking['booking_status'],
             'room_total_amount': booking['total_amount'],

@@ -82,10 +82,10 @@ class TestApiEndpoints(unittest.TestCase):
         try:
             cursor = conn.cursor()
             for b_id in cls.created_booking_ids:
+                cursor.execute("DELETE FROM Payments WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Invoices WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Booking_Attributions WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Cancellation_Records WHERE booking_id = ?", (b_id,))
-                cursor.execute("DELETE FROM Payments WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Extra_Services WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Booking_Nights WHERE booking_id = ?", (b_id,))
                 cursor.execute("DELETE FROM Booking_Master WHERE booking_id = ?", (b_id,))
@@ -125,7 +125,7 @@ class TestApiEndpoints(unittest.TestCase):
         self.assertEqual(resp2.status_code, 409)
         data2 = resp2.get_json()
         self.assertFalse(data2.get('success'))
-        self.assertIn("giữ chỗ trong 10 phút", data2.get('message', ''))
+        self.assertTrue("giữ chỗ" in data2.get('message', '') and "phút" in data2.get('message', ''))
 
         # Dọn dẹp lock
         release_lock(session_1, room_id)

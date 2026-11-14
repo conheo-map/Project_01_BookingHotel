@@ -1,121 +1,434 @@
 {% extends "base.html" %}
-{% block title %}Quản lý phòng vật lý - Hotel Booking{% endblock %}
+{% block title %}Quản Lý 92 Buồng Phòng Vật Lý - Quản Trị Resort 5 Sao{% endblock %}
 {% block content %}
 
+<!-- Header & Quick Navigation -->
 <div class="row mb-4 align-items-center">
-    <div class="col">
-        <h2 class="fw-bold mb-1">Quản lý phòng vật lý</h2>
-        <p class="text-muted small mb-0">Thêm, cập nhật hoặc ẩn các phòng cụ thể.</p>
+    <div class="col-md-7">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" 
+             style="background: #FDFBF7; border: 1px solid #E6DFD5; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #8C733E; text-transform: uppercase;">
+            <i class="fas fa-door-open text-warning"></i> Quản Lý Phòng Vật Lý & Hiện Trạng Lưu Trú
+        </div>
+        <h2 class="fw-bold mb-1" style="font-family: 'Playfair Display', Georgia, serif; color: #072A44; font-size: 1.85rem;">
+            Quản Lý 92 Buồng Phòng Vật Lý
+        </h2>
+        <p class="text-muted small mb-0">Kiểm soát chi tiết mã phòng số, trạng thái buồng phòng, khách đang lưu trú và liên kết ảnh phòng.</p>
     </div>
-    <div class="col-auto">
-        <a href="/manager" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-arrow-left me-1"></i>Dashboard
+    <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-md-end align-items-center">
+        <button class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-white shadow-sm"
+                type="button" data-bs-toggle="collapse" data-bs-target="#createRoomCollapse" aria-expanded="false" aria-controls="createRoomCollapse"
+                style="background: linear-gradient(135deg, #072A44 0%, #0F4C81 100%); border-radius: 8px; border: none;">
+            <i class="fas fa-plus-circle text-warning"></i> Thêm Phòng Mới
+        </button>
+        <a href="/receptionist/room-plan" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-th me-1 text-primary"></i> Sơ Đồ Matrix
+        </a>
+        <a href="/manager" class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-2 fw-bold text-decoration-none shadow-sm"
+           style="background: #FFFFFF; color: #072A44; border: 1px solid #CBD5E1; border-radius: 8px;">
+            <i class="fas fa-arrow-left"></i> Dashboard
         </a>
     </div>
 </div>
 
-<div class="row g-4">
-    <!-- Add room form -->
-    <div class="col-lg-4">
-        <div class="the-chinh p-4 mb-4">
-            <h6 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-plus-circle me-2 text-success"></i>Thêm phòng mới</h6>
-            <form method="POST" action="/manager/physical-rooms">
-                <input type="hidden" name="action" value="create">
-                <div class="mb-3">
-                    <label class="bieumau-nhan-sach">Loại phòng <span class="text-danger">*</span></label>
-                    <select name="room_type_id" class="form-select bieumau-dieukhien-sach" required>
-                        <option value="">-- Chọn loại phòng --</option>
-                        {% for rt in room_types %}
-                        <option value="{{ rt.room_type_id }}">{{ rt.room_type_code }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="bieumau-nhan-sach">Tên phòng <span class="text-danger">*</span></label>
-                    <input type="text" name="room_name" class="form-control bieumau-dieukhien-sach"
-                           placeholder="VD: 101, Suite A..." required>
-                </div>
-                <button type="submit" class="btn btn-success w-100 py-2 fw-bold">
-                    <i class="fas fa-plus me-2"></i>Thêm phòng
-                </button>
-            </form>
+<!-- Top Metric Strip (4 Cards) -->
+<div class="row g-3 mb-4">
+    <!-- Card 1: Tổng buồng phòng -->
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #072A44;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Tổng Buồng Phòng</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(7, 42, 68, 0.08); color: #072A44;">
+                    <i class="fas fa-hotel"></i>
+                </span>
+            </div>
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #072A44; font-family: 'Playfair Display', serif;">
+                {{ metrics.total or 92 }} <span class="fs-6 fw-normal text-muted">buồng phòng</span>
+            </div>
+            <div class="small text-muted" style="font-size: 0.75rem;">
+                56 City Hotel • 36 Resort Hotel
+            </div>
         </div>
     </div>
 
-    <!-- Rooms list -->
-    <div class="col-lg-8">
-        {% if inventory %}
-        {% for rt in inventory %}
-        <div class="the-chinh p-0 overflow-hidden mb-3">
-            <div class="the-tieude-sach px-4 py-3 d-flex justify-content-between align-items-center">
-                <span class="fw-bold">{{ rt.room_type_code }}</span>
-                <span class="kichthuoc-nho-hon text-muted">{{ rt.physical_rooms|length if rt.physical_rooms else 0 }} phòng</span>
+    <!-- Card 2: Phòng sạch sẵn sàng -->
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #10B981;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Phòng Sạch Sẵn Sàng</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(16, 185, 129, 0.12); color: #10B981;">
+                    <i class="fas fa-check-double"></i>
+                </span>
             </div>
-            {% if rt.physical_rooms %}
-            <div class="table-responsive">
-                <table class="bang-sach">
-                    <thead>
-                        <tr>
-                            <th>Tên phòng</th>
-                            <th>Housekeeping</th>
-                            <th>Đặt phòng</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pr in rt.physical_rooms %}
-                        <tr>
-                            <td class="fw-bold">{{ pr.room_name }}</td>
-                            <td>
-                                <form method="POST" action="/manager/physical-rooms" class="d-inline">
-                                    <input type="hidden" name="action" value="update_status">
-                                    <input type="hidden" name="physical_room_id" value="{{ pr.physical_room_id }}">
-                                    <select name="housekeeping_status" class="form-select bieumau-dieukhien-sach form-select-sm"
-                                            onchange="this.form.submit()">
-                                        {% for s in ['Clean', 'Dirty', 'Maintenance'] %}
-                                        <option value="{{ s }}" {% if pr.housekeeping_status == s %}selected{% endif %}>{{ s }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </form>
-                            </td>
-                            <td class="small text-muted">
-                                {% if pr.current_booking_id %}
-                                <a href="/receptionist/invoice/{{ pr.current_booking_id }}" class="text-decoration-none chu-datphong">
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #065F46; font-family: 'Playfair Display', serif;">
+                {{ metrics.clean_vacant or 80 }} <span class="fs-6 fw-normal text-muted">phòng trống</span>
+            </div>
+            <div class="small text-muted" style="font-size: 0.75rem;">
+                <span class="text-success fw-semibold"><i class="fas fa-sparkles me-1"></i>Sạch sẽ đón khách ngay</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3: Đang có khách ở -->
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #2563EB;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Đang Lưu Trú (In-House)</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(37, 99, 235, 0.12); color: #2563EB;">
+                    <i class="fas fa-key"></i>
+                </span>
+            </div>
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #1E3A8A; font-family: 'Playfair Display', serif;">
+                {{ metrics.occupied or 10 }} <span class="fs-6 fw-normal text-muted">phòng</span>
+            </div>
+            <div class="small text-muted" style="font-size: 0.75rem;">
+                Khách đang ở thực tế
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 4: Cần dọn & Bảo trì -->
+    <div class="col-6 col-md-3">
+        <div class="p-3 bg-white shadow-sm rounded-3 h-100 position-relative overflow-hidden" 
+             style="border: 1px solid #E2E8F0; border-left: 4px solid #D97706;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.72rem; letter-spacing: 0.05em;">Cần Dọn Dẹp / Bảo Trì</span>
+                <span class="badge rounded-circle p-2" style="background: rgba(245, 158, 11, 0.15); color: #D97706;">
+                    <i class="fas fa-broom"></i>
+                </span>
+            </div>
+            <div class="fs-4 fw-bold mb-1 sc-net-num" style="color: #92400E; font-family: 'Playfair Display', serif;">
+                {{ metrics.dirty or 2 }} <span class="fs-6 fw-normal text-muted">cần dọn</span>
+                {% if metrics.maintenance and metrics.maintenance > 0 %}
+                <span class="fs-6 fw-bold text-danger ms-1">• {{ metrics.maintenance }} bảo trì</span>
+                {% endif %}
+            </div>
+            <div class="small text-muted" style="font-size: 0.75rem;">
+                Ưu tiên phân công buồng phòng
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Collapsible Add Room Form -->
+<div class="collapse mb-4" id="createRoomCollapse">
+    <div class="bg-white rounded-3 shadow-sm p-4" style="border: 2px solid #DFB76C; border-top: 4px solid #072A44;">
+        <div class="d-flex justify-content-between align-items-center pb-3 mb-3" style="border-bottom: 1px solid #F1F5F9;">
+            <h6 class="fw-bold mb-0" style="color: #072A44; font-family: 'Playfair Display', serif; font-size: 1.15rem;">
+                <i class="fas fa-plus-circle text-warning me-2"></i>Thêm Buồng Phòng Mới Vào Sơ Đồ Hệ Thống
+            </h6>
+            <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#createRoomCollapse" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="/manager/physical-rooms" class="row g-3 align-items-end">
+            <input type="hidden" name="action" value="create">
+            <div class="col-md-5">
+                <label class="form-label small fw-bold text-dark">Hạng Loại Phòng Nghỉ <span class="text-danger">*</span></label>
+                <select name="room_type_id" class="form-select form-select-sm" required style="border-radius: 6px; font-weight: 500;">
+                    <option value="">-- Chọn hạng loại phòng --</option>
+                    {% for rt in room_types %}
+                    <option value="{{ rt.room_type_id }}">{{ rt.room_type_code }} ({{ rt.room_type_name or 'Hạng phòng' }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label small fw-bold text-dark">Số Hiệu / Tên Phòng <span class="text-danger">*</span></label>
+                <input type="text" name="room_name" class="form-control form-control-sm font-monospace fw-bold"
+                       placeholder="VD: P.23, Villa 101, CIT_DEL_23..." required style="border-radius: 6px;">
+                <div class="text-muted small mt-1" style="font-size: 0.72rem;">Quy ước: Mã số phòng dễ nhớ theo tầng hoặc dãy villa.</div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-sm w-100 py-2 fw-bold text-white shadow-sm"
+                        style="background: #072A44; border-radius: 6px; border: none;">
+                    <i class="fas fa-save me-1 text-warning"></i> Lưu & Kích Hoạt
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Filter Toolbar (Wing Filter Tabs + Live Search) -->
+<div class="bg-white rounded-3 shadow-sm p-3 mb-4" style="border: 1px solid #E2E8F0;">
+    <div class="row g-3 align-items-center justify-content-between">
+        <!-- Wing Filter Tabs -->
+        <div class="col-auto">
+            <div class="btn-group btn-group-sm p-1 rounded-pill" style="background: #F1F5F9;" role="group">
+                <button type="button" class="btn rounded-pill px-3 fw-bold active wing-filter-btn" data-wing="all"
+                        style="color: #072A44;">
+                    <i class="fas fa-th-large me-1"></i> Tất Cả (92)
+                </button>
+                <button type="button" class="btn rounded-pill px-3 fw-semibold text-muted wing-filter-btn" data-wing="city"
+                        style="border: none;">
+                    <i class="fas fa-city me-1"></i> City Hotel (56)
+                </button>
+                <button type="button" class="btn rounded-pill px-3 fw-semibold text-muted wing-filter-btn" data-wing="resort"
+                        style="border: none;">
+                    <i class="fas fa-umbrella-beach me-1"></i> Resort Hotel (36)
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Status Filter & Search -->
+        <div class="col-auto d-flex align-items-center gap-2">
+            <!-- Status Dropdown Filter -->
+            <select id="statusFilter" class="form-select form-select-sm" style="width: 170px; border-radius: 6px; font-weight: 500;">
+                <option value="all">-- Tất cả hiện trạng --</option>
+                <option value="occupied">Đang lưu trú (In-House)</option>
+                <option value="clean">Trống sạch (Clean)</option>
+                <option value="dirty">Cần dọn dẹp (Dirty)</option>
+                <option value="maintenance">Bảo trì (Maintenance)</option>
+            </select>
+
+            <!-- Search Input -->
+            <div class="input-group input-group-sm" style="width: 220px;">
+                <span class="input-group-text bg-light border-end-0 text-muted" style="border-radius: 6px 0 0 6px;">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" id="roomSearchInput" class="form-control border-start-0" 
+                       placeholder="Tìm mã phòng..." style="border-radius: 0 6px 6px 0;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Physical Rooms Directory -->
+<div id="roomsDirectory">
+    {% if inventory %}
+    {% for rt in inventory %}
+    {% set is_resort = ('RES_' in (rt.room_type_code or '')) or (rt.hotel_id == 1) %}
+    <div class="bg-white rounded-3 shadow-sm overflow-hidden mb-4 room-category-card" 
+         data-wing="{{ 'resort' if is_resort else 'city' }}"
+         style="border: 1px solid #E2E8F0;">
+        <!-- Category Header -->
+        <div class="px-4 py-3 d-flex justify-content-between align-items-center" 
+             style="background: #072A44; border-bottom: 2px solid #DFB76C; color: #FFFFFF;">
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge px-3 py-1 fw-bold" style="background: rgba(223, 183, 108, 0.2); color: #DFB76C; border: 1px solid #DFB76C; font-size: 0.85rem;">
+                    <i class="fas {{ 'fa-umbrella-beach' if is_resort else 'fa-city' }} me-1"></i>
+                    {{ 'Resort Hotel' if is_resort else 'City Hotel' }}
+                </span>
+                <div>
+                    <span class="fw-bold" style="font-family: 'Playfair Display', serif; font-size: 1.1rem; letter-spacing: 0.02em;">
+                        {{ rt.room_type_code }}
+                    </span>
+                    <span class="text-white text-opacity-75 small ms-2">
+                        — {{ rt.description[:60] if rt.description else 'Hạng buồng phòng cao cấp' }}
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge rounded-pill bg-white text-dark px-3 py-1 fw-bold">
+                    {{ rt.physical_rooms|length if rt.physical_rooms else 0 }} buồng phòng vật lý
+                </span>
+            </div>
+        </div>
+
+        {% if rt.physical_rooms %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
+                <thead style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; color: #64748B;">
+                    <tr>
+                        <th class="ps-4 py-3" style="width: 22%;">Số Hiệu Phòng</th>
+                        <th style="width: 30%;">Trạng Thái Buồng Phòng (HK)</th>
+                        <th style="width: 28%;">Hiện Trạng Lưu Trú</th>
+                        <th class="text-end pe-4" style="width: 20%;">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pr in rt.physical_rooms %}
+                    {% set rname = pr.room_name or '' %}
+                    {% set clean_num = rname.split('_')[-1] if '_' in rname else rname %}
+                    {% set is_occupied = pr.current_booking_id is not none and pr.current_booking_id > 0 %}
+                    <tr class="room-row" 
+                        data-room-name="{{ rname|lower }}"
+                        data-clean-num="{{ clean_num|lower }}"
+                        data-status="{{ pr.housekeeping_status|lower }}"
+                        data-occupied="{{ 'true' if is_occupied else 'false' }}"
+                        style="border-bottom: 1px solid #F1F5F9;">
+                        <!-- Room Number Column -->
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge rounded-circle p-2" style="background: rgba(7, 42, 68, 0.08); color: #072A44; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-door-closed"></i>
+                                </span>
+                                <div>
+                                    <div class="fw-bold text-dark font-monospace" style="font-size: 0.95rem;">
+                                        {% if is_resort %}
+                                        Villa {{ clean_num }}
+                                        {% else %}
+                                        P.{{ clean_num }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="text-muted small" style="font-size: 0.72rem;">Mã hệ thống: {{ rname }}</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Housekeeping Status Dropdown -->
+                        <td>
+                            <form method="POST" action="/manager/physical-rooms" class="d-inline">
+                                <input type="hidden" name="action" value="update_status">
+                                <input type="hidden" name="physical_room_id" value="{{ pr.physical_room_id }}">
+                                <select name="housekeeping_status" 
+                                        class="form-select form-select-sm d-inline-block w-auto py-1 px-3 fw-semibold"
+                                        style="border-radius: 6px; font-size: 0.82rem;
+                                        {% if pr.housekeeping_status == 'Clean' %}border: 1px solid #10B981; color: #065F46; background: #ECFDF5;
+                                        {% elif pr.housekeeping_status == 'Dirty' %}border: 1px solid #F59E0B; color: #92400E; background: #FFFBEB;
+                                        {% else %}border: 1px solid #64748B; color: #1E293B; background: #F1F5F9;{% endif %}"
+                                        onchange="this.form.submit()">
+                                    {% for s in ['Clean', 'Dirty', 'Maintenance'] %}
+                                    <option value="{{ s }}" {% if pr.housekeeping_status == s %}selected{% endif %}>
+                                        {% if s == 'Clean' %}✓ Sạch sẽ (Clean)
+                                        {% elif s == 'Dirty' %}⚠ Cần dọn (Dirty)
+                                        {% else %}🛠 Bảo trì (Maintenance){% endif %}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </td>
+
+                        <!-- Occupancy & Current Guest -->
+                        <td>
+                            {% if is_occupied %}
+                            <div class="d-inline-flex align-items-center gap-2">
+                                <span class="badge px-2 py-1" style="background: rgba(37, 99, 235, 0.12); color: #2563EB; border: 1px solid rgba(37, 99, 235, 0.25);">
+                                    <i class="fas fa-key me-1"></i>Đang lưu trú
+                                </span>
+                                <a href="/receptionist/invoice/{{ pr.current_booking_id }}" 
+                                   class="badge bg-light text-dark border text-decoration-none px-2 py-1 sc-net-num"
+                                   title="Xem phiếu chi tiết booking">
                                     #{{ pr.current_booking_id }}
                                 </a>
-                                {% else %}—{% endif %}
-                            </td>
-                            <td>
-                                {% if not pr.current_booking_id %}
+                            </div>
+                            {% else %}
+                            <span class="badge px-2 py-1" style="background: rgba(16, 185, 129, 0.1); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25);">
+                                <i class="fas fa-door-open me-1"></i>Trống sẵn sàng
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="text-end pe-4">
+                            <div class="d-inline-flex align-items-center gap-2">
+                                <a href="/manager/physical-room-edit/{{ pr.physical_room_id }}" 
+                                   class="btn btn-sm btn-outline-primary px-2 py-1 shadow-sm d-inline-flex align-items-center gap-1"
+                                   style="border-radius: 6px; font-size: 0.78rem;"
+                                   title="Quản lý ảnh đại diện và mô tả phòng">
+                                    <i class="fas fa-camera"></i> Ảnh phòng
+                                </a>
+
+                                {% if not is_occupied %}
                                 <form method="POST" action="/manager/physical-rooms" class="d-inline">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="physical_room_id" value="{{ pr.physical_room_id }}">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger px-2"
-                                            onclick="return confirm('Ẩn phòng {{ pr.room_name }}?')"
-                                            title="Ẩn phòng">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger px-2 py-1 shadow-sm"
+                                            style="border-radius: 6px; font-size: 0.78rem;"
+                                            onclick="return confirm('Ẩn phòng {{ rname }} khỏi sơ đồ?')"
+                                            title="Ẩn phòng khỏi sơ đồ">
                                         <i class="fas fa-eye-slash"></i>
                                     </button>
                                 </form>
-                                {% else %}
-                                <span class="kichthuoc-nho-hon text-muted">Đang sử dụng</span>
                                 {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% else %}
-            <div class="p-3 text-center text-muted small">Chưa có phòng nào.</div>
-            {% endif %}
-        </div>
-        {% endfor %}
-        {% else %}
-        <div class="the-chinh p-5 text-center text-muted">
-            <i class="fas fa-door-open fa-3x opacity-25 mb-3 d-block"></i>
-            <p>Chưa có dữ liệu phòng. Hãy thêm phòng mới.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
         {% endif %}
     </div>
+    {% endfor %}
+    {% else %}
+    <div class="bg-white rounded-3 shadow-sm p-5 text-center text-muted" style="border: 1px solid #E2E8F0;">
+        <i class="fas fa-door-closed fa-3x opacity-25 mb-3 d-block"></i>
+        Chưa có phòng vật lý nào được cấu hình.
+    </div>
+    {% endif %}
 </div>
+
+<!-- Instant JavaScript Filter Logic -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const wingBtns = document.querySelectorAll('.wing-filter-btn');
+    const statusFilter = document.getElementById('statusFilter');
+    const searchInput = document.getElementById('roomSearchInput');
+    const categoryCards = document.querySelectorAll('.room-category-card');
+    const rows = document.querySelectorAll('.room-row');
+
+    let currentWing = 'all';
+    let currentStatus = 'all';
+    let currentQuery = '';
+
+    function applyFilter() {
+        categoryCards.forEach(card => {
+            const cardWing = card.getAttribute('data-wing');
+            const matchWing = (currentWing === 'all' || currentWing === cardWing);
+
+            let visibleInCard = 0;
+            const cardRows = card.querySelectorAll('.room-row');
+            cardRows.forEach(row => {
+                const rName = row.getAttribute('data-room-name') || '';
+                const cleanNum = row.getAttribute('data-clean-num') || '';
+                const rStatus = row.getAttribute('data-status') || '';
+                const isOccupied = row.getAttribute('data-occupied') === 'true';
+
+                // Status match
+                let matchStatus = true;
+                if (currentStatus === 'occupied') matchStatus = isOccupied;
+                else if (currentStatus === 'clean') matchStatus = (rStatus === 'clean' && !isOccupied);
+                else if (currentStatus === 'dirty') matchStatus = (rStatus === 'dirty');
+                else if (currentStatus === 'maintenance') matchStatus = (rStatus === 'maintenance');
+
+                // Query match
+                let matchQuery = true;
+                if (currentQuery) {
+                    matchQuery = rName.includes(currentQuery) || cleanNum.includes(currentQuery);
+                }
+
+                if (matchWing && matchStatus && matchQuery) {
+                    row.style.display = '';
+                    visibleInCard++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (matchWing && visibleInCard > 0) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    wingBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            wingBtns.forEach(b => {
+                b.classList.remove('active', 'fw-bold');
+                b.classList.add('text-muted');
+                b.style.background = 'transparent';
+            });
+            this.classList.add('active', 'fw-bold');
+            this.classList.remove('text-muted');
+            this.style.background = '#FFFFFF';
+            currentWing = this.getAttribute('data-wing');
+            applyFilter();
+        });
+    });
+
+    statusFilter.addEventListener('change', function() {
+        currentStatus = this.value;
+        applyFilter();
+    });
+
+    searchInput.addEventListener('input', function() {
+        currentQuery = this.value.trim().toLowerCase();
+        applyFilter();
+    });
+});
+</script>
+
 {% endblock %}

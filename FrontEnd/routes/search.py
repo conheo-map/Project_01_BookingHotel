@@ -95,11 +95,38 @@ def search():
         search_data = api_get_qs(f'/api/rooms/search?{qs}', token=session.get('token'))
         rooms = search_data.get('rooms', [])
 
+    from collections import OrderedDict
+    room_groups = OrderedDict()
+    for r in rooms:
+        rt_id = r.get('room_type_id') or r.get('room_type_code')
+        if rt_id not in room_groups:
+            grp = dict(r)
+            grp['physical_rooms'] = [r]
+            grp['total_available'] = 1 if r.get('availability_type') == 'continuous' else 0
+            grp['continuous_count'] = 1 if r.get('availability_type') == 'continuous' else 0
+            grp['fragmented_count'] = 1 if r.get('availability_type') == 'fragmented' else 0
+            room_groups[rt_id] = grp
+        else:
+            grp = room_groups[rt_id]
+            grp['physical_rooms'].append(r)
+            if r.get('availability_type') == 'continuous':
+                grp['continuous_count'] += 1
+                grp['total_available'] += 1
+            else:
+                grp['fragmented_count'] += 1
+            if r.get('promo_price_min', 0) < grp.get('promo_price_min', 0):
+                grp['promo_price_min'] = r['promo_price_min']
+            if r.get('effective_price_max', 0) > grp.get('effective_price_max', 0):
+                grp['effective_price_max'] = r['effective_price_max']
+
+    grouped_rooms = list(room_groups.values())
+
     hotels = api_get('/api/hotels').get('hotels', [])
     all_room_types = api_get('/api/room-types').get('room_types', [])
 
     return render_template('search.html',
                            rooms=rooms,
+                           grouped_rooms=grouped_rooms,
                            hotels=hotels,
                            all_room_types=all_room_types,
                            params=params)
@@ -110,10 +137,16 @@ def search():
 def room_detail(room_type_id):
     checkin = request.args.get('checkin_date', '')
     checkout = request.args.get('checkout_date', '')
+    adults = request.args.get('adults', 2, type=int)
+    children = request.args.get('children', 0, type=int)
+    promo_code = request.args.get('promo_code', '').strip()
     detail = api_get('/api/rooms/detail', params={
         'room_type_id': room_type_id,
         'checkin_date': checkin,
         'checkout_date': checkout,
+        'adults': adults,
+        'children': children,
+        'promo_code': promo_code,
     }, token=session.get('token'))
     room = detail.get('room_type') or {}
     continuous_rooms = detail.get('continuous_rooms', [])
@@ -137,7 +170,10 @@ def room_detail(room_type_id):
                            avg_rating=avg_rating,
                            review_count=review_count,
                            checkin_date=checkin,
-                           checkout_date=checkout)
+                           checkout_date=checkout,
+                           adults=adults,
+                           children=children,
+                           promo_code=promo_code)
 
 
 @search_bp.route('/reviews')
