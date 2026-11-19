@@ -1,216 +1,86 @@
-# KỊCH BẢN THUYẾT TRÌNH TỐI ƯU TỪNG SLIDE (PHIÊN BẢN BẮN TỈA TRỌNG TÂM - 08 PHÚT)
-## DỰ ÁN: HỆ THỐNG QUẢN LÝ VÀ ĐẶT PHÒNG KHÁCH SẠN SÀI GÒN - CÔN ĐẢO RESORT
-> **Tài liệu trình chiếu**: Tệp [slide_N7.pdf](file:///C:/HocC/Project_Booking%20-%20Sao%20ch%C3%A9p/slide_N7.pdf) (khớp 100% từ Slide 1 đến Slide 52)  
-> **Phong cách trình bày**: **Vào thẳng vấn đề - Không đọc chữ trên slide - 15 giây/slide biểu đồ - Dập tắt bẫy vặn vẹo**.  
-> **Tổng thời lượng toàn bài**: Đúng **08 - 09 phút** (vừa khít trước khi chuông Hội đồng reo).
+### Slide 17: Biểu đồ Use Case tổng quát
+Kính thưa Thầy Cô, bước vào phần mô hình hóa hệ thống, Slide 17 thể hiện Biểu đồ Use Case tổng quát. Hệ thống đóng gói toàn bộ 15 Use Case cốt lõi bên trong ranh giới rõ ràng, phân định 5 nhóm tác nhân người dùng và 2 tác nhân ngoại vi là Cổng thanh toán VNPay cùng Máy chủ dịch vụ Cron System.
 
----
+### Slide 18: Phân rã Use Case - Cổng đặt phòng B2C
+Tại phân hệ Đặt phòng B2C, Use Case Đặt phòng trực tuyến bắt buộc quan hệ Include với Khóa phòng 15 phút chống trùng và Xác thực thanh toán trực tuyến. Khi khách hàng có mã ưu đãi, hành vi Áp dụng voucher sẽ được kích hoạt thông qua quan hệ Extend trỏ ngược về Use Case cơ sở.
 
-## ⚡ HƯỚNG DẪN DÀNH CHO NGƯỜI THUYẾT TRÌNH:
-1. **Tay cầm clicker chuyển slide theo đúng nhịp**: Mỗi slide biểu đồ chỉ dừng **15 - 20 giây**.
-2. **Không đọc lại chữ đã có trên slide**: Thầy cô tự nhìn thấy chữ, bạn chỉ nói **bản chất nghiệp vụ & đột phá kỹ thuật**.
-3. **Mục 💡 Chốt chặn**: Là vũ khí phản xạ nhanh nếu Thầy ngắt lời hỏi vặn. Không hỏi thì không cần đọc.
+### Slide 19: Phân rã Use Case - Quản lý tài khoản & Phân quyền
+Phân hệ Tài khoản quản lý toàn bộ vòng đời người dùng từ Đăng ký hội viên đến Phân quyền đa vai trò RBAC cho nhân sự. Hệ thống tích hợp Audit Log ghi vết bảo mật và quan hệ Extend tự động khóa tài khoản sau 5 lần đăng nhập thất bại nhằm ngăn chặn tấn công Brute-force.
 
----
+### Slide 20: Phân rã Use Case - Tác nghiệp quầy tiền sảnh & Lễ tân
+Tại quầy tiền sảnh, hệ thống đáp ứng cả hai luồng nghiệp vụ: Đặt phòng trực tiếp Walk-in cho khách vãng lai và Check-in cho khách đặt trước. Lễ tân quản lý phòng trực quan qua sơ đồ Gantt thời gian thực, xử lý quyết toán Folio VAT khi Check-out và tự động hủy đơn No-Show đối với khách vắng mặt sau 23:59.
 
-# PHẦN I: MỞ ĐẦU & YÊU CẦU HỆ THỐNG (SLIDE 01 - 16)
-*(Lướt nhanh trong 1.5 phút)*
+### Slide 21: Phân rã Use Case - Vận hành buồng phòng
+Phân hệ Buồng phòng hỗ trợ nhân viên nhận ca làm việc trên thiết bị di động, theo dõi danh sách phòng bẩn và cập nhật tiến độ dọn dẹp. Khi phát hiện hỏng hóc vật tư, Use Case Báo cáo sự cố bảo trì được mở rộng qua quan hệ Extend để khóa phòng kỹ thuật trước khi Tổ trưởng nghiệm thu.
 
-### [Slide 01] Bìa Đề Tài (10s)
-- 🎙️ **Nói nhanh**: *"Kính thưa Quý Thầy/Cô, em xin đại diện Nhóm 7 báo cáo đồ án OOAD: **Hệ thống Quản lý và Đặt phòng ở Saigon - Condao Resort**."*
+### Slide 22: Phân rã Use Case - Quản trị doanh thu & Báo cáo
+Phân hệ Quản trị cho phép Ban Giám đốc thiết lập biểu giá linh hoạt Dynamic Pricing theo mùa cao điểm và ban hành chính sách hoàn cọc bậc thang. Toàn bộ doanh thu phòng, dịch vụ cùng các chỉ số KPI tiêu chuẩn của khách sạn như RevPAR và công suất phòng được tổng hợp tự động theo thời gian thực.
 
-### [Slide 02] Mục Lục Báo Cáo (10s)
-- 🎙️ **Nói nhanh**: *"Báo cáo gồm 5 phần, trong đó Nhóm tập trung sâu nhất vào Phần 4 - Mô hình hóa hệ thống với trọn bộ 28 biểu đồ thiết kế chuẩn RUP."*
+### Slide 23: Biểu đồ Hoạt động - Đặt phòng trực tuyến (AD-01)
+Biểu đồ Hoạt động AD-01 mô hình hóa luồng xử lý đồng thời để giải quyết bài toán Overbooking. Ngay khi khách chọn phòng, hệ thống khởi tạo bản ghi RoomHoldLock giữ chỗ 15 phút. Thanh phân nhánh Fork kích hoạt song song đồng hồ đếm ngược 15:00 và tiến trình quét VietQR; nếu thanh toán thành công thì xác nhận Booking, nếu hết giờ thì tự động giải phóng phòng.
 
-### [Slide 03 - 05] Bối Cảnh & 3 Thách Thức Sống Còn (30s)
-- 🎙️ **Nói nhanh**: *"Khách sạn Sài Gòn - Côn Đảo là resort 4-5 sao tại hải đảo biệt lập. Nghiệp vụ tại đây có **3 bài toán đặc thù**:*
-  1. *Khách dồn dập đặt theo chuyến bay/tàu cao tốc, dễ gây bán trùng phòng (**Overbooking**).*
-  2. *Sự tách biệt giữa **Hạng phòng kinh doanh B2C** và **Phòng vật lý thực tế**.*
-  3. *Nhu cầu theo dõi **Sổ cái chi tiêu Folio tập trung** và cơ chế hoàn tiền khi bão gió cấm tàu."*
+### Slide 24: Biểu đồ Hoạt động - Check-in và Gán phòng vật lý (AD-02)
+Biểu đồ AD-02 quy định luồng kiểm soát gán phòng vật lý cho cả khách đặt trước và khách Walk-in. Hệ thống bọc điều kiện bảo vệ nghiêm ngặt: chỉ cho phép lễ tân gán những phòng thỏa mãn đồng thời ba tiêu chuẩn: đúng hạng phòng đã đăng ký, trạng thái buồng phòng đạt chuẩn Clean đã nghiệm thu, và lịch phòng hoàn toàn Vacant.
 
-### [Slide 06 - 10] Mục Tiêu & Khảo Sát Hiện Trạng (20s)
-- 🎙️ **Nói nhanh**: *"Hiện trạng resort đang tiếp nhận phòng phân tán qua Website, Hotline và Fanpage. Mục tiêu của đề tài là xây dựng hệ thống tự động hóa khép kín từ đặt phòng, lễ tân đến buồng phòng thời gian thực."*
+### Slide 25: Biểu đồ Hoạt động - Dịch vụ phát sinh và Ghi nợ Folio (AD-03)
+Biểu đồ AD-03 thể hiện cơ chế quản trị công nợ lưu trú. Khi khách phát sinh tiêu dùng minibar hoặc ẩm thực, hệ thống kiểm tra trạng thái phòng đang Occupied và tài khoản Folio đang mở. Sau đó, một giao dịch nguyên tử được thực thi để ghi nhận chi tiết dịch vụ và tự động cộng dồn số dư nợ vào Folio của phòng.
 
-### [Slide 11 - 16] Đặc Tả Yêu Cầu Chức Năng, Phi Chức Năng & BR (20s)
-- 🎙️ **Nói nhanh**: *"Hệ thống được đặc tả chặt chẽ qua 5 nhóm tác nhân, 12 yêu cầu chức năng FR, 25 yêu cầu phi chức năng NFR, và 16 quy tắc nghiệp vụ BR (như Check-in 14:00, Check-out 12:00, Khóa giữ chỗ 15 phút, Chính sách hoàn cọc). Toàn bộ được cụ thể hóa thành 28 biểu đồ kiến trúc ngay sau đây."*
+### Slide 26: Biểu đồ Hoạt động - Check-out và Quyết toán công nợ (AD-04)
+Biểu đồ AD-04 xử lý quy trình tất toán theo công thức: Số dư thanh toán bằng Tiền phòng cộng Tổng dịch vụ trừ Tiền cọc. Nút rẽ nhánh kiểm soát điều kiện công nợ bằng 0: chỉ khi số dư được đối soát cân bằng, hệ thống mới xuất hóa đơn tài chính VAT Saigontourist và tự động chuyển trạng thái phòng sang Dirty để kích hoạt ca dọn.
 
----
+### Slide 27: Biểu đồ Hoạt động - Vận hành buồng phòng và Bảo trì (AD-05)
+Biểu đồ AD-05 khép kín chu trình làm sạch: nhân viên nhận phòng chuyển trạng thái sang Cleaning. Nếu phát hiện hư hỏng, quy trình rẽ nhánh khóa Maintenance; nếu phòng dọn đạt chuẩn kiểm tra, hệ thống chuyển sang Clean và lập tức bắn tín hiệu WebSocket thời gian thực để sơ đồ quầy lễ tân đổi sang màu xanh tức thì.
 
-# PHẦN II: THUYẾT TRÌNH TRỌNG TÂM TỪNG BIỂU ĐỒ (SLIDE 17 - 45)
-*(Mỗi slide nói đúng 15 - 20 giây - Điểm huyệt kiến trúc)*
+### Slide 28: Biểu đồ Tuần tự - Giới thiệu mô hình kiến trúc BCE
+Slide 28 mở đầu cho khối biểu đồ tuần tự. Toàn bộ 6 ca sử dụng then chốt được thiết kế theo đúng mẫu hình phân tầng Boundary - Control - Entity, tuân thủ nguyên tắc bao đóng: Boundary tiếp nhận tương tác nhưng không bao giờ truy cập trực tiếp vào Entity mà phải thông qua Control điều phối logic nghiệp vụ.
 
----
+### Slide 29: Biểu đồ Tuần tự - Đặt phòng trực tuyến & Khóa 15m (SD-01)
+Biểu đồ SD-01 thể hiện 17 thông điệp tương tác: BookingService yêu cầu RoomInventory khởi tạo khóa tạm CreateHoldLock 15 phút trong DB Transaction. Khi nhận Webhook IPN từ cổng VNPay, BookingService tạo thực thể Booking Confirmed, sinh các bản ghi BookingNights và gọi hàm MarkLockAsSold để chốt phòng thành công.
 
-### [Slide 17] Biểu Đồ Use Case Tổng Quát (20s)
-- 🎙️ **Nói nhanh**: *"Slide 17 là Use Case tổng quát: Hệ thống phân định 5 tác nhân người dùng và 2 tác nhân ngoại vi là **Cổng thanh toán VNPay** và **Máy chủ chạy nền Cron System**. Toàn bộ 15 Use Case cốt lõi được đóng khung trọn vẹn trong ranh giới hệ thống."*
-- 👉 **Chỉ hình**: Rê chuột vòng quanh ranh giới hệ thống và chỉ vào Cron, VNPay ở ngoài.
-- 💡 **Chốt chặn (Nếu Thầy vặn Cron/VNPay là Actor?)**: *"Theo UML 2.5, bất kỳ thực thể bên ngoài nào tương tác gửi/nhận dữ liệu với hệ thống đều là Actor hợp lệ."*
+### Slide 30: Biểu đồ Tuần tự - Làm thủ tục nhận phòng Check-in (SD-02)
+Biểu đồ SD-02 gồm 16 thông điệp: Lễ tân tra cứu mã PNR, quét thông tin CCCD lưu vào GuestProfile. Control gọi PhysicalRoom lọc danh sách phòng sạch CheckCleanRooms; sau đó thực thi hàm AssignPhysicalRoom để gán phòng cụ thể cho từng đêm lưu trú và cập nhật trạng thái phòng sang Occupied.
 
----
+### Slide 31: Biểu đồ Tuần tự - Ghi nhận tiêu dùng dịch vụ (SD-03)
+Biểu đồ SD-03 gồm 12 thông điệp: FolioBillingService xác thực phòng lưu trú hợp lệ, truy vấn đơn giá có thuế từ PriceCatalog. Tiếp đó, hệ thống lưu chi tiết tiêu dùng vào FolioItem và kích hoạt hàm PostChargeToFolio để cộng dồn khoản nợ vào số dư của hóa đơn phòng.
 
-### [Slide 18] Use Case Phân Rã: Cổng Đặt Phòng B2C (15s)
-- 🎙️ **Nói nhanh**: *"Tại phân hệ Đặt phòng B2C: Use Case 'Đặt phòng trực tuyến' bắt buộc **`<<include>>`** 'Khóa phòng chống trùng 15 phút' và 'Xác thực cổng thanh toán'; đồng thời liên kết **`<<extend>>`** với 'Áp dụng Voucher' khi khách có mã ưu đãi."*
-- 👉 **Chỉ hình**: Chỉ vào đường `<<include>>` trỏ thuận và `<<extend>>` trỏ ngược.
-- 💡 **Chốt chặn (Nếu Thầy vặn chiều mũi tên?)**: *"Include là gọi bắt buộc nên trỏ thuận; Extend là chèn hành vi mở rộng nên trỏ ngược về Use Case cơ sở."*
+### Slide 32: Biểu đồ Tuần tự - Trả phòng và Quyết toán (SD-04)
+Biểu đồ SD-04 gồm 16 thông điệp: Lễ tân nạp phụ thu phát sinh, hệ thống tính toán số dư cuối kỳ và thực thu số tiền còn thiếu. Ngay khi tất toán, Control khởi tạo hóa đơn Invoice với thuế suất VAT 8% theo mã số thuế Saigontourist và gửi thông điệp cập nhật trạng thái phòng sang Dirty.
 
----
+### Slide 33: Biểu đồ Tuần tự - Vận hành dọn dẹp buồng phòng (SD-05)
+Biểu đồ SD-05 gồm 21 thông điệp: Nhân viên buồng phòng nhận nhiệm vụ, cập nhật trạng thái Cleaning và khởi tạo CleaningLog để tính định mức thời gian. Khi công việc hoàn tất, hệ thống chuyển phòng sang Clean và phát sự kiện WebSocket NotifyRoomStatus cập nhật trực tiếp lên màn hình lễ tân.
 
-### [Slide 19] Use Case Phân Rã: Quản Lý Tài Khoản & Phân Quyền (15s)
-- 🎙️ **Nói nhanh**: *"Phân hệ Tài khoản hỗ trợ đăng ký hội viên VIP, phân quyền vai trò RBAC cho nhân sự, ghi nhận Audit Log an ninh, và cơ chế **`<<extend>>` tự động khóa tài khoản sau 5 lần đăng nhập sai** để chống Brute-force."*
-- 👉 **Chỉ hình**: Chỉ vào nhánh mở rộng Khóa tài khoản và Audit Log.
+### Slide 34: Biểu đồ Tuần tự - Hủy đặt phòng và Hoàn cọc (SD-06)
+Biểu đồ SD-06 gồm 27 thông điệp: BookingCancellationService gọi RefundPolicy tính toán khoảng cách giờ đến thời điểm Check-in để áp mức hoàn cọc 100%, 50% hoặc 0%. Hệ thống cập nhật đơn sang Canceled, ghi nhận chứng từ hoàn tiền âm vào sổ quỹ và lập tức gọi ReleaseBookedNights để trả lại quỹ phòng trống cho thị trường.
 
----
+### Slide 35: Biểu đồ Lớp Lĩnh vực - Khái quát cấu trúc tĩnh
+Slide 35 khái quát cấu trúc tĩnh Domain Class Diagram với đầy đủ các thực thể đại diện cho toàn bộ miền nghiệp vụ khách sạn biển đảo, từ lưu trú, buồng phòng, dịch vụ đến thanh toán và chính sách giá.
 
-### [Slide 20] Use Case Phân Rã: Tác Nghiệp Quầy Tiền Sảnh & Lễ Tân (15s)
-- 🎙️ **Nói nhanh**: *"Tại quầy tiền sảnh, hệ thống hỗ trợ cả khách đặt trước lẫn **khách Walk-in vãng lai**, quản lý gán phòng trên sơ đồ Gantt thời gian thực, xử lý Check-out quyết toán Folio VAT, và xử lý hủy đơn khách vắng mặt (No-Show) sau 23:59."*
-- 👉 **Chỉ hình**: Chỉ vào Use Case Walk-in và Sơ đồ Gantt / No-Show.
+### Slide 36: Biểu đồ Lớp Lĩnh vực - Chi tiết thuộc tính, phương thức và quan hệ
+Slide 36 là bản vẽ chi tiết thiết kế 3 ngăn chuẩn mực. Điểm mấu chốt là mối quan hệ Hợp thành Composition ràng buộc sinh tử giữa BookingMaster và BookingNight, giữa ServiceFolio và FolioItem; cùng quan hệ Thu nạp Aggregation độc lập vòng đời giữa Hotel, RoomType và PhysicalRoom, giúp dữ liệu luôn bảo đảm tính toàn vẹn tham chiếu.
 
----
+### Slide 37: Biểu đồ Gói - Kiến trúc phân tầng (Package Diagram)
+Biểu đồ Gói tổ chức hệ thống thành 5 tầng cấu trúc rõ rệt: Tầng giao diện người dùng, Tầng ứng dụng Application, Tầng nghiệp vụ cốt lõi Domain, Tầng hạ tầng Infrastructure và Tầng cơ sở dữ liệu. Mối quan hệ phụ thuộc một chiều từ trên xuống dưới, triệt tiêu hoàn toàn nguy cơ phụ thuộc vòng.
 
-### [Slide 21] Use Case Phân Rã: Vận Hành Buồng Phòng (15s)
-- 🎙️ **Nói nhanh**: *"Phân hệ Buồng phòng giúp nhân viên nhận ca dọn buồng trên di động, cập nhật tiến độ sạch, kích hoạt **`<<extend>>` Báo cáo sự cố bảo trì** khi hỏng thiết bị, và quy trình Tổ trưởng nghiệm thu phòng sạch."*
-- 👉 **Chỉ hình**: Chỉ vào nhánh mở rộng Báo cáo sự cố bảo trì.
+### Slide 38: Biểu đồ Triển khai - Mô hình vật lý 3 tầng (Deployment Diagram)
+Biểu đồ Triển khai thể hiện kiến trúc 3 tầng: Máy trạm quầy lễ tân kết nối trực tiếp máy in nhiệt POS qua cáp USB và cổng mạng TCP 9100 để in hóa đơn tức thì dưới 0.5 giây kể cả khi rớt Internet hải đảo. Máy chủ trung tâm bố trí Nginx Reverse Proxy mã hóa TLS 1.3, máy chủ ứng dụng Python WSGI, tiến trình Cron Daemon dọn dẹp khóa phòng ngầm và phân vùng cơ sở dữ liệu biệt lập.
 
----
+### Slide 39: Biểu đồ Thành phần - Kiến trúc tổng quát
+Biểu đồ Thành phần tổng quát phân định ranh giới giữa các mô-đun phần mềm có thể thay thế độc lập: từ khối Client Executable, khối Service Controller, khối Logic nghiệp vụ đến khối Data Access Library và Engine cơ sở dữ liệu, kết nối với nhau thông qua các cổng giao tiếp Interface chuẩn mực.
 
-### [Slide 22] Use Case Phân Rã: Quản Trị Doanh Thu & Báo Cáo (15s)
-- 🎙️ **Nói nhanh**: *"Phân hệ Quản lý cung cấp công cụ thiết lập **Giá linh hoạt theo mùa (Dynamic Pricing)**, ban hành chính sách hoàn cọc bậc thang, và tự động tính toán các chỉ số KPI khách sạn như RevPAR và công suất phòng."*
-- 👉 **Chỉ hình**: Chỉ vào Cài đặt giá linh hoạt và Báo cáo KPI.
+### Slide 40: Biểu đồ Thành phần - Quy trình Đặt phòng & Khóa giữ chỗ
+Mô-đun Đặt phòng kết nối trực tiếp với RoomInventoryComponent qua giao diện kiểm tra phòng trống và giao tiếp với PaymentGateway qua giao diện Webhook IPN, bảo đảm tiến trình đặt phòng và giữ chỗ 15 phút vận hành độc lập, không gây nghẽn hệ thống.
 
----
+### Slide 41: Biểu đồ Thành phần - Quy trình Check-in & Gán phòng vật lý
+Mô-đun Check-in phối hợp giữa IdentityScannerComponent để trích xuất CCCD và RoomAssignmentComponent để tra cứu trạng thái buồng phòng, cho phép gán số phòng vật lý chính xác vào từng đêm lưu trú của khách.
 
-### [Slide 23] Biểu Đồ Hoạt Động: Đặt Phòng Trực Tuyến (AD-01) (20s)
-- 🎙️ **Nói nhanh**: *"Biểu đồ AD-01 mô hình hóa luồng chống Race Condition: Ngay khi khách chọn phòng, hệ thống **tạo khóa giữ phòng 15 phút**. Thanh phân nhánh **Fork** kích hoạt song song Timer 15:00 và luồng quét VietQR. Nếu thanh toán thành công trong 15 phút thì tạo Booking, nếu quá hạn thì tự động giải phóng phòng."*
-- 👉 **Chỉ hình**: Rê chuột qua thanh Fork và đồng hồ Timer 15 phút.
-- 💡 **Chốt chặn (Nếu Thầy vặn quá hạn mà Webhook mới tới?)**: *"Hệ thống có nhánh Reconciliation đối soát tự động để hoàn tiền hoặc đổi phòng, không bao giờ nuốt tiền khách."*
+### Slide 42: Biểu đồ Thành phần - Quy trình Tiêu dùng dịch vụ & Folio
+Mô-đun Dịch vụ tích hợp PriceCatalogComponent và FolioLedgerComponent, cho phép mọi điểm bán POS tại khách sạn đồng bộ chi phí phát sinh trực tiếp vào sổ nợ phòng của khách hàng theo thời gian thực.
 
----
+### Slide 43: Biểu đồ Thành phần - Quy trình Check-out & Quyết toán
+Mô-đun Check-out kết nối FolioLedgerComponent để tổng hợp công nợ, giao tiếp PaymentProcessing để thu tiền cuối kỳ, kích hoạt InvoiceGeneratorComponent xuất hóa đơn điện tử và gửi tín hiệu giải phóng phòng sang hệ thống buồng phòng.
 
-### [Slide 24] Biểu Đồ Hoạt Động: Check-In & Gán Phòng Vật Lý (AD-02) (15s)
-- 🎙️ **Nói nhanh**: *"AD-02 xử lý cả khách đặt trước và khách Walk-in. Điểm chốt chặn là điều kiện lọc phòng: Hệ thống **chỉ cho phép gán phòng thỏa mãn 3 tiêu chuẩn**: Thuộc đúng hạng phòng, Trạng thái buồng phòng là CLEAN (đã dọn sạch), và Lịch phòng VACANT không trùng."*
-- 👉 **Chỉ hình**: Chỉ vào hình thoi Decision kiểm tra phòng CLEAN và VACANT.
+### Slide 44: Biểu đồ Thành phần - Quy trình Buồng phòng & Giám sát
+Mô-đun Buồng phòng chạy trên thiết bị di động kết nối với HousekeepingComponent và SocketEmitterComponent, bảo đảm mọi thay đổi trạng thái buồng phòng được phát sóng thời gian thực về quầy lễ tân mà không phụ thuộc vào liên lạc thủ công.
 
----
-
-### [Slide 25] Biểu Đồ Hoạt Động: Dịch Vụ Phát Sinh & Folio (AD-03) (15s)
-- 🎙️ **Nói nhanh**: *"AD-03 thể hiện kế toán Folio: Khi khách dùng minibar hay gọi món, hệ thống kiểm tra phòng đang `OCCUPIED` và Folio còn mở $\rightarrow$ thực thi giao dịch nguyên tử **cộng dồn khoản nợ vào số dư Folio** và in phiếu cho khách ký."*
-- 👉 **Chỉ hình**: Chỉ vào bước 'Lưu Order và Folio Details trong cùng giao dịch'.
-
----
-
-### [Slide 26] Biểu Đồ Hoạt Động: Check-Out & Quyết Toán (AD-04) (15s)
-- 🎙️ **Nói nhanh**: *"AD-04 đối soát toàn bộ chi phí theo công thức: $\text{Số dư} = \text{Tiền phòng} + \text{Dịch vụ} - \text{Cọc}$. Nút rẽ nhánh kiểm soát điều kiện bảo vệ **`[Công nợ bằng 0?]`**: Chỉ khi số dư cân bằng, hệ thống mới xuất hóa đơn VAT Saigontourist và tự động đổi phòng sang `DIRTY`."*
-- 👉 **Chỉ hình**: Chỉ vào điều kiện `[Công nợ bằng 0?]` và chuyển `DIRTY`.
-
----
-
-### [Slide 27] Biểu Đồ Hoạt Động: Dọn Buồng & Bảo Trì (AD-05) (15s)
-- 🎙️ **Nói nhanh**: *"AD-05 vận hành buồng phòng di động: Phòng bẩn chuyển `CLEANING`. Nếu hỏng hóc $\rightarrow$ chuyển `MAINTENANCE`. Nếu đạt chuẩn sạch $\rightarrow$ chuyển `CLEAN` và **bắn sự kiện WebSocket thời gian thực** để sơ đồ phòng lễ tân chuyển xanh ngay lập tức."*
-- 👉 **Chỉ hình**: Chỉ vào 2 nhánh: Bắn WebSocket sang Lễ tân và nhánh khóa MAINTENANCE.
-
----
-
-### [Slide 28] Biểu Đồ Tuần Tự: Giới Thiệu Mô Hình (10s)
-- 🎙️ **Nói nhanh**: *"Slide 28 mở đầu cho Khối Sequence: Toàn bộ 6 biểu đồ tuần tự được thiết kế theo chuẩn **3 Tầng BCE (Boundary - Control - Entity)** với quy tắc **CẤM NHẢY CÓC**, Boundary không được gọi thẳng vào Entity để bảo vệ tính bao đóng."*
-
----
-
-### [Slide 29] Biểu Đồ Tuần Tự: Đặt Phòng & Khóa 15m (SD-01) (20s)
-- 🎙️ **Nói nhanh**: *"SD-01 thể hiện 17 thông điệp: `:BookingService` gọi `:RoomInventory` tạo khóa tạm `createHoldLock 15m`. Khách quét VietQR $\rightarrow$ VNPay gửi Webhook IPN $\rightarrow$ `:BookingService` tạo `:Booking` trạng thái `CONFIRMED`, sinh `:BookingNights`, và gọi `markLockAsSold` chuyển khóa sang ĐÃ BÁN."*
-- 👉 **Chỉ hình**: Chỉ vào `createHoldLock`, khung Alt thành công và hàm `markLockAsSold`.
-- 💡 **Chốt chặn (Nếu Thầy vặn Race Condition?)**: *"Áp dụng Pessimistic Hold with TTL bọc trong Transaction nguyên tử, ai chạm DB trước mili-giây sẽ giành được khóa."*
-
----
-
-### [Slide 30] Biểu Đồ Tuần Tự: Làm Thủ Tục Nhận Phòng (SD-02) (15s)
-- 🎙️ **Nói nhanh**: *"SD-02 gồm 16 thông điệp: Lễ tân tra cứu PNR, quét CCCD lưu vào `:GuestProfile`. Control gọi `:PhysicalRoom` kiểm tra phòng sạch `checkCleanRooms(status='CLEAN')` $\rightarrow$ gán số phòng cụ thể vào từng đêm và cập nhật phòng sang `OCCUPIED`."*
-- 👉 **Chỉ hình**: Chỉ vào bước quét CCCD và hàm `assignPhysicalRoom`.
-
----
-
-### [Slide 31] Biểu Đồ Tuần Tự: Ghi Nhận Tiêu Dùng Dịch Vụ (SD-03) (15s)
-- 🎙️ **Nói nhanh**: *"SD-03 gồm 12 thông điệp: `:FolioBillingService` xác thực phòng đang lưu trú, lấy giá niêm yết có VAT từ `:PriceCatalog` $\rightarrow$ gọi `:FolioInvoice` lưu chi tiết tiêu dùng và gọi hàm `postChargeToFolio` cộng dồn số dư nợ của phòng."*
-- 👉 **Chỉ hình**: Chỉ vào hàm `recordConsumption` và `postChargeToFolio`.
-
----
-
-### [Slide 32] Biểu Đồ Tuần Tự: Trả Phòng & Quyết Toán (SD-04) (15s)
-- 🎙️ **Nói nhanh**: *"SD-04 gồm 16 thông điệp: Lễ tân nạp phụ thu minibar $\rightarrow$ tính tổng nợ $\rightarrow$ thu tiền thiếu $\rightarrow$ hệ thống tự động sinh hóa đơn tài chính điện tử `:Invoice` thuế suất VAT 8%, mã số thuế Saigontourist `0312456789-001`, và gửi lệnh đổi phòng sang `DIRTY`."*
-- 👉 **Chỉ hình**: Chỉ vào bước tạo Invoice VAT và thông điệp đổi phòng sang DIRTY.
-
----
-
-### [Slide 33] Biểu Đồ Tuần Tự: Vận Hành Dọn Dẹp Buồng Phòng (SD-05) (15s)
-- 🎙️ **Nói nhanh**: *"SD-05 gồm 21 thông điệp: Nhân viên buồng phòng nhận phòng đổi sang `CLEANING`, bấm giờ ca dọn `:CleaningLog`. Dọn xong đổi sang `CLEAN` và **bắn WebSocket Event `notifyRoomStatus('CLEAN')`** về quầy lễ tân. Nếu hỏng hóc thì tạo `:MaintenanceTicket`."*
-- 👉 **Chỉ hình**: Chỉ vào hàm đóng CleaningLog và sự kiện WebSocket Event.
-
----
-
-### [Slide 34] Biểu Đồ Tuần Tự: Hủy Đặt Phòng & Hoàn Cọc (SD-06) (20s)
-- 🎙️ **Nói nhanh**: *"SD-06 gồm 27 thông điệp: `:BookingCancellationService` gọi `:RefundPolicy` tính số giờ trước check-in: Hoàn 100% trước 72h, 50% từ 24-72h, 0% dưới 24h. Hệ thống đổi đơn sang `Canceled`, ghi chứng từ hoàn tiền âm (`-refundAmount`), và gọi **`releaseBookedNights`** mở lại phòng trống ngay lập tức."*
-- 👉 **Chỉ hình**: Chỉ vào hàm `getRefundPercentage`, chứng từ tiền âm, và `releaseBookedNights`.
-- 💡 **Chốt chặn (Nếu Thầy vặn tại sao ghi tiền âm?)**: *"Kế toán kép: Khoản hoàn tiền ghi âm để câu lệnh `SUM(amount)` tự động đối soát chính xác doanh thu thực thu."*
-
----
-
-### [Slide 35 - 36] Biểu Đồ Lớp – Domain Class Diagram (25s)
-- 🎙️ **Nói nhanh**: *"Slide 35 và 36 là Biểu đồ Lớp Lĩnh vực thiết kế 3 ngăn theo nguyên lý **Information Expert**:*
-  - *Mối quan hệ **Hợp thành (Composition $\blacklozenge$)** ràng buộc sinh tử giữa `BookingMaster` và `BookingNight`, giữa `ServiceFolio` và `FolioItem`.*
-  - *Mối quan hệ **Thu nạp (Aggregation $\diamondsuit$)** độc lập vòng đời giữa `Hotel` $\rightarrow$ `RoomType` $\rightarrow$ `PhysicalRoom`.*
-  - *Mối quan hệ **Kế thừa** từ `Account` sang `CustomerAccount` và `StaffAccount`."*
-- 👉 **Chỉ hình**: Chỉ vào kim cương đen Composition và kim cương trắng Aggregation.
-- 💡 **Chốt chặn (Nếu Thầy vặn tại sao không vẽ khóa ngoại ID?)**: *"Domain Model mô hình hóa quan hệ bằng tham chiếu đối tượng (Association), không dùng khóa ngoại dạng cột ID như CSDL vật lý."*
-
----
-
-### [Slide 37] Biểu Đồ Gói – Package Diagram (15s)
-- 🎙️ **Nói nhanh**: *"Slide 37 là Biểu đồ Gói tổ chức mã nguồn thành 5 tầng kiến trúc: `<<user interface>>` $\rightarrow$ `<<application>>` $\rightarrow$ `<<domain>>` (5 gói nghiệp vụ) $\rightarrow$ `<<infrastructure>>` $\rightarrow$ `<<database>>`. Phụ thuộc một chiều từ trên xuống, không có phụ thuộc vòng."*
-- 👉 **Chỉ hình**: Chỉ vào chiều mũi tên nét đứt phụ thuộc một chiều.
-
----
-
-### [Slide 38] Biểu Đồ Triển Khai – Deployment Diagram (20s)
-- 🎙️ **Nói nhanh**: *"Slide 38 là Biểu đồ Triển khai 3-Tier Enterprise:*
-  - *Máy trạm Lễ tân kết nối máy in nhiệt POS qua cáp `USB 2.0 / TCP Port 9100` để in hóa đơn tức thì < 0.5s kể cả khi mất Internet.*
-  - *Máy chủ trung tâm chạy **Nginx Reverse Proxy** (TLS 1.3, mạng nội bộ `VLAN 20`, WebSocket WSS), môi trường **Python WSGI**, và **Cron Daemon** ngầm dọn phòng quá hạn 15 phút.*
-  - *CSDL nằm trong phân vùng an toàn `Dedicated DB Subnet`."*
-- 👉 **Chỉ hình**: Chỉ vào cáp USB máy in, Nginx, Cron daemon và Database Subnet.
-
----
-
-### [Slide 39 - 44] Khối 6 Biểu Đồ Thành Phần – Component Diagrams (30s)
-- 🎙️ **Nói nhanh**: *"Từ Slide 39 đến 44 là Khối Biểu đồ Thành phần chứng minh kiến trúc mô-đun hóa độc lập có thể thay thế được (`<<executable>>`, `<<component>>`, `<<library>>`, `<<database>>`):*
-  - *Slide 39 là kiến trúc tổng quát phân tách giao diện và nghiệp vụ.*
-  - *Slide 40 đến 44 là 5 quy trình độc lập: Đặt phòng giữ tồn 15m, Nhận phòng gán phòng sạch, Ghi nhận dịch vụ và tính lại hóa đơn, Trả phòng quyết toán, và Vệ sinh buồng phòng di động."*
-- 👉 **Chỉ hình**: Bấm clicker lướt nhịp nhàng qua từng slide từ 39 đến 44.
-
----
-
-### [Slide 45] Thiết Kế Dữ Liệu – 15 Bảng Chuẩn Hóa 3NF (25s)
-- 🎙️ **Nói nhanh**: *"Slide 45 là mô hình CSDL quan hệ 15 bảng đạt chuẩn **3NF thuần khiết**, xóa bỏ hoàn toàn God-table `New_Bookings`:*
-  - *Tách biệt `T_RoomType` và `T_PhysicalRoom` để quản lý chính xác 14 phòng vật lý.*
-  - *Tách biệt `T_Booking` và `T_BookingNight` giúp quản lý giá phòng linh hoạt từng đêm, hỗ trợ đổi phòng giữa chừng (Split Stay) và tối ưu đếm phòng trống bằng phép `COUNT(*)` cực nhanh.*
-  - *Bảng `T_RoomHoldLock` lưu phiên giữ chỗ 15m chống Race Condition; và sổ nợ `T_FolioInvoice` độc lập.*
-  - *Hệ thống đã vượt qua trọn vẹn **43/43 tests tự động đạt 100%**."*
-- 👉 **Chỉ hình**: Chỉ vào cặp bảng RoomType vs PhysicalRoom, Booking vs BookingNight, và FolioInvoice.
-- 💡 **Chốt chặn (Nếu Thầy vặn chứng minh 3NF?)**: *"1NF: Không có thuộc tính đa trị; 2NF: Khóa đơn nightId phụ thuộc hàm toàn phần; 3NF: Không phụ thuộc bắc cầu qua thuộc tính không khóa."*
-
----
-
-# PHẦN III: GIAO DIỆN THỰC TẾ & KẾT LUẬN (SLIDE 46 - 52)
-*(Lướt nhanh trong 1.0 phút)*
-
-### [Slide 46 - 51] Minh Chứng Giao Diện Thực Tế (40s)
-- 🎙️ **Nói nhanh**: *"Từ Slide 46 đến 51 là minh chứng giao diện thực tế phong cách Coastal Luxury 5 sao tương ứng với các biểu đồ:*
-  - *Slide 46: Trang chủ tìm kiếm phòng.*
-  - *Slide 47: Đăng ký, đăng nhập RBAC.*
-  - *Slide 48: Tra cứu phòng trống thời gian thực.*
-  - *Slide 49: Màn hình giữ phòng đếm ngược 15:00 và mã VietQR (hiện thực hóa SD-01).*
-  - *Slide 50: Lịch sử đơn và thẻ hội viên VIP Gold.*
-  - *Slide 51: Modal tính toán hoàn cọc bậc thang tự động (hiện thực hóa SD-06)."*
-
-### [Slide 52] Lời Cảm Ơn & Kết Thúc (15s)
-- 🎙️ **Nói nhanh**:
-  > *"Kính thưa Quý Thầy/Cô, toàn bộ 52 slide đã thể hiện sự nhất quán và chặt chẽ từ khảo sát nghiệp vụ Côn Đảo đến 28 biểu đồ kiến trúc và giao diện chạy thực tế.*
-  >
-  > *Em xin chân thành cảm ơn Quý Thầy/Cô đã chú ý lắng nghe và xin trân trọng kính mời Hội đồng đặt câu hỏi phản biện ạ!"*
+### Slide 45: Thiết kế Dữ liệu - 15 Bảng quan hệ chuẩn hóa 3NF
+Slide 45 là mô hình CSDL quan hệ gồm 15 bảng đạt chuẩn hóa 3NF tuyệt đối, xóa bỏ hoàn toàn bảng khổng lồ dư thừa: Tách biệt Hạng phòng kinh doanh và Phòng vật lý thực tế; tách biệt Booking tổng và BookingNight theo từng đêm; đồng thời thiết lập bảng RoomHoldLock kiểm soát khóa phòng tạm và FolioInvoice quản lý công nợ. Toàn bộ kiến trúc dữ liệu này đã được kiểm chứng qua 43/43 kịch bản kiểm thử tự động đạt độ chính xác 100%.
